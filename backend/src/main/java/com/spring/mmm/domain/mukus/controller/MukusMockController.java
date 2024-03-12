@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -19,7 +20,7 @@ public class MukusMockController {
         // 2. 먹어스 데이터 반환
         MukusResponse mukusResponse = MukusResponse.builder()
                 .mukusId(1L)
-                .date(new Date(2024-3-12))
+                .date(Instant.now())
                 .colorcode("#132436")
                 .category("한식")
                 .build();
@@ -44,7 +45,7 @@ public class MukusMockController {
 
         RecommendData recommendData = RecommendData.builder()
                 .recommendId(1L)
-                .date(new Date(2024-3-12))
+                .date(Instant.now())
                 .foods(Arrays.asList(recommendFood1, recommendFood2))
                 .build();
 

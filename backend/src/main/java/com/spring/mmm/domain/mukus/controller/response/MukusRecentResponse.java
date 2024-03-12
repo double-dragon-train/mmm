@@ -7,6 +7,6 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class MukusRecentResponse {
-    private boolean hasValue;
+    private Boolean hasValue;
     private RecommendData data;
 }

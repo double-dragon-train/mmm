@@ -2,7 +2,7 @@ package com.spring.mmm.domain.mukus.controller.response;
 
 import lombok.*;
 
-import java.util.Date;
+import java.time.Instant;
 
 @Builder
 @Getter
@@ -10,7 +10,7 @@ import java.util.Date;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class MukusResponse {
     private Long mukusId;
-    private Date date;
+    private Instant date;
     private String colorcode;
     private String category;
 }

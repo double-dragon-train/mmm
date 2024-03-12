@@ -2,7 +2,7 @@ package com.spring.mmm.domain.mukus.controller.response;
 
 import lombok.*;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 
 @Builder
@@ -11,6 +11,6 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class RecommendData {
     private Long recommendId;
-    private Date date;
+    private Instant date;
     private List<RecommendFood> foods;
 }
