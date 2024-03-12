@@ -1,5 +1,6 @@
 package com.spring.mmm.domain.mukus.controller;
 
+import com.spring.mmm.domain.mukus.controller.request.RecommendFoodChoiceRequest;
 import com.spring.mmm.domain.mukus.controller.response.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,20 +57,15 @@ public class MukusMockController {
     }
 
     @PostMapping("groups/{groupId}/recent")
-    public ResponseEntity<Void> choiceFood(@PathVariable Long groupId, @RequestBody Long recommendFoodId){
+    public ResponseEntity<Void> choiceFood(@PathVariable Long groupId, @RequestBody RecommendFoodChoiceRequest  recommendFoodId){
         // 1. request 검증 확인
         // 2. 그룹 검색
         // 3. 선택한 메뉴 반환
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("groups/{groupId}/date")
-    public ResponseEntity<MukusDetailResponse> getDetailMukus(
-            @PathVariable Long groupId,
-            @RequestParam("year") String year,
-            @RequestParam("month") String month,
-            @RequestParam("day") String day
-    ){
+    public ResponseEntity<MukusDetailResponse> getDetailMukus(@PathVariable Long groupId){
         // 1.
         Food food = Food.builder()
                 .name("돈까스")
