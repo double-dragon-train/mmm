@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserResponse {
-    Long userId;
-    String email;
-    String nickname;
+    private Long userId;
+    private String email;
+    private String nickname;
 }

@@ -9,11 +9,11 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserModifyRequest {
     @NotBlank(message = "닉네임을 입력해주세요.")
-    String nickname;
+    private String nickname;
     @NotBlank(message = "비밀번호를 입력해주세요.")
-    String password;
+    private String password;
     @NotBlank(message = "새 비밀번호를 입력해주세요.")
-    String newPassword;
+    private String newPassword;
     @NotBlank(message = "비밀번호 확인을 입력해주세요.")
-    String newPasswordConfirm;
+    private String newPasswordConfirm;
 }

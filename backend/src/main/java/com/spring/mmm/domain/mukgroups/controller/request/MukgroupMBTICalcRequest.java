@@ -1,4 +1,4 @@
-package com.spring.mmm.domain.mbtis.controller.request;
+package com.spring.mmm.domain.mukgroups.controller.request;
 
 import lombok.*;
 
@@ -8,6 +8,6 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class MBTICalcRequest {
-    private List<Answer> answers;
+public class MukgroupMBTICalcRequest {
+    private List<Long> mukbos;
 }

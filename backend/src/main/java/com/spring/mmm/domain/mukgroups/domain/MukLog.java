@@ -6,9 +6,7 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class GroupImage {
-    private String contentType;
-    private String originalFilename;
-    private String filePath;
-    private String size;
+public class MukLog {
+    private String content;
+    private Long createdAt;
 }

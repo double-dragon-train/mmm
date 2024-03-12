@@ -7,11 +7,11 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class MBTI {
-    Integer EI;
-    Integer NS;
-    Integer TF;
-    Integer JP;
-    Integer Mint;
-    Integer Pine;
-    Integer Die;
+    private Integer EI;
+    private Integer NS;
+    private Integer TF;
+    private Integer JP;
+    private Integer Mint;
+    private Integer Pine;
+    private Integer Die;
 }

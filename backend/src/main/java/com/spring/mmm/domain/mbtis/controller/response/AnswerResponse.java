@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class AnswerResponse {
-    Long answerId;
-    String answerContext;
-    String answerImage;
+    private Long answerId;
+    private String answerContext;
+    private String answerImage;
 }

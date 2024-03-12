@@ -1,4 +1,4 @@
-package com.spring.mmm.domain.mukgroups.controller.response;
+package com.spring.mmm.domain.mukgroups.controller.request;
 
 import com.spring.mmm.domain.mbtis.controller.response.MBTI;
 import lombok.*;
@@ -7,10 +7,6 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class GroupResponse {
-    private Long groupId;
-    private String name;
-    private Boolean solo;
+public class MukgroupMBTIResponse {
     private MBTI mbti;
-    private Long titleMukjukId;
 }

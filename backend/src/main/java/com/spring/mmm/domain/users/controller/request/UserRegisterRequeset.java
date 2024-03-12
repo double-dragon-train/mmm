@@ -9,12 +9,12 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserRegisterRequeset {
 
-    String email;
+    private String email;
 
-    String password;
+    private String password;
 
-    String passwordConfirm;
+    private String passwordConfirm;
 
-    String nickname;
+    private String nickname;
 
 }

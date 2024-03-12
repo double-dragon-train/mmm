@@ -7,5 +7,5 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Answer {
-    Long answerId;
+    private Long answerId;
 }
