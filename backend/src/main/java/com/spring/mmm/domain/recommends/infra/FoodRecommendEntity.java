@@ -21,9 +21,9 @@ public class FoodRecommendEntity {
     @Column(name = "recommend_date")
     private Instant recommendDate;
 
-    @OneToMany(mappedBy = "foodRecommendEntity")
+    @OneToMany(mappedBy = "foodRecommendEntity", cascade = CascadeType.REMOVE)
     private List<RecommendedFoodEntity> recommendedFoodEntities;
 
-    @OneToMany(mappedBy = "foodRecommendEntity")
+    @OneToMany(mappedBy = "foodRecommendEntity", cascade = CascadeType.REMOVE)
     private List<EatenMukboEntity> eatenMukboEntities;
 }

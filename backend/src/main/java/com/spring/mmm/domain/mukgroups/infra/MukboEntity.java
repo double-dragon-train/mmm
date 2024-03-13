@@ -31,7 +31,7 @@ public class MukboEntity {
     @OneToMany(mappedBy = "mukboEntity")
     private List<MukBTIResultEntity> mukBTIResultEntities;
 
-    @OneToMany(mappedBy = "mukboEntity")
+    @OneToMany(mappedBy = "mukboEntity", cascade = CascadeType.REMOVE)
     private List<EatenMukboEntity> eatenMukboEntities;
 
     @ManyToOne(fetch = FetchType.LAZY)

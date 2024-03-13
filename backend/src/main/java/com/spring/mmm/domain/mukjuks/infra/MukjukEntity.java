@@ -28,7 +28,7 @@ public class MukjukEntity {
     @Column(name = "image_src")
     private String imageSrc;
 
-    @OneToMany(mappedBy = "mukjukEntity")
+    @OneToMany(mappedBy = "mukjukEntity", cascade = CascadeType.REMOVE)
     private List<MukGroupMukJukEntity> mukGroupMukJukEntities;
 
     @OneToMany(mappedBy = "mukjukEntity")

@@ -24,12 +24,12 @@ public class MukBTIEntity {
     @Enumerated(EnumType.STRING)
     private MukBTIType type;
 
-    @OneToMany(mappedBy = "mukBTIEntity")
+    @OneToMany(mappedBy = "mukBTIEntity", cascade = CascadeType.REMOVE)
     private List<FoodMBTIEntity> foodMBTIEntities;
 
-    @OneToMany(mappedBy = "mukBTIEntity")
+    @OneToMany(mappedBy = "mukBTIEntity", cascade = CascadeType.REMOVE)
     private List<MukBTIQuestionEntity> mukBTIQuestionEntities;
 
-    @OneToMany(mappedBy = "mukBTIEntity")
+    @OneToMany(mappedBy = "mukBTIEntity", cascade = CascadeType.REMOVE)
     private List<MukBTIResultEntity> mukBTIResultEntities;
 }

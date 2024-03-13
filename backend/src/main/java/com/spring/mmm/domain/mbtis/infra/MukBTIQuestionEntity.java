@@ -24,7 +24,7 @@ public class MukBTIQuestionEntity {
     @Column(name = "content")
     private String content;
 
-    @OneToMany(mappedBy = "mukBTIQuestionEntity")
+    @OneToMany(mappedBy = "mukBTIQuestionEntity", cascade = CascadeType.REMOVE)
     private List<MukBTIAnswerEntity> mukBTIAnswerEntities;
 
     @ManyToOne(fetch = FetchType.LAZY)
