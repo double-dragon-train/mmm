@@ -34,12 +34,12 @@ public class MukGroupEntity {
     @JoinColumn(name = "mukjuk_id")
     private MukjukEntity mukjukEntity;
 
-    @OneToMany(mappedBy = "mukGroupEntity")
+    @OneToMany(mappedBy = "mukGroupEntity", cascade = CascadeType.REMOVE)
     private List<MukboEntity> mukboEntities;
 
-    @OneToMany(mappedBy = "mukGroupEntity")
+    @OneToMany(mappedBy = "mukGroupEntity", cascade = CascadeType.REMOVE)
     private List<MukLogEntity> mukLogEntities;
 
-    @OneToMany(mappedBy = "mukGroupEntity")
+    @OneToMany(mappedBy = "mukGroupEntity", cascade = CascadeType.REMOVE)
     private List<MukGroupMukJukEntity> mukGroupMukJukEntities;
 }

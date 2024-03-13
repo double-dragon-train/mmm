@@ -27,9 +27,9 @@ public class FoodEntity {
     @JoinColumn(name = "food_category_id")
     private FoodCategoryEntity foodCategoryEntity;
 
-    @OneToMany(mappedBy = "foodEntity")
+    @OneToMany(mappedBy = "foodEntity", cascade = CascadeType.REMOVE)
     private List<RecommendedFoodEntity> recommendedFoodEntities;
 
-    @OneToMany(mappedBy = "foodEntity")
+    @OneToMany(mappedBy = "foodEntity", cascade = CascadeType.REMOVE)
     private List<FoodMBTIEntity> foodMBTIEntities;
 }
