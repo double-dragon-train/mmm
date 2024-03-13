@@ -1,6 +1,6 @@
 package com.spring.mmm.domain.mukgroups.controller.response;
 
-import com.spring.mmm.domain.mukgroups.domain.Badge;
+import com.spring.mmm.domain.mukjuks.domain.Badge;
 import lombok.*;
 
 import java.util.List;

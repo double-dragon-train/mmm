@@ -1,4 +1,4 @@
-package com.spring.mmm.domain.mukgroups.domain;
+package com.spring.mmm.domain.muklogs.domain;
 
 import lombok.*;
 
