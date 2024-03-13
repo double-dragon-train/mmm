@@ -1,6 +1,6 @@
 package com.spring.mmm.domain.mukgroups.controller.response;
 
-import com.spring.mmm.domain.mukgroups.domain.MukLog;
+import com.spring.mmm.domain.muklogs.domain.MukLog;
 import lombok.*;
 
 import java.util.List;
