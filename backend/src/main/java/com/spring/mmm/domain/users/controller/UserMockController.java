@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+
 @RestController
 @RequestMapping("users")
 public class UserMockController {
@@ -38,7 +40,7 @@ public class UserMockController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("login")
+    @PostMapping("/login")
     public ResponseEntity<Void> login(@RequestBody String email, @RequestBody String password){
         // 1. Request 값 검증 수행
         return ResponseEntity.ok().build();
