@@ -22,7 +22,7 @@ public class FoodRecommendEntity {
     private Instant recommendDate;
 
     @OneToMany(mappedBy = "foodRecommendEntity")
-    private List<FoodRecommendEntity> foodRecommendEntities;
+    private List<RecommendedFoodEntity> recommendedFoodEntities;
 
     @OneToMany(mappedBy = "foodRecommendEntity")
     private List<EatenMukboEntity> eatenMukboEntities;
