@@ -7,10 +7,10 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class GroupResponse {
-    private Long groupId;
+public class MukgroupResponse {
+    private Long mukgroupId;
     private String name;
-    private Boolean solo;
-    private MBTI mbti;
+    private Boolean isSolo;
+    private String imageSrc;
     private Long titleMukjukId;
 }

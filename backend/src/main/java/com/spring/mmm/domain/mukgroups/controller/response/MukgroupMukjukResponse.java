@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class GroupMukjukResponse {
+public class MukgroupMukjukResponse {
     private Long titleMukjukId;
     private List<Badge> badges;
 }
