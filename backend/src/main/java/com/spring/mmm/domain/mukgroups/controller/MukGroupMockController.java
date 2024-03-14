@@ -23,43 +23,6 @@ import java.util.List;
 @RequestMapping("groups")
 public class MukGroupMockController {
 
-    @GetMapping
-    public ResponseEntity<GroupResponse> getGroup(){
-        // 1. 그룹 검색
-        MBTI mbti = MBTI.builder()
-                .EI(60)
-                .NS(10)
-                .TF(5)
-                .JP(80)
-                .Mint(100)
-                .Pine(100)
-                .Die(0)
-                .build();
-
-        GroupResponse groupResponse = GroupResponse.builder()
-                .groupId(1L)
-                .name("장현수와 아이들")
-                .solo(Boolean.FALSE)
-                .mbti(mbti)
-                .titleMukjukId(1L)
-                .build();
-
-        return ResponseEntity.ok(groupResponse);
-    }
-
-    @PostMapping
-    public ResponseEntity<Void> createMukGroup(
-            @RequestPart(value = "data", required = true) String name,
-            @RequestPart(value = "image", required = false) MultipartFile image
-            ){
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @PutMapping("{groupId}/name")
-    public ResponseEntity<Void> modifyGroupName(@PathVariable Long groupId, @RequestBody String name){
-        return ResponseEntity.ok().build();
-    }
-
     @GetMapping("{groudId}/log")
     public ResponseEntity<MukLogResponse> findMukLog(
             @PathVariable Long groupId,
@@ -202,7 +165,7 @@ public class MukGroupMockController {
     }
 
     @GetMapping("{groupId}/badges")
-    public ResponseEntity<GroupMukjukResponse> getGroupMukjuks(@PathVariable Long groupId){
+    public ResponseEntity<MukgroupMukjukResponse> getGroupMukjuks(@PathVariable Long groupId){
         Badge badge1 = Badge.builder()
                 .id(3L)
                 .name("한국인")
@@ -223,7 +186,7 @@ public class MukGroupMockController {
         badges.add(badge1);
         badges.add(badge2);
 
-        GroupMukjukResponse groupMukjukResponse = GroupMukjukResponse.builder()
+        MukgroupMukjukResponse groupMukjukResponse = MukgroupMukjukResponse.builder()
                 .titleMukjukId(20L)
                 .badges(badges)
                 .build();
