@@ -29,14 +29,31 @@ public class MukgroupServiceImpl implements MukgroupService{
         Mukbo mukbo = mukboRepository.findByUserId(user.getId()).to();
         Mukgroup originMukgroup = mukgroupRepository.findByMukgroupId(mukbo.getMukgroupId());
         if(originMukgroup.getIsSolo()){
+            Mukgroup mukgroup = mukgroupRepository.save(MukgroupEntity.from(Mukgroup.create(name, Boolean.FALSE)));
+            mukboRepository.save(MukboEntity.from(Mukbo.changeMukgroup(mukbo, mukgroup.getMukgroupId())));
             mukgroupRepository.delete(MukgroupEntity.from(mukgroupRepository.findByMukgroupId(mukbo.getMukgroupId())));
-            Mukgroup mukgroup = Mukgroup.builder()
-                    .name(name)
-                    .isSolo(Boolean.FALSE)
-                    .build();
-            mukgroupRepository.save(MukgroupEntity.from(mukgroup));
         } else {
-            throw new MukGroupException(MukGroupErrorCode.ALREADY_EXISTS);
+            throw new MukGroupException(MukGroupErrorCode.DUPLICATE_ERROR);
         }
+    }
+
+    @Override
+    public Mukgroup findMyMukgroup(User user) {
+        return mukgroupRepository.findByMukgroupId(mukboRepository.findByUserId(user.getId()).to().getMukgroupId());
+    }
+
+    @Override
+    public void modifyGroupName(Long groupId, String name) {
+        mukgroupRepository.save(MukgroupEntity.from(mukgroupRepository.findByMukgroupId(groupId).modifyName(name)));
+    }
+
+    @Override
+    public void exitMukgroup(User user) {
+        if(mukgroupRepository.findByMukgroupId(mukboRepository.findByUserId(user.getId()).getMukboId()).getIsSolo()){
+            throw new MukGroupException(MukGroupErrorCode.SOLO_CANT_EXIT);
+        }
+        Mukgroup mukgroup = Mukgroup.create(user.getNickname(), Boolean.TRUE);
+        Mukgroup newMukgroup = mukgroupRepository.save(MukgroupEntity.from(mukgroup));
+        mukboRepository.save(MukboEntity.from(mukboRepository.findByUserId(user.getId()).to(newMukgroup.getMukgroupId())));
     }
 }
