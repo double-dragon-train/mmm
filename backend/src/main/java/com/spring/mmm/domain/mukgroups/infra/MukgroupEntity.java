@@ -66,7 +66,6 @@ public class MukgroupEntity {
                 .name(this.name)
                 .imageSrc(this.imageSrc)
                 .isSolo(this.isSolo)
-                .mukjukId(this.mukjukEntity.getMukjukId())
                 .build();
     }
 }

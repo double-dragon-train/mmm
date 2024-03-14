@@ -3,7 +3,9 @@ package com.spring.mmm.domain.mukgroups.infra;
 import com.spring.mmm.domain.mbtis.infra.MukBTIResultEntity;
 import com.spring.mmm.domain.mukgroups.domain.Mukbo;
 import com.spring.mmm.domain.mukgroups.domain.MukboType;
+import com.spring.mmm.domain.mukgroups.domain.Mukgroup;
 import com.spring.mmm.domain.recommends.infra.EatenMukboEntity;
+import com.spring.mmm.domain.users.domain.User;
 import com.spring.mmm.domain.users.infra.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -49,6 +51,8 @@ public class MukboEntity {
                 .mukboId(mukbo.getMukboId())
                 .name(mukbo.getName())
                 .type(mukbo.getType())
+                .mukGroupEntity(MukgroupEntity.builder().mukgroupId(mukbo.getMukgroupId()).build())
+                .userEntity(UserEntity.builder().id(mukbo.getUserId()).build())
                 .build();
     }
 
