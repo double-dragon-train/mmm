@@ -1,5 +1,6 @@
 package com.spring.mmm.domain.mukgroups.domain;
 
+import com.spring.mmm.domain.mukgroups.controller.response.MukgroupResponse;
 import lombok.*;
 
 @Builder
@@ -12,5 +13,28 @@ public class Mukgroup {
     private String imageSrc;
     private Boolean isSolo;
 
-    private Long mukjukId;
+    public MukgroupResponse to(){
+        return MukgroupResponse.builder()
+                .mukgroupId(this.mukgroupId)
+                .name(this.name)
+                .isSolo(this.isSolo)
+                .imageSrc(this.imageSrc)
+                .build();
+    }
+
+    public static Mukgroup create(String name, Boolean isSolo){
+        return Mukgroup.builder()
+                .name(name)
+                .isSolo(isSolo)
+                .build();
+    }
+
+    public Mukgroup modifyName(String name){
+        return Mukgroup.builder()
+                .name(name)
+                .isSolo(this.isSolo)
+                .imageSrc(this.imageSrc)
+                .mukgroupId(this.getMukgroupId())
+                .build();
+    }
 }

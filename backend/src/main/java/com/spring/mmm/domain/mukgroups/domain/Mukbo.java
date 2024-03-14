@@ -13,4 +13,14 @@ public class Mukbo {
 
     private Long mukgroupId;
     private Long userId;
+
+    public static Mukbo changeMukgroup(Mukbo mukbo, Long mukgroupId){
+        return Mukbo.builder()
+                .mukboId(mukbo.getMukboId())
+                .name(mukbo.getName())
+                .type(mukbo.getType())
+                .mukgroupId(mukgroupId)
+                .userId(mukbo.userId)
+                .build();
+    }
 }
