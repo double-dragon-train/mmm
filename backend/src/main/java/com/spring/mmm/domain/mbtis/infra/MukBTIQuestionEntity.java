@@ -1,5 +1,6 @@
 package com.spring.mmm.domain.mbtis.infra;
 
+import com.spring.mmm.domain.mbtis.domain.MukBTIQuestion;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,4 +31,21 @@ public class MukBTIQuestionEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mbti_id")
     private MukBTIEntity mukBTIEntity;
+
+    public static MukBTIQuestionEntity from(MukBTIQuestion mukBTIQuestion){
+        return MukBTIQuestionEntity.builder()
+                .questionId(mukBTIQuestion.getQuestionId())
+                .imageSrc(mukBTIQuestion.getImageSrc())
+                .content(mukBTIQuestion.getContent())
+                .build();
+    }
+
+    public MukBTIQuestion to(){
+        return MukBTIQuestion.builder()
+                .questionId(this.questionId)
+                .imageSrc(this.imageSrc)
+                .content(this.content)
+                .mukbtiId(this.mukBTIEntity.getMukbtiId())
+                .build();
+    }
 }

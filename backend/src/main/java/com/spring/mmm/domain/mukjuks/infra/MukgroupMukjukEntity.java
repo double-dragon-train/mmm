@@ -1,6 +1,6 @@
 package com.spring.mmm.domain.mukjuks.infra;
 
-import com.spring.mmm.domain.mukgroups.infra.MukGroupEntity;
+import com.spring.mmm.domain.mukgroups.infra.MukgroupEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "mukgroup_mukjuk")
 @Entity
-public class MukGroupMukJukEntity {
+public class MukgroupMukjukEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mukgroup_mukjuk_id")
@@ -22,5 +22,5 @@ public class MukGroupMukJukEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mukgroup_id")
-    private MukGroupEntity mukGroupEntity;
+    private MukgroupEntity mukGroupEntity;
 }

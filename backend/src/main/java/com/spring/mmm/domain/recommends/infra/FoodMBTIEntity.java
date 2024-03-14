@@ -1,6 +1,7 @@
 package com.spring.mmm.domain.recommends.infra;
 
 import com.spring.mmm.domain.mbtis.infra.MukBTIEntity;
+import com.spring.mmm.domain.recommends.domain.FoodMBTI;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,4 +27,20 @@ public class FoodMBTIEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mbti_id")
     private MukBTIEntity mukBTIEntity;
+
+    public static FoodMBTIEntity from(FoodMBTI foodMBTI){
+        return FoodMBTIEntity.builder()
+                .foodMbtiId(foodMBTI.getFoodMbtiId())
+                .score(foodMBTI.getScore())
+                .build();
+    }
+
+    public FoodMBTI to(){
+        return FoodMBTI.builder()
+                .foodMbtiId(this.foodMbtiId)
+                .score(this.score)
+                .foodId(this.foodEntity.getFoodId())
+                .mukbtiId(this.mukBTIEntity.getMukbtiId())
+                .build();
+    }
 }

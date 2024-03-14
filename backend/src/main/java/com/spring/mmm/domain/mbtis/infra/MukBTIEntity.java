@@ -1,5 +1,6 @@
 package com.spring.mmm.domain.mbtis.infra;
 
+import com.spring.mmm.domain.mbtis.domain.MukBTI;
 import com.spring.mmm.domain.mbtis.domain.MukBTIType;
 import com.spring.mmm.domain.recommends.infra.FoodMBTIEntity;
 import jakarta.persistence.*;
@@ -32,4 +33,18 @@ public class MukBTIEntity {
 
     @OneToMany(mappedBy = "mukBTIEntity", cascade = CascadeType.REMOVE)
     private List<MukBTIResultEntity> mukBTIResultEntities;
+
+    public static MukBTIEntity from(MukBTI mukBTI){
+        return MukBTIEntity.builder()
+                .mukbtiId(mukBTI.getMukbtiId())
+                .type(mukBTI.getType())
+                .build();
+    }
+
+    public MukBTI to(){
+        return MukBTI.builder()
+                .mukbtiId(this.mukbtiId)
+                .type(this.type)
+                .build();
+    }
 }
