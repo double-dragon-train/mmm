@@ -1,6 +1,7 @@
 package com.spring.mmm.domain.mukjuks.infra;
 
-import com.spring.mmm.domain.mukgroups.infra.MukGroupEntity;
+import com.spring.mmm.domain.mukgroups.infra.MukgroupEntity;
+import com.spring.mmm.domain.mukjuks.domain.Mukjuk;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,8 +30,26 @@ public class MukjukEntity {
     private String imageSrc;
 
     @OneToMany(mappedBy = "mukjukEntity", cascade = CascadeType.REMOVE)
-    private List<MukGroupMukJukEntity> mukGroupMukJukEntities;
+    private List<MukgroupMukjukEntity> mukGroupMukJukEntities;
 
     @OneToMany(mappedBy = "mukjukEntity")
-    private List<MukGroupEntity> mukGroupEntities;
+    private List<MukgroupEntity> mukGroupEntities;
+
+    public static MukjukEntity from(Mukjuk mukjuk){
+        return MukjukEntity.builder()
+                .mukjukId(mukjuk.getMukjukId())
+                .name(mukjuk.getName())
+                .context(mukjuk.getContext())
+                .imageSrc(mukjuk.getImageSrc())
+                .build();
+    }
+
+    public Mukjuk to(){
+        return Mukjuk.builder()
+                .mukjukId(this.mukjukId)
+                .name(this.name)
+                .context(this.context)
+                .imageSrc(this.imageSrc)
+                .build();
+    }
 }

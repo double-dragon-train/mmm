@@ -1,6 +1,5 @@
 package com.spring.mmm.domain.mukgroups.domain;
 
-import com.spring.mmm.domain.mbtis.controller.response.MBTI;
 import lombok.*;
 
 @Builder
@@ -10,8 +9,8 @@ import lombok.*;
 public class Mukbo {
     private Long mukboId;
     private String name;
-    private Long mukGroupId;
-    private Long userId;
     private MukboType type;
-    private MBTI mbti;
+
+    private Long mukgroupId;
+    private Long userId;
 }

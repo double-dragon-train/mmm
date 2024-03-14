@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,12 +68,12 @@ public class MukGroupMockController {
     ){
         MukLog mukLog1 = MukLog.builder()
                 .content("로그1")
-                .createdAt(123123L)
+                .createdAt(Instant.now())
                 .build();
 
         MukLog mukLog2 = MukLog.builder()
                 .content("로그2")
-                .createdAt(456456L)
+                .createdAt(Instant.now())
                 .build();
 
         List<MukLog> logs = new ArrayList<>();

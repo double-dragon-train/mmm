@@ -1,6 +1,7 @@
 package com.spring.mmm.domain.recommends.infra;
 
 import com.spring.mmm.domain.recommends.domain.RecommendCategory;
+import com.spring.mmm.domain.recommends.domain.RecommendedFood;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,4 +31,22 @@ public class RecommendedFoodEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "food_recommend")
     private FoodRecommendEntity foodRecommendEntity;
+
+    public static RecommendedFoodEntity from(RecommendedFood recommendedFood){
+        return RecommendedFoodEntity.builder()
+                .recommendedFoodId(recommendedFood.getRecommendedFoodId())
+                .eaten(recommendedFood.getEaten())
+                .category(recommendedFood.getCategory())
+                .build();
+    }
+
+    public RecommendedFood to(){
+        return RecommendedFood.builder()
+                .recommendedFoodId(this.recommendedFoodId)
+                .eaten(this.eaten)
+                .category(this.category)
+                .foodId(this.foodEntity.getFoodId())
+                .foodRecommendId(this.foodRecommendEntity.getFoodRecommendId())
+                .build();
+    }
 }

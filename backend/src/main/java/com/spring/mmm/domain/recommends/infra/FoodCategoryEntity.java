@@ -1,5 +1,6 @@
 package com.spring.mmm.domain.recommends.infra;
 
+import com.spring.mmm.domain.recommends.domain.FoodCategory;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,4 +26,20 @@ public class FoodCategoryEntity {
 
     @OneToMany(mappedBy = "foodCategoryEntity")
     private List<FoodEntity> foods;
+
+    public static FoodCategoryEntity from(FoodCategory foodCategory){
+        return FoodCategoryEntity.builder()
+                .foodCategoryId(foodCategory.getFoodCategoryId())
+                .name(foodCategory.getName())
+                .color(foodCategory.getColor())
+                .build();
+    }
+
+    public FoodCategory to(){
+        return FoodCategory.builder()
+                .foodCategoryId(this.foodCategoryId)
+                .name(this.name)
+                .color(this.color)
+                .build();
+    }
 }

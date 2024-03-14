@@ -1,6 +1,8 @@
 package com.spring.mmm.domain.mbtis.infra;
 
+import com.spring.mmm.domain.mbtis.domain.MukBTIResult;
 import com.spring.mmm.domain.mukgroups.infra.MukboEntity;
+import com.spring.mmm.domain.users.infra.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,4 +30,24 @@ public class MukBTIResultEntity {
     @JoinColumn(name = "mukbo_id")
     private MukboEntity mukboEntity;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserEntity userEntity;
+
+    public static MukBTIResultEntity from(MukBTIResult mukBTIResult){
+        return MukBTIResultEntity.builder()
+                .resultId(mukBTIResult.getResultId())
+                .score(mukBTIResult.getScore())
+                .build();
+    }
+
+    public MukBTIResult to(){
+        return MukBTIResult.builder()
+                .resultId(this.resultId)
+                .score(this.score)
+                .mukbtiId(this.mukBTIEntity.getMukbtiId())
+                .mukboId(this.mukboEntity.getMukboId())
+                .userId(this.userEntity.getId())
+                .build();
+    }
 }
