@@ -1,6 +1,12 @@
 import '../../styles/common/Input.css';
 
-function Input({ title, info, inputWidth }) {
+interface InputProps { 
+  title: string,
+  info: string,
+  inputWidth: string,
+}
+
+function Input({ title, info, inputWidth }: InputProps) {
   return (
     <div className="inputContainer">
       <label>{title}</label>

@@ -8,8 +8,8 @@ import closedEye from '../assets/images/closedEye.png';
 import openedEye from '../assets/images/openedEye.png';
 
 function SignupPage() {
-  const [isEmailSended, setisEmailSended] = useState(false);
-  const [isPasswordOpened, setIsPasswordOpened] = useState(false);
+  const [isEmailSended, setisEmailSended] = useState<boolean>(false);
+  const [isPasswordOpened, setIsPasswordOpened] = useState<boolean>(false);
 
   const checkNickName = () => {};
   const checkEmail = () => {};
@@ -17,6 +17,7 @@ function SignupPage() {
   const sendEmail = () => {
     setisEmailSended(!isEmailSended);
   };
+  console.log(setIsPasswordOpened)
   return (
     <div className={styles.wrapper}>
       <div className="userTitle">SIGN UP</div>

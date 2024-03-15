@@ -1,6 +1,11 @@
 import '../../styles/common/buttons.css';
 
-function Button({ clickEvent, buttonName }) {
+interface ButtonProps {
+  clickEvent: () => void;
+  buttonName: string;
+}
+
+function Button ({ clickEvent, buttonName }: ButtonProps) {
   return (
     <button onClick={clickEvent} className="miniBlueButton">
       {buttonName}
