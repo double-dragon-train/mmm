@@ -1,9 +1,9 @@
-package com.spring.mmm.domain.mukgroups.infra;
+package com.spring.mmm.domain.mukgroups.domain;
 
-import com.spring.mmm.domain.mukgroups.domain.Mukgroup;
-import com.spring.mmm.domain.mukjuks.infra.MukgroupMukjukEntity;
-import com.spring.mmm.domain.mukjuks.infra.MukjukEntity;
-import com.spring.mmm.domain.muklogs.infra.MukLogEntity;
+import com.spring.mmm.domain.mukgroups.controller.response.MukgroupResponse;
+import com.spring.mmm.domain.mukjuks.domain.MukgroupMukjukEntity;
+import com.spring.mmm.domain.mukjuks.domain.MukjukEntity;
+import com.spring.mmm.domain.muklogs.domain.MukLogEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -44,28 +44,43 @@ public class MukgroupEntity {
     @OneToMany(mappedBy = "mukGroupEntity", cascade = CascadeType.REMOVE)
     private List<MukgroupMukjukEntity> mukGroupMukJukEntities;
 
-    public static MukgroupEntity fromSolo(String name){
+    public static MukgroupEntity create(String name, Boolean isSolo){
         return MukgroupEntity.builder()
                 .name(name)
-                .isSolo(Boolean.TRUE)
+                .isSolo(isSolo)
                 .build();
     }
 
-    public static MukgroupEntity from(Mukgroup mukgroup){
+    public static MukgroupEntity createWithOnlyId(Long mukgroupId){
         return MukgroupEntity.builder()
-                .mukgroupId((mukgroup.getMukgroupId()))
-                .name(mukgroup.getName())
-                .imageSrc(mukgroup.getImageSrc())
-                .isSolo(mukgroup.getIsSolo())
+                .mukgroupId(mukgroupId)
                 .build();
     }
 
-    public Mukgroup to(){
-        return Mukgroup.builder()
+    public MukgroupEntity modifyMukgroupName(String name){
+        return MukgroupEntity.builder()
+                .mukgroupId(this.mukgroupId)
+                .name(name)
+                .isSolo(this.isSolo)
+                .imageSrc(this.imageSrc)
+                .build();
+    }
+
+    public MukgroupEntity modifyMukgroupImage(String ImageSrc){
+        return MukgroupEntity.builder()
                 .mukgroupId(this.mukgroupId)
                 .name(this.name)
-                .imageSrc(this.imageSrc)
                 .isSolo(this.isSolo)
+                .imageSrc(imageSrc)
+                .build();
+    }
+
+    public MukgroupResponse createMukgroupResponse(){
+        return MukgroupResponse.builder()
+                .mukgroupId(this.mukgroupId)
+                .name(this.name)
+                .isSolo(this.isSolo)
+                .imageSrc(this.imageSrc)
                 .build();
     }
 }

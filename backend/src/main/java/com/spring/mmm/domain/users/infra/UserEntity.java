@@ -1,7 +1,7 @@
 package com.spring.mmm.domain.users.infra;
 
 import com.spring.mmm.domain.mbtis.infra.MukBTIResultEntity;
-import com.spring.mmm.domain.mukgroups.infra.MukboEntity;
+import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import jakarta.persistence.*;
 import lombok.*;
 

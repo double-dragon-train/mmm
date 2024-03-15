@@ -2,7 +2,7 @@ package com.spring.mmm.domain.mbtis.infra;
 
 import com.spring.mmm.domain.mbtis.domain.MukBTI;
 import com.spring.mmm.domain.mbtis.domain.MukBTIType;
-import com.spring.mmm.domain.recommends.infra.FoodMBTIEntity;
+import com.spring.mmm.domain.recommends.domain.FoodMBTIEntity;
 import jakarta.persistence.*;
 import lombok.*;
 

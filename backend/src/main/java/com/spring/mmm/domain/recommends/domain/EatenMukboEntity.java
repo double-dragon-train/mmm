@@ -1,7 +1,6 @@
-package com.spring.mmm.domain.recommends.infra;
+package com.spring.mmm.domain.recommends.domain;
 
-import com.spring.mmm.domain.mukgroups.infra.MukboEntity;
-import com.spring.mmm.domain.recommends.infra.FoodRecommendEntity;
+import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import jakarta.persistence.*;
 import lombok.*;
 

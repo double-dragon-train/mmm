@@ -1,6 +1,5 @@
-package com.spring.mmm.domain.recommends.infra;
+package com.spring.mmm.domain.recommends.domain;
 
-import com.spring.mmm.domain.recommends.domain.FoodRecommend;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,18 +26,4 @@ public class FoodRecommendEntity {
 
     @OneToMany(mappedBy = "foodRecommendEntity", cascade = CascadeType.REMOVE)
     private List<EatenMukboEntity> eatenMukboEntities;
-
-    public static FoodRecommendEntity from(FoodRecommend foodRecommend){
-        return FoodRecommendEntity.builder()
-                .foodRecommendId(foodRecommend.getFoodRecommendId())
-                .recommendDate(foodRecommend.getRecommendDate())
-                .build();
-    }
-
-    public FoodRecommend to(){
-        return FoodRecommend.builder()
-                .foodRecommendId(this.foodRecommendId)
-                .recommendDate(this.recommendDate)
-                .build();
-    }
 }

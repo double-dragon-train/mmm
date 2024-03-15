@@ -1,7 +1,6 @@
-package com.spring.mmm.domain.mukjuks.infra;
+package com.spring.mmm.domain.mukjuks.domain;
 
-import com.spring.mmm.domain.mukgroups.infra.MukgroupEntity;
-import com.spring.mmm.domain.mukjuks.domain.Mukjuk;
+import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,22 +33,4 @@ public class MukjukEntity {
 
     @OneToMany(mappedBy = "mukjukEntity")
     private List<MukgroupEntity> mukGroupEntities;
-
-    public static MukjukEntity from(Mukjuk mukjuk){
-        return MukjukEntity.builder()
-                .mukjukId(mukjuk.getMukjukId())
-                .name(mukjuk.getName())
-                .context(mukjuk.getContext())
-                .imageSrc(mukjuk.getImageSrc())
-                .build();
-    }
-
-    public Mukjuk to(){
-        return Mukjuk.builder()
-                .mukjukId(this.mukjukId)
-                .name(this.name)
-                .context(this.context)
-                .imageSrc(this.imageSrc)
-                .build();
-    }
 }
