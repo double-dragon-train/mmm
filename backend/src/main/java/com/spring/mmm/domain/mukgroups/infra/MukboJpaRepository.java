@@ -1,5 +1,6 @@
 package com.spring.mmm.domain.mukgroups.infra;
 
+import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

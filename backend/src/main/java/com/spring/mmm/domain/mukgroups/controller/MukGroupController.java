@@ -27,7 +27,7 @@ public class MukGroupController {
 
     @GetMapping
     public ResponseEntity<MukgroupResponse> findMukgroup(){
-        return ResponseEntity.ok(mukgroupService.findMyMukgroup(user).to());
+        return ResponseEntity.ok(mukgroupService.findMyMukgroup(user).createMukgroupResponse());
     }
 
     @PostMapping
@@ -40,8 +40,18 @@ public class MukGroupController {
     }
 
     @PutMapping("{groupId}/name")
-    public ResponseEntity<Void> modifyGroupName(@PathVariable Long groupId, @RequestBody MukgroupModifyRequest mukgroupModifyRequest){
+    public ResponseEntity<Void> modifyGroupName(
+            @PathVariable Long groupId,
+            @RequestBody MukgroupModifyRequest mukgroupModifyRequest){
         mukgroupService.modifyGroupName(groupId, mukgroupModifyRequest.getName());
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("{groupId}/image")
+    public ResponseEntity<Void> modifyGroupImage(
+            @PathVariable Long groupId,
+            @RequestPart(value = "image") MultipartFile image){
+        mukgroupService.modifyGroupImage(groupId, image);
         return ResponseEntity.ok().build();
     }
 

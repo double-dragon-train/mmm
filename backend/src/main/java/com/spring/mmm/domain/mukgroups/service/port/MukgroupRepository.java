@@ -1,11 +1,10 @@
 package com.spring.mmm.domain.mukgroups.service.port;
 
-import com.spring.mmm.domain.mukgroups.domain.Mukgroup;
-import com.spring.mmm.domain.mukgroups.infra.MukgroupEntity;
+import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
 
 public interface MukgroupRepository {
-    Mukgroup save(MukgroupEntity mukgroupEntity);
-    Mukgroup findByMukgroupId(Long mukgroupId);
+    MukgroupEntity save(MukgroupEntity mukgroupEntity);
+    MukgroupEntity findByMukgroupId(Long mukgroupId);
 
     void delete(MukgroupEntity mukgroupEntity);
 }
