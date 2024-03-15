@@ -7,13 +7,12 @@ import com.spring.mmm.domain.mukgroups.controller.request.MukgroupMBTICalcReques
 import com.spring.mmm.domain.mukgroups.controller.request.MukgroupMBTIResponse;
 import com.spring.mmm.domain.mukgroups.controller.response.*;
 import com.spring.mmm.domain.mukjuks.domain.Badge;
-import com.spring.mmm.domain.muklogs.domain.MukLog;
 import com.spring.mmm.domain.mukgroups.domain.MukboType;
+import com.spring.mmm.domain.muklogs.domain.MukLogEntity;
 import jakarta.websocket.server.PathParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -23,60 +22,23 @@ import java.util.List;
 @RequestMapping("groups")
 public class MukGroupMockController {
 
-    @GetMapping
-    public ResponseEntity<GroupResponse> getGroup(){
-        // 1. 그룹 검색
-        MBTI mbti = MBTI.builder()
-                .EI(60)
-                .NS(10)
-                .TF(5)
-                .JP(80)
-                .Mint(100)
-                .Pine(100)
-                .Die(0)
-                .build();
-
-        GroupResponse groupResponse = GroupResponse.builder()
-                .groupId(1L)
-                .name("장현수와 아이들")
-                .solo(Boolean.FALSE)
-                .mbti(mbti)
-                .titleMukjukId(1L)
-                .build();
-
-        return ResponseEntity.ok(groupResponse);
-    }
-
-    @PostMapping
-    public ResponseEntity<Void> createMukGroup(
-            @RequestPart(value = "data", required = true) String name,
-            @RequestPart(value = "image", required = false) MultipartFile image
-            ){
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @PutMapping("{groupId}/name")
-    public ResponseEntity<Void> modifyGroupName(@PathVariable Long groupId, @RequestBody String name){
-        return ResponseEntity.ok().build();
-    }
-
     @GetMapping("{groudId}/log")
     public ResponseEntity<MukLogResponse> findMukLog(
             @PathVariable Long groupId,
             @PathParam("page") Long page,
             @PathParam("size") Long size
     ){
-        MukLog mukLog1 = MukLog.builder()
+        MukLogEntity mukLog1 = MukLogEntity.builder()
                 .content("로그1")
                 .createdAt(Instant.now())
                 .build();
 
-        MukLog mukLog2 = MukLog.builder()
+        MukLogEntity mukLog2 = MukLogEntity.builder()
                 .content("로그2")
                 .createdAt(Instant.now())
                 .build();
 
-        List<MukLog> logs = new ArrayList<>();
+        List<MukLogEntity> logs = new ArrayList<>();
         logs.add(mukLog1);
         logs.add(mukLog2);
         MukLogResponse mukLogResponse = MukLogResponse.builder()
@@ -202,7 +164,7 @@ public class MukGroupMockController {
     }
 
     @GetMapping("{groupId}/badges")
-    public ResponseEntity<GroupMukjukResponse> getGroupMukjuks(@PathVariable Long groupId){
+    public ResponseEntity<MukgroupMukjukResponse> getGroupMukjuks(@PathVariable Long groupId){
         Badge badge1 = Badge.builder()
                 .id(3L)
                 .name("한국인")
@@ -223,7 +185,7 @@ public class MukGroupMockController {
         badges.add(badge1);
         badges.add(badge2);
 
-        GroupMukjukResponse groupMukjukResponse = GroupMukjukResponse.builder()
+        MukgroupMukjukResponse groupMukjukResponse = MukgroupMukjukResponse.builder()
                 .titleMukjukId(20L)
                 .badges(badges)
                 .build();

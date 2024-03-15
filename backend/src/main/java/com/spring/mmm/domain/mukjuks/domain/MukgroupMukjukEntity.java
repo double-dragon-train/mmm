@@ -1,6 +1,7 @@
-package com.spring.mmm.domain.mukjuks.infra;
+package com.spring.mmm.domain.mukjuks.domain;
 
-import com.spring.mmm.domain.mukgroups.infra.MukgroupEntity;
+import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
+import com.spring.mmm.domain.mukjuks.domain.MukjukEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
