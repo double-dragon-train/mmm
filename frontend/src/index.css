@@ -45,11 +45,11 @@ ol {
 
 body {
   height: 100%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
 
 input {
   outline: none;
@@ -59,6 +59,15 @@ input {
   font-size: 17px;
 }
 
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 30px #fff inset;
+  -webkit-text-fill-color: rgba(42, 67, 206, 0.8);
+}
+
 input:focus {
   border-bottom: 1px solid rgba(101, 101, 101, 0.8);
+}
+
+img {
+  max-width: 340px;
 }

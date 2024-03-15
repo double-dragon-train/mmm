@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import Input from '../components/common/Input';
-import '../styles/common/buttons.css';
-import '../styles/common/userTitle.css';
 import styles from '../styles/userPage/UserPage.module.css';
 import Button from '../components/common/Button';
 import closedEye from '../assets/images/closedEye.png';
 import openedEye from '../assets/images/openedEye.png';
+import ErrorMessage from '../components/common/ErrorMessage';
+
 
 function SignupPage() {
   const [isEmailSended, setisEmailSended] = useState<boolean>(false);
-  const [isPasswordOpened, setIsPasswordOpened] = useState<boolean>(false);
+  const [isPasswordOpened, setIsPasswordOpened] =
+    useState<boolean>(false);
 
   const checkNickName = () => {};
   const checkEmail = () => {};
@@ -17,7 +18,11 @@ function SignupPage() {
   const sendEmail = () => {
     setisEmailSended(!isEmailSended);
   };
-  console.log(setIsPasswordOpened)
+
+  const togglePassword = () => {
+    setIsPasswordOpened(!isPasswordOpened);
+  };
+
   return (
     <div className={styles.wrapper}>
       <div className="userTitle">SIGN UP</div>
@@ -26,6 +31,7 @@ function SignupPage() {
           <Input
             title="닉네임"
             info="2~10자 (한, 영(대, 소), 숫자)"
+            inputType="text"
             inputWidth="shortInput"
           />
           <Button clickEvent={checkNickName} buttonName="확인" />
@@ -35,6 +41,7 @@ function SignupPage() {
           <Input
             title="이메일"
             info="example@naver.com"
+            inputType="text"
             inputWidth="shortInput"
           />
           <Button clickEvent={sendEmail} buttonName="인증" />
@@ -60,28 +67,33 @@ function SignupPage() {
             info={
               '8~20자\n(한, 영(대, 소), 숫자, 특수문자 각 1글자 이상)'
             }
+            inputType={isPasswordOpened ? 'text' : 'password'}
             inputWidth="longInput"
           />
           {isPasswordOpened ? (
-            <img src={closedEye} alt="" />
+            <img onClick={togglePassword} src={openedEye} alt="" />
           ) : (
-            <img src={openedEye} alt="" />
+            <img onClick={togglePassword} src={closedEye} alt="" />
           )}
         </div>
-
         <div className={styles.inputPassword}>
           <Input
             title={'비밀번호\n확인'}
-            info={''}
+            info=""
+            inputType={isPasswordOpened ? 'text' : 'password'}
             inputWidth="longInput"
           />
           {isPasswordOpened ? (
-            <img src={closedEye} alt="" />
+            <img onClick={togglePassword} src={openedEye} alt="" />
           ) : (
-            <img src={openedEye} alt="" />
+            <img onClick={togglePassword} src={closedEye} alt="" />
           )}
         </div>
       </section>
+      <ErrorMessage
+        errorFontSize="bigErrorMessage"
+        errorTarget="닉네임"
+      />
       <button className="userButton">완료</button>
     </div>
   );

@@ -1,5 +1,5 @@
 .landingButton {
-  width: 80%;
+  width: 320px;
   border: 1px solid rgba(42, 67, 206, 0.4);
   font-size: 20px;
   color: rgba(42, 67, 206, 0.65);
@@ -15,6 +15,7 @@
   color: white;
   padding: 18px 0;
   border-radius: 50px;
+  margin-top: 20px;
 }
 
 .miniBlueButton {
