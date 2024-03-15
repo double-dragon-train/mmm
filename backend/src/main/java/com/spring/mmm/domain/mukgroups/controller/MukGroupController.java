@@ -5,6 +5,7 @@ import com.spring.mmm.domain.mukgroups.controller.request.MukgroupModifyRequest;
 import com.spring.mmm.domain.mukgroups.controller.response.MukgroupResponse;
 import com.spring.mmm.domain.mukgroups.service.MukgroupService;
 import com.spring.mmm.domain.users.domain.User;
+import com.spring.mmm.domain.users.infra.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("groups")
 public class MukGroupController {
 
-    static User user = User.builder()
+    static UserEntity user = UserEntity.builder()
             .id(1L)
             .email("ssafy@ssafy.com")
             .nickname("ssafy")

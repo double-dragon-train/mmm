@@ -1,5 +1,6 @@
 package com.spring.mmm.domain.mukgroups.domain;
 
+import com.spring.mmm.domain.mbtis.infra.MukBTIEntity;
 import com.spring.mmm.domain.mbtis.infra.MukBTIResultEntity;
 import com.spring.mmm.domain.recommends.domain.EatenMukboEntity;
 import com.spring.mmm.domain.users.infra.UserEntity;
@@ -42,6 +43,10 @@ public class MukboEntity {
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mbti_id")
+    private MukBTIEntity mukBTIEntity;
+
     public static MukboEntity create(String name, MukboType mukboType, Long mukgroupId){
         return MukboEntity.builder()
                 .name(name)
@@ -56,5 +61,9 @@ public class MukboEntity {
                 .type(this.type)
                 .mukGroupEntity(MukgroupEntity.createWithOnlyId(mukgroupId))
                 .build();
+    }
+
+    public void modifyName(String name){
+        this.name = name;
     }
 }

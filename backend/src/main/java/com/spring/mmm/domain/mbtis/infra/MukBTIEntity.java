@@ -2,6 +2,7 @@ package com.spring.mmm.domain.mbtis.infra;
 
 import com.spring.mmm.domain.mbtis.domain.MukBTI;
 import com.spring.mmm.domain.mbtis.domain.MukBTIType;
+import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.recommends.domain.FoodMBTIEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,6 +25,10 @@ public class MukBTIEntity {
     @Column(name = "mbti_name")
     @Enumerated(EnumType.STRING)
     private MukBTIType type;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mukbo_id")
+    private MukboEntity mukboEntity;
 
     @OneToMany(mappedBy = "mukBTIEntity", cascade = CascadeType.REMOVE)
     private List<FoodMBTIEntity> foodMBTIEntities;

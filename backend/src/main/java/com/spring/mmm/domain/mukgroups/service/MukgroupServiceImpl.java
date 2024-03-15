@@ -8,6 +8,7 @@ import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
 import com.spring.mmm.domain.mukgroups.service.port.MukboRepository;
 import com.spring.mmm.domain.mukgroups.service.port.MukgroupRepository;
 import com.spring.mmm.domain.users.domain.User;
+import com.spring.mmm.domain.users.infra.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,13 +20,13 @@ public class MukgroupServiceImpl implements MukgroupService{
     private final MukboRepository mukboRepository;
     private final S3Service s3Service;
     @Override
-    public void saveSoloMukGroup(String name, User user) {
+    public void saveSoloMukGroup(String name, UserEntity user) {
         MukgroupEntity mukgroupEntity = mukgroupRepository.save(MukgroupEntity.create(name, Boolean.TRUE));
         mukboRepository.save(mukboRepository.findByUserId(user.getId()).modifyGroup(mukgroupEntity.getMukgroupId()));
     }
 
     @Override
-    public void saveMukGroup(String name, User user) {
+    public void saveMukGroup(String name, UserEntity user) {
         MukboEntity mukboEntity = mukboRepository.findByUserId(user.getId());
         MukgroupEntity originMukgroup = mukgroupRepository.findByMukgroupId(mukboEntity.getMukboId());
         if(originMukgroup.getIsSolo()){
@@ -38,7 +39,7 @@ public class MukgroupServiceImpl implements MukgroupService{
     }
 
     @Override
-    public MukgroupEntity findMyMukgroup(User user) {
+    public MukgroupEntity findMyMukgroup(UserEntity user) {
         return mukgroupRepository.findByMukgroupId(mukboRepository.findByUserId(user.getId()).getMukGroupEntity().getMukgroupId());
     }
 
@@ -54,11 +55,10 @@ public class MukgroupServiceImpl implements MukgroupService{
     }
 
     @Override
-    public void exitMukgroup(User user) {
+    public void exitMukgroup(UserEntity user) {
         if(mukgroupRepository.findByMukgroupId(mukboRepository.findByUserId(user.getId()).getMukboId()).getIsSolo()){
             throw new MukGroupException(MukGroupErrorCode.SOLO_CANT_EXIT);
         }
-        MukgroupEntity mukgroupEntity = MukgroupEntity.create(user.getNickname(), Boolean.TRUE);
-        mukboRepository.save(mukboRepository.findByUserId(user.getId()).modifyGroup(mukgroupRepository.save(mukgroupEntity).getMukgroupId()));
+        saveSoloMukGroup(user.getNickname(), user);
     }
 }
