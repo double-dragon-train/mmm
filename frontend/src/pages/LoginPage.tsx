@@ -8,7 +8,8 @@ import openedEye from '../assets/images/openedEye.png';
 import { Link } from 'react-router-dom';
 
 function LoginPage() {
-  const [isPasswordOpened, setIsPasswordOpened] = useState(false);
+  const [isPasswordOpened, setIsPasswordOpened] = useState<boolean>(false);
+  console.log(setIsPasswordOpened)
   return (
     <div className={styles.wrapper}>
       <div className="userTitle">LOGIN</div>
