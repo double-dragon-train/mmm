@@ -1,0 +1,26 @@
+.landingButton {
+  width: 80%;
+  border: 1px solid rgba(42, 67, 206, 0.4);
+  font-size: 20px;
+  color: rgba(42, 67, 206, 0.65);
+  padding: 18px 0;
+  border-radius: 50px;
+  margin: 1vh 0;
+}
+
+.userButton {
+  width: 275px;
+  background-color: rgba(14, 38, 174, 0.4);
+  font-size: 20px;
+  color: white;
+  padding: 18px 0;
+  border-radius: 50px;
+}
+
+.miniBlueButton {
+  width: 50px;
+  height: 36px;
+  border: 1.5px solid rgba(42, 67, 206, 0.4);
+  border-radius: 5px;
+  color: rgba(42, 67, 206, 0.65);
+}/*# sourceMappingURL=buttons.css.map */

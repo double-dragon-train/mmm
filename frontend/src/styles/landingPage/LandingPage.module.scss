@@ -1,0 +1,23 @@
+$color-main: #2a43ce;
+
+.wrapper {
+  // padding: 4vh 0 5vh 0;
+  height: 100%;
+}
+.mainLogo {
+  width: 80vw;
+}
+
+.randomFood {
+  border-radius: 50%;
+  width: 90vw;
+  margin: 1vh 0 2vh 0;
+  border: 8px solid rgba($color-main, 0.2);
+}
+
+section {
+  > div {
+    display: flex;
+    gap: 10px;
+  }
+}

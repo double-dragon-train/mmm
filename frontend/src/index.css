@@ -1,0 +1,64 @@
+@font-face {
+  font-family: 'SUITE-Regular';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2')
+    format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Malssami815';
+  src: url('https://cdn.jsdelivr.net/gh/fontbee/font@main/Joonfont/Malssami815.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+  font-family: 'SUITE-Regular';
+  text-align: center;
+  border: 0px;
+  white-space: pre-wrap;
+}
+
+html {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+button {
+  background-color: white;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+body {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+input {
+  outline: none;
+  text-align: left;
+  border-bottom: 1px rgba(101, 101, 101, 0.5) solid;
+  color: rgba(42, 67, 206, 0.8);
+  font-size: 17px;
+}
+
+input:focus {
+  border-bottom: 1px solid rgba(101, 101, 101, 0.8);
+}

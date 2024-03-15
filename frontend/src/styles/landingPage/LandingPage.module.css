@@ -1,0 +1,19 @@
+.wrapper {
+  height: 100%;
+}
+
+.mainLogo {
+  width: 80vw;
+}
+
+.randomFood {
+  border-radius: 50%;
+  width: 90vw;
+  margin: 1vh 0 2vh 0;
+  border: 8px solid rgba(42, 67, 206, 0.2);
+}
+
+section > div {
+  display: flex;
+  gap: 10px;
+}/*# sourceMappingURL=landingPage.module.css.map */
