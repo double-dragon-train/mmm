@@ -1,7 +1,6 @@
 package com.spring.mmm.domain.mukgroups.controller.request;
 
-import com.spring.mmm.domain.mbtis.controller.response.MBTI;
-import jakarta.validation.constraints.NotBlank;
+import com.spring.mmm.domain.mbtis.domain.MBTI;
 import lombok.*;
 
 @Builder
