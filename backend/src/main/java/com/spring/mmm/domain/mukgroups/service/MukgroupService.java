@@ -11,6 +11,8 @@ public interface MukgroupService {
 
     MukgroupEntity findMyMukgroup(UserEntity user);
 
+    MukgroupEntity findMukgroupById(Long groupId);
+
     void modifyGroupName(Long groupId, String name);
 
     void modifyGroupImage(Long groupId, MultipartFile multipartFile);

@@ -44,6 +44,11 @@ public class MukgroupServiceImpl implements MukgroupService{
     }
 
     @Override
+    public MukgroupEntity findMukgroupById(Long groupId) {
+        return mukgroupRepository.findByMukgroupId(groupId);
+    }
+
+    @Override
     public void modifyGroupName(Long groupId, String name) {
         mukgroupRepository.save(mukgroupRepository.findByMukgroupId(groupId).modifyMukgroupName(name));
     }
