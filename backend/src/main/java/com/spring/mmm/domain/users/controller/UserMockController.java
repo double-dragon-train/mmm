@@ -1,14 +1,12 @@
 package com.spring.mmm.domain.users.controller;
 
-import com.spring.mmm.domain.mbtis.controller.response.MBTI;
+import com.spring.mmm.domain.mbtis.domain.MBTI;
 import com.spring.mmm.domain.users.controller.request.UserModifyRequest;
 import com.spring.mmm.domain.users.controller.request.UserRegisterRequeset;
 import com.spring.mmm.domain.users.controller.response.UserResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.Instant;
 
 @RestController
 @RequestMapping("users")

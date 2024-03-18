@@ -3,7 +3,7 @@ package com.spring.mmm.domain.mukgroups.domain;
 import com.spring.mmm.domain.mukgroups.controller.response.MukgroupResponse;
 import com.spring.mmm.domain.mukjuks.domain.MukgroupMukjukEntity;
 import com.spring.mmm.domain.mukjuks.domain.MukjukEntity;
-import com.spring.mmm.domain.muklogs.domain.MukLogEntity;
+import com.spring.mmm.domain.muklogs.domain.MuklogEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -39,7 +39,7 @@ public class MukgroupEntity {
     private List<MukboEntity> mukboEntities;
 
     @OneToMany(mappedBy = "mukGroupEntity", cascade = CascadeType.REMOVE)
-    private List<MukLogEntity> mukLogEntities;
+    private List<MuklogEntity> mukLogEntities;
 
     @OneToMany(mappedBy = "mukGroupEntity", cascade = CascadeType.REMOVE)
     private List<MukgroupMukjukEntity> mukGroupMukJukEntities;

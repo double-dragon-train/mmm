@@ -1,6 +1,5 @@
-package com.spring.mmm.domain.mbtis.infra;
+package com.spring.mmm.domain.mbtis.domain;
 
-import com.spring.mmm.domain.mbtis.domain.MukBTIResult;
 import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.users.infra.UserEntity;
 import jakarta.persistence.*;
@@ -33,21 +32,4 @@ public class MukBTIResultEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
-
-    public static MukBTIResultEntity from(MukBTIResult mukBTIResult){
-        return MukBTIResultEntity.builder()
-                .resultId(mukBTIResult.getResultId())
-                .score(mukBTIResult.getScore())
-                .build();
-    }
-
-    public MukBTIResult to(){
-        return MukBTIResult.builder()
-                .resultId(this.resultId)
-                .score(this.score)
-                .mukbtiId(this.mukBTIEntity.getMukbtiId())
-                .mukboId(this.mukboEntity.getMukboId())
-                .userId(this.userEntity.getId())
-                .build();
-    }
 }
