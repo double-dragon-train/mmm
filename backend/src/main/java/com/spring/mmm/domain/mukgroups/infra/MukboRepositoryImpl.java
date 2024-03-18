@@ -24,12 +24,7 @@ public class MukboRepositoryImpl implements MukboRepository {
 
     @Override
     public List<MukboEntity> findAllMukboByGroupId(Long groupId) {
-        return mukboJpaRepository.findAllMukboByGroupId(groupId, MukboType.HUMAN);
-    }
-
-    @Override
-    public List<MukboEntity> findAllMukbotByGroupId(Long groupId) {
-        return mukboJpaRepository.findAllMukboByGroupId(groupId, MukboType.MUKBOT);
+        return mukboJpaRepository.findAllMukboByGroupId(groupId);
     }
 
     @Override

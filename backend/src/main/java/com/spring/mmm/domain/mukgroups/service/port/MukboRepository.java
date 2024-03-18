@@ -11,8 +11,6 @@ public interface MukboRepository {
 
     List<MukboEntity> findAllMukboByGroupId(Long groupId);
 
-    List<MukboEntity> findAllMukbotByGroupId(Long groupId);
-
     MukboEntity findByMukboId(Long mukboId);
 
     void delete(MukboEntity mukboEntity);

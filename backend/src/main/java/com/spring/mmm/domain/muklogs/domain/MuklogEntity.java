@@ -1,6 +1,7 @@
 package com.spring.mmm.domain.muklogs.domain;
 
 import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
+import com.spring.mmm.domain.muklogs.controller.response.MuklogResponse;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,7 +13,7 @@ import java.time.Instant;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "muklog")
 @Entity
-public class MukLogEntity {
+public class MuklogEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +29,11 @@ public class MukLogEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mukgroup_id")
     private MukgroupEntity mukGroupEntity;
+
+    public MuklogResponse create(){
+        return MuklogResponse.builder()
+                .content(this.content)
+                .createdAt(createdAt.toEpochMilli())
+                .build();
+    }
 }

@@ -1,14 +1,13 @@
 package com.spring.mmm.domain.mukgroups.controller;
 
-import com.spring.mmm.domain.mbtis.controller.response.MBTI;
+import com.spring.mmm.domain.mbtis.domain.MBTI;
 import com.spring.mmm.domain.mukgroups.controller.request.MukboInviteRequest;
 import com.spring.mmm.domain.mukgroups.controller.request.MukbotModifyRequest;
 import com.spring.mmm.domain.mukgroups.controller.request.MukgroupMBTICalcRequest;
 import com.spring.mmm.domain.mukgroups.controller.request.MukgroupMBTIResponse;
 import com.spring.mmm.domain.mukgroups.controller.response.*;
 import com.spring.mmm.domain.mukjuks.domain.Badge;
-import com.spring.mmm.domain.mukgroups.domain.MukboType;
-import com.spring.mmm.domain.muklogs.domain.MukLogEntity;
+import com.spring.mmm.domain.muklogs.domain.MuklogEntity;
 import jakarta.websocket.server.PathParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,101 +20,6 @@ import java.util.List;
 @RestController
 @RequestMapping("groups")
 public class MukGroupMockController {
-
-    @GetMapping("{groudId}/log")
-    public ResponseEntity<MukLogResponse> findMukLog(
-            @PathVariable Long groupId,
-            @PathParam("page") Long page,
-            @PathParam("size") Long size
-    ){
-        MukLogEntity mukLog1 = MukLogEntity.builder()
-                .content("로그1")
-                .createdAt(Instant.now())
-                .build();
-
-        MukLogEntity mukLog2 = MukLogEntity.builder()
-                .content("로그2")
-                .createdAt(Instant.now())
-                .build();
-
-        List<MukLogEntity> logs = new ArrayList<>();
-        logs.add(mukLog1);
-        logs.add(mukLog2);
-        MukLogResponse mukLogResponse = MukLogResponse.builder()
-                .contents(logs)
-                .hasNext(false)
-                .build();
-
-        return ResponseEntity.ok(mukLogResponse);
-    }
-
-    @GetMapping("{groupId}/users")
-    public ResponseEntity<MukbosResponse> findAllMukbos(@PathVariable Long groupId){
-        MBTI mbti = MBTI.builder()
-                .EI(80)
-                .NS(20)
-                .TF(40)
-                .JP(10)
-                .Mint(100)
-                .Pine(0)
-                .Die(100)
-                .build();
-        MukboResponse mukboResponse1 = MukboResponse.builder()
-                .type(MukboType.HUMAN)
-                .name("수현장")
-                .mbti(mbti)
-                .build();
-
-        MukboResponse mukboResponse2 = MukboResponse.builder()
-                .type(MukboType.HUMAN)
-                .name("로봇아닌현수")
-                .mbti(mbti)
-                .build();
-
-        List<MukboResponse> users = new ArrayList<>();
-        users.add(mukboResponse1);
-        users.add(mukboResponse2);
-
-        MukbosResponse mukbosResponse = MukbosResponse.builder()
-                .users(users)
-                .build();
-
-        return ResponseEntity.ok(mukbosResponse);
-    }
-
-    @GetMapping("{groupId}/mukbots")
-    public ResponseEntity<MukbosResponse> findAllMukbots(@PathVariable Long groupId){
-        MBTI mbti = MBTI.builder()
-                .EI(80)
-                .NS(20)
-                .TF(40)
-                .JP(10)
-                .Mint(100)
-                .Pine(0)
-                .Die(100)
-                .build();
-        MukboResponse mukboResponse1 = MukboResponse.builder()
-                .type(MukboType.MUKBOT)
-                .name("수장현")
-                .mbti(mbti)
-                .build();
-
-        MukboResponse mukboResponse2 = MukboResponse.builder()
-                .type(MukboType.MUKBOT)
-                .name("로봇현수")
-                .mbti(mbti)
-                .build();
-
-        List<MukboResponse> users = new ArrayList<>();
-        users.add(mukboResponse1);
-        users.add(mukboResponse2);
-
-        MukbosResponse mukbosResponse = MukbosResponse.builder()
-                .users(users)
-                .build();
-
-        return ResponseEntity.ok(mukbosResponse);
-    }
 
     @PostMapping("{groupId}/users")
     public ResponseEntity<Void> inviteUser(

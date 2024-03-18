@@ -1,6 +1,6 @@
 package com.spring.mmm.domain.recommends.domain;
 
-import com.spring.mmm.domain.mbtis.infra.MukBTIEntity;
+import com.spring.mmm.domain.mbtis.domain.MukBTIEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
