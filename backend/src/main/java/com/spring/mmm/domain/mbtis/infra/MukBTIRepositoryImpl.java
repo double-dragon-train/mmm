@@ -10,9 +10,4 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor
 public class MukBTIRepositoryImpl implements MukBTIRepository {
-    private final MukBTIJpaRepository mukBTIJpaRepository;
-    @Override
-    public List<MukBTIEntity> findAllMukBTIByMukboId(Long mukboId) {
-        return mukBTIJpaRepository.findAllMukBTIByMukboId(mukboId);
-    }
 }
