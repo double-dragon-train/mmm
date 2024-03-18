@@ -1,9 +1,8 @@
-package com.spring.mmm.domain.mukgroups.infra;
+package com.spring.mmm.domain.mukgroups.domain;
 
+import com.spring.mmm.domain.mbtis.infra.MukBTIEntity;
 import com.spring.mmm.domain.mbtis.infra.MukBTIResultEntity;
-import com.spring.mmm.domain.mukgroups.domain.Mukbo;
-import com.spring.mmm.domain.mukgroups.domain.MukboType;
-import com.spring.mmm.domain.recommends.infra.EatenMukboEntity;
+import com.spring.mmm.domain.recommends.domain.EatenMukboEntity;
 import com.spring.mmm.domain.users.infra.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -44,31 +43,27 @@ public class MukboEntity {
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 
-    public static MukboEntity from(Mukbo mukbo){
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mbti_id")
+    private MukBTIEntity mukBTIEntity;
+
+    public static MukboEntity create(String name, MukboType mukboType, Long mukgroupId){
         return MukboEntity.builder()
-                .mukboId(mukbo.getMukboId())
-                .name(mukbo.getName())
-                .type(mukbo.getType())
+                .name(name)
+                .type(mukboType)
+                .mukGroupEntity(MukgroupEntity.createWithOnlyId(mukgroupId))
                 .build();
     }
 
-    public Mukbo to(){
-        return Mukbo.builder()
-                .mukboId(this.mukboId)
+    public MukboEntity modifyGroup(Long mukgroupId){
+        return MukboEntity.builder()
                 .name(this.name)
                 .type(this.type)
-                .mukgroupId(this.mukGroupEntity.getMukgroupId())
-                .userId(this.userEntity.getId())
+                .mukGroupEntity(MukgroupEntity.createWithOnlyId(mukgroupId))
                 .build();
     }
 
-    public Mukbo to(Long mukgroupId){
-        return Mukbo.builder()
-                .mukboId(this.mukboId)
-                .name(this.name)
-                .type(this.type)
-                .mukgroupId(mukgroupId)
-                .userId(this.userEntity.getId())
-                .build();
+    public void modifyName(String name){
+        this.name = name;
     }
 }

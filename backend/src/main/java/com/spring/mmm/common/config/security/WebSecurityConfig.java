@@ -29,7 +29,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 //@EnableGlobalMethodSecurity(securedEnabled = true) // @Secured 어노테이션 활성화
 @EnableMethodSecurity // 위 어노테이션은 Deprecated
 @EnableScheduling // @Scheduled 어노테이션 활성화
-public class WebSecurityConfig implements WebMvcConfigurer {
+public class WebSecurityConfig {
     private final JwtProvider jwtProvider;
     private final RedisDao redisDao;
 
@@ -80,12 +80,5 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         http.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);
         return http.build();
     }
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE")
-                .allowedOriginPatterns("*")
-                .exposedHeaders("Authorization");
-    }
+
 }
