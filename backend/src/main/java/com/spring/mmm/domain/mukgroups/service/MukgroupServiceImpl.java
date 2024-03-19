@@ -7,7 +7,6 @@ import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
 import com.spring.mmm.domain.mukgroups.service.port.MukboRepository;
 import com.spring.mmm.domain.mukgroups.service.port.MukgroupRepository;
-import com.spring.mmm.domain.users.domain.User;
 import com.spring.mmm.domain.users.infra.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
