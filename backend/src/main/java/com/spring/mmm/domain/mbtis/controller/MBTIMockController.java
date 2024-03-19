@@ -2,6 +2,7 @@ package com.spring.mmm.domain.mbtis.controller;
 
 import com.spring.mmm.domain.mbtis.controller.request.MBTICalcRequest;
 import com.spring.mmm.domain.mbtis.controller.response.*;
+import com.spring.mmm.domain.mbtis.domain.MBTI;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

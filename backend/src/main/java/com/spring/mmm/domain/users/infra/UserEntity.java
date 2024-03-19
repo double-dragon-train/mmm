@@ -3,6 +3,7 @@ package com.spring.mmm.domain.users.infra;
 import com.spring.mmm.common.event.Events;
 import com.spring.mmm.domain.mbtis.infra.MukBTIResultEntity;
 import com.spring.mmm.domain.users.controller.request.UserJoinRequest;
+import com.spring.mmm.domain.mbtis.domain.MukBTIResultEntity;
 import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.users.event.UserDeletedEvent;
 import jakarta.persistence.*;
@@ -22,14 +23,8 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
-
-    @Column(name = "email")
     private String email;
-
-    @Column(name = "nickname")
     private String nickname;
-
-    @Column(name = "password")
     private String password;
 
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE)

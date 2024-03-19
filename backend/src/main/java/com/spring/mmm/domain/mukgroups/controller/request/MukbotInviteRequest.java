@@ -1,6 +1,6 @@
 package com.spring.mmm.domain.mukgroups.controller.request;
 
-import com.spring.mmm.domain.mbtis.controller.response.MBTI;
+import com.spring.mmm.domain.mbtis.domain.MBTI;
 import lombok.*;
 
 @Builder

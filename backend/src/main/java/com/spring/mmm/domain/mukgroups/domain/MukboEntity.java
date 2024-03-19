@@ -1,7 +1,9 @@
 package com.spring.mmm.domain.mukgroups.domain;
 
-import com.spring.mmm.domain.mbtis.infra.MukBTIEntity;
-import com.spring.mmm.domain.mbtis.infra.MukBTIResultEntity;
+import com.spring.mmm.domain.mbtis.domain.MBTI;
+import com.spring.mmm.domain.mbtis.domain.MukBTIEntity;
+import com.spring.mmm.domain.mbtis.domain.MukBTIResultEntity;
+import com.spring.mmm.domain.mukgroups.controller.response.MukboResponse;
 import com.spring.mmm.domain.recommends.domain.EatenMukboEntity;
 import com.spring.mmm.domain.users.infra.UserEntity;
 import jakarta.persistence.*;
@@ -43,10 +45,6 @@ public class MukboEntity {
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mbti_id")
-    private MukBTIEntity mukBTIEntity;
-
     public static MukboEntity create(String name, MukboType mukboType, Long mukgroupId){
         return MukboEntity.builder()
                 .name(name)
@@ -60,6 +58,14 @@ public class MukboEntity {
                 .name(this.name)
                 .type(this.type)
                 .mukGroupEntity(MukgroupEntity.createWithOnlyId(mukgroupId))
+                .build();
+    }
+
+    public MukboResponse toResponse(){
+        return MukboResponse.builder()
+                .name(this.name)
+                .type(this.type)
+                .mbti(MBTI.create(this.mukBTIResultEntities))
                 .build();
     }
 

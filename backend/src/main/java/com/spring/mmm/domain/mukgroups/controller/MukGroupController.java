@@ -2,10 +2,19 @@ package com.spring.mmm.domain.mukgroups.controller;
 
 import com.spring.mmm.domain.mukgroups.controller.request.MukgroupCreateRequest;
 import com.spring.mmm.domain.mukgroups.controller.request.MukgroupModifyRequest;
+import com.spring.mmm.domain.mukgroups.controller.response.MukbosResponse;
+import com.spring.mmm.domain.mukgroups.controller.response.MukgroupMukjukResponse;
 import com.spring.mmm.domain.mukgroups.controller.response.MukgroupResponse;
+import com.spring.mmm.domain.mukgroups.service.MukboService;
 import com.spring.mmm.domain.mukgroups.service.MukgroupService;
+import com.spring.mmm.domain.muklogs.controller.request.MuklogRequest;
+import com.spring.mmm.domain.muklogs.controller.response.MuklogsResponse;
+import com.spring.mmm.domain.muklogs.service.MuklogService;
+import com.spring.mmm.domain.users.domain.User;
 import com.spring.mmm.domain.users.infra.UserEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +33,8 @@ public class MukGroupController {
             .build();
 
     private final MukgroupService mukgroupService;
+    private final MukboService mukboService;
+    private final MuklogService muklogService;
 
     @GetMapping
     public ResponseEntity<MukgroupResponse> findMukgroup(){
@@ -55,4 +66,25 @@ public class MukGroupController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("{groupId}/users")
+    public ResponseEntity<MukbosResponse> findAllMukbos(@PathVariable Long groupId){
+        return ResponseEntity.ok(MukbosResponse.builder()
+                .users(mukboService.findAllMukboResponsesByGroupId(groupId))
+                .build());
+    }
+
+    @GetMapping("{groupId}/mukbots")
+    public ResponseEntity<MukbosResponse> findAllMukbots(@PathVariable Long groupId){
+        return ResponseEntity.ok(MukbosResponse.builder()
+                .users(mukboService.findAllMukbotResponsesByGroupId(groupId))
+                .build());
+    }
+
+    @GetMapping("{groupId}/log")
+    public ResponseEntity<MuklogsResponse> findMuklogsByGroupId(
+            @PathVariable Long groupId,
+            @RequestBody MuklogRequest muklogRequest){
+        Pageable pageable = PageRequest.of(muklogRequest.getPage(), muklogRequest.getSize());
+        return ResponseEntity.ok(muklogService.findAllMuklogByGroupId(groupId, pageable));
+    }
 }
