@@ -10,7 +10,6 @@ import com.spring.mmm.domain.mukgroups.service.MukgroupService;
 import com.spring.mmm.domain.muklogs.controller.request.MuklogRequest;
 import com.spring.mmm.domain.muklogs.controller.response.MuklogsResponse;
 import com.spring.mmm.domain.muklogs.service.MuklogService;
-import com.spring.mmm.domain.users.domain.User;
 import com.spring.mmm.domain.users.infra.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
