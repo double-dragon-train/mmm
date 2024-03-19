@@ -28,6 +28,7 @@ module.exports = {
   },
   plugins: ['react', 'prettier'],
   rules: {
+    "no-unused-vars": "off",
     // 들여쓰기 깊이 제한
     'max-depth': ['error', 2],
     'prettier/prettier': ['error'],

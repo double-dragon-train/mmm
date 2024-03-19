@@ -1,13 +1,5 @@
-.bigErrorMessage {
+.errorMessage {
   color: rgba(243, 32, 37, 0.5);
-  font-size: 18px;
-  margin: 10px;
-  height: 18px;
-}
-
-.smallErrorMessage {
-  color: rgba(243, 32, 37, 0.5);
-  font-size: 15px;
-  margin: 10px;
-  height: 18px;
+  font-size: 14px;
+  text-align: left;
 }/*# sourceMappingURL=errorMessage.css.map */
