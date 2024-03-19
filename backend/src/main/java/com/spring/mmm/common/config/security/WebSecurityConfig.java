@@ -56,7 +56,7 @@ public class WebSecurityConfig {
 
         http
                 .authorizeHttpRequests((auth)->auth
-                .requestMatchers("/users/**").permitAll()
+                .requestMatchers("/users/**", "/recommend").permitAll()
                         .requestMatchers(HttpMethod.DELETE,"/users").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/users").authenticated()
                 .anyRequest().authenticated());
