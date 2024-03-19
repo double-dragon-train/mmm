@@ -1,17 +1,13 @@
 import '../../styles/common/errorMessage.css';
 
 interface ErrorMessageProps {
-  errorFontSize: string;
-  errorTarget: string;
+  errorMessage: string;
 }
 
-function ErrorMessage({
-  errorFontSize,
-  errorTarget,
-}: ErrorMessageProps) {
+function ErrorMessage({ errorMessage }: ErrorMessageProps) {
   return (
-    <div className={errorFontSize}>
-      [{errorTarget}] 형식이 올바르지 않습니다.
+    <div className="errorMessage">
+      {errorMessage}
     </div>
   );
 }
