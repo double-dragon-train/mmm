@@ -6,15 +6,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
-public class LoginRequest {
+public class UserReissueTokenRequest {
+    private final String refreshToken;
 
-    private final String email;
-    private final String password;
-
-    public LoginRequest(String email, String password) {
-        this.email = email;
-        this.password = password;
+    public UserReissueTokenRequest(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
-
-
 }

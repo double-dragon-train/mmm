@@ -4,7 +4,6 @@ import com.spring.mmm.domain.mukgroups.controller.request.MukgroupCreateRequest;
 import com.spring.mmm.domain.mukgroups.controller.request.MukgroupModifyRequest;
 import com.spring.mmm.domain.mukgroups.controller.response.MukgroupResponse;
 import com.spring.mmm.domain.mukgroups.service.MukgroupService;
-import com.spring.mmm.domain.users.domain.User;
 import com.spring.mmm.domain.users.infra.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

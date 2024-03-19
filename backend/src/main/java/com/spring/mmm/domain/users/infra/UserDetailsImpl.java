@@ -1,5 +1,7 @@
 package com.spring.mmm.domain.users.infra;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,16 +10,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 @Getter
-@NoArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserDetailsImpl implements UserDetails {
 
     private UserEntity user;
     private String email;
 
-    public UserDetailsImpl(UserEntity user, String email) {
-        this.user = user;
-        this.email = email;
-    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

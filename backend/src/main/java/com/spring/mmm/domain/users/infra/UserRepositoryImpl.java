@@ -1,6 +1,5 @@
 package com.spring.mmm.domain.users.infra;
 
-import com.spring.mmm.domain.users.domain.User;
 import com.spring.mmm.domain.users.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -14,8 +13,8 @@ public class UserRepositoryImpl implements UserRepository {
     private final UserJpaRepository userJpaRepository;
 
     @Override
-    public User create(User user) {
-        return userJpaRepository.save(UserEntity.from(user)).to();
+    public Optional<UserEntity> create(UserEntity user) {
+        return Optional.of(userJpaRepository.save(user));
     }
 
     @Override
@@ -25,11 +24,11 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public boolean existsByEmail(String email) {
-        return false;
+        return userJpaRepository.existsByEmail(email);
     }
 
     @Override
     public boolean existsByNickname(String nickname) {
-        return false;
+        return userJpaRepository.existsByNickname(nickname);
     }
 }

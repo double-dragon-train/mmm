@@ -1,8 +1,10 @@
 package com.spring.mmm.domain.users.infra;
 
+import com.spring.mmm.common.event.Events;
 import com.spring.mmm.domain.mbtis.infra.MukBTIResultEntity;
-import com.spring.mmm.domain.users.domain.User;
+import com.spring.mmm.domain.users.controller.request.UserJoinRequest;
 import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
+import com.spring.mmm.domain.users.event.UserDeletedEvent;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,8 +22,14 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
+
+    @Column(name = "email")
     private String email;
+
+    @Column(name = "nickname")
     private String nickname;
+
+    @Column(name = "password")
     private String password;
 
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE)
@@ -30,26 +38,21 @@ public class UserEntity {
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE)
     private List<MukBTIResultEntity> mukBTIResultEntities;
 
-    public static UserEntity from(User user) {
+    public static UserEntity create(UserJoinRequest userJoinRequest, String encodedPW) {
         return UserEntity.builder()
-                .id(user.getId())
-                .email(user.getEmail())
-                .nickname(user.getNickname())
-                .password(user.getPassword())
+                .email(userJoinRequest.getEmail())
+                .nickname(userJoinRequest.getNickname())
+                .password(encodedPW)
                 .build();
     }
 
-    public User to() {
-        return User.builder()
-                .id(this.id)
-                .email(this.email)
-                .nickname(this.nickname)
-                .password(this.password)
-                .build();
+    public void modify(String nickname, String password) {
+        this.nickname = nickname;
+        this.password = password;
     }
 
-    public static UserEntity userEntityOnlyWithId(Long id) {
-        return UserEntity.builder().id(id).build();
+    public void deleteUser() {
+        Events.raise(UserDeletedEvent.create(this.id));
     }
 
 }

@@ -3,14 +3,12 @@ package com.spring.mmm.common.config.jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.mmm.common.config.RedisDao;
 import com.spring.mmm.common.exception.SecurityExceptionDto;
-import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,21 +27,22 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws IOException, ServletException {
         String token = jwtProvider.resolveToken(request);
-        if (token != null) {
+        System.out.println("액세스 토큰: "+token);
 
+        if (token != null) {
+            String email = jwtProvider.getUserInfoFromToken(token);
+            System.out.println("email : "+email);
             if(!jwtProvider.validateToken(token)){
-                response.sendError(401, "만료되었습니다.");
-                jwtExceptionHandler(response,"401", HttpStatus.BAD_REQUEST.value() );
-                return;
+                String reToken = redisDao.getRefreshToken(email);
+                System.out.println("reToken : "+reToken);
+                jwtProvider.reissueAtk(email, reToken);
             }
-            // 검증 후 인증 객체 생성하여 securityContextHolder에서 관리
-            Claims userInfo = jwtProvider.getUserInfoFromToken(token);
-            setAuthentication(userInfo.get("email", String.class));
+            setAuthentication(email);
         }
         filterChain.doFilter(request,response);
     }
 
-    private void setAuthentication(String email ) {
+    private void setAuthentication(String email) {
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         Authentication authentication = jwtProvider.createUserAuthentication(email);
         context.setAuthentication(authentication);
@@ -58,8 +57,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         response.setContentType("application/json");
         try {
             String json = new ObjectMapper().writeValueAsString(new SecurityExceptionDto(statusCode, msg));
-            //, ObjectMapper를 사용하여 SecurityExceptionDto 객체를 JSON 문자열로 변환
-            response.getWriter().write(json); //JSON 문자열을 응답으로 작성
+            response.getWriter().write(json);
         } catch (Exception e) {
             log.error(e.getMessage());
         }

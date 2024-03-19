@@ -1,26 +1,22 @@
 package com.spring.mmm.domain.users.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.spring.mmm.common.config.CacheNames;
 import com.spring.mmm.common.config.RedisDao;
 import com.spring.mmm.common.config.jwt.JwtProvider;
-import com.spring.mmm.domain.users.controller.request.JoinRequest;
-import com.spring.mmm.domain.users.controller.request.LoginRequest;
-import com.spring.mmm.domain.users.controller.response.UserResponse;
-import com.spring.mmm.domain.users.domain.User;
+import com.spring.mmm.domain.users.controller.request.UserJoinRequest;
+import com.spring.mmm.domain.users.controller.request.UserLoginRequest;
+import com.spring.mmm.domain.users.controller.request.UserModifyRequest;
 import com.spring.mmm.domain.users.exception.UserErrorCode;
 import com.spring.mmm.domain.users.exception.UserException;
+import com.spring.mmm.domain.users.infra.UserDetailsImpl;
 import com.spring.mmm.domain.users.infra.UserEntity;
 import com.spring.mmm.domain.users.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -36,55 +32,91 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
-    public void join(JoinRequest joinRequest) {
+    public void join(UserJoinRequest userJoinRequest) {
 
-        String email = joinRequest.getEmail();
-        String nickname = joinRequest.getNickname();
-        String password = joinRequest.getPassword();
+        String email = userJoinRequest.getEmail();
+        String nickname = userJoinRequest.getNickname();
+        String password = userJoinRequest.getPassword();
+        String encodedPW = passwordEncoder.encode(password);
 
-        Boolean isExist = userRepository.existsByEmail(email);
+        boolean isEmailExist = userRepository.existsByEmail(email);
+        boolean isNicknameExist = userRepository.existsByNickname(nickname);
 
-        if (isExist) {
+        if (isEmailExist | isNicknameExist) {
             return;
         }
 
-        User user = User.create(joinRequest, passwordEncoder.encode(password));
+        UserEntity user = UserEntity.create(userJoinRequest, encodedPW);
 
         userRepository.create(user);
 
     }
 
-    /**
-     * 로그인 반환값으로 user를 userResponseDto 담아 반환하고  컨트롤러에서 반환된 객체를 이용하여 토큰 발행한다.
-     */
-//    @Cacheable(cacheNames = CacheNames.LOGINUSER, key = "'login'+ #p0.getEmail()", unless = "#result== null")
+    @Override
+    @Transactional
+    public boolean nickname_verify(String nickname) {
+
+        boolean isNicknameExist = userRepository.existsByNickname(nickname);
+
+        if (isNicknameExist) {
+            return true;
+        }
+
+        return false;
+    }
 
     @Override
-    @Cacheable(cacheNames = CacheNames.LOGINUSER, key = "'login'+ #p0.getEmail()", unless = "#result== null")
     @Transactional
-    public UserResponse login(LoginRequest loginRequest) {
-        String email = loginRequest.getEmail();
-        String password = loginRequest.getPassword();
+    public void modify(UserDetailsImpl user, UserModifyRequest userModifyRequest) {
+        String email = user.getEmail();
+        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(
+                () -> new UserException(UserErrorCode.INVALID_USER)
+        );
+
+        String nickname = userEntity.getNickname();
+
+        if (userModifyRequest.getNickname() != null) {
+            nickname = userModifyRequest.getNickname();
+            boolean isNicknameExist = userRepository.existsByNickname(nickname);
+
+            if (isNicknameExist) {
+                return;
+            }
+        }
+
+        String password = userEntity.getPassword();
+
+        if (userModifyRequest.getNewPassword() != null) {
+            password = passwordEncoder.encode(userModifyRequest.getNewPassword());
+        }
+
+        userEntity.modify(nickname, password);
+    }
+
+
+    @Override
+    @Transactional
+    public Optional<UserEntity> login(UserLoginRequest userLoginRequest) {
+        String email = userLoginRequest.getEmail();
+        String password = userLoginRequest.getPassword();
         UserEntity user = userRepository.findByEmail(email).orElseThrow(
                 () -> new UserException(UserErrorCode.INVALID_USER)
         );
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new UserException(UserErrorCode.INVALID_USER);
         }
-        return new UserResponse().of(user.getEmail(), user.getNickname());// user객체를 dto에 담아서 반환
+        return Optional.of(user);
     }
 
-    @CacheEvict(cacheNames = CacheNames.USERBYEMAIL, key = "'login'+#p1")
+
+    @Override
     @Transactional
-    public ResponseEntity logout(String accessToken, String email) {
-        // 레디스에 accessToken 사용못하도록 등록
-        Long expiration = jwtProvider.getExpiration(accessToken);
+    public void logout(String accessToken, String email) {
         if (redisDao.hasKey(email)) {
             redisDao.deleteRefreshToken(email);
         } else {
             throw new IllegalArgumentException("이미 로그아웃한 유저입니다.");
         }
-        return ResponseEntity.ok("로그아웃 완료");
     }
 
 }

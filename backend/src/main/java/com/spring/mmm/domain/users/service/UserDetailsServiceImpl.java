@@ -1,6 +1,5 @@
 package com.spring.mmm.domain.users.service;
 
-import com.spring.mmm.domain.users.domain.User;
 import com.spring.mmm.domain.users.exception.UserErrorCode;
 import com.spring.mmm.domain.users.exception.UserException;
 import com.spring.mmm.domain.users.infra.UserDetailsImpl;
@@ -12,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -20,8 +21,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        UserEntity user = findByEmail(email);
-        return new UserDetailsImpl(user, user.getEmail());
+        Optional<UserEntity> userOptional = userRepository.findByEmail(email);
+        UserEntity user = userOptional.orElseThrow(
+                () -> new UsernameNotFoundException("User not found with email: " + email)
+        );
+        return new UserDetailsImpl(user, email);
     }
 
     private UserEntity findByEmail(String email) {
