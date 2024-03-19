@@ -82,8 +82,8 @@ deploy-backend:       # This job runs in the build stage, which runs first.
     - ssh-add "$SSH_PRIVATE_KEY"
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
-    - ssh-keyscan -H DEVELOP_SERVER_ADDRESS >> ~/.ssh/known_hosts
-    - ssh $REMOTE_USERNAME@DEVELOP_SERVER_ADDRESS 'sh be.sh'
+    - ssh-keyscan -H $DEVELOP_SERVER_ADDRESS >> ~/.ssh/known_hosts
+    - ssh $REMOTE_USERNAME@$DEVELOP_SERVER_ADDRESS 'sh be.sh'
   needs: [build-backend]
   only:
     - be
@@ -100,9 +100,10 @@ deploy-frontend:       # This job runs in the build stage, which runs first.
     - ssh-add "$SSH_PRIVATE_KEY"
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
-    - ssh-keyscan -H DEVELOP_SERVER_ADDRESS >> ~/.ssh/known_hosts
-    - ssh $REMOTE_USERNAME@DEVELOP_SERVER_ADDRESS 'sh fe.sh'
+    - ssh-keyscan -H $DEVELOP_SERVER_ADDRESS >> ~/.ssh/known_hosts
+    - ssh $REMOTE_USERNAME@$DEVELOP_SERVER_ADDRESS 'sh fe.sh'
   needs: [build-frontend]
   only:
     - fe
+
 
