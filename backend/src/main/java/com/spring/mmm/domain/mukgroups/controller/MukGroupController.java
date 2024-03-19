@@ -1,5 +1,6 @@
 package com.spring.mmm.domain.mukgroups.controller;
 
+import com.spring.mmm.domain.mukgroups.controller.request.MukboInviteRequest;
 import com.spring.mmm.domain.mukgroups.controller.request.MukgroupCreateRequest;
 import com.spring.mmm.domain.mukgroups.controller.request.MukgroupModifyRequest;
 import com.spring.mmm.domain.mukgroups.controller.response.MukbosResponse;
@@ -86,5 +87,13 @@ public class MukGroupController {
             @RequestBody MuklogRequest muklogRequest){
         Pageable pageable = PageRequest.of(muklogRequest.getPage(), muklogRequest.getSize());
         return ResponseEntity.ok(muklogService.findAllMuklogByGroupId(groupId, pageable));
+    }
+
+    @PostMapping("{groupId}/users")
+    public ResponseEntity<Void> inviteUser(
+            @PathVariable Long groupId,
+            @RequestBody MukboInviteRequest mukboInviteRequest
+    ){
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
