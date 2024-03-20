@@ -112,8 +112,8 @@ public class MukGroupController {
 
     @DeleteMapping("{groupId}/mukbos/{mokboId}")
     public ResponseEntity<Void> deleteMukbo(
-            @PathVariable Long groupId,
-            @PathVariable Long mokboId){
+            @PathVariable Long mukboId){
+        mukgroupService.kickMukbo(mukboId);
         return ResponseEntity.ok().build();
     }
 }

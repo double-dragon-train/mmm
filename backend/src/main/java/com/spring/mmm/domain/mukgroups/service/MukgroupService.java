@@ -16,7 +16,7 @@ public interface MukgroupService {
 
     void modifyGroupImage(Long groupId, MultipartFile multipartFile);
 
-    void deleteMukbo(Long mukboId);
+    void kickMukbo(Long mukboId);
 
     void exitMukgroup(UserEntity user);
 }

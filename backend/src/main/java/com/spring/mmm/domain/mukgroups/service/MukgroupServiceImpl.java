@@ -60,7 +60,7 @@ public class MukgroupServiceImpl implements MukgroupService{
     }
 
     @Override
-    public void deleteMukbo(Long mukboId) {
+    public void kickMukbo(Long mukboId) {
         MukboEntity mukboEntity = mukboRepository.findByMukboId(mukboId);
         if(mukboEntity.getType() == MukboType.HUMAN) {
             mukboEntity.exitMukgroup();
