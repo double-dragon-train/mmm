@@ -109,14 +109,14 @@ function SignupPage() {
     }
   })
 
-  const signup = () => {
-    const userData = {
+  const handleSignup = () => {
+    const signupData = {
       email,
       password,
       passwordConfirm,
       nickname,
     };
-    mutate(userData);
+    mutate(signupData);
   };
 
   return (
@@ -229,7 +229,7 @@ function SignupPage() {
         </span>
       </section>
       <button
-        onClick={signup}
+        onClick={handleSignup}
         className="userButton"
         disabled={
           isNicknameDuplicated ||

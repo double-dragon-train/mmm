@@ -6,10 +6,17 @@ import styles from '../styles/userPage/UserPage.module.css';
 import subLogo from '../assets/images/subLogo.png';
 import closedEye from '../assets/images/closedEye.png';
 import openedEye from '../assets/images/openedEye.png';
-import { Link } from 'react-router-dom';
-import { checkEmailValidation, checkPasswordValidation } from '../utils/validation';
+import { Link, useNavigate } from 'react-router-dom';
+import {
+  checkEmailValidation,
+  checkPasswordValidation,
+} from '../utils/validation';
+import { postLogin } from '../api/userApi';
+import { useMutation } from '@tanstack/react-query';
 
 function LoginPage() {
+  const navigate = useNavigate();
+
   const [inputList, setInputList] = useState({
     email: '',
     password: '',
@@ -43,6 +50,22 @@ function LoginPage() {
   const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
   const checkEmail = () => {
     setIsEmailValid(checkEmailValidation(email));
+  };
+
+  // 로그인
+  const { mutate } = useMutation({
+    mutationFn: postLogin,
+    onSuccess: () => {
+      navigate('/');
+    },
+  });
+
+  const handleLogin = () => {
+    const loginData = {
+      email,
+      password,
+    };
+    mutate(loginData);
   };
 
   return (
@@ -90,7 +113,9 @@ function LoginPage() {
         errorFontSize="bigErrorMessage"
         errorTarget="닉네임"
       /> */}
-      <button className="userButton">로그인</button>
+      <button onClick={handleLogin} className="userButton">
+        로그인
+      </button>
       <span>
         <Link to="/signup">기존 회원이 아니신가요?</Link>
       </span>
