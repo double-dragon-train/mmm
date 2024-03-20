@@ -1,6 +1,7 @@
 package com.spring.mmm.domain.mukgroups.service;
 
 import com.spring.mmm.common.service.S3Service;
+import com.spring.mmm.domain.mukgroups.domain.MukboType;
 import com.spring.mmm.domain.mukgroups.exception.MukGroupErrorCode;
 import com.spring.mmm.domain.mukgroups.exception.MukGroupException;
 import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
@@ -56,6 +57,18 @@ public class MukgroupServiceImpl implements MukgroupService{
     public void modifyGroupImage(Long groupId, MultipartFile multipartFile) {
         String imageSrc = s3Service.uploadFile(multipartFile);
         mukgroupRepository.save(mukgroupRepository.findByMukgroupId(groupId).modifyMukgroupImage(imageSrc));
+    }
+
+    @Override
+    public void kickMukbo(Long mukboId) {
+        MukboEntity mukboEntity = mukboRepository.findByMukboId(mukboId);
+        if(mukboEntity.getType() == MukboType.HUMAN) {
+            mukboEntity.exitMukgroup();
+            mukboRepository.save(mukboEntity);
+        }
+        else {
+            mukboRepository.delete(mukboEntity);
+        }
     }
 
     @Override

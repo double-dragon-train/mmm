@@ -109,4 +109,11 @@ public class MukGroupController {
         mukboService.modifyMukbot(user, mukbotsId, mukbotModifyRequest.getMbti(), mukbotModifyRequest.getName());
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("{groupId}/mukbos/{mokboId}")
+    public ResponseEntity<Void> deleteMukbo(
+            @PathVariable Long mukboId){
+        mukgroupService.kickMukbo(mukboId);
+        return ResponseEntity.ok().build();
+    }
 }
