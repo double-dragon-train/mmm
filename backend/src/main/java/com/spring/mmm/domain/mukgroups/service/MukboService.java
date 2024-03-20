@@ -15,7 +15,7 @@ public interface MukboService {
 
     void inviteMukbo(UserDetailsImpl user, Long groupId, MukboInviteRequest mukboInviteRequest);
 
-    void modifyMukbot(Long mukbotId, MBTI mbti, String name);
+    void modifyMukbot(UserDetailsImpl user, Long mukbotId, MBTI mbti, String name);
 
     void modifyMokbo(Long userId, String name);
 

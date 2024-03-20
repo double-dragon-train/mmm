@@ -2,7 +2,12 @@ package com.spring.mmm.domain.mukgroups.service;
 
 import com.spring.mmm.domain.mbtis.controller.response.MBTIResult;
 import com.spring.mmm.domain.mbtis.domain.MBTI;
+import com.spring.mmm.domain.mbtis.domain.MukBTIEntity;
+import com.spring.mmm.domain.mbtis.domain.MukBTIResultEntity;
+import com.spring.mmm.domain.mbtis.domain.MukBTIType;
 import com.spring.mmm.domain.mbtis.service.MukBTIService;
+import com.spring.mmm.domain.mbtis.service.port.MukBTIRepository;
+import com.spring.mmm.domain.mbtis.service.port.MukBTIResultRepository;
 import com.spring.mmm.domain.mukgroups.controller.request.MukboInviteRequest;
 import com.spring.mmm.domain.mukgroups.controller.response.MukboResponse;
 import com.spring.mmm.domain.mukgroups.controller.response.MukbosResponse;
@@ -13,6 +18,7 @@ import com.spring.mmm.domain.mukus.controller.response.Mukbo;
 import com.spring.mmm.domain.users.exception.UserErrorCode;
 import com.spring.mmm.domain.users.exception.UserException;
 import com.spring.mmm.domain.users.infra.UserDetailsImpl;
+import com.spring.mmm.domain.users.infra.UserEntity;
 import com.spring.mmm.domain.users.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +30,8 @@ import java.util.List;
 public class MukboServiceImpl implements MukboService{
     private final MukboRepository mukboRepository;
     private final UserRepository userRepository;
+    private final MukBTIRepository mukBTIRepository;
+    private final MukBTIResultRepository mukBTIResultRepository;
 
     @Override
     public List<MukboResponse> findAllMukboResponsesByGroupId(Long groupId) {
@@ -61,9 +69,18 @@ public class MukboServiceImpl implements MukboService{
     }
 
     @Override
-    public void modifyMukbot(Long mukboId, MBTI mbti, String name) {
+    public void modifyMukbot(UserDetailsImpl user, Long mukboId, MBTI mbti, String name) {
         MukboEntity mukbotEntity = mukboRepository.findByMukboId(mukboId);
         mukbotEntity.modifyName(name);
+
+        List<MukBTIResultEntity> mukBTIResults = mukBTIResultRepository.findAllMukBTIResultByMukboId(mukboId);
+        List<MukBTIEntity> mukBTIEntities = mukBTIRepository.findAllMukBTI();
+
+        if(mukBTIResults.isEmpty()){
+
+        } else {
+
+        }
 
         mukboRepository.save(mukbotEntity);
     }
@@ -78,5 +95,23 @@ public class MukboServiceImpl implements MukboService{
     @Override
     public void deleteMukbo(Long mukboId) {
         mukboRepository.delete(mukboRepository.findByMukboId(mukboId));
+    }
+
+    private void createMukBTIResults(List<MukBTIResultEntity> results, UserEntity user, MukboEntity mukbo, MBTI mbti, Integer score){
+
+    }
+
+    private void modifyMukBTIResults(List<MukBTIResultEntity> results, MBTI mbti){
+        for(MukBTIResultEntity mukBTIResult : results){
+            switch (mukBTIResult.getMukBTIEntity().getType()){
+                case MukBTIType.EI -> mukBTIResult.modifyScore(mbti.getEI());
+                case MukBTIType.NS -> mukBTIResult.modifyScore(mbti.getNS());
+                case MukBTIType.TF -> mukBTIResult.modifyScore(mbti.getTF());
+                case MukBTIType.JP -> mukBTIResult.modifyScore(mbti.getJP());
+                case MukBTIType.Mint -> mukBTIResult.modifyScore(mbti.getMint());
+                case MukBTIType.Pine -> mukBTIResult.modifyScore(mbti.getPine());
+                case MukBTIType.Die -> mukBTIResult.modifyScore(mbti.getDie());
+            }
+        }
     }
 }

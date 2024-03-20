@@ -102,10 +102,11 @@ public class MukGroupController {
 
     @PutMapping("{groupId}/mukbots/{mukbotsId}")
     public ResponseEntity<Void> modifyMukbot(
+            @AuthenticationPrincipal UserDetailsImpl user,
             @PathVariable Long mukbotsId,
             @RequestBody MukbotModifyRequest mukbotModifyRequest
     ){
-        mukboService.modifyMukbot(mukbotsId, mukbotModifyRequest.getMbti(), mukbotModifyRequest.getName());
+        mukboService.modifyMukbot(user, mukbotsId, mukbotModifyRequest.getMbti(), mukbotModifyRequest.getName());
         return ResponseEntity.ok().build();
     }
 }

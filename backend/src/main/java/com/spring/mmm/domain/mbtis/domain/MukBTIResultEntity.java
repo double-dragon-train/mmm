@@ -32,4 +32,8 @@ public class MukBTIResultEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
+
+    public void modifyScore(Integer score){
+        this.score = score;
+    }
 }
