@@ -61,7 +61,7 @@ public class MukboServiceImpl implements MukboService{
         mukboRepository.delete(mukboRepository.findByMukboId(mukboInviteRequest.getMukbotId()));
 
         mukboEntity.modifyName(mukboInviteRequest.getNickname());
-        mukboEntity.modifyGroup(mukboRepository.findByUserId(user.getUser().getId()).getMukGroupEntity().getMukgroupId());
+        mukboEntity.modifyGroup(groupId);
         mukboRepository.save(mukboEntity);
     }
 
