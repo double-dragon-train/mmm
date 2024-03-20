@@ -1,5 +1,5 @@
 .landingButton {
-  width: 320px;
+  width: 95%;
   border: 1px solid rgba(42, 67, 206, 0.4);
   font-size: 20px;
   color: rgba(42, 67, 206, 0.65);
@@ -24,9 +24,8 @@
   border: 1.5px solid rgba(42, 67, 206, 0.4);
   border-radius: 5px;
   color: rgba(42, 67, 206, 0.65);
-  outline: none;
 }
 .miniBlueButton:focus {
   border: 1.5px solid rgba(42, 67, 206, 0.6);
-  color: rgba(42, 67, 206, 0.8);
+  color: #2a43ce;
 }/*# sourceMappingURL=buttons.css.map */

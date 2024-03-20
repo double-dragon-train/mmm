@@ -10,36 +10,40 @@ import MbtiPage from './pages/MbtiPage';
 import {
   QueryClient,
   QueryClientProvider,
-  
-} from '@tanstack/react-query'
+} from '@tanstack/react-query';
+import Layout from './components/common/Layout';
+import GroupPage from './pages/GroupPage';
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <LandingPage />,
-    // children: [
-    //   {
-    //     index: '',
-    //     element: <ProtectedRoutes />,
-    //     children: [
-    //       { index: true, element: <HomePage /> },
-    //       // { path: '/:feedId', element: <HomePage /> },
-
-    // ],
+    children: [
+      {
+        path: '/signup',
+        element: <SignupPage />,
+      },
+      {
+        path: '/login',
+        element: <LoginPage />,
+      },
+      {
+        path: '/mbti/:mbtiId',
+        element: <MbtiPage />,
+      },
+    ],
   },
   {
-    path: '/signup',
-    element: <SignupPage />,
-  },
-  {
-    path: '/login',
-    element: <LoginPage />,
-  },
-  {
-    path: '/mbti/:mbtiId',
-    element: <MbtiPage />,
+    path: '/main',
+    element: <Layout />,
+    children: [
+      {
+        path: '/main/group',
+        element: <GroupPage />,
+      },
+    ],
   },
 ]);
 
