@@ -8,6 +8,7 @@ import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
 import com.spring.mmm.domain.mukgroups.service.port.MukboRepository;
 import com.spring.mmm.domain.mukgroups.service.port.MukgroupRepository;
+import com.spring.mmm.domain.users.infra.UserDetailsImpl;
 import com.spring.mmm.domain.users.infra.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -72,10 +73,22 @@ public class MukgroupServiceImpl implements MukgroupService{
     }
 
     @Override
-    public void exitMukgroup(UserEntity user) {
-        if(mukgroupRepository.findByMukgroupId(mukboRepository.findByUserId(user.getId()).getMukboId()).getIsSolo()){
+    public void exitMukgroup(UserDetailsImpl user, Long groupId) {
+        if(mukgroupRepository.findByMukgroupId(groupId).getIsSolo()){
             throw new MukGroupException(MukGroupErrorCode.SOLO_CANT_EXIT);
         }
-        saveSoloMukGroup(user.getNickname(), user);
+
+        MukboEntity mukboEntity = mukboRepository.findByUserId(user.getUser().getId());
+        Integer mukboCount = mukgroupRepository.countAllMukboByMukgroupId(groupId);
+
+        // 먹그룹 내 인원이 나밖에 없으면 폭파
+        if(mukboCount == 1){
+            mukboEntity.exitMukgroup();
+            mukgroupRepository.delete(mukgroupRepository.findByMukgroupId(groupId));
+        }
+        // 아니면 연관관계만 끊으면 된다.
+        else {
+            mukboEntity.exitMukgroup();
+        }
     }
 }

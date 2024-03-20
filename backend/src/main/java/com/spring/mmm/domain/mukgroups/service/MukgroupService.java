@@ -1,6 +1,7 @@
 package com.spring.mmm.domain.mukgroups.service;
 
 import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
+import com.spring.mmm.domain.users.infra.UserDetailsImpl;
 import com.spring.mmm.domain.users.infra.UserEntity;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,5 +19,5 @@ public interface MukgroupService {
 
     void kickMukbo(Long mukboId);
 
-    void exitMukgroup(UserEntity user);
+    void exitMukgroup(UserDetailsImpl user, Long groupId);
 }

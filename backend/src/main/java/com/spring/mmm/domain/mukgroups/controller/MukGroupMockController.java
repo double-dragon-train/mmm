@@ -60,9 +60,4 @@ public class MukGroupMockController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("{groupId}/exit")
-    public ResponseEntity<Void> exitMukgroup(@PathVariable Long groupId){
-        return ResponseEntity.ok().build();
-    }
-
 }
