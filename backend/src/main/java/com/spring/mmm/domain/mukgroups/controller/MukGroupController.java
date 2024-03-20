@@ -11,14 +11,12 @@ import com.spring.mmm.domain.mukgroups.service.MukgroupService;
 import com.spring.mmm.domain.muklogs.controller.request.MuklogRequest;
 import com.spring.mmm.domain.muklogs.controller.response.MuklogsResponse;
 import com.spring.mmm.domain.muklogs.service.MuklogService;
-import com.spring.mmm.domain.users.infra.UserDetailsImpl;
 import com.spring.mmm.domain.users.infra.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -92,11 +90,9 @@ public class MukGroupController {
 
     @PostMapping("{groupId}/users")
     public ResponseEntity<Void> inviteUser(
-            @AuthenticationPrincipal UserDetailsImpl user,
             @PathVariable Long groupId,
             @RequestBody MukboInviteRequest mukboInviteRequest
     ){
-        mukboService.inviteMukbo(user, groupId, mukboInviteRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

@@ -26,8 +26,8 @@ public class UserEntity {
     private String nickname;
     private String password;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    private MukboEntity mukboEntity;
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE)
+    private List<MukboEntity> mukboEntities;
 
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE)
     private List<MukBTIResultEntity> mukBTIResultEntities;
