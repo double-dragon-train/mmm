@@ -1,0 +1,6 @@
+spring:
+  config:
+    import:
+      - secret.yml
+  profiles:
+    default: local
