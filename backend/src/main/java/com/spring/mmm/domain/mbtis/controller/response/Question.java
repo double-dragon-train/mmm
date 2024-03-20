@@ -8,6 +8,9 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class QuestionsResponse {
-    List<Question> questions;
+public class Question {
+    private Long quizId;
+    private String context;
+    private String img;
+    private List<AnswerResponse> answers;
 }
