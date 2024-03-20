@@ -41,7 +41,7 @@ public class MukboEntity {
     @JoinColumn(name = "mukgroup_id")
     private MukgroupEntity mukGroupEntity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 

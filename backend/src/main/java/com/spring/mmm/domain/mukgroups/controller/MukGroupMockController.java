@@ -7,27 +7,16 @@ import com.spring.mmm.domain.mukgroups.controller.request.MukgroupMBTICalcReques
 import com.spring.mmm.domain.mukgroups.controller.request.MukgroupMBTIResponse;
 import com.spring.mmm.domain.mukgroups.controller.response.*;
 import com.spring.mmm.domain.mukjuks.domain.Badge;
-import com.spring.mmm.domain.muklogs.domain.MuklogEntity;
-import jakarta.websocket.server.PathParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("groups")
 public class MukGroupMockController {
-
-    @PostMapping("{groupId}/users")
-    public ResponseEntity<Void> inviteUser(
-            @PathVariable Long groupId,
-            @RequestBody MukboInviteRequest mukboInviteRequest
-            ){
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
 
     @PutMapping("{groupId}/users/{userId}/nickname")
     public ResponseEntity<Void> modifyMukboName(

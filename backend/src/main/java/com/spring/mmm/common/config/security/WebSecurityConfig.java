@@ -56,19 +56,22 @@ public class WebSecurityConfig {
 
         http
                 .authorizeHttpRequests((auth)->auth
-                .requestMatchers("/users/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE,"/users").authenticated()
-                        .requestMatchers(HttpMethod.PUT, "/users").authenticated()
-                .anyRequest().authenticated());
+//                .requestMatchers("/users/**", "/recommend").permitAll()
+//                        .requestMatchers(HttpMethod.DELETE,"/users").authenticated()
+//                        .requestMatchers(HttpMethod.PUT, "/users").authenticated()
+                        .requestMatchers("/**").permitAll()
+                                .anyRequest().permitAll()
+                );
+//                .anyRequest().authenticated());
 
         http
                 .addFilterBefore(new JwtAuthFilter(redisDao, jwtProvider),
                         UsernamePasswordAuthenticationFilter.class);
 
         // 401 Error 처리, Authorization 즉, 인증과정에서 실패할 시 처리
-        http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
+//        http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
         // 403 Error 처리, 인증과는 별개로 추가적인 권한이 충족되지 않는 경우
-        http.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);
+//        http.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);
         return http.build();
     }
 
