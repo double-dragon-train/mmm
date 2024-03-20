@@ -1,13 +1,9 @@
 package com.spring.mmm.domain.mukgroups.controller;
 
-import com.spring.mmm.domain.mbtis.domain.MBTI;
-import com.spring.mmm.domain.mukgroups.controller.request.MukboInviteRequest;
-import com.spring.mmm.domain.mukgroups.controller.request.MukbotModifyRequest;
 import com.spring.mmm.domain.mukgroups.controller.request.MukgroupMBTICalcRequest;
 import com.spring.mmm.domain.mukgroups.controller.request.MukgroupMBTIResponse;
 import com.spring.mmm.domain.mukgroups.controller.response.*;
 import com.spring.mmm.domain.mukjuks.domain.Badge;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,31 +13,6 @@ import java.util.List;
 @RestController
 @RequestMapping("groups")
 public class MukGroupMockController {
-
-    @PutMapping("{groupId}/users/{userId}/nickname")
-    public ResponseEntity<Void> modifyMukboName(
-            @PathVariable Long groupId,
-            @PathVariable Long userId,
-            @RequestBody String name){
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("{groupId}/mukbots")
-    public ResponseEntity<Void> inviteMokbot(
-            @PathVariable Long groupId,
-            @RequestBody MBTI mbti
-    ) {
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @PutMapping("{groupId}/mukbots/{mukbotsId}")
-    public ResponseEntity<Void> modifyMukbot(
-            @PathVariable Long groupId,
-            @PathVariable Long mukbotsId,
-            @RequestBody MukbotModifyRequest mukbotModifyRequest
-            ){
-        return ResponseEntity.ok().build();
-    }
 
     @DeleteMapping("{groupId}/mukbos/{mokboId}")
     public ResponseEntity<Void> deleteMukbo(@PathVariable Long groupId, @PathVariable Long mokboId){

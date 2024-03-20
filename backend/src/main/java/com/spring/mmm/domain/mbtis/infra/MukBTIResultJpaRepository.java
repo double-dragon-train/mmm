@@ -8,4 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface MukBTIResultJpaRepository extends JpaRepository<MukBTIResultEntity, Integer> {
+
+    @Query("select mr from MukBTIResultEntity mr where mr.mukboEntity.mukboId=:mukboId")
+    List<MukBTIResultEntity> findAllMukBTIResultByMukboId(@Param("mukboId") Long mukboId);
 }

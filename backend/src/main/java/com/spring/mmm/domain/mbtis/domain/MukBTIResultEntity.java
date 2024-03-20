@@ -32,4 +32,17 @@ public class MukBTIResultEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
+
+    public void modifyScore(Integer score){
+        this.score = score;
+    }
+
+    public static MukBTIResultEntity createByType(Integer score, MukBTIEntity mukBTIEntity, MukboEntity mukboEntity, UserEntity user){
+        return MukBTIResultEntity.builder()
+                .score(score)
+                .mukBTIEntity(mukBTIEntity)
+                .mukboEntity(mukboEntity)
+                .userEntity(user)
+                .build();
+    }
 }
