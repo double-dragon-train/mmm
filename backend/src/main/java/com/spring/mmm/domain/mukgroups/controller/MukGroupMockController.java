@@ -14,11 +14,6 @@ import java.util.List;
 @RequestMapping("groups")
 public class MukGroupMockController {
 
-    @DeleteMapping("{groupId}/mukbos/{mokboId}")
-    public ResponseEntity<Void> deleteMukbo(@PathVariable Long groupId, @PathVariable Long mokboId){
-        return ResponseEntity.ok().build();
-    }
-
     @PostMapping("{groupId}/mbti")
     public ResponseEntity<MukgroupMBTIResponse> getGroupMBTI(
             @PathVariable Long groupId,

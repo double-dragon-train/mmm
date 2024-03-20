@@ -32,6 +32,7 @@ public class MukboEntity {
     private MukboType type;
 
     @OneToMany(mappedBy = "mukboEntity")
+
     private List<MukBTIResultEntity> mukBTIResultEntities;
 
     @OneToMany(mappedBy = "mukboEntity", cascade = CascadeType.REMOVE)
@@ -75,5 +76,9 @@ public class MukboEntity {
 
     public void modifyMukBTIResult(List<MukBTIResultEntity> mukBTIResults){
         this.mukBTIResultEntities = mukBTIResults;
+    }
+
+    public void exitMukgroup(){
+        this.mukGroupEntity = null;
     }
 }
