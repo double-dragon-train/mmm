@@ -21,19 +21,20 @@ const router = createBrowserRouter([
     path: '/',
     element: <LandingPage />,
     children: [
-      {
-        path: '/signup',
-        element: <SignupPage />,
-      },
-      {
-        path: '/login',
-        element: <LoginPage />,
-      },
-      {
-        path: '/mbti/:mbtiId',
-        element: <MbtiPage />,
-      },
+      
     ],
+  },
+  {
+    path: '/signup',
+    element: <SignupPage />,
+  },
+  {
+    path: '/login',
+    element: <LoginPage />,
+  },
+  {
+    path: '/mbti/:mbtiId',
+    element: <MbtiPage />,
   },
   {
     path: '/main',
