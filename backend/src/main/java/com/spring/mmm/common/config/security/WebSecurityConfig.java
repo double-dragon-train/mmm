@@ -56,10 +56,13 @@ public class WebSecurityConfig {
 
         http
                 .authorizeHttpRequests((auth)->auth
-                .requestMatchers("/users/**", "/recommend").permitAll()
-                        .requestMatchers(HttpMethod.DELETE,"/users").authenticated()
-                        .requestMatchers(HttpMethod.PUT, "/users").authenticated()
-                .anyRequest().authenticated());
+//                .requestMatchers("/users/**", "/recommend").permitAll()
+//                        .requestMatchers(HttpMethod.DELETE,"/users").authenticated()
+//                        .requestMatchers(HttpMethod.PUT, "/users").authenticated()
+                        .requestMatchers("/**").permitAll()
+                                .anyRequest().permitAll()
+                );
+//                .anyRequest().authenticated());
 
         http
                 .addFilterBefore(new JwtAuthFilter(redisDao, jwtProvider),
