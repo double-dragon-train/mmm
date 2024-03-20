@@ -14,8 +14,8 @@ $height-input: 36px;
     font-size: 16px;
     color: rgba($color-gray, 0.7);
     margin-top: 16px;
-    a:visited {
-      color: rgb(165, 165, 165);
+    a:visited, a:link {
+      color: rgba(#2a43ce, 0.5);
     }
   }
 }
@@ -33,4 +33,8 @@ $height-input: 36px;
     top: 10px;
     width: 15px;
   }
+}
+
+.checkMessage {
+  color: rgba(#f32025, 0.5);
 }

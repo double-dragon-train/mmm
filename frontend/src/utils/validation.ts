@@ -25,8 +25,8 @@ export function checkPasswordValidation(input: string): boolean {
       return false;
     }
   
-    // 각각 한글, 영어(대소문자), 숫자, 특수문자가 최소 1개 이상 포함되어 있는지 확인하는 정규 표현식
-    const regex: RegExp = /^(?=.*[ㄱ-힣])(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[ㄱ-힣a-zA-Z\d!@#$%^&*]{8,20}$/;
+    // 각각 영어(대소문자), 숫자, 특수문자가 최소 1개 이상 포함되어 있는지 확인하는 정규 표현식
+    const regex: RegExp = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,20}$/;
   
     // 정규 표현식을 사용하여 비밀번호가 조건에 부합하는지 확인하고 결과를 반환
     return regex.test(input);

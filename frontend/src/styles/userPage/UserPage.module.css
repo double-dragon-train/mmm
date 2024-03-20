@@ -10,8 +10,8 @@
   color: rgba(101, 101, 101, 0.7);
   margin-top: 16px;
 }
-.wrapper > span a:visited {
-  color: rgb(165, 165, 165);
+.wrapper > span a:visited, .wrapper > span a:link {
+  color: rgba(42, 67, 206, 0.5);
 }
 
 .subLogo {
@@ -27,4 +27,8 @@
   right: 15px;
   top: 10px;
   width: 15px;
+}
+
+.checkMessage {
+  color: rgba(243, 32, 37, 0.5);
 }/*# sourceMappingURL=UserPage.module.css.map */

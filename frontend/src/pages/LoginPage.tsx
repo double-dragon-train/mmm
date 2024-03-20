@@ -68,7 +68,7 @@ function LoginPage() {
           <Input
             title="비밀번호"
             info={
-              '8~20자\n(한, 영(대, 소), 숫자, 특수문자 각 1글자 이상)'
+              '8~20자\n(영어(대/소), 숫자, 특수문자 각 1글자 이상)'
             }
             inputName="password"
             inputValue={password}
