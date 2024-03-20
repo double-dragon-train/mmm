@@ -16,20 +16,28 @@ public class MBTIMockController {
 
     @GetMapping
     public ResponseEntity<QuestionsResponse> sendQuestion(){
-        List<AnswerResponse> answers = new ArrayList<>();
-        AnswerResponse answerResponse = AnswerResponse.builder()
-                .answerId(1L)
-                .answerContext("답변1")
-                .answerImage("답변이미지1")
-                .build();
-        answers.add(answerResponse);
-        QuestionsResponse questionsResponse = QuestionsResponse.builder()
-                .quizId(1L)
-                .context("질문1")
-                .img("질문이미지1")
-                .answers(answers)
-                .build();
-        return ResponseEntity.ok(questionsResponse);
+        List<Question> questions = new ArrayList<>();
+
+        for(int i = 1; i <= 15; i++) {
+            List<AnswerResponse> answers = new ArrayList<>();
+            int ansNum = i % 3 == 0 ? 2 : 5;
+            for(int j = 1; j <= ansNum; j++) {
+                AnswerResponse answerResponse = AnswerResponse.builder()
+                        .answerId(Long.valueOf(j))
+                        .answerContext("답변" + j)
+                        .answerImage("답변이미지" + j)
+                        .build();
+                answers.add(answerResponse);
+            }
+            Question questionsResponse = Question.builder()
+                    .quizId(Long.valueOf(i))
+                    .context("질문" + i)
+                    .img("질문이미지" + i)
+                    .answers(answers)
+                    .build();
+            questions.add(questionsResponse);
+        }
+        return ResponseEntity.ok(QuestionsResponse.builder().questions(questions).build());
     }
 
     @PostMapping
