@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
-    public boolean nickname_verify(String nickname) {
+    public boolean nicknameVerify(String nickname) {
 
         boolean isNicknameExist = userRepository.existsByNickname(nickname);
 

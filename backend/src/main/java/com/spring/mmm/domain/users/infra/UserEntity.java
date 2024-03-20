@@ -6,6 +6,7 @@ import com.spring.mmm.domain.users.controller.request.UserJoinRequest;
 import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.users.event.UserDeletedEvent;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 
 import java.util.List;
@@ -22,7 +23,10 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
+
+    @Email
     private String email;
+
     private String nickname;
     private String password;
 
