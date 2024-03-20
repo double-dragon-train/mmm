@@ -25,9 +25,11 @@
 }
 
 html {
-  height: 100vh;
+  height: 100dvh;
+  width: 100dvw;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 button {
@@ -45,6 +47,7 @@ ol {
 }
 
 body {
+  max-width: 350px;
   height: 100%;
   width: 100%;
   display: flex;

@@ -2,44 +2,68 @@ import { Link } from 'react-router-dom';
 import styles from '../styles/landingPage/LandingPage.module.css';
 import '../styles/common/buttons.css';
 import mainLogo from '../assets/images/mainLogo.png';
-import dakbal from '../assets/images/dakbal.jpg';
-import { fetchRandomFoodList } from '../utils/http';
+import { getRandomFoodList } from '../api/recommendApi';
 import { useQuery } from 'react-query';
+import { useEffect, useState } from 'react';
 
 function LandingPage() {
-  const { data } = useQuery(["randomFoodList"], fetchRandomFoodList)
-  console.log(data)
-  //   refetchOnWindowFocus: false, // react-query는 사용자가 사용하는 윈도우가 다른 곳을 갔다가 다시 화면으로 돌아오면 이 함수를 재실행합니다. 그 재실행 여부 옵션 입니다.
-  //   retry: 0, // 실패시 재호출 몇번z 할지
-  //   onSuccess: data => {
-  //     // 성공시 호출
-  //     console.log(data);
-  //   },
-  //   onError: e => {
-  //     // 실패시 호출 (401, 404 같은 error가 아니라 정말 api 호출이 실패한 경우만 호출됩니다.)
-  //     // 강제로 에러 발생시키려면 api단에서 throw Error 날립니다. (참조: https://react-query.tanstack.com/guides/query-functions#usage-with-fetch-and-other-clients-that-do-not-throw-by-default)
-  //     console.log(e.message);
-  //   }
-  // });
+  const { data, isLoading, isError } = useQuery(
+    ['randomFoodList'],
+    getRandomFoodList
+  );
+  const [currentImageIndex, setCurrentImageIndex] =
+    useState<number>(0);
+  const [isHovered, setIsHovered] = useState<boolean>(false);
 
-  // if (isLoading) {
-  //   return <span>Loading...</span>;
-  // }
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!isHovered) {
+        setCurrentImageIndex(
+          (prevIndex) => (prevIndex + 1) % data.foods.length
+        );
+      }
+    }, 150);
 
-  // if (isError) {
-  //   return <span>Error: {error.message}</span>;
-  // }
+    return () => clearInterval(interval);
+  }, [isHovered, data]);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
+  if (isLoading) {
+    return <div>isLoding...</div>;
+  }
+  if (isError) {
+    return <div>error</div>;
+  }
 
   return (
     <div className={styles.wrapper}>
       <img className={styles.mainLogo} src={mainLogo} alt="" />
-      <img className={styles.randomFood} src={dakbal} alt="" />
+      <div
+        className={styles.randomFoodBox}
+        onMouseOver={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <img
+          className={styles.randomFood}
+          src={data.foods[currentImageIndex].imageSrc}
+          alt=""
+        />
+        <span>{data.foods[currentImageIndex].name}</span>
+      </div>
+
       <div>
-        <Link to="/login">
-          <button className="landingButton">로그인</button>
+        <Link to="/login" className="landingButton">
+          로그인
         </Link>
-        <Link to="/mbti/1">
-          <button className="landingButton">먹BTI 검사</button>
+        <Link to="/mbti/1" className="landingButton">
+          먹BTI 검사
         </Link>
       </div>
     </div>
