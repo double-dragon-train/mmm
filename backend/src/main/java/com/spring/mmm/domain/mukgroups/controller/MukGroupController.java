@@ -116,4 +116,12 @@ public class MukGroupController {
         mukgroupService.kickMukbo(mukboId);
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("{groupId}/exit")
+    public ResponseEntity<Void> exitMukgroup(
+            @AuthenticationPrincipal UserDetailsImpl user,
+            @PathVariable Long groupId){
+        mukgroupService.exitMukgroup(user, groupId);
+        return ResponseEntity.ok().build();
+    }
 }

@@ -24,4 +24,9 @@ public class MukgroupRepositoryImpl implements MukgroupRepository {
     public void delete(MukgroupEntity mukgroupEntity) {
         mukgroupJpaRepository.delete(mukgroupEntity);
     }
+
+    @Override
+    public Integer countAllMukboByMukgroupId(Long mukgroupId) {
+        return mukgroupJpaRepository.countAllMukboByMukgroupId(mukgroupId);
+    }
 }
