@@ -4,6 +4,8 @@ import com.spring.mmm.common.config.jwt.JwtProvider;
 import com.spring.mmm.domain.users.controller.request.*;
 import com.spring.mmm.domain.users.controller.response.TokenResponse;
 import com.spring.mmm.domain.users.controller.response.UserEmailResponse;
+import com.spring.mmm.domain.users.exception.UserErrorCode;
+import com.spring.mmm.domain.users.exception.UserException;
 import com.spring.mmm.domain.users.infra.UserDetailsImpl;
 import com.spring.mmm.domain.users.infra.UserEntity;
 import com.spring.mmm.domain.users.service.UserEmailSendService;
@@ -36,9 +38,9 @@ public class UserController {
     }
 
     @GetMapping("/{nickname}")
-    public Boolean nickname_verify(@PathVariable String nickname) {
+    public Boolean nicknameVerify(@PathVariable String nickname) {
 
-        return userService.nickname_verify(nickname);
+        return userService.nicknameVerify(nickname);
     }
 
     @PutMapping("/")
@@ -76,21 +78,19 @@ public class UserController {
 
     @PostMapping ("/mailSend")
     public String mailSend(@RequestBody @Valid UserEmailRequest userEmailRequest){
-        System.out.println("이메일 인증 요청이 들어옴");
-        System.out.println("이메일 인증 이메일 :"+userEmailRequest.getEmail());
         return userEmailSendService.joinEmail(userEmailRequest.getEmail());
     }
     @PostMapping("/mailAuthCheck")
     public String authCheck(@RequestBody @Valid UserEmailCheckRequest userEmailCheckRequest){
-        Boolean Checked=userEmailSendService.CheckAuthNum(
+        Boolean checked=userEmailSendService.checkAuthNum(
                 userEmailCheckRequest.getEmail(),
                 userEmailCheckRequest.getAuthNum()
         );
-        if(Checked){
+        if(checked){
             return "ok";
         }
         else{
-            throw new NullPointerException("뭔가 잘못!");
+            throw new UserException(UserErrorCode.CODE_NOT_SAME_ERROR);
         }
     }
 

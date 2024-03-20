@@ -59,15 +59,12 @@ public class UserEmailSendService {
         redisDao.setDataExpire(Integer.toString(authNumber),toMail,60*5L);
     }
 
-    public boolean CheckAuthNum(String email,String authNum){
-        if(redisDao.getData(authNum)==null){
+    public boolean checkAuthNum(String email,String authNum){
+        if(redisDao.getData(authNum)==null | !redisDao.getData(authNum).equals(email)){
             return false;
         }
-        else if(redisDao.getData(authNum).equals(email)){
+        else {
             return true;
-        }
-        else{
-            return false;
         }
     }
 

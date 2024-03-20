@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface UserService {
     void join(UserJoinRequest UserJoinRequest);
 
-    boolean nickname_verify(String nickname);
+    boolean nicknameVerify(String nickname);
 
     void modify(UserDetailsImpl user, UserModifyRequest userModifyRequest);
 
