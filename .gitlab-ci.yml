@@ -7,12 +7,19 @@ image: gradle:alpine
 test-backend:       # This job runs in the build stage, which runs first.
   image: gradle:jdk21-alpine
   stage: test
+  before_script:
+    - echo "$SECRET_YML" > backend/src/main/resources/secret.yml
   script:
     - cd backend
     - chmod +x gradlew
     - ./gradlew test
   rules:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event' && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "be"
+  artifacts:
+    paths:
+      - backend/build/reports/tests/test/*
+    name: "$CI_COMMIT_REF_NAME"
+    expire_in: 1 day
 
 test-frontend:       # This job runs in the build stage, which runs first.
   image: node:18-alpine
@@ -38,6 +45,8 @@ build-backend:       # This job runs in the build stage, which runs first.
     DOCKER_HOST: tcp://localhost:2375
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ''
+  before_script:
+    - echo "$SECRET_YML" > backend/src/main/resources/secret.yml
   script:
     - cd backend
     - docker build -t $DOCKER_HUB_ID/mmm-backend-dev .
@@ -82,8 +91,8 @@ deploy-backend:       # This job runs in the build stage, which runs first.
     - ssh-add "$SSH_PRIVATE_KEY"
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
-    - ssh-keyscan -H DEVELOP_SERVER_ADDRESS >> ~/.ssh/known_hosts
-    - ssh $REMOTE_USERNAME@DEVELOP_SERVER_ADDRESS 'sh be.sh'
+    - ssh-keyscan -H $DEVELOP_SERVER_ADDRESS >> ~/.ssh/known_hosts
+    - ssh $REMOTE_USERNAME@$DEVELOP_SERVER_ADDRESS 'sh be.sh'
   needs: [build-backend]
   only:
     - be
@@ -100,9 +109,11 @@ deploy-frontend:       # This job runs in the build stage, which runs first.
     - ssh-add "$SSH_PRIVATE_KEY"
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
-    - ssh-keyscan -H DEVELOP_SERVER_ADDRESS >> ~/.ssh/known_hosts
-    - ssh $REMOTE_USERNAME@DEVELOP_SERVER_ADDRESS 'sh fe.sh'
+    - ssh-keyscan -H $DEVELOP_SERVER_ADDRESS >> ~/.ssh/known_hosts
+    - ssh $REMOTE_USERNAME@$DEVELOP_SERVER_ADDRESS 'sh fe.sh'
   needs: [build-frontend]
   only:
     - fe
+
+
 
