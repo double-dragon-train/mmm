@@ -17,7 +17,7 @@ function LandingPage() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (!isHovered) {
+      if (!isHovered && data) {
         setCurrentImageIndex(
           (prevIndex) => (prevIndex + 1) % data.foods.length
         );
@@ -25,7 +25,7 @@ function LandingPage() {
     }, 150);
 
     return () => clearInterval(interval);
-  }, [isHovered, data]);
+  }, [isHovered]);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -62,7 +62,7 @@ function LandingPage() {
         <Link to="/login" className="landingButton">
           로그인
         </Link>
-        <Link to="/mbti/1" className="landingButton">
+        <Link to="/mbti/0" className="landingButton">
           먹BTI 검사
         </Link>
       </div>

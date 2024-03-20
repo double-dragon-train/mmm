@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import Input from '../components/common/Input';
 import styles from '../styles/userPage/UserPage.module.css';
+// import styles2 from '../styles/userPage/UserPage.module.css';
+// import styles from '../styles/userPage/SignupPage.module.css';
 import Button from '../components/common/Button';
 import subLogo from '../assets/images/subLogo.png';
 import closedEye from '../assets/images/closedEye.png';
@@ -16,7 +18,7 @@ import { useQuery } from 'react-query';
 import { useMutation } from '@tanstack/react-query';
 
 function SignupPage() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [inputList, setInputList] = useState({
     nickname: '',
     email: '',
@@ -103,11 +105,11 @@ function SignupPage() {
 
   // 회원가입
   const { mutate } = useMutation({
-    mutationFn:postSignup,
+    mutationFn: postSignup,
     onSuccess: () => {
-      navigate('/login')
-    }
-  })
+      navigate('/login');
+    },
+  });
 
   const handleSignup = () => {
     const signupData = {

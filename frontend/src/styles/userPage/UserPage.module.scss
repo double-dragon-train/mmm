@@ -10,11 +10,18 @@ $height-input: 36px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  > section {
+    > div {
+      display: flex;
+      gap: 10px;
+    }
+  }
   > span {
     font-size: 16px;
     color: rgba($color-gray, 0.7);
     margin-top: 16px;
-    a:visited, a:link {
+    a:visited,
+    a:link {
       color: rgba(#2a43ce, 0.5);
     }
   }

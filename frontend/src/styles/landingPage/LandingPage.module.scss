@@ -13,6 +13,13 @@ $color-main: #2a43ce;
     width: 100%;
     align-items: center;
   }
+  section {
+    > div {
+      display: flex;
+      gap: 10px;
+    }
+  }
+
 }
 .mainLogo {
   width: 80vw;
@@ -50,11 +57,4 @@ $color-main: #2a43ce;
     // -webkit-text-stroke: 1px rgba($color-main, 0.7);
   }
   font-weight: 400;
-}
-
-section {
-  > div {
-    display: flex;
-    gap: 10px;
-  }
 }
