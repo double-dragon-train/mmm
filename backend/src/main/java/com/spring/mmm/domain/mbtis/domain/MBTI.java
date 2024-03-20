@@ -32,4 +32,16 @@ public class MBTI {
         }
         return mbtiBuilder.build();
     }
+
+    public void modifyScore(Integer score, MukBTIType mukBTIType){
+        switch (mukBTIType){
+            case MukBTIType.EI -> this.EI = score;
+            case MukBTIType.NS -> this.NS = score;
+            case MukBTIType.TF -> this.TF = score;
+            case MukBTIType.JP -> this.JP = score;
+            case MukBTIType.MINT -> this.Mint = score;
+            case MukBTIType.PINE -> this.Pine = score;
+            case MukBTIType.DIE -> this.Die = score;
+        }
+    }
 }

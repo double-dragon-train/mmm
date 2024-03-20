@@ -14,14 +14,6 @@ import java.util.List;
 @RequestMapping("groups")
 public class MukGroupMockController {
 
-    @PostMapping("{groupId}/mbti")
-    public ResponseEntity<MukgroupMBTIResponse> getGroupMBTI(
-            @PathVariable Long groupId,
-            @RequestBody MukgroupMBTICalcRequest mbtiCalcRequest
-            ){
-        return ResponseEntity.ok().build();
-    }
-
     @GetMapping("{groupId}/badges")
     public ResponseEntity<MukgroupMukjukResponse> getGroupMukjuks(@PathVariable Long groupId){
         Badge badge1 = Badge.builder()
