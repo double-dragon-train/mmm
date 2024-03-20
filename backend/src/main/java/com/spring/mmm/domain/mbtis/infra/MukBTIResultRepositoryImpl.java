@@ -1,6 +1,7 @@
 package com.spring.mmm.domain.mbtis.infra;
 
 import com.spring.mmm.domain.mbtis.domain.MukBTIResultEntity;
+import com.spring.mmm.domain.mbtis.domain.MukBTIType;
 import com.spring.mmm.domain.mbtis.service.port.MukBTIResultRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -14,5 +15,10 @@ public class MukBTIResultRepositoryImpl implements MukBTIResultRepository {
     @Override
     public List<MukBTIResultEntity> findAllMukBTIResultByMukboId(Long mukboId) {
         return mukBTIResultJpaRepository.findAllMukBTIResultByMukboId(mukboId);
+    }
+
+    @Override
+    public List<MukBTIResultEntity> findAllMukBTIResultByMukboIdAndMukBTIType(List<Long> mukboId, MukBTIType mukBTIType) {
+        return findAllMukBTIResultByMukboIdAndMukBTIType(mukboId, mukBTIType);
     }
 }

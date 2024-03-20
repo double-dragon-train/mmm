@@ -1,5 +1,7 @@
 package com.spring.mmm.domain.mukgroups.service;
 
+import com.spring.mmm.domain.mbtis.domain.MBTI;
+import com.spring.mmm.domain.mukgroups.controller.request.MukgroupMBTICalcRequest;
 import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
 import com.spring.mmm.domain.users.infra.UserDetailsImpl;
 import com.spring.mmm.domain.users.infra.UserEntity;
@@ -20,4 +22,6 @@ public interface MukgroupService {
     void kickMukbo(Long mukboId);
 
     void exitMukgroup(UserDetailsImpl user, Long groupId);
+
+    MBTI calcGroupMukBTI(Long groupId, MukgroupMBTICalcRequest mbtiCalcRequest);
 }

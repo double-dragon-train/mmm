@@ -124,4 +124,15 @@ public class MukGroupController {
         mukgroupService.exitMukgroup(user, groupId);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("{groupId}/mbti")
+    public ResponseEntity<MukgroupMBTIResponse> getGroupMBTI(
+            @PathVariable Long groupId,
+            @RequestBody MukgroupMBTICalcRequest mbtiCalcRequest
+    ){
+        return ResponseEntity.ok(MukgroupMBTIResponse
+                .builder()
+                .mbti(mukgroupService.calcGroupMukBTI(groupId, mbtiCalcRequest))
+                .build());
+    }
 }
