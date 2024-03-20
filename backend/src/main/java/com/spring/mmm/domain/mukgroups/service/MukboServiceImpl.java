@@ -1,5 +1,7 @@
 package com.spring.mmm.domain.mukgroups.service;
 
+import com.spring.mmm.domain.mbtis.controller.response.MBTIResult;
+import com.spring.mmm.domain.mbtis.domain.MBTI;
 import com.spring.mmm.domain.mbtis.service.MukBTIService;
 import com.spring.mmm.domain.mukgroups.controller.request.MukboInviteRequest;
 import com.spring.mmm.domain.mukgroups.controller.response.MukboResponse;
@@ -59,9 +61,10 @@ public class MukboServiceImpl implements MukboService{
     }
 
     @Override
-    public void modifyMukbot(Long mukboId, String name) {
-        MukboEntity mukbotEntity =mukboRepository.findByMukboId(mukboId);
+    public void modifyMukbot(Long mukboId, MBTI mbti, String name) {
+        MukboEntity mukbotEntity = mukboRepository.findByMukboId(mukboId);
         mukbotEntity.modifyName(name);
+
         mukboRepository.save(mukbotEntity);
     }
 

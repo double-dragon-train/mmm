@@ -1,5 +1,6 @@
 package com.spring.mmm.domain.mukgroups.service;
 
+import com.spring.mmm.domain.mbtis.domain.MBTI;
 import com.spring.mmm.domain.mukgroups.controller.request.MukboInviteRequest;
 import com.spring.mmm.domain.mukgroups.controller.response.MukboResponse;
 import com.spring.mmm.domain.users.infra.UserDetailsImpl;
@@ -14,7 +15,7 @@ public interface MukboService {
 
     void inviteMukbo(UserDetailsImpl user, Long groupId, MukboInviteRequest mukboInviteRequest);
 
-    void modifyMukbot(Long mukbotId, String name);
+    void modifyMukbot(Long mukbotId, MBTI mbti, String name);
 
     void modifyMokbo(Long userId, String name);
 

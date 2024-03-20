@@ -105,7 +105,7 @@ public class MukGroupController {
             @PathVariable Long mukbotsId,
             @RequestBody MukbotModifyRequest mukbotModifyRequest
     ){
-        mukboService.modifyMukbot(mukbotsId, mukbotModifyRequest.getName());
+        mukboService.modifyMukbot(mukbotsId, mukbotModifyRequest.getMbti(), mukbotModifyRequest.getName());
         return ResponseEntity.ok().build();
     }
 }
