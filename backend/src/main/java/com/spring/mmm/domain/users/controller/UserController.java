@@ -1,17 +1,17 @@
 package com.spring.mmm.domain.users.controller;
 
 import com.spring.mmm.common.config.jwt.JwtProvider;
-import com.spring.mmm.domain.users.controller.request.UserJoinRequest;
-import com.spring.mmm.domain.users.controller.request.UserLoginRequest;
-import com.spring.mmm.domain.users.controller.request.UserModifyRequest;
+import com.spring.mmm.domain.users.controller.request.*;
 import com.spring.mmm.domain.users.controller.response.TokenResponse;
 import com.spring.mmm.domain.users.controller.response.UserEmailResponse;
 import com.spring.mmm.domain.users.infra.UserDetailsImpl;
 import com.spring.mmm.domain.users.infra.UserEntity;
+import com.spring.mmm.domain.users.service.UserEmailSendService;
 import com.spring.mmm.domain.users.service.UserService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,6 +26,7 @@ public class UserController {
 
     private final UserService userService;
     private final JwtProvider jwtProvider;
+    private final UserEmailSendService userEmailSendService;
 
     @PostMapping("/join")
     public ResponseEntity<Void> join(@RequestBody UserJoinRequest userJoinRequest) {
@@ -71,6 +72,26 @@ public class UserController {
         UserEmailResponse userEmailResponse = UserEmailResponse.of(email);
 
         return ResponseEntity.ok(userEmailResponse);
+    }
+
+    @PostMapping ("/mailSend")
+    public String mailSend(@RequestBody @Valid UserEmailRequest userEmailRequest){
+        System.out.println("이메일 인증 요청이 들어옴");
+        System.out.println("이메일 인증 이메일 :"+userEmailRequest.getEmail());
+        return userEmailSendService.joinEmail(userEmailRequest.getEmail());
+    }
+    @PostMapping("/mailAuthCheck")
+    public String authCheck(@RequestBody @Valid UserEmailCheckRequest userEmailCheckRequest){
+        Boolean Checked=userEmailSendService.CheckAuthNum(
+                userEmailCheckRequest.getEmail(),
+                userEmailCheckRequest.getAuthNum()
+        );
+        if(Checked){
+            return "ok";
+        }
+        else{
+            throw new NullPointerException("뭔가 잘못!");
+        }
     }
 
 }
