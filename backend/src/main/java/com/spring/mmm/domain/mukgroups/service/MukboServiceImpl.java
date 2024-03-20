@@ -7,6 +7,7 @@ import com.spring.mmm.domain.mukgroups.controller.response.MukbosResponse;
 import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.mukgroups.domain.MukboType;
 import com.spring.mmm.domain.mukgroups.service.port.MukboRepository;
+import com.spring.mmm.domain.mukus.controller.response.Mukbo;
 import com.spring.mmm.domain.users.exception.UserErrorCode;
 import com.spring.mmm.domain.users.exception.UserException;
 import com.spring.mmm.domain.users.infra.UserDetailsImpl;
@@ -53,12 +54,22 @@ public class MukboServiceImpl implements MukboService{
         mukboRepository.delete(mukboRepository.findByMukboId(mukboInviteRequest.getMukbotId()));
 
         mukboEntity.modifyName(mukboInviteRequest.getNickname());
-        mukboEntity.modifyGroup(user.getUser().getMukboEntity().getMukGroupEntity().getMukgroupId());
+        mukboEntity.modifyGroup(mukboRepository.findByUserId(user.getUser().getId()).getMukGroupEntity().getMukgroupId());
+        mukboRepository.save(mukboEntity);
     }
 
     @Override
-    public void modifyMukbo(Long mukboId, String name) {
-        mukboRepository.findByMukboId(mukboId).modifyName(name);
+    public void modifyMukbot(Long mukboId, String name) {
+        MukboEntity mukbotEntity =mukboRepository.findByMukboId(mukboId);
+        mukbotEntity.modifyName(name);
+        mukboRepository.save(mukbotEntity);
+    }
+
+    @Override
+    public void modifyMokbo(Long userId, String name) {
+        MukboEntity mukboEntity = mukboRepository.findByUserId(userId);
+        mukboEntity.modifyName(name);
+        mukboRepository.save(mukboEntity);
     }
 
     @Override

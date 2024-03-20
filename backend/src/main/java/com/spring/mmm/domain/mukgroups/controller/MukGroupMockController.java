@@ -18,31 +18,6 @@ import java.util.List;
 @RequestMapping("groups")
 public class MukGroupMockController {
 
-    @PutMapping("{groupId}/users/{userId}/nickname")
-    public ResponseEntity<Void> modifyMukboName(
-            @PathVariable Long groupId,
-            @PathVariable Long userId,
-            @RequestBody String name){
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("{groupId}/mukbots")
-    public ResponseEntity<Void> inviteMokbot(
-            @PathVariable Long groupId,
-            @RequestBody MBTI mbti
-    ) {
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @PutMapping("{groupId}/mukbots/{mukbotsId}")
-    public ResponseEntity<Void> modifyMukbot(
-            @PathVariable Long groupId,
-            @PathVariable Long mukbotsId,
-            @RequestBody MukbotModifyRequest mukbotModifyRequest
-            ){
-        return ResponseEntity.ok().build();
-    }
-
     @DeleteMapping("{groupId}/mukbos/{mokboId}")
     public ResponseEntity<Void> deleteMukbo(@PathVariable Long groupId, @PathVariable Long mokboId){
         return ResponseEntity.ok().build();
