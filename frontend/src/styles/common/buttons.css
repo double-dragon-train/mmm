@@ -18,6 +18,10 @@
   margin-top: 20px;
 }
 
+.userButton:disabled {
+  background-color: rgba(101, 101, 101, 0.3);
+}
+
 .miniBlueButton {
   width: 50px;
   height: 36px;
