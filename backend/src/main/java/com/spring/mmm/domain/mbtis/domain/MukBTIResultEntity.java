@@ -36,4 +36,13 @@ public class MukBTIResultEntity {
     public void modifyScore(Integer score){
         this.score = score;
     }
+
+    public static MukBTIResultEntity createByType(Integer score, MukBTIEntity mukBTIEntity, MukboEntity mukboEntity, UserEntity user){
+        return MukBTIResultEntity.builder()
+                .score(score)
+                .mukBTIEntity(mukBTIEntity)
+                .mukboEntity(mukboEntity)
+                .userEntity(user)
+                .build();
+    }
 }

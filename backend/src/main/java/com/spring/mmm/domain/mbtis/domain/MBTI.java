@@ -25,9 +25,9 @@ public class MBTI {
                 case MukBTIType.NS -> mbtiBuilder.NS(mukBTIResult.getScore());
                 case MukBTIType.TF -> mbtiBuilder.TF(mukBTIResult.getScore());
                 case MukBTIType.JP -> mbtiBuilder.JP(mukBTIResult.getScore());
-                case MukBTIType.Mint -> mbtiBuilder.Mint(mukBTIResult.getScore());
-                case MukBTIType.Pine -> mbtiBuilder.Pine(mukBTIResult.getScore());
-                case MukBTIType.Die -> mbtiBuilder.Die(mukBTIResult.getScore());
+                case MukBTIType.MINT -> mbtiBuilder.Mint(mukBTIResult.getScore());
+                case MukBTIType.PINE -> mbtiBuilder.Pine(mukBTIResult.getScore());
+                case MukBTIType.DIE -> mbtiBuilder.Die(mukBTIResult.getScore());
             }
         }
         return mbtiBuilder.build();

@@ -1,13 +1,9 @@
 package com.spring.mmm.domain.mukgroups.controller;
 
-import com.spring.mmm.domain.mbtis.domain.MBTI;
-import com.spring.mmm.domain.mukgroups.controller.request.MukboInviteRequest;
-import com.spring.mmm.domain.mukgroups.controller.request.MukbotModifyRequest;
 import com.spring.mmm.domain.mukgroups.controller.request.MukgroupMBTICalcRequest;
 import com.spring.mmm.domain.mukgroups.controller.request.MukgroupMBTIResponse;
 import com.spring.mmm.domain.mukgroups.controller.response.*;
 import com.spring.mmm.domain.mukjuks.domain.Badge;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

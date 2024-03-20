@@ -72,4 +72,8 @@ public class MukboEntity {
     public void modifyName(String name){
         this.name = name;
     }
+
+    public void modifyMukBTIResult(List<MukBTIResultEntity> mukBTIResults){
+        this.mukBTIResultEntities = mukBTIResults;
+    }
 }
