@@ -11,10 +11,10 @@ public interface MukboJpaRepository extends JpaRepository<MukboEntity, Long> {
     @Query("select m from MukboEntity m where m.userEntity.id=:userId")
     MukboEntity findByUserId(Long userId);
 
-    @Query("select m from MukboEntity m where m.mukGroupEntity.mukgroupId=:groupId and m.type=:mukboType")
+    @Query("select m from MukboEntity m where m.mukgroupEntity.mukgroupId=:groupId and m.type=:mukboType")
     List<MukboEntity> findAllMukboByGroupIdAndMukboType(Long groupId, MukboType mukboType);
 
-    @Query("select m from MukboEntity m where m.mukGroupEntity.mukgroupId=:groupId")
+    @Query("select m from MukboEntity m where m.mukgroupEntity.mukgroupId=:groupId")
     List<MukboEntity> findAllMukboByGroupId(Long groupId);
 
     @Query("select m from MukboEntity m where m.mukboId=:mukboId")

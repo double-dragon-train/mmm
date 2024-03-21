@@ -23,5 +23,5 @@ public class MukgroupMukjukEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mukgroup_id")
-    private MukgroupEntity mukGroupEntity;
+    private MukgroupEntity mukgroupEntity;
 }
