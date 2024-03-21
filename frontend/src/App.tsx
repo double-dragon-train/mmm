@@ -12,16 +12,34 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
-import Layout from './components/common/Layout';
 import GroupPage from './pages/GroupPage';
+import ProtectedRoute from './components/common/ProtectedRoute';
+import MainPage from './pages/MainPage';
 
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
     path: '/',
+    element: <ProtectedRoute />,
+    children: [
+      {
+        path: '/',
+        element: <MainPage />,
+      },
+      {
+        path: '/group',
+        element: <GroupPage />,
+      },
+      {
+        path: '/profile',
+        element: <ProfilePage />,
+      },
+    ],
+  },
+  {
+    path: '/landing',
     element: <LandingPage />,
-    children: [],
   },
   {
     path: '/signup',
@@ -31,23 +49,10 @@ const router = createBrowserRouter([
     path: '/login',
     element: <LoginPage />,
   },
-  {
-    path: '/profile',
-    element: <ProfilePage />,
-  },
+  
   {
     path: '/mbti/:mbtiId',
     element: <MbtiPage />,
-  },
-  {
-    path: '/main',
-    element: <Layout />,
-    children: [
-      {
-        path: '/main/group',
-        element: <GroupPage />,
-      },
-    ],
   },
 ]);
 
