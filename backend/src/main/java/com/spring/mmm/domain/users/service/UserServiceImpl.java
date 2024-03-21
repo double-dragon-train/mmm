@@ -2,6 +2,11 @@ package com.spring.mmm.domain.users.service;
 
 import com.spring.mmm.common.config.RedisDao;
 import com.spring.mmm.common.config.jwt.JwtProvider;
+import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
+import com.spring.mmm.domain.mukgroups.domain.MukboType;
+import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
+import com.spring.mmm.domain.mukgroups.service.port.MukboRepository;
+import com.spring.mmm.domain.mukgroups.service.port.MukgroupRepository;
 import com.spring.mmm.domain.users.controller.request.UserJoinRequest;
 import com.spring.mmm.domain.users.controller.request.UserLoginRequest;
 import com.spring.mmm.domain.users.controller.request.UserModifyRequest;
@@ -25,6 +30,8 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
+    private final MukboRepository mukboRepository;
+    private final MukgroupRepository mukgroupRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
     private final RedisDao redisDao;
@@ -46,10 +53,10 @@ public class UserServiceImpl implements UserService{
             return;
         }
 
-        UserEntity user = UserEntity.create(userJoinRequest, encodedPW);
-
+        MukgroupEntity mukgroupEntity = mukgroupRepository.save(MukgroupEntity.create(nickname, Boolean.TRUE));
+        MukboEntity mukboEntity = mukboRepository.save(MukboEntity.create(nickname, MukboType.HUMAN, mukgroupEntity.getMukgroupId()));
+        UserEntity user = UserEntity.create(userJoinRequest, encodedPW, mukboEntity);
         userRepository.create(user);
-
     }
 
     @Override
