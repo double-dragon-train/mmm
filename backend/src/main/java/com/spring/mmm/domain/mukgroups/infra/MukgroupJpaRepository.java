@@ -11,6 +11,6 @@ public interface MukgroupJpaRepository extends JpaRepository<MukgroupEntity, Lon
     @Query("select mg from MukgroupEntity mg where mg.mukgroupId=:mukgroupId")
     Optional<MukgroupEntity> findByMukgroupId(@Param("mukgroupId") Long mukgroupId);
 
-    @Query("select count(mb) from MukboEntity mb where mb.mukGroupEntity.mukgroupId=:mukgroupId")
+    @Query("select count(mb) from MukboEntity mb where mb.mukgroupEntity.mukgroupId=:mukgroupId")
     Integer countAllMukboByMukgroupId(@Param("mukgroupId") Long mukgroupId);
 }

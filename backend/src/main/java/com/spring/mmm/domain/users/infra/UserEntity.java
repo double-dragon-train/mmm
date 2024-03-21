@@ -36,11 +36,12 @@ public class UserEntity {
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE)
     private List<MukBTIResultEntity> mukBTIResultEntities;
 
-    public static UserEntity create(UserJoinRequest userJoinRequest, String encodedPW) {
+    public static UserEntity create(UserJoinRequest userJoinRequest, String encodedPW, MukboEntity mukbo) {
         return UserEntity.builder()
                 .email(userJoinRequest.getEmail())
                 .nickname(userJoinRequest.getNickname())
                 .password(encodedPW)
+                .mukboEntity(mukbo)
                 .build();
     }
 

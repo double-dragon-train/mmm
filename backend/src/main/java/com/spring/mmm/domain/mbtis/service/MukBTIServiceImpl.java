@@ -1,7 +1,9 @@
 package com.spring.mmm.domain.mbtis.service;
 
 import com.spring.mmm.domain.mbtis.domain.MukBTIEntity;
+import com.spring.mmm.domain.mbtis.domain.MukBTIQuestionEntity;
 import com.spring.mmm.domain.mbtis.domain.MukBTIResultEntity;
+import com.spring.mmm.domain.mbtis.service.port.MukBTIQuestionRepository;
 import com.spring.mmm.domain.mbtis.service.port.MukBTIRepository;
 import com.spring.mmm.domain.mbtis.service.port.MukBTIResultRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,4 +14,9 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class MukBTIServiceImpl implements MukBTIService{
+    private final MukBTIQuestionRepository mukBTIQuestionRepository;
+    @Override
+    public List<MukBTIQuestionEntity> findAllMukBTIQuestion() {
+        return mukBTIQuestionRepository.findAllMukBTIQuestion();
+    }
 }

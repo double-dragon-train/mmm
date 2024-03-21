@@ -14,32 +14,6 @@ import java.util.List;
 @RequestMapping("/mbti")
 public class MBTIMockController {
 
-    @GetMapping
-    public ResponseEntity<QuestionsResponse> sendQuestion(){
-        List<Question> questions = new ArrayList<>();
-
-        for(int i = 1; i <= 15; i++) {
-            List<AnswerResponse> answers = new ArrayList<>();
-            int ansNum = i % 3 == 0 ? 2 : 5;
-            for(int j = 1; j <= ansNum; j++) {
-                AnswerResponse answerResponse = AnswerResponse.builder()
-                        .answerId(Long.valueOf(j))
-                        .answerContext("답변" + j)
-                        .answerImage("답변이미지" + j)
-                        .build();
-                answers.add(answerResponse);
-            }
-            Question questionsResponse = Question.builder()
-                    .quizId(Long.valueOf(i))
-                    .context("질문" + i)
-                    .img("질문이미지" + i)
-                    .answers(answers)
-                    .build();
-            questions.add(questionsResponse);
-        }
-        return ResponseEntity.ok(QuestionsResponse.builder().questions(questions).build());
-    }
-
     @PostMapping
     public ResponseEntity<MBTIResultResponse> calcMBTI(@RequestBody MBTICalcRequest mbtiCalcRequest){
         // 1. 검증
@@ -65,5 +39,4 @@ public class MBTIMockController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(mbtiResultResponse);
     }
-
 }

@@ -40,7 +40,7 @@ public class MukboEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mukgroup_id")
-    private MukgroupEntity mukGroupEntity;
+    private MukgroupEntity mukgroupEntity;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -50,7 +50,7 @@ public class MukboEntity {
         return MukboEntity.builder()
                 .name(name)
                 .type(mukboType)
-                .mukGroupEntity(MukgroupEntity.createWithOnlyId(mukgroupId))
+                .mukgroupEntity(MukgroupEntity.createWithOnlyId(mukgroupId))
                 .build();
     }
 
@@ -58,7 +58,7 @@ public class MukboEntity {
         return MukboEntity.builder()
                 .name(this.name)
                 .type(this.type)
-                .mukGroupEntity(MukgroupEntity.createWithOnlyId(mukgroupId))
+                .mukgroupEntity(MukgroupEntity.createWithOnlyId(mukgroupId))
                 .build();
     }
 

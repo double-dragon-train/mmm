@@ -4,6 +4,7 @@ import com.spring.mmm.domain.mukgroups.controller.response.MukgroupResponse;
 import com.spring.mmm.domain.mukjuks.domain.MukgroupMukjukEntity;
 import com.spring.mmm.domain.mukjuks.domain.MukjukEntity;
 import com.spring.mmm.domain.muklogs.domain.MuklogEntity;
+import com.spring.mmm.domain.recommends.domain.FoodRecommendEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,14 +36,17 @@ public class MukgroupEntity {
     @JoinColumn(name = "mukjuk_id")
     private MukjukEntity mukjukEntity;
 
-    @OneToMany(mappedBy = "mukGroupEntity", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "mukgroupEntity", cascade = CascadeType.REMOVE)
     private List<MukboEntity> mukboEntities;
 
-    @OneToMany(mappedBy = "mukGroupEntity", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "mukgroupEntity", cascade = CascadeType.REMOVE)
     private List<MuklogEntity> mukLogEntities;
 
-    @OneToMany(mappedBy = "mukGroupEntity", cascade = CascadeType.REMOVE)
-    private List<MukgroupMukjukEntity> mukGroupMukJukEntities;
+    @OneToMany(mappedBy = "mukgroupEntity", cascade = CascadeType.REMOVE)
+    private List<MukgroupMukjukEntity> mukgroupMukJukEntities;
+
+    @OneToMany(mappedBy = "mukgroupEntity", cascade = CascadeType.REMOVE)
+    private List<FoodRecommendEntity> foodRecommendEntities;
 
     public static MukgroupEntity create(String name, Boolean isSolo){
         return MukgroupEntity.builder()

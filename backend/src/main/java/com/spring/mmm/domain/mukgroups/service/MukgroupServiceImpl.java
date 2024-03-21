@@ -54,7 +54,7 @@ public class MukgroupServiceImpl implements MukgroupService{
     @Override
     public MukgroupEntity findMyMukgroup(UserEntity user) {
         MukboEntity mukboEntity = mukboRepository.findByUserId(user.getId());
-        return mukgroupRepository.findByMukgroupId(mukboEntity.getMukGroupEntity().getMukgroupId());
+        return mukgroupRepository.findByMukgroupId(mukboEntity.getMukgroupEntity().getMukgroupId());
     }
 
     @Override

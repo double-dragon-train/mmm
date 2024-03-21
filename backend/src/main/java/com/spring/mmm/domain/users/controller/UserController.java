@@ -76,11 +76,11 @@ public class UserController {
         return ResponseEntity.ok(userEmailResponse);
     }
 
-    @PostMapping ("/mailSend")
+    @PostMapping ("/email/verification-request")
     public String mailSend(@RequestBody @Valid UserEmailRequest userEmailRequest){
         return userEmailSendService.joinEmail(userEmailRequest.getEmail());
     }
-    @PostMapping("/mailAuthCheck")
+    @PostMapping("/email/verification")
     public String authCheck(@RequestBody @Valid UserEmailCheckRequest userEmailCheckRequest){
         Boolean checked=userEmailSendService.checkAuthNum(
                 userEmailCheckRequest.getEmail(),
