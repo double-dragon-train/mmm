@@ -6,6 +6,8 @@ import com.spring.mmm.domain.recommends.service.port.FoodRecommendRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 @RequiredArgsConstructor
 public class FoodRecommendRepositoryImpl implements FoodRecommendRepository {
@@ -13,12 +15,12 @@ public class FoodRecommendRepositoryImpl implements FoodRecommendRepository {
     private final FoodRecommendJpaRepository foodRecommendJpaRepository;
 
     @Override
-    public FoodRecommendEntity save(MukgroupEntity mukgroupEntity, FoodRecommendEntity foodRecommendEntity) {
-        return null;
+    public void save(MukgroupEntity mukgroupEntity, FoodRecommendEntity foodRecommendEntity) {
+
     }
 
     @Override
     public FoodRecommendEntity findByMukgroupId(Long mukgroupId) {
-        return null;
+        return foodRecommendJpaRepository.findRecommendByMukgroupId(mukgroupId);
     }
 }

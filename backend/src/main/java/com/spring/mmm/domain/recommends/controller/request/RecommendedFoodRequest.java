@@ -12,6 +12,6 @@ public class RecommendedFoodRequest {
 
     private Long foodRecommendId;
     private FoodEntity food;
-    private boolean eaten;
+    private Boolean eaten;
     private RecommendCategory recommendCategory;
 }
