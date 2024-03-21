@@ -1,8 +1,8 @@
 function NavBar() {
   return (
-    <ul>
+    <nav>
       <li>gdgd</li>
-    </ul>
+    </nav>
   );
 }
 

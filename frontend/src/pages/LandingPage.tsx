@@ -11,6 +11,7 @@ function LandingPage() {
     ['randomFoodList'],
     getRandomFoodList
   );
+  console.log(data);
   const [currentImageIndex, setCurrentImageIndex] =
     useState<number>(0);
   const [isHovered, setIsHovered] = useState<boolean>(false);
@@ -22,7 +23,7 @@ function LandingPage() {
           (prevIndex) => (prevIndex + 1) % data.foods.length
         );
       }
-    }, 150);
+    }, 500);
 
     return () => clearInterval(interval);
   }, [isHovered]);
