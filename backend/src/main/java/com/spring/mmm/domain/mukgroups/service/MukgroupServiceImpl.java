@@ -1,16 +1,26 @@
 package com.spring.mmm.domain.mukgroups.service;
 
 import com.spring.mmm.common.service.S3Service;
+import com.spring.mmm.domain.mbtis.controller.response.MBTIResult;
+import com.spring.mmm.domain.mbtis.domain.MBTI;
+import com.spring.mmm.domain.mbtis.domain.MukBTIResultEntity;
+import com.spring.mmm.domain.mbtis.domain.MukBTIType;
+import com.spring.mmm.domain.mbtis.service.port.MukBTIResultRepository;
+import com.spring.mmm.domain.mukgroups.controller.request.MukgroupMBTICalcRequest;
+import com.spring.mmm.domain.mukgroups.domain.MukboType;
 import com.spring.mmm.domain.mukgroups.exception.MukGroupErrorCode;
 import com.spring.mmm.domain.mukgroups.exception.MukGroupException;
 import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
 import com.spring.mmm.domain.mukgroups.service.port.MukboRepository;
 import com.spring.mmm.domain.mukgroups.service.port.MukgroupRepository;
+import com.spring.mmm.domain.users.infra.UserDetailsImpl;
 import com.spring.mmm.domain.users.infra.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +28,7 @@ public class MukgroupServiceImpl implements MukgroupService{
     private final MukgroupRepository mukgroupRepository;
     private final MukboRepository mukboRepository;
     private final S3Service s3Service;
+    private final MukBTIResultRepository mukBTIResultRepository;
     @Override
     public void saveSoloMukGroup(String name, UserEntity user) {
         MukgroupEntity mukgroupEntity = mukgroupRepository.save(MukgroupEntity.create(name, Boolean.TRUE));
@@ -59,10 +70,52 @@ public class MukgroupServiceImpl implements MukgroupService{
     }
 
     @Override
-    public void exitMukgroup(UserEntity user) {
-        if(mukgroupRepository.findByMukgroupId(mukboRepository.findByUserId(user.getId()).getMukboId()).getIsSolo()){
+    public void kickMukbo(Long mukboId) {
+        MukboEntity mukboEntity = mukboRepository.findByMukboId(mukboId);
+        if(mukboEntity.getType() == MukboType.HUMAN) {
+            mukboEntity.exitMukgroup();
+            mukboRepository.save(mukboEntity);
+        }
+        else {
+            mukboRepository.delete(mukboEntity);
+        }
+    }
+
+    @Override
+    public void exitMukgroup(UserDetailsImpl user, Long groupId) {
+        if(mukgroupRepository.findByMukgroupId(groupId).getIsSolo()){
             throw new MukGroupException(MukGroupErrorCode.SOLO_CANT_EXIT);
         }
-        saveSoloMukGroup(user.getNickname(), user);
+
+        MukboEntity mukboEntity = mukboRepository.findByUserId(user.getUser().getId());
+        Integer mukboCount = mukgroupRepository.countAllMukboByMukgroupId(groupId);
+
+        // 먹그룹 내 인원이 나밖에 없으면 폭파
+        if(mukboCount == 1){
+            mukboEntity.exitMukgroup();
+            mukgroupRepository.delete(mukgroupRepository.findByMukgroupId(groupId));
+        }
+        // 아니면 연관관계만 끊으면 된다.
+        else {
+            mukboEntity.exitMukgroup();
+        }
+    }
+
+    @Override
+    public MBTI calcGroupMukBTI(Long groupId, MukgroupMBTICalcRequest mbtiCalcRequest) {
+        MBTI mbti = MBTI.builder().build();
+        for(MukBTIType mukBTIType : MukBTIType.values()){
+            int calcResult = calcMBTI(mukBTIResultRepository.findAllMukBTIResultByMukboIdAndMukBTIType(mbtiCalcRequest.getMukbos(), mukBTIType));
+            mbti.modifyScore(calcResult, mukBTIType);
+        }
+        return mbti;
+    }
+
+    private Integer calcMBTI(List<MukBTIResultEntity> mukBTIResults){
+        int sum = 0;
+        for(MukBTIResultEntity mukBTIResult : mukBTIResults){
+            sum += mukBTIResult.getScore();
+        }
+        return sum / mukBTIResults.size();
     }
 }

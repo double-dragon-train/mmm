@@ -1,5 +1,8 @@
 package com.spring.mmm.domain.recommends.controller;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -7,17 +10,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@RequiredArgsConstructor
 @RestController
 public class RecommendController {
 
-    @GetMapping("/recommend")
-    public Map<String, List<Map<String,String>>> recommendRandomFood(){
 
-        Map<String, List<Map<String,String>>> map = new HashMap<>();
-        map.put("foods", List.of(
-                Map.of("name","제육","imageSrc","https://goumunity.s3.ap-northeast-2.amazonaws.com/upload/%EC%A0%9C%EC%9C%A1.jfif"),
-                Map.of("name","돈까스","imageSrc","https://goumunity.s3.ap-northeast-2.amazonaws.com/upload/%EA%B9%8C%EC%8A%A4.jpg")
-        ));
+    private final JdbcTemplate jdbcTemplate;
+
+    @Transactional
+    @GetMapping("/recommend")
+    public Map<String, List<Map<String,Object>>> recommendRandomFood(){
+
+        List<Map<String, Object>> maps = jdbcTemplate.queryForList("select name, image from food");
+        System.out.println(maps);
+
+        Map<String, List<Map<String,Object>>> map = new HashMap<>();
+        map.put("foods", maps);
         return map;
     }
 }

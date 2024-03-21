@@ -25,11 +25,23 @@ public class MBTI {
                 case MukBTIType.NS -> mbtiBuilder.NS(mukBTIResult.getScore());
                 case MukBTIType.TF -> mbtiBuilder.TF(mukBTIResult.getScore());
                 case MukBTIType.JP -> mbtiBuilder.JP(mukBTIResult.getScore());
-                case MukBTIType.Mint -> mbtiBuilder.Mint(mukBTIResult.getScore());
-                case MukBTIType.Pine -> mbtiBuilder.Pine(mukBTIResult.getScore());
-                case MukBTIType.Die -> mbtiBuilder.Die(mukBTIResult.getScore());
+                case MukBTIType.MINT -> mbtiBuilder.Mint(mukBTIResult.getScore());
+                case MukBTIType.PINE -> mbtiBuilder.Pine(mukBTIResult.getScore());
+                case MukBTIType.DIE -> mbtiBuilder.Die(mukBTIResult.getScore());
             }
         }
         return mbtiBuilder.build();
+    }
+
+    public void modifyScore(Integer score, MukBTIType mukBTIType){
+        switch (mukBTIType){
+            case MukBTIType.EI -> this.EI = score;
+            case MukBTIType.NS -> this.NS = score;
+            case MukBTIType.TF -> this.TF = score;
+            case MukBTIType.JP -> this.JP = score;
+            case MukBTIType.MINT -> this.Mint = score;
+            case MukBTIType.PINE -> this.Pine = score;
+            case MukBTIType.DIE -> this.Die = score;
+        }
     }
 }
