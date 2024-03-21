@@ -49,10 +49,6 @@ public class MukusController {
     }
 
 
-    @PostMapping("groups/{groupId}/recent")
-    public ResponseEntity<MukusRecentResponse> selectRecentMukus(@PathVariable Long groupId) {
 
-        return ResponseEntity.ok().build();
-    }
 
 }
