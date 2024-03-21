@@ -13,8 +13,10 @@ import {
 } from '../utils/validation';
 import { postLogin } from '../api/userApi';
 import { useMutation } from '@tanstack/react-query';
+import userStore from '../stores/userStore';
 
 function LoginPage() {
+  const { setAccessToken, setIsLogin } = userStore();
   const navigate = useNavigate();
 
   const [inputList, setInputList] = useState({
@@ -56,8 +58,10 @@ function LoginPage() {
   // 로그인 api
   const { mutate: mutateLogin } = useMutation({
     mutationFn: postLogin,
-    onSuccess: () => {
-      navigate('/');
+    onSuccess: (data) => {
+      setAccessToken(data.accessToken);
+      setIsLogin(true);
+      navigate('/main');
     },
   });
 

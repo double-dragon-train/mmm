@@ -17,8 +17,12 @@ type SendEmailData = {
 };
 export const postSendEmail = async (sendEmailData: SendEmailData) => {
   try {
-    const res = await instance.post('users/email/verification-request', sendEmailData, {
-    });
+    const res = await instance.post(
+      // '/users/email/verification-request',
+      '/users/mailSend',
+      sendEmailData,
+      {}
+    );
     console.log('이메일 인증코드 발송 성공:', res, sendEmailData);
   } catch (e) {
     console.log('이메일 인증코드 발송 실패:', e);
@@ -34,7 +38,7 @@ type SignupData = {
 };
 export const postSignup = async (signupData: SignupData) => {
   try {
-    const res = await instance.post('users/join', signupData, {
+    const res = await instance.post('/users/join', signupData, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -52,11 +56,32 @@ type LoginData = {
 };
 export const postLogin = async (loginData: LoginData) => {
   try {
-    const res = await instance.post('users/login', loginData, {
-    });
+    const res = await instance.post('/users/login', loginData, {});
     console.log('로그인 성공:', res, loginData);
-    return res
+    // console.log('userStore accessToken:', accessToken);
+    return res.data;
   } catch (e) {
-    console.log('실패:', e);
+    console.log('로그인 실패:', e);
+    throw e;
+  }
+};
+
+// 개인정보 수정
+type ProfileData = {
+  nickname: string;
+  password: string;
+  newPassword: string;
+  newPasswordConfirm: string;
+};
+export const postProfile = async (profileData: ProfileData) => {
+  try {
+    const res = await instance.put('/users', profileData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    console.log('회원가입 성공:', res, profileData);
+  } catch (e) {
+    console.log('회원가입 실패:', e);
   }
 };

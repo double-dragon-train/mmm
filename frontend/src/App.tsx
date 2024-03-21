@@ -6,6 +6,7 @@ import {
 import LandingPage from './pages/LandingPage';
 import SignupPage from './pages/SignupPage';
 import LoginPage from './pages/LoginPage';
+import ProfilePage from './pages/ProfilePage';
 import MbtiPage from './pages/MbtiPage';
 import {
   QueryClient,
@@ -20,9 +21,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <LandingPage />,
-    children: [
-      
-    ],
+    children: [],
   },
   {
     path: '/signup',
@@ -31,6 +30,10 @@ const router = createBrowserRouter([
   {
     path: '/login',
     element: <LoginPage />,
+  },
+  {
+    path: '/profile',
+    element: <ProfilePage />,
   },
   {
     path: '/mbti/:mbtiId',

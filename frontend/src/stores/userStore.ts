@@ -10,16 +10,19 @@ interface userStoreType {
     answerList: answerType[];
     addAnswerList: (value: answerType[]) => void;
     accessToken: string;
+    setAccessToken: (value: string) => void;
+    isLogin: boolean;
+    setIsLogin: (value: boolean) => void;
   }
 const userStore = create<userStoreType>((set) => ({
     accessToken: '',
-  //   setAccessToken: (value) => set({ accessToken: value }),
+    setAccessToken: (value: string) => set({ accessToken: value }),
+    isLogin: false,
+    setIsLogin: (value: boolean) => set({ isLogin: value }),
   //   loginModalOpen: false,
   //   setLoginModalOpen: (value) => set({ loginModalOpen: value }),
   //   isMyPage: true,
   //   setIsMyPage: (value) => set({ isMyPage: value }),
-  //   isLogin: false,
-  //   setIsLogin: (value) => set({ isLogin: value }),
   //   currentPageID: undefined,
   //   setCurrentPageID: (value) => set({ currentPageID: value }),
   //   loginAccount: {},
