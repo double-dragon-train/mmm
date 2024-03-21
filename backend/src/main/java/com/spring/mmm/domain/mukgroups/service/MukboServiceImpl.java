@@ -1,9 +1,14 @@
 package com.spring.mmm.domain.mukgroups.service;
 
-import com.spring.mmm.domain.mbtis.service.MukBTIService;
+
+import com.spring.mmm.domain.mbtis.domain.MBTI;
+import com.spring.mmm.domain.mbtis.domain.MukBTIEntity;
+import com.spring.mmm.domain.mbtis.domain.MukBTIResultEntity;
+import com.spring.mmm.domain.mbtis.domain.MukBTIType;
+import com.spring.mmm.domain.mbtis.service.port.MukBTIRepository;
+import com.spring.mmm.domain.mbtis.service.port.MukBTIResultRepository;
 import com.spring.mmm.domain.mukgroups.controller.request.MukboInviteRequest;
 import com.spring.mmm.domain.mukgroups.controller.response.MukboResponse;
-import com.spring.mmm.domain.mukgroups.controller.response.MukbosResponse;
 import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.mukgroups.domain.MukboType;
 import com.spring.mmm.domain.mukgroups.service.port.MukboRepository;
@@ -60,6 +65,7 @@ public class MukboServiceImpl implements MukboService{
         mukboEntity.modifyGroup(groupId);
         mukboRepository.save(mukboEntity);
     }
+
 
     @Override
     public void modifyMukbot(UserDetailsImpl user, Long mukboId, MBTI mbti, String name) {

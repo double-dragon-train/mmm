@@ -79,6 +79,6 @@ public class MukboEntity {
     }
 
     public void exitMukgroup(){
-        this.mukGroupEntity = null;
+        this.mukgroupEntity = null;
     }
 }
