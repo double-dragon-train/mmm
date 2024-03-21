@@ -12,16 +12,24 @@ $font-size: 20px;
   padding: $button-padding 0;
   border-radius: 50px;
   margin: 1vh 0;
+  &:hover {
+    border: 1px solid;
+    color: white;
+    background-color: rgba($color-main, 0.4);
+  }
 }
 
 .userButton {
   width: 275px;
-  background-color: rgba($color-user, 0.4);
+  background-color: rgba($color-user, 0.3);
   font-size: $font-size;
   color: white;
   padding: $button-padding 0;
   border-radius: 50px;
   margin-top: 20px;
+  &:hover {
+    background-color: rgba($color-user, 0.4);
+  }
 }
 .userButton:disabled {
   background-color: rgba($color-gray, 0.3);
@@ -33,10 +41,12 @@ $font-size: 20px;
   border: 1.5px solid rgba($color-main, 0.4);
   border-radius: 5px;
   color: rgba($color-main, 0.65);
-  &:focus {
-    border: 1.5px solid rgba($color-main, 0.6);
-    color: $color-main;
+  &:not([disabled]):hover {
+    border: none;
+    color: white;
+    background-color: rgba($color-main, 0.4);
   }
+
 }
 
 .miniRoundedButton {

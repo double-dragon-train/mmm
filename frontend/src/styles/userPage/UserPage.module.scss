@@ -39,6 +39,9 @@ $height-input: 36px;
     right: 15px;
     top: 10px;
     width: 15px;
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
 

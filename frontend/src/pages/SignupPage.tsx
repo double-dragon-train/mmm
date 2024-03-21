@@ -13,7 +13,11 @@ import {
   checkNicknameValidation,
   checkPasswordValidation,
 } from '../utils/validation';
-import { getNicknameValidate, postSignup } from '../api/userApi';
+import {
+  getNicknameValidate,
+  postSendEmail,
+  postSignup,
+} from '../api/userApi';
 import { useQuery } from 'react-query';
 import { useMutation } from '@tanstack/react-query';
 
@@ -38,13 +42,17 @@ function SignupPage() {
       ...inputList,
       [name]: value,
     });
-    console.log(name, value);
-    console.log('inputList:', inputList);
+    // console.log(name, value);
+    // console.log('inputList:', inputList);
     if (name === 'nickname') {
       setIsNicknameDuplicated(undefined);
     }
+    if (name === 'email') {
+      setIsEmailButtonClicked(false);
+    }
   };
-  const [isEmailSended, setIsEmailSended] = useState<boolean>(false);
+  const [isEmailButtonClicked, setIsEmailButtonClicked] =
+    useState<boolean>(false);
   const [isPasswordOpened, setIsPasswordOpened] =
     useState<boolean>(false);
 
@@ -54,7 +62,7 @@ function SignupPage() {
     setIsNicknameValid(checkNicknameValidation(nickname));
   };
 
-  // 닉네임 중복 체크
+  // 닉네임 중복 확인 api
   const { refetch } = useQuery(
     ['nicknameValidate'],
     () => getNicknameValidate(nickname),
@@ -95,22 +103,29 @@ function SignupPage() {
     else setIsPasswordConfirmValid(true);
   };
 
-  const sendEmail = () => {
-    setIsEmailSended(!isEmailSended);
+  // 이메일 인증코드 발송 api
+  const { mutate: mutateSendEmail } = useMutation({
+    mutationFn: postSendEmail,
+  });
+  const handleSendEmail = () => {
+    setIsEmailButtonClicked(!isEmailButtonClicked);
+    const sendEmailData = {
+      email,
+    };
+    mutateSendEmail(sendEmailData);
   };
 
   const togglePassword = () => {
     setIsPasswordOpened(!isPasswordOpened);
   };
 
-  // 회원가입
-  const { mutate } = useMutation({
+  // 회원가입 api
+  const { mutate: mutateSignup } = useMutation({
     mutationFn: postSignup,
     onSuccess: () => {
       navigate('/login');
     },
   });
-
   const handleSignup = () => {
     const signupData = {
       email,
@@ -118,7 +133,7 @@ function SignupPage() {
       passwordConfirm,
       nickname,
     };
-    mutate(signupData);
+    mutateSignup(signupData);
   };
 
   return (
@@ -148,6 +163,7 @@ function SignupPage() {
                 ? '✓'
                 : '확인'
             }
+            disabledEvent={isNicknameDuplicated==false}
           />
         </div>
 
@@ -164,9 +180,13 @@ function SignupPage() {
             isInputValid={isEmailValid}
             errorMessage="이메일 형식이 잘못되었습니다."
           />
-          <Button clickEvent={sendEmail} buttonName="인증" />
+          <Button
+            clickEvent={isEmailValid ? handleSendEmail : () => {}}
+            buttonName="인증"
+            disabledEvent={isEmailButtonClicked}
+          />
         </div>
-        {isEmailSended && (
+        {isEmailButtonClicked && isEmailValid && (
           <div className="inputContainer">
             <label></label>
             <div className="inputBox">
@@ -180,7 +200,11 @@ function SignupPage() {
               />
               <span></span>
             </div>
-            <Button clickEvent={checkEmail} buttonName="확인" />
+            <Button
+              disabledEvent={false}
+              clickEvent={checkEmail}
+              buttonName="확인"
+            />
           </div>
         )}
 
@@ -233,6 +257,7 @@ function SignupPage() {
       <button
         onClick={handleSignup}
         className="userButton"
+        // 닉네임 중복 || 비번 같지X || 닉네임, 비번 유효X || inputList 하나라도 비어있음
         disabled={
           isNicknameDuplicated ||
           !isPasswordConfirmValid ||
