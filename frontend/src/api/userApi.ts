@@ -11,21 +11,41 @@ export const getNicknameValidate = async (nickname: string) => {
   }
 };
 
-// 이메일 인증코드 발송
+// 이메일 인증 코드 발송
 type SendEmailData = {
   email: string;
 };
 export const postSendEmail = async (sendEmailData: SendEmailData) => {
   try {
     const res = await instance.post(
-      // '/users/email/verification-request',
-      '/users/mailSend',
+      '/users/email/verification-request',
       sendEmailData,
       {}
     );
     console.log('이메일 인증코드 발송 성공:', res, sendEmailData);
   } catch (e) {
     console.log('이메일 인증코드 발송 실패:', e);
+    throw e;
+  }
+};
+
+// 이메일 인증 코드 확인
+type EmailCodeData = {
+  email: string;
+  code: string;
+};
+export const postEmailCode = async (emailCodeData: EmailCodeData) => {
+  try {
+    const res = await instance.post(
+      '/users/email/verification',
+      emailCodeData,
+      {}
+    );
+    console.log('이메일 인증코드 확인 성공:', res, emailCodeData);
+    return res.data
+  } catch (e) {
+    console.log('이메일 인증코드 확인 실패:', e);
+    throw e;
   }
 };
 

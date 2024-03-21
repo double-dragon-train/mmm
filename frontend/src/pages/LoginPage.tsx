@@ -16,7 +16,7 @@ import { useMutation } from '@tanstack/react-query';
 import userStore from '../stores/userStore';
 
 function LoginPage() {
-  const { setAccessToken, setIsLogin } = userStore();
+  // const { setAccessToken, setIsLogin } = userStore();
   const navigate = useNavigate();
 
   const [inputList, setInputList] = useState({
@@ -59,8 +59,8 @@ function LoginPage() {
   const { mutate: mutateLogin } = useMutation({
     mutationFn: postLogin,
     onSuccess: (data) => {
-      setAccessToken(data.accessToken);
-      setIsLogin(true);
+      userStore.getState().setAccessToken(data.accessToken);
+      userStore.getState().setIsLogin(true);
       navigate('/main');
     },
   });
