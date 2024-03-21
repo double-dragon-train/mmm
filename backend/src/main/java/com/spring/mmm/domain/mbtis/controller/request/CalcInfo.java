@@ -6,6 +6,7 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class Answer {
-    private Long answerId;
+public class CalcInfo {
+    private Integer quizId;
+    private Integer answerId;
 }
