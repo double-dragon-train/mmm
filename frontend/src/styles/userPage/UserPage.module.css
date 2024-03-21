@@ -33,6 +33,9 @@
   top: 10px;
   width: 15px;
 }
+.inputPassword img:hover {
+  cursor: pointer;
+}
 
 .checkMessage {
   color: rgba(243, 32, 37, 0.5);

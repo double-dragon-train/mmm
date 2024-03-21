@@ -22,6 +22,7 @@ function LoginPage() {
     password: '',
   });
   const { email, password } = inputList;
+  const inputValues = Object.values(inputList);
 
   const changeInputList = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -52,8 +53,8 @@ function LoginPage() {
     setIsEmailValid(checkEmailValidation(email));
   };
 
-  // 로그인
-  const { mutate } = useMutation({
+  // 로그인 api
+  const { mutate: mutateLogin } = useMutation({
     mutationFn: postLogin,
     onSuccess: () => {
       navigate('/');
@@ -65,7 +66,7 @@ function LoginPage() {
       email,
       password,
     };
-    mutate(loginData);
+    mutateLogin(loginData);
   };
 
   return (
@@ -113,7 +114,15 @@ function LoginPage() {
         errorFontSize="bigErrorMessage"
         errorTarget="닉네임"
       /> */}
-      <button onClick={handleLogin} className="userButton">
+      <button
+        onClick={handleLogin}
+        className="userButton"
+        disabled={
+          !isEmailValid ||
+          !isPasswordValid ||
+          inputValues.some((val) => val === '')
+        }
+      >
         로그인
       </button>
       <span>

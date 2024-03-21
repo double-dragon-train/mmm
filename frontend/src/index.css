@@ -32,10 +32,15 @@ html {
   justify-content: center;
 }
 
+button:disabled {
+  cursor: default;
+}
 button {
   background-color: white;
   outline: none;
+  cursor: pointer;
 }
+
 
 a {
   text-decoration: none;
