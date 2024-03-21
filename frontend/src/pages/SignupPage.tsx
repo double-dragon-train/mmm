@@ -15,6 +15,7 @@ import {
 } from '../utils/validation';
 import {
   getNicknameValidate,
+  postEmailCode,
   postSendEmail,
   postSignup,
 } from '../api/userApi';
@@ -102,6 +103,10 @@ function SignupPage() {
       setIsPasswordConfirmValid(false);
     else setIsPasswordConfirmValid(true);
   };
+  
+  const togglePassword = () => {
+    setIsPasswordOpened(!isPasswordOpened);
+  };
 
   // 이메일 인증코드 발송 api
   const { mutate: mutateSendEmail } = useMutation({
@@ -115,9 +120,20 @@ function SignupPage() {
     mutateSendEmail(sendEmailData);
   };
 
-  const togglePassword = () => {
-    setIsPasswordOpened(!isPasswordOpened);
+
+  // 이메일 인증코드 확인 api
+  const { mutate: mutateEmailCode } = useMutation({
+    mutationFn: postEmailCode,
+  });
+  const handleEmailCode = () => {
+    setIsEmailButtonClicked(!isEmailButtonClicked);
+    const emailCodeData = {
+      email,
+      code,
+    };
+    mutateEmailCode(emailCodeData);
   };
+
 
   // 회원가입 api
   const { mutate: mutateSignup } = useMutation({
@@ -202,7 +218,7 @@ function SignupPage() {
             </div>
             <Button
               disabledEvent={false}
-              clickEvent={checkEmail}
+              clickEvent={handleEmailCode}
               buttonName="확인"
             />
           </div>
