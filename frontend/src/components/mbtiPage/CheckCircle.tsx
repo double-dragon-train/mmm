@@ -1,9 +1,14 @@
 import styles from '../../styles/mbtiPage/MbtiPage.module.css';
 
-function CheckCircle() {
+interface propsType {
+  handleSelectAnswer: () => void;
+  isSelected: boolean;
+}
+function CheckCircle({ handleSelectAnswer, isSelected }: propsType) {
+  
   return (
-    <div className={styles.parentCheckCircle}>
-      <div className={styles.childCheckCircle}></div>
+    <div className={styles.parentCheckCircle} onClick={handleSelectAnswer}>
+      <div className={isSelected ? styles.selectedChildCheckCircle :styles.childCheckCircle}></div>
     </div>
   );
 }

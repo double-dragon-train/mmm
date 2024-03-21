@@ -10,6 +10,10 @@ $color-circle: #b4bef4;
   align-items: center;
   justify-content: center;
   position: relative;
+  > span {
+    color: rgba(#656565, 0.8);
+    text-align: right;
+  }
   section {
     width: 80%;
     height: 80%;
@@ -21,12 +25,6 @@ $color-circle: #b4bef4;
     flex-direction: column;
     gap: 40px;
     position: relative;
-    > span {
-      color: rgba(#656565, 0.8);
-      position: absolute;
-      top: 14px;
-      right: 14px;
-    }
     > div {
       display: flex;
       align-items: center;
@@ -74,22 +72,64 @@ $color-circle: #b4bef4;
   align-items: center;
   justify-content: center;
   position: relative;
+  > span {
+    color: rgba(#656565, 0.8);
+    text-align: right;
+  }
   section {
-    width: 80%;
-    height: 80%;
+    width: 100%;
+    height: 100%;
     border-radius: 15px;
     margin-top: 20px;
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 20px;
     position: relative;
-    > span {
-      color: rgba(#656565, 0.8);
-      position: absolute;
-      top: 14px;
-      right: 14px;
+
+    .selectedAnswerBox {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5vw;
+      border-radius: 15px;
+      background-color: rgba($color-main, 0.15);
+      border: 1px solid rgba($color-main, 0.7);
+      position: relative;
+      width: 300px;
+      height: 250px;
+      > span {
+        color: rgba($color-main, 0.75);
+        font-size: 40px;
+        width: 200px;
+        font-weight: 500;
+        z-index: 500;
+        text-shadow:
+          -3px -3px 0 rgba(white, 1),
+          0px -3px 0 rgba(white, 1),
+          3px -3px 0 rgba(white, 1),
+          3px 0px 0 rgba(white, 1),
+          3px 3px 0 rgba(white, 1),
+          0px 3px 0 rgba(white, 1),
+          -3px 3px 0 rgba(white, 1),
+          -3px 0px 0 rgba(white, 1);
+      }
+      > div {
+        z-index: 100;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        > img {
+          //   width: 190px;
+          width: 100%;
+          aspect-ratio: 1/1;
+        }
+      }
     }
     .answerBox {
+      width: 300px;
+      height: 250px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -156,6 +196,16 @@ h1 {
   position: relative;
   .childCheckCircle {
     background-color: white;
+    width: 14px;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .selectedChildCheckCircle {
+    background-color: rgba($color-main, 0.8);
     width: 14px;
     aspect-ratio: 1/1;
     border-radius: 50%;

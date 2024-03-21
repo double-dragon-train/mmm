@@ -6,6 +6,10 @@
   justify-content: center;
   position: relative;
 }
+.wrapper > span {
+  color: rgba(101, 101, 101, 0.8);
+  text-align: right;
+}
 .wrapper section {
   width: 80%;
   height: 80%;
@@ -17,12 +21,6 @@
   flex-direction: column;
   gap: 40px;
   position: relative;
-}
-.wrapper section > span {
-  color: rgba(101, 101, 101, 0.8);
-  position: absolute;
-  top: 14px;
-  right: 14px;
 }
 .wrapper section > div {
   display: flex;
@@ -62,23 +60,55 @@
   justify-content: center;
   position: relative;
 }
+.wrapper2 > span {
+  color: rgba(101, 101, 101, 0.8);
+  text-align: right;
+}
 .wrapper2 section {
-  width: 80%;
-  height: 80%;
+  width: 100%;
+  height: 100%;
   border-radius: 15px;
   margin-top: 20px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 20px;
   position: relative;
 }
-.wrapper2 section > span {
-  color: rgba(101, 101, 101, 0.8);
+.wrapper2 section .selectedAnswerBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5vw;
+  border-radius: 15px;
+  background-color: rgba(42, 67, 206, 0.15);
+  border: 1px solid rgba(42, 67, 206, 0.7);
+  position: relative;
+  width: 300px;
+  height: 250px;
+}
+.wrapper2 section .selectedAnswerBox > span {
+  color: rgba(42, 67, 206, 0.75);
+  font-size: 40px;
+  width: 200px;
+  font-weight: 500;
+  z-index: 500;
+  text-shadow: -3px -3px 0 white, 0px -3px 0 white, 3px -3px 0 white, 3px 0px 0 white, 3px 3px 0 white, 0px 3px 0 white, -3px 3px 0 white, -3px 0px 0 white;
+}
+.wrapper2 section .selectedAnswerBox > div {
+  z-index: 100;
   position: absolute;
-  top: 14px;
-  right: 14px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.wrapper2 section .selectedAnswerBox > div > img {
+  width: 100%;
+  aspect-ratio: 1/1;
 }
 .wrapper2 section .answerBox {
+  width: 300px;
+  height: 250px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -128,6 +158,16 @@ h1 {
 }
 .parentCheckCircle .childCheckCircle {
   background-color: white;
+  width: 14px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.parentCheckCircle .selectedChildCheckCircle {
+  background-color: rgba(42, 67, 206, 0.8);
   width: 14px;
   aspect-ratio: 1/1;
   border-radius: 50%;

@@ -1,11 +1,12 @@
-// import { useQuery } from 'react-query';
 import { useQuery } from '@tanstack/react-query';
 import { getMbtiQuestionList } from '../api/mbti';
-import { Link, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styles from '../styles/mbtiPage/MbtiPage.module.css';
-// import styles from '../pages/MbtiPage.module.css';
 import '../styles/common/buttons.css';
 import CheckCircle from '../components/mbtiPage/CheckCircle';
+import userStore from '../stores/userStore';
+import { useEffect, useState } from 'react';
+import AnswerBox from '../components/mbtiPage/AnswerBox';
 
 interface answerType {
   answerId: string;
@@ -14,13 +15,45 @@ interface answerType {
 }
 
 function MbtiPage() {
+  const navigate = useNavigate();
+  const [selectedAnswer, setSelectedAnswer] = useState('');
+  const { addAnswerList, answerList, accessToken } = userStore();
   const { mbtiId } = useParams();
+  console.log(mbtiId);
   const { data, isPending, isError } = useQuery({
     queryKey: ['mbtiQuestionList'],
     queryFn: getMbtiQuestionList,
   });
+  console.log('gdgdgdgd', data);
+  useEffect(() => {
+    setSelectedAnswer('');
+  }, [mbtiId]);
 
-  const handleSelectAnswer = () => {};
+  const handleSelectAnswer = (answerId: string) => {
+    setSelectedAnswer(answerId);
+  };
+
+  const goNextQuestion = () => {
+    if (!selectedAnswer) return;
+
+    if (mbtiId === '14') {
+      if (accessToken) {
+        navigate('/main');
+      } else {
+        navigate('/signup');
+      }
+      return;
+    }
+    addAnswerList([
+      ...answerList,
+      {
+        quizId: data[Number(mbtiId)].quizId,
+        answerId: selectedAnswer,
+      },
+    ]);
+    navigate(`/mbti/${Number(mbtiId) + 1}`);
+  };
+
   if (isPending) {
     return <div>isLoding...</div>;
   }
@@ -28,21 +61,24 @@ function MbtiPage() {
   if (isError) {
     return <div>error</div>;
   }
-  console.log(data);
 
   if (data[Number(mbtiId)].answers.length === 5)
     return (
       <div className={styles.wrapper}>
-        {/* <img className={styles.mainLogo} src={mainLogo} alt="" /> */}
         <h1>{data[Number(mbtiId)].context}</h1>
+        <span>
+          {Number(mbtiId) + 1} / {data.length}
+        </span>
         <section>
-          <span>
-            {Number(mbtiId) + 1} / {data.length}
-          </span>
           {data[Number(mbtiId)].answers.map((answer: answerType) => {
             return (
-              <div key={answer.answerId} onClick={handleSelectAnswer}>
-                <CheckCircle />
+              <div key={answer.answerId}>
+                <CheckCircle
+                  handleSelectAnswer={() =>
+                    handleSelectAnswer(answer.answerId)
+                  }
+                  isSelected={selectedAnswer == answer.answerId}
+                />
                 <span>{answer.answerContext}</span>
                 <div className={styles.imageBox}>
                   <img src={answer.answerImage} alt="" />
@@ -50,17 +86,16 @@ function MbtiPage() {
               </div>
             );
           })}
-          {/* <CheckCircle /> */}
         </section>
         <div className={styles.randomFoodBox}>
           <img className={styles.randomFood} alt="" />
         </div>
-        <Link
-          to={`/mbti/${Number(mbtiId!) + 1}`}
+        <button
+          onClick={goNextQuestion}
           className="miniRoundedButton"
         >
           다음
-        </Link>
+        </button>
       </div>
     );
 
@@ -68,62 +103,47 @@ function MbtiPage() {
     return (
       <div className={styles.wrapper2}>
         <h1>{data[Number(mbtiId)].context}</h1>
+        <span>
+          {Number(mbtiId) + 1} / {data.length}
+        </span>
         <section>
-          <span>
-            {Number(mbtiId) + 1} / {data.length}
-          </span>
-
-          <div
-            className={styles.answerBox}
-            onClick={handleSelectAnswer}
-          >
-            <span>
-              {data[Number(mbtiId)].answers[0].answerContext}
-            </span>
-
-            <div>
-              <img
-                src={data[Number(mbtiId)].answers[0].answerImage}
-                alt=""
-              />
-            </div>
-          </div>
-
+          <AnswerBox
+            handleSelectAnswer={() =>
+              handleSelectAnswer(
+                data[Number(mbtiId)].answers[0].answerId
+              )
+            }
+            isSelected={
+              selectedAnswer ==
+              data[Number(mbtiId)].answers[0].answerId
+            }
+            text={data[Number(mbtiId)].answers[0].answerContext}
+            imgSrc={data[Number(mbtiId)].answers[0].answerImage}
+          />
           <div className={styles.vsText}>VS</div>
-
-          <div
-            className={styles.answerBox}
-            onClick={handleSelectAnswer}
-          >
-            <span>
-              {data[Number(mbtiId)].answers[0].answerContext}
-            </span>
-            <div>
-              <img
-                src={data[Number(mbtiId)].answers[0].answerImage}
-                alt=""
-              />
-            </div>
-          </div>
-          {/* {data[Number(mbtiId)].answers.map((answer: answerType) => {
-            return (
-              <div className={styles.answerBox} key={answer.answerId} onClick={handleSelectAnswer}>
-                <span>{answer.answerContext}</span>
-
-                <div><img src={answer.answerImage} alt="" /></div>
-              </div>
-            );
-          })} */}
+          <AnswerBox
+            handleSelectAnswer={() =>
+              handleSelectAnswer(
+                data[Number(mbtiId)].answers[1].answerId
+              )
+            }
+            isSelected={
+              selectedAnswer ==
+              data[Number(mbtiId)].answers[1].answerId
+            }
+            text={data[Number(mbtiId)].answers[1].answerContext}
+            imgSrc={data[Number(mbtiId)].answers[1].answerImage}
+          />
         </section>
         <div className={styles.randomFoodBox}>
           <img className={styles.randomFood} alt="" />
         </div>
-        <Link
-          to={`/mbti/${Number(mbtiId!) + 1}`}
+        <button
+          onClick={goNextQuestion}
           className="miniRoundedButton"
         >
           다음
-        </Link>
+        </button>
       </div>
     );
 }
