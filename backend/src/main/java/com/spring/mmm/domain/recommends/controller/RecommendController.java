@@ -21,7 +21,7 @@ public class RecommendController {
     @GetMapping("/recommend")
     public Map<String, List<Map<String,Object>>> recommendRandomFood(){
 
-        List<Map<String, Object>> maps = jdbcTemplate.queryForList("select name, image from food");
+        List<Map<String, Object>> maps = jdbcTemplate.queryForList("select name, image as 'imageSrc' from food");
         System.out.println(maps);
 
         Map<String, List<Map<String,Object>>> map = new HashMap<>();
