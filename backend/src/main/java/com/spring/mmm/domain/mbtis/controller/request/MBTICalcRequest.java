@@ -9,5 +9,5 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class MBTICalcRequest {
-    private List<Answer> answers;
+    private List<CalcInfo> answers;
 }
