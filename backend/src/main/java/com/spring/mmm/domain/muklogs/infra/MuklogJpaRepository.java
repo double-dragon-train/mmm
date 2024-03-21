@@ -9,6 +9,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface MuklogJpaRepository extends JpaRepository<MuklogEntity, Long> {
 
-    @Query("select ml from MuklogEntity ml where ml.mukGroupEntity.mukgroupId=:groupId")
+    @Query("select ml from MuklogEntity ml where ml.mukgroupEntity.mukgroupId=:groupId")
     Page<MuklogEntity> findAllMuklogByGroupId(@Param("groupId") Long groupId, Pageable pageable);
 }
