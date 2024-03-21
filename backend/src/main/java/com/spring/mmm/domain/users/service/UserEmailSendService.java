@@ -16,16 +16,16 @@ public class UserEmailSendService {
     private JavaMailSender mailSender;
     @Autowired
     private RedisDao redisDao;
-    private int authNumber;
+
+    private String authNumber;
 
     public void makeRandomNumber() {
         Random r = new Random();
-        String randomNumber = "";
+        authNumber = "";
         for(int i = 0; i < 6; i++) {
-            randomNumber += Integer.toString(r.nextInt(10));
+            authNumber += Integer.toString(r.nextInt(10));
         }
 
-        authNumber = Integer.parseInt(randomNumber);
     }
 
 
@@ -41,7 +41,7 @@ public class UserEmailSendService {
                         "<br>" +
                         "인증번호를 입력해주세요";
         mailSend(setFrom, toMail, title, content);
-        return Integer.toString(authNumber);
+        return authNumber;
     }
 
     public void mailSend(String setFrom, String toMail, String title, String content) {
@@ -56,7 +56,7 @@ public class UserEmailSendService {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
-        redisDao.setDataExpire(Integer.toString(authNumber),toMail,60*5L);
+        redisDao.setDataExpire(authNumber,toMail,60*5L);
     }
 
     public boolean checkAuthNum(String email,String authNum){
