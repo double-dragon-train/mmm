@@ -35,14 +35,4 @@ public class FoodRecommendEntity {
     @OneToMany(mappedBy = "foodRecommendEntity", cascade = CascadeType.REMOVE)
     private List<EatenMukboEntity> eatenMukboEntities;
 
-//    public static FoodRecommendEntity create(Long mukgroupId, MukgroupEntity mukgroup) {
-//
-//        return FoodRecommendEntity.builder()
-//                .hasValue(false)
-//                .recommendDate(Instant.now())
-//                .mukgroupEntity(mukgroup)
-//                .recommendedFoodEntities("음추음 response x 7")
-//                .eatenMukboEntities("먹먹보들")
-//                .build();
-//    }
 }

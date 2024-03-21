@@ -18,6 +18,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("mukus")
@@ -40,19 +41,6 @@ public class MukusController {
             return RecommendFood.create(foodCategory, food);
         }).toList();
 
-//        for (RecommendedFoodEntity food : recommendedFoodEntities) {
-//            FoodCategoryEntity category = foodCategoryRepository.findByFoodId(food.getRecommendedFoodId());
-//            FoodCategory foodCategory = FoodCategory.create(category.getName(), category.getColor());
-//            Long recommendedFoodId = food.getRecommendedFoodId();
-//            recommendFoods.add(RecommendFood.create(
-//                    recommendedFoodId,
-//                    food.getFoodEntity().getName(),
-//                    food.getFoodEntity().getImage(),
-//                    food.getCategory(),
-//                    foodCategory)
-//            );
-//
-//        };
 
         RecommendData recommendData = RecommendData.create(recommendFoods);
 
@@ -61,10 +49,6 @@ public class MukusController {
     }
 
 
-    @PostMapping("groups/{groupId}/recent")
-    public ResponseEntity<MukusRecentResponse> selectRecentMukus(@PathVariable Long groupId) {
 
-        return null;
-    }
 
 }
