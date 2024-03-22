@@ -8,6 +8,8 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class MBTICalcRequest {
+public class MukBTICalcRequest {
+    private Boolean isLogin;
+    private Long userId;
     private List<CalcInfo> answers;
 }
