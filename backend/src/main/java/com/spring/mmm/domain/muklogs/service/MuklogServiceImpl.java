@@ -29,10 +29,8 @@ public class MuklogServiceImpl implements MuklogService{
 
     @Override
     public void saveLog(Long mukgroupId, String content) {
-        // TODO 옵셔널로 변경해야 함
-        MukgroupEntity mukGroup = mukgroupRepository.findByMukgroupId(mukgroupId);
-        if(mukGroup == null )
-            throw new MukgroupNotFoundException();
+        MukgroupEntity mukGroup = mukgroupRepository.findByMukgroupId(mukgroupId)
+                        .orElseThrow(MukgroupNotFoundException::new);
         muklogRepository.save(MuklogEntity.create(mukGroup, content));
     }
 }
