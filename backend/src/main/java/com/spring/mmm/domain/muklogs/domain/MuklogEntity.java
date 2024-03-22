@@ -28,7 +28,7 @@ public class MuklogEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mukgroup_id")
-    private MukgroupEntity mukGroupEntity;
+    private MukgroupEntity mukgroupEntity;
 
     public MuklogResponse create(){
         return MuklogResponse.builder()

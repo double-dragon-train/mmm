@@ -5,10 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface MukgroupJpaRepository extends JpaRepository<MukgroupEntity, Long> {
     @Query("select mg from MukgroupEntity mg where mg.mukgroupId=:mukgroupId")
-    MukgroupEntity findByMukgroupId(@Param("mukgroupId") Long mukgroupId);
+    Optional<MukgroupEntity> findByMukgroupId(@Param("mukgroupId") Long mukgroupId);
 
-    @Query("select count(mb) from MukboEntity mb where mb.mukGroupEntity.mukgroupId=:mukgroupId")
+    @Query("select count(mb) from MukboEntity mb where mb.mukgroupEntity.mukgroupId=:mukgroupId")
     Integer countAllMukboByMukgroupId(@Param("mukgroupId") Long mukgroupId);
 }

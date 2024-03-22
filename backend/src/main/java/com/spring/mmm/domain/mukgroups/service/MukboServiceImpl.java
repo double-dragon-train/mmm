@@ -1,5 +1,6 @@
 package com.spring.mmm.domain.mukgroups.service;
 
+
 import com.spring.mmm.domain.mbtis.domain.MBTI;
 import com.spring.mmm.domain.mbtis.domain.MukBTIEntity;
 import com.spring.mmm.domain.mbtis.domain.MukBTIResultEntity;
@@ -49,12 +50,6 @@ public class MukboServiceImpl implements MukboService{
 
     @Override
     public void inviteMukbo(UserDetailsImpl user, Long groupId, MukboInviteRequest mukboInviteRequest) {
-        // 먹봇을 먹보로 교체해야 한다.
-        // 해당하는 ID의 먹보를 제거한다.
-        // 회원과 연결된 먹보를 가져와 이메일/닉으로 등록한다.
-        // 그룹아이디, 유저 그룹아이디 검증필요
-
-        // 유저의 먹봇 가져온다.
         MukboEntity mukboEntity = mukboRepository.findByUserId(userRepository.findByEmail(mukboInviteRequest.getEmail())
                 .orElseThrow(() -> new UserException(UserErrorCode.EMAIL_NOT_FOUND)).getId());
 
@@ -65,6 +60,7 @@ public class MukboServiceImpl implements MukboService{
         mukboRepository.save(mukboEntity);
     }
 
+
     @Override
     public void modifyMukbot(UserDetailsImpl user, Long mukboId, MBTI mbti, String name) {
         MukboEntity mukbotEntity = mukboRepository.findByMukboId(mukboId);
@@ -72,8 +68,9 @@ public class MukboServiceImpl implements MukboService{
 
         List<MukBTIResultEntity> mukBTIResults = mukBTIResultRepository.findAllMukBTIResultByMukboId(mukboId);
 
+        // 먹봇이면 유저 넣을 필요 X
         if(mukBTIResults.isEmpty()){
-            createMukBTIResults(mukBTIResults, user.getUser(), mukbotEntity, mbti);
+            createMukBTIResults(mukBTIResults, mukbotEntity, mbti);
         } else {
             modifyMukBTIResults(mukBTIResults, mbti);
         }
@@ -94,7 +91,7 @@ public class MukboServiceImpl implements MukboService{
         mukboRepository.delete(mukboRepository.findByMukboId(mukboId));
     }
 
-    private void createMukBTIResults(List<MukBTIResultEntity> results, UserEntity user, MukboEntity mukbo, MBTI mbti){
+    private void createMukBTIResults(List<MukBTIResultEntity> results, MukboEntity mukbo, MBTI mbti){
         // 원래 mbti가 없는경우
         List<MukBTIEntity> mukBTIs = mukBTIRepository.findAllMukBTI();
         for(MukBTIEntity mukBTI : mukBTIs){
@@ -103,13 +100,13 @@ public class MukboServiceImpl implements MukboService{
 //            Integer value = field.get(mbti);
 //            results.add(MukBTIResultEntity.createByType(value, mukBTI, mukbo, user));
             switch (mukBTI.getType()){
-                case MukBTIType.EI -> results.add(MukBTIResultEntity.createByType(mbti.getEI(), mukBTI, mukbo, user));
-                case MukBTIType.NS -> results.add(MukBTIResultEntity.createByType(mbti.getNS(), mukBTI, mukbo, user));
-                case MukBTIType.TF -> results.add(MukBTIResultEntity.createByType(mbti.getTF(), mukBTI, mukbo, user));
-                case MukBTIType.JP -> results.add(MukBTIResultEntity.createByType(mbti.getJP(), mukBTI, mukbo, user));
-                case MukBTIType.PINE -> results.add(MukBTIResultEntity.createByType(mbti.getPine(), mukBTI, mukbo, user));
-                case MukBTIType.MINT -> results.add(MukBTIResultEntity.createByType(mbti.getMint(), mukBTI, mukbo, user));
-                case MukBTIType.DIE -> results.add(MukBTIResultEntity.createByType(mbti.getDie(), mukBTI, mukbo, user));
+                case MukBTIType.EI -> results.add(MukBTIResultEntity.createByType(mbti.getEI(), mukBTI, mukbo));
+                case MukBTIType.NS -> results.add(MukBTIResultEntity.createByType(mbti.getNS(), mukBTI, mukbo));
+                case MukBTIType.TF -> results.add(MukBTIResultEntity.createByType(mbti.getTF(), mukBTI, mukbo));
+                case MukBTIType.JP -> results.add(MukBTIResultEntity.createByType(mbti.getJP(), mukBTI, mukbo));
+                case MukBTIType.PINE -> results.add(MukBTIResultEntity.createByType(mbti.getPine(), mukBTI, mukbo));
+                case MukBTIType.MINT -> results.add(MukBTIResultEntity.createByType(mbti.getMint(), mukBTI, mukbo));
+                case MukBTIType.DIE -> results.add(MukBTIResultEntity.createByType(mbti.getDie(), mukBTI, mukbo));
             }
         }
     }

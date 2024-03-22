@@ -1,5 +1,6 @@
 package com.spring.mmm.domain.recommends.domain;
 
+import com.spring.mmm.domain.recommends.controller.request.RecommendedFoodRequest;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,7 +14,7 @@ public class RecommendedFoodEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "recommended_food_id")
-    private Integer recommendedFoodId;
+    private Long recommendedFoodId;
 
     @Column(name = "eaten")
     private Boolean eaten;
@@ -29,4 +30,10 @@ public class RecommendedFoodEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "food_recommend")
     private FoodRecommendEntity foodRecommendEntity;
+
+    public void eat() {
+        this.eaten = true;
+
+    }
+
 }

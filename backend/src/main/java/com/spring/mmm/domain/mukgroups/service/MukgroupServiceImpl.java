@@ -12,6 +12,8 @@ import com.spring.mmm.domain.mukgroups.exception.MukGroupErrorCode;
 import com.spring.mmm.domain.mukgroups.exception.MukGroupException;
 import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
+import com.spring.mmm.domain.mukgroups.exception.MukboErrorCode;
+import com.spring.mmm.domain.mukgroups.exception.MukboException;
 import com.spring.mmm.domain.mukgroups.service.port.MukboRepository;
 import com.spring.mmm.domain.mukgroups.service.port.MukgroupRepository;
 import com.spring.mmm.domain.users.infra.UserDetailsImpl;
@@ -32,7 +34,8 @@ public class MukgroupServiceImpl implements MukgroupService{
     @Override
     public void saveSoloMukGroup(String name, UserEntity user) {
         MukgroupEntity mukgroupEntity = mukgroupRepository.save(MukgroupEntity.create(name, Boolean.TRUE));
-        mukboRepository.save(mukboRepository.findByUserId(user.getId()).modifyGroup(mukgroupEntity.getMukgroupId()));
+        mukboRepository.save(mukboRepository.findByUserId(user.getId())
+                .modifyGroup(mukgroupEntity.getMukgroupId()));
     }
 
     @Override
@@ -50,7 +53,8 @@ public class MukgroupServiceImpl implements MukgroupService{
 
     @Override
     public MukgroupEntity findMyMukgroup(UserEntity user) {
-        return mukgroupRepository.findByMukgroupId(mukboRepository.findByUserId(user.getId()).getMukGroupEntity().getMukgroupId());
+        MukboEntity mukboEntity = mukboRepository.findByUserId(user.getId());
+        return mukgroupRepository.findByMukgroupId(mukboEntity.getMukgroupEntity().getMukgroupId());
     }
 
     @Override
@@ -73,8 +77,8 @@ public class MukgroupServiceImpl implements MukgroupService{
     public void kickMukbo(Long mukboId) {
         MukboEntity mukboEntity = mukboRepository.findByMukboId(mukboId);
         if(mukboEntity.getType() == MukboType.HUMAN) {
-            mukboEntity.exitMukgroup();
-            mukboRepository.save(mukboEntity);
+            UserEntity user = mukboEntity.getUserEntity();
+            saveSoloMukGroup(user.getNickname(), user);
         }
         else {
             mukboRepository.delete(mukboEntity);
@@ -87,18 +91,13 @@ public class MukgroupServiceImpl implements MukgroupService{
             throw new MukGroupException(MukGroupErrorCode.SOLO_CANT_EXIT);
         }
 
-        MukboEntity mukboEntity = mukboRepository.findByUserId(user.getUser().getId());
         Integer mukboCount = mukgroupRepository.countAllMukboByMukgroupId(groupId);
 
-        // 먹그룹 내 인원이 나밖에 없으면 폭파
         if(mukboCount == 1){
-            mukboEntity.exitMukgroup();
             mukgroupRepository.delete(mukgroupRepository.findByMukgroupId(groupId));
         }
-        // 아니면 연관관계만 끊으면 된다.
-        else {
-            mukboEntity.exitMukgroup();
-        }
+
+        saveSoloMukGroup(user.getUsername(), user.getUser());
     }
 
     @Override
