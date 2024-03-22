@@ -14,18 +14,7 @@ import java.util.Date;
 @RequestMapping("mukus")
 public class MukusMockController {
 
-    @GetMapping("groups/{groupId}")
-    public ResponseEntity<MukusResponse> getAllMukus(@PathVariable Long groupId){
-        // 1. 그룹 검색
-        // 2. 먹어스 데이터 반환
-        MukusResponse mukusResponse = MukusResponse.builder()
-                .mukusId(1L)
-                .date(Instant.now())
-                .colorcode("#132436")
-                .category("한식")
-                .build();
-        return ResponseEntity.ok(mukusResponse);
-    }
+
 
     @GetMapping("groups/{groupId}/date")
     public ResponseEntity<MukusDetailResponse> getDetailMukus(@PathVariable Long groupId){

@@ -3,9 +3,12 @@ package com.spring.mmm.domain.recommends.infra;
 import com.spring.mmm.domain.mukgroups.exception.MukGroupException;
 import com.spring.mmm.domain.recommends.domain.FoodRecommendEntity;
 import com.spring.mmm.domain.recommends.exception.RecommendErrorCode;
+import com.spring.mmm.domain.recommends.exception.RecommendException;
 import com.spring.mmm.domain.recommends.service.port.FoodRecommendRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 
 @Repository
@@ -17,7 +20,7 @@ public class FoodRecommendRepositoryImpl implements FoodRecommendRepository {
     @Override
     public FoodRecommendEntity findByMukgroupId(Long mukgroupId) {
         return foodRecommendJpaRepository.findRecommendByMukgroupId(mukgroupId)
-                .orElseThrow(() -> new MukGroupException(RecommendErrorCode.RECOMMEND_NOT_FOUND));
+                .orElseThrow(() -> new RecommendException(RecommendErrorCode.RECOMMEND_NOT_FOUND));
     }
 
 }

@@ -1,9 +1,6 @@
 package com.spring.mmm.domain.mukus.controller;
 
-import com.spring.mmm.domain.mukus.controller.response.FoodCategory;
-import com.spring.mmm.domain.mukus.controller.response.MukusRecentResponse;
-import com.spring.mmm.domain.mukus.controller.response.RecommendData;
-import com.spring.mmm.domain.mukus.controller.response.RecommendFood;
+import com.spring.mmm.domain.mukus.controller.response.*;
 import com.spring.mmm.domain.mukus.service.MukusService;
 import com.spring.mmm.domain.recommends.domain.FoodCategoryEntity;
 import com.spring.mmm.domain.recommends.domain.FoodEntity;
@@ -59,6 +56,17 @@ public class MukusController {
         mukusService.selectRecentMukus(recommendFoodId);
         return ResponseEntity.ok().build();
 
+    }
+
+    @GetMapping("groups/{groupId}")
+    public ResponseEntity<MukusCalendarResponse> getAllMukus(@PathVariable Long groupId,
+                                                             @RequestParam Integer year,
+                                                             @RequestParam Integer month
+    ){
+        // 서비스에서 그룹 id로 Entity 찾기
+        mukusService.
+
+        return ResponseEntity.ok(mukusResponse);
     }
 
 }
