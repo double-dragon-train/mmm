@@ -9,7 +9,5 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class MukBTICalcRequest {
-    private Boolean isLogin;
-    private Long userId;
     private List<CalcInfo> answers;
 }
