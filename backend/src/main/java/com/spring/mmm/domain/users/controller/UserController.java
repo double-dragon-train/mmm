@@ -47,7 +47,7 @@ public class UserController {
         return userService.nicknameVerify(nickname);
     }
 
-    @PutMapping("/")
+    @PutMapping
     public ResponseEntity<Void> modify(@AuthenticationPrincipal UserDetailsImpl user, @RequestBody UserModifyRequest userModifyRequest) {
 
         userService.modify(user, userModifyRequest);
@@ -68,7 +68,7 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<UserEmailResponse> getUserInfo(@RequestHeader("Authorization") String token) {
 
         String jwtToken = token.substring(7);
