@@ -5,4 +5,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface MuklogService {
     MuklogsResponse findAllMuklogByGroupId(Long groupId, Pageable pageable);
+
+    void saveLog(Long mukgroupId, String content);
 }

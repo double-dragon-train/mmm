@@ -6,4 +6,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface MuklogRepository {
     Page<MuklogEntity> findAllMuklogByGroupId(Long groupId, Pageable pageable);
+
+    void save(MuklogEntity muklogEntity);
 }

@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface MukgroupRepository {
     MukgroupEntity save(MukgroupEntity mukgroupEntity);
-    MukgroupEntity findByMukgroupId(Long mukgroupId);
+    Optional<MukgroupEntity> findByMukgroupId(Long mukgroupId);
     void delete(MukgroupEntity mukgroupEntity);
     Integer countAllMukboByMukgroupId(Long mukgroupId);
 }

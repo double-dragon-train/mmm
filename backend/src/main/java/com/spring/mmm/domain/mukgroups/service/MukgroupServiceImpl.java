@@ -16,6 +16,7 @@ import com.spring.mmm.domain.mukgroups.exception.MukboErrorCode;
 import com.spring.mmm.domain.mukgroups.exception.MukboException;
 import com.spring.mmm.domain.mukgroups.service.port.MukboRepository;
 import com.spring.mmm.domain.mukgroups.service.port.MukgroupRepository;
+import com.spring.mmm.domain.muklogs.exception.MukgroupNotFoundException;
 import com.spring.mmm.domain.users.infra.UserDetailsImpl;
 import com.spring.mmm.domain.users.infra.UserEntity;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +42,7 @@ public class MukgroupServiceImpl implements MukgroupService{
     @Override
     public void saveMukGroup(String name, UserEntity user) {
         MukboEntity mukboEntity = mukboRepository.findByUserId(user.getId());
-        MukgroupEntity originMukgroup = mukgroupRepository.findByMukgroupId(mukboEntity.getMukboId());
+        MukgroupEntity originMukgroup = mukboEntity.getMukgroupEntity();
         if(originMukgroup.getIsSolo()){
             MukgroupEntity mukgroupEntity = mukgroupRepository.save(MukgroupEntity.create(name, Boolean.FALSE));
             mukboRepository.save(mukboEntity.modifyGroup(mukgroupEntity.getMukgroupId()));
@@ -53,24 +54,28 @@ public class MukgroupServiceImpl implements MukgroupService{
 
     @Override
     public MukgroupEntity findMyMukgroup(UserEntity user) {
-        MukboEntity mukboEntity = mukboRepository.findByUserId(user.getId());
-        return mukgroupRepository.findByMukgroupId(mukboEntity.getMukgroupEntity().getMukgroupId());
+        return mukboRepository.findByUserId(user.getId()).getMukgroupEntity();
     }
 
     @Override
     public MukgroupEntity findMukgroupById(Long groupId) {
-        return mukgroupRepository.findByMukgroupId(groupId);
+        return getMukgroupEntity(groupId);
+    }
+
+    private MukgroupEntity getMukgroupEntity(Long groupId) {
+        return mukgroupRepository.findByMukgroupId(groupId)
+                .orElseThrow(MukgroupNotFoundException::new);
     }
 
     @Override
     public void modifyGroupName(Long groupId, String name) {
-        mukgroupRepository.save(mukgroupRepository.findByMukgroupId(groupId).modifyMukgroupName(name));
+        mukgroupRepository.save(getMukgroupEntity(groupId).modifyMukgroupName(name));
     }
 
     @Override
     public void modifyGroupImage(Long groupId, MultipartFile multipartFile) {
         String imageSrc = s3Service.uploadFile(multipartFile);
-        mukgroupRepository.save(mukgroupRepository.findByMukgroupId(groupId).modifyMukgroupImage(imageSrc));
+        mukgroupRepository.save(getMukgroupEntity(groupId).modifyMukgroupImage(imageSrc));
     }
 
     @Override
@@ -87,16 +92,14 @@ public class MukgroupServiceImpl implements MukgroupService{
 
     @Override
     public void exitMukgroup(UserDetailsImpl user, Long groupId) {
-        if(mukgroupRepository.findByMukgroupId(groupId).getIsSolo()){
+        MukgroupEntity mukgroup = getMukgroupEntity(groupId);
+        if(mukgroup.getIsSolo()){
             throw new MukGroupException(MukGroupErrorCode.SOLO_CANT_EXIT);
         }
-
         Integer mukboCount = mukgroupRepository.countAllMukboByMukgroupId(groupId);
-
         if(mukboCount == 1){
-            mukgroupRepository.delete(mukgroupRepository.findByMukgroupId(groupId));
+            mukgroupRepository.delete(mukgroup);
         }
-
         saveSoloMukGroup(user.getUsername(), user.getUser());
     }
 
