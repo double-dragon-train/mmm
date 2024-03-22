@@ -1,9 +1,12 @@
-$color-main: #2a43ce;
-
 .wrapper {
   width: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: aqua;
+}
+
+.subLogo {
+  width: 80px;
+  margin: 15px 0px 10px 0px;
 }

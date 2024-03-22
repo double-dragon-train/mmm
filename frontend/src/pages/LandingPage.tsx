@@ -11,7 +11,6 @@ function LandingPage() {
     ['randomFoodList'],
     getRandomFoodList
   );
-  console.log(data);
   const [currentImageIndex, setCurrentImageIndex] =
     useState<number>(0);
   const [isHovered, setIsHovered] = useState<boolean>(false);

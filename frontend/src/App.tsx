@@ -15,6 +15,8 @@ import {
 import GroupPage from './pages/GroupPage';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import MainPage from './pages/MainPage';
+import CalendarPage from './pages/CalendarPage';
+import IntroducePage from './pages/IntroducePage';
 
 const queryClient = new QueryClient();
 
@@ -32,8 +34,16 @@ const router = createBrowserRouter([
         element: <GroupPage />,
       },
       {
+        path: '/calendar',
+        element: <CalendarPage />,
+      },
+      {
         path: '/profile',
         element: <ProfilePage />,
+      },
+      {
+        path: '/introduce',
+        element: <IntroducePage />,
       },
     ],
   },
@@ -49,7 +59,6 @@ const router = createBrowserRouter([
     path: '/login',
     element: <LoginPage />,
   },
-  
   {
     path: '/mbti/:mbtiId',
     element: <MbtiPage />,
