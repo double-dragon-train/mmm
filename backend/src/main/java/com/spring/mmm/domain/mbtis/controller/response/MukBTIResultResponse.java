@@ -6,6 +6,6 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class MBTIResultResponse {
-    private MBTIResult mbtiResult;
+public class MukBTIResultResponse {
+    private MukBTIResult mukBTIResult;
 }
