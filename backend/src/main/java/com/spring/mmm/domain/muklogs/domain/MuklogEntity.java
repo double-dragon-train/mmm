@@ -20,7 +20,7 @@ public class MuklogEntity {
     @Column(name = "muklog_id")
     private Long muklogId;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", columnDefinition = "timestamp")
     private Instant createdAt;
 
     @Column(name = "content")
@@ -30,10 +30,28 @@ public class MuklogEntity {
     @JoinColumn(name = "mukgroup_id")
     private MukgroupEntity mukgroupEntity;
 
-    public MuklogResponse create(){
+
+    public static MuklogEntity create(MukgroupEntity mukGroupEntity, String content){
+        return MuklogEntity.builder()
+                .mukgroupEntity(mukGroupEntity)
+                .content(content)
+                .createdAt(Instant.now())
+                .build();
+    }
+
+    public MuklogResponse toReseponse(){
         return MuklogResponse.builder()
                 .content(this.content)
                 .createdAt(createdAt.toEpochMilli())
                 .build();
+    }
+
+    @Override
+    public String toString() {
+        return "MuklogEntity{" +
+                "muklogId=" + muklogId +
+                ", createdAt=" + createdAt +
+                ", content='" + content + '\'' +
+                '}';
     }
 }

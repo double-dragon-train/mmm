@@ -20,9 +20,8 @@ public class MukgroupRepositoryImpl implements MukgroupRepository {
     }
 
     @Override
-    public MukgroupEntity findByMukgroupId(Long mukgroupId) {
-        return mukgroupJpaRepository.findByMukgroupId(mukgroupId)
-                .orElseThrow(() -> new MukboException(MukboErrorCode.NOT_FOUND));
+    public Optional<MukgroupEntity> findByMukgroupId(Long mukgroupId) {
+        return mukgroupJpaRepository.findByMukgroupId(mukgroupId);
     }
 
     @Override

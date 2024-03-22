@@ -2,7 +2,6 @@ package com.spring.mmm.domain.mukgroups.controller;
 
 import com.spring.mmm.domain.mukgroups.controller.request.*;
 import com.spring.mmm.domain.mukgroups.controller.response.MukbosResponse;
-import com.spring.mmm.domain.mukgroups.controller.response.MukgroupMukjukResponse;
 import com.spring.mmm.domain.mukgroups.controller.response.MukgroupResponse;
 import com.spring.mmm.domain.mukgroups.service.MukboService;
 import com.spring.mmm.domain.mukgroups.service.MukgroupService;
@@ -74,12 +73,10 @@ public class MukGroupController {
                 .build());
     }
 
-    @GetMapping("{groupId}/log")
-    public ResponseEntity<MuklogsResponse> findMuklogsByGroupId(
-            @PathVariable Long groupId,
-            @RequestBody MuklogRequest muklogRequest){
-        Pageable pageable = PageRequest.of(muklogRequest.getPage(), muklogRequest.getSize());
-        return ResponseEntity.ok(muklogService.findAllMuklogByGroupId(groupId, pageable));
+    @GetMapping("/{groupId}/log")
+    public ResponseEntity<MuklogsResponse> findAllLogsByPaging(@PathVariable Long groupId, Pageable pageable,
+                                                               @AuthenticationPrincipal UserEntity userEntity){
+        return ResponseEntity.ok(muklogService.findAllMuklogByGroupId(groupId, pageable, userEntity));
     }
 
     @PostMapping("{groupId}/users")
