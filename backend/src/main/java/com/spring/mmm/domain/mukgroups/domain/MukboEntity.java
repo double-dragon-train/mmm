@@ -77,8 +77,4 @@ public class MukboEntity {
     public void modifyMukBTIResult(List<MukBTIResultEntity> mukBTIResults){
         this.mukBTIResultEntities = mukBTIResults;
     }
-
-    public void exitMukgroup(){
-        this.mukgroupEntity = null;
-    }
 }
