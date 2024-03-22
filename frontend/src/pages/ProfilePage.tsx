@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Input from '../components/common/Input';
 import styles from '../styles/userPage/UserPage.module.css';
-import '../styles/common/userTitle.css';
+import userTitleStyles from '../styles/common/UserTitle.module.css';
 import Button from '../components/common/Button';
 import closedEye from '../assets/images/closedEye.png';
 import openedEye from '../assets/images/openedEye.png';
@@ -136,7 +136,7 @@ function ProfilePage() {
 
   return (
     <div className={styles.wrapper}>
-      <div className="userTitle">PROFILE</div>
+      <div className={userTitleStyles.userTitle}>PROFILE</div>
       <section>
         <div>
           <Input

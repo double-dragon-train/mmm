@@ -32,10 +32,10 @@ nav .active div {
   align-items: center;
 }
 nav .active div img {
-  width: 35px;
+  width: 32px;
   aspect-ratio: 1/1;
 }
 nav .active div span {
   color: #7789ed;
   font-size: 15px;
-}/*# sourceMappingURL=navBar.css.map */
+}/*# sourceMappingURL=navBar.module.css.map */

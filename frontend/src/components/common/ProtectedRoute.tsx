@@ -1,7 +1,7 @@
 import { Link, Navigate, Outlet } from 'react-router-dom';
 import NavBar from './NavBar';
 import userStore from '../../stores/userStore';
-import '../../styles/common/protectedRoute.css';
+import styles from '../../styles/common/ProtectedRoute.module.css';
 import subLogo from '../../assets/images/subLogo.png';
 
 function ProtectedRoute() {
@@ -11,9 +11,9 @@ function ProtectedRoute() {
   }
 
   return (
-    <div className="wrapper">
+    <div className={styles.wrapper}>
       <Link to="/">
-        <img className="subLogo" src={subLogo} alt="" />
+        <img className={styles.subLogo} src={subLogo} alt="" />
       </Link>
       <Outlet />
       <NavBar />

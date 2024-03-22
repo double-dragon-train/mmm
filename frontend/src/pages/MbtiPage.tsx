@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getMbtiQuestionList } from '../api/mbti';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from '../styles/mbtiPage/MbtiPage.module.css';
-import '../styles/common/buttons.css';
+import buttonStyles from '../styles/common/Buttons.module.css';
 import CheckCircle from '../components/mbtiPage/CheckCircle';
 import userStore from '../stores/userStore';
 import { useEffect, useState } from 'react';
@@ -92,7 +92,7 @@ function MbtiPage() {
         </div>
         <button
           onClick={goNextQuestion}
-          className="miniRoundedButton"
+          className={buttonStyles.miniRoundedButton}
         >
           다음
         </button>

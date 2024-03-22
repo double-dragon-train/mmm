@@ -26,7 +26,7 @@
 
 html {
   height: 100dvh;
-  width: 100dvw;
+  width: 100vw;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -35,6 +35,7 @@ html {
 button:disabled {
   cursor: default;
 }
+
 button {
   background-color: white;
   outline: none;
@@ -68,6 +69,7 @@ input {
   border-bottom: 1px rgba(101, 101, 101, 0.5) solid;
   color: rgba(42, 67, 206, 0.8);
   font-size: 17px;
+  background-color: transparent;
 }
 
 input:-webkit-autofill {
@@ -84,5 +86,6 @@ img {
 }
 
 #root {
+  max-width: 400px;
   width: 100%;
 }
