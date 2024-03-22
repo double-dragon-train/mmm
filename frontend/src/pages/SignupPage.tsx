@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import Input from '../components/common/Input';
 import styles from '../styles/userPage/UserPage.module.css';
-// import styles2 from '../styles/userPage/UserPage.module.css';
-// import styles from '../styles/userPage/SignupPage.module.css';
 import Button from '../components/common/Button';
 import subLogo from '../assets/images/subLogo.png';
 import closedEye from '../assets/images/closedEye.png';
@@ -21,17 +19,18 @@ import {
 } from '../api/userApi';
 import { useQuery } from 'react-query';
 import { useMutation } from '@tanstack/react-query';
+import ErrorMessage from '../components/common/ErrorMessage';
 
 function SignupPage() {
   const navigate = useNavigate();
   const [inputList, setInputList] = useState({
     nickname: '',
     email: '',
-    code: '',
+    authNum: '',
     password: '',
     passwordConfirm: '',
   });
-  const { nickname, email, code, password, passwordConfirm } =
+  const { nickname, email, authNum, password, passwordConfirm } =
     inputList;
   const inputValues = Object.values(inputList);
 
@@ -50,6 +49,9 @@ function SignupPage() {
     }
     if (name === 'email') {
       setIsEmailButtonClicked(false);
+    }
+    if (name === 'authNum') {
+      setIsEmailCodeValid('');
     }
   };
   const [isEmailButtonClicked, setIsEmailButtonClicked] =
@@ -103,7 +105,7 @@ function SignupPage() {
       setIsPasswordConfirmValid(false);
     else setIsPasswordConfirmValid(true);
   };
-  
+
   const togglePassword = () => {
     setIsPasswordOpened(!isPasswordOpened);
   };
@@ -120,20 +122,24 @@ function SignupPage() {
     mutateSendEmail(sendEmailData);
   };
 
-
+  const [isEmailCodeValid, setIsEmailCodeValid] = useState<string>();
   // 이메일 인증코드 확인 api
   const { mutate: mutateEmailCode } = useMutation({
     mutationFn: postEmailCode,
+    onSuccess: (data) => {
+      setIsEmailCodeValid(data);
+    },
+    onError: () => {
+      setIsEmailCodeValid('no')
+    }
   });
   const handleEmailCode = () => {
-    setIsEmailButtonClicked(!isEmailButtonClicked);
     const emailCodeData = {
       email,
-      code,
+      authNum,
     };
     mutateEmailCode(emailCodeData);
   };
-
 
   // 회원가입 api
   const { mutate: mutateSignup } = useMutation({
@@ -179,7 +185,7 @@ function SignupPage() {
                 ? '✓'
                 : '확인'
             }
-            disabledEvent={isNicknameDuplicated==false}
+            disabledEvent={isNicknameDuplicated == false}
           />
         </div>
 
@@ -208,18 +214,20 @@ function SignupPage() {
             <div className="inputBox">
               <input
                 type="text"
-                name="code"
-                value={code}
+                name="authNum"
+                value={authNum}
                 onChange={changeInputList}
                 className="shortInput"
                 placeholder="인증번호"
+                
               />
               <span></span>
+              {isEmailCodeValid == 'no' && <ErrorMessage errorMessage='인증번호가 일치하지 않습니다.' />}
             </div>
             <Button
               disabledEvent={false}
               clickEvent={handleEmailCode}
-              buttonName="확인"
+              buttonName={isEmailCodeValid == 'ok' ? '✓' : '확인'}
             />
           </div>
         )}
@@ -273,12 +281,13 @@ function SignupPage() {
       <button
         onClick={handleSignup}
         className="userButton"
-        // 닉네임 중복 || 비번 같지X || 닉네임, 비번 유효X || inputList 하나라도 비어있음
+        // 닉네임 중복 || 비번 같지X || 닉네임, 비번, 인증번호 유효X || inputList 하나라도 비어있음
         disabled={
           isNicknameDuplicated ||
           !isPasswordConfirmValid ||
           !isNicknameValid ||
           !isPasswordValid ||
+          isEmailCodeValid !== 'ok' ||
           inputValues.some((val) => val === '')
         }
       >

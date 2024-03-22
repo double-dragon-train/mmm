@@ -11,7 +11,7 @@
 }
 .wrapper > span {
   font-size: 16px;
-  color: rgba(101, 101, 101, 0.7);
+  color: rgba(42, 67, 206, 0.5);
   margin-top: 16px;
 }
 .wrapper > span a:visited,
@@ -39,4 +39,11 @@
 
 .checkMessage {
   color: rgba(243, 32, 37, 0.5);
+}
+
+.logout {
+  cursor: pointer;
+}
+.logout:hover {
+  color: rgba(42, 67, 206, 0.7);
 }/*# sourceMappingURL=UserPage.module.css.map */
