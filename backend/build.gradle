@@ -50,3 +50,11 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+sonarqube {
+    properties {
+        property 'sonar.host.url', 'https://sonarqube.ssafy.com'
+        property 'sonar.login', '854ae688b765a30c2f5fc2f52d2bd680514a6630'
+        property 'sonar.projectKey', 'S10P22A110'
+    }
+}
