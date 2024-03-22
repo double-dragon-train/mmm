@@ -6,14 +6,14 @@ import com.spring.mmm.domain.mbtis.controller.response.MukBTIResponse;
 import com.spring.mmm.domain.mbtis.service.MukBTIService;
 import com.spring.mmm.domain.users.controller.request.*;
 import com.spring.mmm.domain.users.controller.response.TokenResponse;
-import com.spring.mmm.domain.users.controller.response.UserEmailResponse;
+import com.spring.mmm.domain.users.controller.response.UserInfoResponse;
 import com.spring.mmm.domain.users.exception.UserErrorCode;
 import com.spring.mmm.domain.users.exception.UserException;
 import com.spring.mmm.domain.users.infra.UserDetailsImpl;
 import com.spring.mmm.domain.users.infra.UserEntity;
 import com.spring.mmm.domain.users.service.UserEmailSendService;
 import com.spring.mmm.domain.users.service.UserService;
-import io.jsonwebtoken.Claims;
+import com.spring.mmm.domain.users.service.port.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -30,6 +30,7 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
+    private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
     private final UserEmailSendService userEmailSendService;
     private final MukBTIService mukBTIService;
@@ -69,15 +70,18 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<UserEmailResponse> getUserInfo(@RequestHeader("Authorization") String token) {
+    public ResponseEntity<UserInfoResponse> getUserInfo(@RequestHeader("Authorization") String token) {
 
         String jwtToken = token.substring(7);
 
         String email = jwtProvider.getUserInfoFromToken(jwtToken);
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+        String nickname = user.getNickname();
 
-        UserEmailResponse userEmailResponse = UserEmailResponse.of(email);
+        UserInfoResponse userInfoResponse = UserInfoResponse.of(email, nickname);
 
-        return ResponseEntity.ok(userEmailResponse);
+        return ResponseEntity.ok(userInfoResponse);
     }
 
     @PostMapping ("/email/verification-request")
