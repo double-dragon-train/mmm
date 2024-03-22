@@ -78,10 +78,16 @@ public class UserController {
 
     @PostMapping ("/email/verification-request")
     public String mailSend(@RequestBody @Valid UserEmailRequest userEmailRequest){
+
+        if (userService.isAuthenticated()) {
+            throw new UserException(UserErrorCode.IS_AUTHENTICATED);
+        }
+
         return userEmailSendService.joinEmail(userEmailRequest.getEmail());
     }
     @PostMapping("/email/verification")
     public String authCheck(@RequestBody @Valid UserEmailCheckRequest userEmailCheckRequest){
+
         Boolean checked=userEmailSendService.checkAuthNum(
                 userEmailCheckRequest.getEmail(),
                 userEmailCheckRequest.getAuthNum()

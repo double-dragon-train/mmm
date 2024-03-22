@@ -17,6 +17,8 @@ import com.spring.mmm.domain.users.infra.UserEntity;
 import com.spring.mmm.domain.users.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -124,6 +126,13 @@ public class UserServiceImpl implements UserService{
         } else {
             throw new IllegalArgumentException("이미 로그아웃한 유저입니다.");
         }
+    }
+
+    @Override
+    @Transactional
+    public boolean isAuthenticated() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication != null && authentication.isAuthenticated();
     }
 
 }

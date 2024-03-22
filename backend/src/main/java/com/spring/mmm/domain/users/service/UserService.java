@@ -20,4 +20,6 @@ public interface UserService {
 
     void logout(String accessToken, String username);
 
+    boolean isAuthenticated();
+
 }
