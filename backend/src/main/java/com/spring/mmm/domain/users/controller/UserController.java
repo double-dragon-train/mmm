@@ -1,6 +1,9 @@
 package com.spring.mmm.domain.users.controller;
 
 import com.spring.mmm.common.config.jwt.JwtProvider;
+import com.spring.mmm.domain.mbtis.controller.request.MukBTIRequest;
+import com.spring.mmm.domain.mbtis.controller.response.MukBTIResponse;
+import com.spring.mmm.domain.mbtis.service.MukBTIService;
 import com.spring.mmm.domain.users.controller.request.*;
 import com.spring.mmm.domain.users.controller.response.TokenResponse;
 import com.spring.mmm.domain.users.controller.response.UserEmailResponse;
@@ -29,6 +32,7 @@ public class UserController {
     private final UserService userService;
     private final JwtProvider jwtProvider;
     private final UserEmailSendService userEmailSendService;
+    private final MukBTIService mukBTIService;
 
     @PostMapping("/join")
     public ResponseEntity<Void> join(@RequestBody UserJoinRequest userJoinRequest) {
@@ -98,6 +102,22 @@ public class UserController {
         else{
             throw new UserException(UserErrorCode.CODE_NOT_SAME_ERROR);
         }
+    }
+
+    @PostMapping("/mbti")
+    public ResponseEntity<MukBTIResponse> saveMukBTI(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestBody MukBTIRequest mukBTIRequest
+            ){
+        mukBTIService.save(userDetails, mukBTIRequest.getKey());
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/mbti")
+    public ResponseEntity<MukBTIResponse> findMukBTIResult(
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ){
+        return ResponseEntity.ok(mukBTIService.getMukBTI(userDetails));
     }
 
 }

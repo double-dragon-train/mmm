@@ -1,7 +1,6 @@
 package com.spring.mmm.domain.mukgroups.service;
 
 import com.spring.mmm.common.service.S3Service;
-import com.spring.mmm.domain.mbtis.controller.response.MBTIResult;
 import com.spring.mmm.domain.mbtis.domain.MBTI;
 import com.spring.mmm.domain.mbtis.domain.MukBTIResultEntity;
 import com.spring.mmm.domain.mbtis.domain.MukBTIType;
@@ -12,8 +11,6 @@ import com.spring.mmm.domain.mukgroups.exception.MukGroupErrorCode;
 import com.spring.mmm.domain.mukgroups.exception.MukGroupException;
 import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
-import com.spring.mmm.domain.mukgroups.exception.MukboErrorCode;
-import com.spring.mmm.domain.mukgroups.exception.MukboException;
 import com.spring.mmm.domain.mukgroups.service.port.MukboRepository;
 import com.spring.mmm.domain.mukgroups.service.port.MukgroupRepository;
 import com.spring.mmm.domain.muklogs.exception.MukgroupNotFoundException;
