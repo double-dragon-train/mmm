@@ -44,4 +44,12 @@ public class MukBTIResultEntity {
                 .mukboEntity(mukboEntity)
                 .build();
     }
+
+    public static MukBTIResultEntity createWithoutScore(MukBTIEntity mukBTIEntity, MukboEntity mukboEntity, UserEntity userEntity){
+        return MukBTIResultEntity.builder()
+                .mukBTIEntity(mukBTIEntity)
+                .mukboEntity(mukboEntity)
+                .userEntity(userEntity)
+                .build();
+    }
 }

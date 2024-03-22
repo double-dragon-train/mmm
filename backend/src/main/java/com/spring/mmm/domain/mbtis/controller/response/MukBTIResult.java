@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class MBTIResult {
+public class MukBTIResult {
     private String key;
     private MBTI mbti;
 }

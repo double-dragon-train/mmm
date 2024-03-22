@@ -1,15 +1,19 @@
 package com.spring.mmm.domain.mbtis.service;
 
-import com.spring.mmm.domain.mbtis.controller.request.MBTICalcRequest;
-import com.spring.mmm.domain.mbtis.controller.response.MBTIResult;
-import com.spring.mmm.domain.mbtis.domain.MukBTIEntity;
+import com.spring.mmm.domain.mbtis.controller.request.MukBTICalcRequest;
+import com.spring.mmm.domain.mbtis.controller.response.MukBTIResponse;
+import com.spring.mmm.domain.mbtis.controller.response.MukBTIResult;
 import com.spring.mmm.domain.mbtis.domain.MukBTIQuestionEntity;
-import com.spring.mmm.domain.mbtis.domain.MukBTIResultEntity;
+import com.spring.mmm.domain.users.infra.UserDetailsImpl;
 
 import java.util.List;
 
 public interface MukBTIService {
     List<MukBTIQuestionEntity> findAllMukBTIQuestion();
 
-    MBTIResult calcMBTI(MBTICalcRequest mbtiCalcRequest, Long userId);
+    MukBTIResult calcMBTI(MukBTICalcRequest mukBTICalcRequest);
+
+    void save(UserDetailsImpl user, String key);
+
+    MukBTIResponse getMukBTI(UserDetailsImpl user);
 }
