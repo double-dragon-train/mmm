@@ -1,6 +1,8 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Link, Navigate, Outlet } from 'react-router-dom';
 import NavBar from './NavBar';
 import userStore from '../../stores/userStore';
+import '../../styles/common/protectedRoute.css';
+import subLogo from '../../assets/images/subLogo.png';
 
 function ProtectedRoute() {
   const { isLogin } = userStore();
@@ -9,7 +11,10 @@ function ProtectedRoute() {
   }
 
   return (
-    <div>
+    <div className="wrapper">
+      <Link to="/">
+        <img className="subLogo" src={subLogo} alt="" />
+      </Link>
       <Outlet />
       <NavBar />
     </div>

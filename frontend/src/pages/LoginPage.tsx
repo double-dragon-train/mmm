@@ -18,7 +18,6 @@ import userStore from '../stores/userStore';
 function LoginPage() {
   // const { setAccessToken, setIsLogin } = userStore();
   const navigate = useNavigate();
-
   const [inputList, setInputList] = useState({
     email: '',
     password: '',
@@ -61,7 +60,7 @@ function LoginPage() {
     onSuccess: (data) => {
       userStore.getState().setAccessToken(data.accessToken);
       userStore.getState().setIsLogin(true);
-      navigate('/main');
+      navigate('/');
     },
   });
 
@@ -121,6 +120,7 @@ function LoginPage() {
       <button
         onClick={handleLogin}
         className="userButton"
+        type="button"
         disabled={
           !isEmailValid ||
           !isPasswordValid ||

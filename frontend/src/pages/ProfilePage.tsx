@@ -4,18 +4,14 @@ import styles from '../styles/userPage/UserPage.module.css';
 // import styles2 from '../styles/userPage/UserPage.module.css';
 // import styles from '../styles/userPage/SignupPage.module.css';
 import Button from '../components/common/Button';
-import subLogo from '../assets/images/subLogo.png';
 import closedEye from '../assets/images/closedEye.png';
 import openedEye from '../assets/images/openedEye.png';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   checkNicknameValidation,
   checkPasswordValidation,
 } from '../utils/validation';
-import {
-  getNicknameValidate,
-  postProfile,
-} from '../api/userApi';
+import { getNicknameValidate, postProfile } from '../api/userApi';
 import { useQuery } from 'react-query';
 import { useMutation } from '@tanstack/react-query';
 
@@ -118,9 +114,9 @@ function ProfilePage() {
 
   return (
     <div className={styles.wrapper}>
-      <Link to="/">
+      {/* <Link to="/">
         <img className={styles.subLogo} src={subLogo} alt="" />
-      </Link>
+      </Link> */}
       {/* <div className="userTitle">SIGN UP</div> */}
       <section>
         <div>
