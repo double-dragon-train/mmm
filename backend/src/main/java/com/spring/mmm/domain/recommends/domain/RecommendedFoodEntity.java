@@ -31,4 +31,9 @@ public class RecommendedFoodEntity {
     @JoinColumn(name = "food_recommend")
     private FoodRecommendEntity foodRecommendEntity;
 
+    public void eat() {
+        this.eaten = true;
+
+    }
+
 }
