@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import calendar_white from '../../assets/images/calendar_white.png';
 import calendar_blue from '../../assets/images/calendar_blue.png';
 import group_white from '../../assets/images/group_white.png';
@@ -9,17 +9,19 @@ import mbti_white from '../../assets/images/mbti_white.png';
 import mbti_blue from '../../assets/images/mbti_blue.png';
 import profile_white from '../../assets/images/profile_white.png';
 import profile_blue from '../../assets/images/profile_blue.png';
-import '../../styles/common/navBar.css';
+import styles from '../../styles/common/NavBar.module.css';
 
 function NavBar() {
   const location = useLocation();
 
   return (
     <nav>
-      <NavLink
+      <Link
         to="/calendar"
-        className={({ isActive }) =>
-          isActive ? 'active' : 'inActive'
+        className={
+          location.pathname === '/calendar'
+            ? styles.active
+            : styles.inActive
         }
       >
         <div>
@@ -31,11 +33,13 @@ function NavBar() {
 
           <span>먹어쓰</span>
         </div>
-      </NavLink>
-      <NavLink
+      </Link>
+      <Link
         to="/group"
-        className={({ isActive }) =>
-          isActive ? 'active' : 'inActive'
+        className={
+          location.pathname === '/group'
+            ? styles.active
+            : styles.inActive
         }
       >
         <div>
@@ -46,11 +50,11 @@ function NavBar() {
           )}
           <span>먹그룹</span>
         </div>
-      </NavLink>
-      <NavLink
+      </Link>
+      <Link
         to="/"
-        className={({ isActive }) =>
-          isActive ? 'active' : 'inActive'
+        className={
+          location.pathname === '/' ? styles.active : styles.inActive
         }
       >
         <div>
@@ -61,11 +65,13 @@ function NavBar() {
           )}
           <span>홈</span>
         </div>
-      </NavLink>
-      <NavLink
+      </Link>
+      <Link
         to="/introduce"
-        className={({ isActive }) =>
-          isActive ? 'active' : 'inActive'
+        className={
+          location.pathname === '/introduce'
+            ? styles.active
+            : styles.inActive
         }
       >
         <div>
@@ -76,11 +82,13 @@ function NavBar() {
           )}
           <span>먹BTI</span>
         </div>
-      </NavLink>
-      <NavLink
+      </Link>
+      <Link
         to="/profile"
-        className={({ isActive }) =>
-          isActive ? 'active' : 'inActive'
+        className={
+          location.pathname === '/profile'
+            ? styles.active
+            : styles.inActive
         }
       >
         <div>
@@ -91,7 +99,7 @@ function NavBar() {
           )}
           <span>내정보</span>
         </div>
-      </NavLink>
+      </Link>
     </nav>
   );
 }

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import styles from '../styles/landingPage/LandingPage.module.css';
-import '../styles/common/buttons.css';
+import buttonStyles from '../styles/common/Buttons.module.css'
 import mainLogo from '../assets/images/mainLogo.png';
 import { getRandomFoodList } from '../api/recommendApi';
 import { useQuery } from 'react-query';
@@ -59,10 +59,10 @@ function LandingPage() {
       </div>
 
       <div>
-        <Link to="/login" className="landingButton">
+        <Link to="/login" className={buttonStyles.landingButton}>
           로그인
         </Link>
-        <Link to="/mbti/0" className="landingButton">
+        <Link to="/mbti/0" className={buttonStyles.landingButton}>
           먹BTI 검사
         </Link>
       </div>

@@ -1,4 +1,4 @@
-import '../../styles/common/buttons.css';
+import styles from '../../styles/common/Buttons.module.css';
 
 interface ButtonProps {
   clickEvent: () => void;
@@ -8,7 +8,7 @@ interface ButtonProps {
 
 function Button ({ clickEvent, buttonName, disabledEvent }: ButtonProps) {
   return (
-    <button onClick={clickEvent} disabled={disabledEvent} className="miniBlueButton">
+    <button onClick={clickEvent} disabled={disabledEvent} className={styles.miniBlueButton}>
       {buttonName}
     </button>
   );

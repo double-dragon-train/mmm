@@ -1,7 +1,7 @@
-import styles from '../../styles/common/Input.module.css';
+import styles from '../../styles/common/SmallLabelInput.module.css';
 import ErrorMessage from './ErrorMessage';
 
-interface InputProps {
+interface SmallLabelInputProps {
   title: string;
   info: string;
   inputName: string;
@@ -15,7 +15,7 @@ interface InputProps {
   errorMessage: string;
 }
 
-function Input({
+function SmallLabelInput({
   title,
   info,
   inputName,
@@ -26,17 +26,10 @@ function Input({
   onBlur,
   isInputValid,
   errorMessage,
-}: InputProps) {
-  // const changeInputValue = (
-  //   e: React.ChangeEvent<HTMLInputElement>
-  // ) => {
-  //   console.log(e.target.value);
-  //   setInputValue(e.target.value);
-  // };
-
+}: SmallLabelInputProps) {
   return (
     <div className={styles.inputContainer}>
-      <label>{title}</label>
+      <label className={styles.title}>{title}</label>
       <div className={styles.inputBox}>
         <input
           name={inputName}
@@ -55,4 +48,4 @@ function Input({
   );
 }
 
-export default Input;
+export default SmallLabelInput;

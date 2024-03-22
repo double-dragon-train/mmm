@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import Input from '../components/common/Input';
-import '../styles/common/buttons.css';
-import '../styles/common/userTitle.css';
+import buttonStyles from '../styles/common/Buttons.module.css';
 import styles from '../styles/userPage/UserPage.module.css';
 import subLogo from '../assets/images/subLogo.png';
 import closedEye from '../assets/images/closedEye.png';
@@ -77,7 +76,6 @@ function LoginPage() {
       <Link to="/">
         <img className={styles.subLogo} src={subLogo} alt="" />
       </Link>
-      {/* <div className="userTitle">LOGIN</div> */}
       <section>
         <Input
           title="이메일"
@@ -119,7 +117,7 @@ function LoginPage() {
       /> */}
       <button
         onClick={handleLogin}
-        className="userButton"
+        className={buttonStyles.userButton}
         type="button"
         disabled={
           !isEmailValid ||

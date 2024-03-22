@@ -1,4 +1,4 @@
-import '../../styles/common/errorMessage.css';
+import styles from '../../styles/common/ErrorMessage.module.css';
 
 interface ErrorMessageProps {
   errorMessage: string;
@@ -6,7 +6,7 @@ interface ErrorMessageProps {
 
 function ErrorMessage({ errorMessage }: ErrorMessageProps) {
   return (
-    <div className="errorMessage">
+    <div className={styles.errorMessage}>
       {errorMessage}
     </div>
   );
