@@ -35,7 +35,7 @@ const userStore = create(
       //   followingUsers: [],
       //   setFollowingUsers: (value) => set({ followingUsers: value }),
     }),
-    { name: 'userStore' }
+    { name: 'accessToken' }
   )
 );
 

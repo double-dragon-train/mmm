@@ -32,7 +32,7 @@ export const postSendEmail = async (sendEmailData: SendEmailData) => {
 // 이메일 인증 코드 확인
 type EmailCodeData = {
   email: string;
-  code: string;
+  authNum: string;
 };
 export const postEmailCode = async (emailCodeData: EmailCodeData) => {
   try {
@@ -41,8 +41,12 @@ export const postEmailCode = async (emailCodeData: EmailCodeData) => {
       emailCodeData,
       {}
     );
-    console.log('이메일 인증코드 확인 성공:', res, emailCodeData);
-    return res.data
+    console.log(
+      '이메일 인증코드 확인 성공:',
+      res.data,
+      emailCodeData
+    );
+    return res.data;
   } catch (e) {
     console.log('이메일 인증코드 확인 실패:', e);
     throw e;
@@ -86,22 +90,54 @@ export const postLogin = async (loginData: LoginData) => {
   }
 };
 
+// 로그아웃
+export const deleteLogout = async (accessToken: string) => {
+  try {
+    const res = await instance.delete('/users/logout', {
+      headers: {
+        Authorization: accessToken,
+      },
+    });
+    console.log('로그아웃 성공:', res);
+    // console.log('userStore accessToken:', accessToken);
+    return res.data;
+  } catch (e) {
+    console.log('로그아웃 실패:', e);
+    throw e;
+  }
+};
+
 // 개인정보 수정
-type ProfileData = {
+type EditProfileData = {
   nickname: string;
   password: string;
   newPassword: string;
   newPasswordConfirm: string;
 };
-export const postProfile = async (profileData: ProfileData) => {
+export const postEditProfile = async (editProfileData: EditProfileData) => {
   try {
-    const res = await instance.put('/users', profileData, {
+    const res = await instance.put('/users', editProfileData, {
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    console.log('회원가입 성공:', res, profileData);
+    console.log('회원가입 성공:', res, editProfileData);
   } catch (e) {
     console.log('회원가입 실패:', e);
+  }
+};
+
+// 현재 사용자 정보 조회
+export const getProfile = async (accessToken: string) => {
+  try {
+    const res = await instance.get('/users', {
+      headers: {
+        Authorization: accessToken,
+      },
+    });
+    console.log('사용자 정보 조회 성공:', res);
+    return res.data;
+  } catch (e) {
+    console.log('사용자 정보 조회 실패:', e);
   }
 };

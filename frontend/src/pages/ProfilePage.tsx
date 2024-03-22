@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import Input from '../components/common/Input';
 import styles from '../styles/userPage/UserPage.module.css';
-// import styles2 from '../styles/userPage/UserPage.module.css';
-// import styles from '../styles/userPage/SignupPage.module.css';
+import '../styles/common/userTitle.css';
 import Button from '../components/common/Button';
 import closedEye from '../assets/images/closedEye.png';
 import openedEye from '../assets/images/openedEye.png';
@@ -11,11 +10,18 @@ import {
   checkNicknameValidation,
   checkPasswordValidation,
 } from '../utils/validation';
-import { getNicknameValidate, postProfile } from '../api/userApi';
+import {
+  deleteLogout,
+  getNicknameValidate,
+  postEditProfile,
+  getProfile,
+} from '../api/userApi';
 import { useQuery } from 'react-query';
 import { useMutation } from '@tanstack/react-query';
+import userStore from '../stores/userStore';
 
 function ProfilePage() {
+  const { accessToken, setAccessToken, setIsLogin } = userStore();
   const navigate = useNavigate();
   const [inputList, setInputList] = useState({
     nickname: '',
@@ -96,28 +102,41 @@ function ProfilePage() {
   };
 
   // 개인정보 수정 api
-  const { mutate: mutateSignup } = useMutation({
-    mutationFn: postProfile,
+  const { mutate: mutateProfile } = useMutation({
+    mutationFn: postEditProfile,
     onSuccess: () => {
       navigate('/login');
     },
   });
-  const handleProfile = () => {
-    const profileData = {
+  const handleEditProfile = () => {
+    const editProfileData = {
       password,
       newPassword,
       newPasswordConfirm,
       nickname,
     };
-    mutateSignup(profileData);
+    mutateProfile(editProfileData);
   };
+
+  // 로그아웃 api
+  const { mutate: mutateLogout } = useMutation({
+    mutationFn: deleteLogout,
+    onSuccess: () => {
+      navigate('/landing');
+      setAccessToken('');
+      setIsLogin(false);
+    },
+  });
+  const handleLogout = () => {
+    mutateLogout(accessToken);
+  };
+
+  // 현재 사용자 정보 조회 api
+  const {  } = useQuery(['profileList'], () => getProfile(accessToken));
 
   return (
     <div className={styles.wrapper}>
-      {/* <Link to="/">
-        <img className={styles.subLogo} src={subLogo} alt="" />
-      </Link> */}
-      {/* <div className="userTitle">SIGN UP</div> */}
+      <div className="userTitle">PROFILE</div>
       <section>
         <div>
           <Input
@@ -211,7 +230,7 @@ function ProfilePage() {
         </span>
       </section>
       <button
-        onClick={handleProfile}
+        onClick={handleEditProfile}
         className="userButton"
         // 닉네임 중복 || 비번 같지X || 닉네임, 비번 유효X || inputList 하나라도 비어있음
         disabled={
@@ -224,6 +243,9 @@ function ProfilePage() {
       >
         완료
       </button>
+      <span className={styles.logout} onClick={handleLogout}>
+        로그아웃
+      </span>
     </div>
   );
 }
