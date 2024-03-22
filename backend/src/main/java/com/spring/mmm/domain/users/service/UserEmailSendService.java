@@ -17,20 +17,20 @@ public class UserEmailSendService {
     @Autowired
     private RedisDao redisDao;
 
-    private String authNumber;
 
-    public void makeRandomNumber() {
+    private String makeRandomNumber() {
+        StringBuilder authNumber = new StringBuilder();
         Random r = new Random();
-        authNumber = "";
         for(int i = 0; i < 6; i++) {
-            authNumber += Integer.toString(r.nextInt(10));
+            authNumber.append(r.nextInt(10));
         }
 
+        return authNumber.toString();
     }
 
 
     public String joinEmail(String email) {
-        makeRandomNumber();
+        String authNumber = makeRandomNumber();
         String setFrom = "badacura@gmail.com";
         String toMail = email;
         String title = "회원 가입 인증 이메일 입니다.";
@@ -40,11 +40,12 @@ public class UserEmailSendService {
                         "인증 번호는 " + authNumber + "입니다." +
                         "<br>" +
                         "인증번호를 입력해주세요";
-        mailSend(setFrom, toMail, title, content);
+        mailSend(setFrom, toMail, title, content, authNumber);
         return authNumber;
     }
 
-    public void mailSend(String setFrom, String toMail, String title, String content) {
+    public void mailSend(String setFrom, String toMail, String title, String content, String authNumber) {
+
         MimeMessage message = mailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message,true,"utf-8");
