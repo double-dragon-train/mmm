@@ -32,9 +32,8 @@ public class MuklogEntity {
 
 
     public static MuklogEntity create(MukgroupEntity mukGroupEntity, String content){
-
         return MuklogEntity.builder()
-                .mukGroupEntity(mukGroupEntity)
+                .mukgroupEntity(mukGroupEntity)
                 .content(content)
                 .createdAt(Instant.now())
                 .build();
