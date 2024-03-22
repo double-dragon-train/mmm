@@ -20,7 +20,7 @@ public class MuklogEntity {
     @Column(name = "muklog_id")
     private Long muklogId;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", columnDefinition = "timestamp")
     private Instant createdAt;
 
     @Column(name = "content")
@@ -44,5 +44,14 @@ public class MuklogEntity {
                 .content(this.content)
                 .createdAt(createdAt.toEpochMilli())
                 .build();
+    }
+
+    @Override
+    public String toString() {
+        return "MuklogEntity{" +
+                "muklogId=" + muklogId +
+                ", createdAt=" + createdAt +
+                ", content='" + content + '\'' +
+                '}';
     }
 }
