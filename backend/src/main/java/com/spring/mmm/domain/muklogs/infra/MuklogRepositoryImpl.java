@@ -15,4 +15,9 @@ public class MuklogRepositoryImpl implements MuklogRepository {
     public Page<MuklogEntity> findAllMuklogByGroupId(Long groupId, Pageable pageable) {
         return muklogJpaRepository.findAllMuklogByGroupId(groupId, pageable);
     }
+
+    @Override
+    public void save(MuklogEntity muklogEntity) {
+        muklogJpaRepository.save(muklogEntity);
+    }
 }

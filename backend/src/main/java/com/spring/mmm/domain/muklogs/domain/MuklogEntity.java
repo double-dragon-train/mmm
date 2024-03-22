@@ -30,7 +30,17 @@ public class MuklogEntity {
     @JoinColumn(name = "mukgroup_id")
     private MukgroupEntity mukgroupEntity;
 
-    public MuklogResponse create(){
+
+    public static MuklogEntity create(MukgroupEntity mukGroupEntity, String content){
+
+        return MuklogEntity.builder()
+                .mukGroupEntity(mukGroupEntity)
+                .content(content)
+                .createdAt(Instant.now())
+                .build();
+    }
+
+    public MuklogResponse toReseponse(){
         return MuklogResponse.builder()
                 .content(this.content)
                 .createdAt(createdAt.toEpochMilli())
