@@ -38,25 +38,22 @@ public class MukBTIServiceImpl implements MukBTIService {
         List<MukBTIQuestionEntity> questions = findAllMukBTIQuestion();
 
         int EI = 0, NS = 0, TF = 0, JP = 0, Mint = 0, Pine = 0, Die = 0;
-        for (CalcInfo calcInfo : mukBTICalcRequest.getAnswers()) {
-            for (MukBTIQuestionEntity question : questions) {
-                if (question.getQuestionId() == calcInfo.getQuizId()) {
-                    for (MukBTIAnswerEntity answer : question.getMukBTIAnswerEntities()) {
-                        if (answer.getAnswerId() == calcInfo.getAnswerId()) {
-                            switch (question.getMukBTIEntity().getType()) {
-                                case MukBTIType.EI -> EI += answer.getScore();
-                                case MukBTIType.NS -> NS += answer.getScore();
-                                case MukBTIType.TF -> TF += answer.getScore();
-                                case MukBTIType.JP -> JP += answer.getScore();
-                                case MukBTIType.MINT -> Mint += answer.getScore();
-                                case MukBTIType.PINE -> Pine += answer.getScore();
-                                case MukBTIType.DIE -> Die += answer.getScore();
-                            }
-                            break;
-                        }
-                    }
-                    break;
-                }
+
+        for(CalcInfo calcInfo : mukBTICalcRequest.getAnswers()){
+            MukBTIQuestionEntity question = MukBTIQuestionEntity.matchQuestion(questions, calcInfo.getQuizId())
+                    .orElseThrow(() -> new MukBTIException(MukBTIErrorCode.NOT_FOUND_QUESTION));
+
+            MukBTIAnswerEntity answer = MukBTIAnswerEntity.matchAnswer(question.getMukBTIAnswerEntities(), calcInfo.getAnswerId())
+                    .orElseThrow(() -> new MukBTIException(MukBTIErrorCode.NOT_FOUND_ANSWER));
+
+            switch (question.getMukBTIEntity().getType()) {
+                case MukBTIType.EI -> EI += answer.getScore();
+                case MukBTIType.NS -> NS += answer.getScore();
+                case MukBTIType.TF -> TF += answer.getScore();
+                case MukBTIType.JP -> JP += answer.getScore();
+                case MukBTIType.MINT -> Mint += answer.getScore();
+                case MukBTIType.PINE -> Pine += answer.getScore();
+                case MukBTIType.DIE -> Die += answer.getScore();
             }
         }
 
