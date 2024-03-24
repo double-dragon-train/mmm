@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -40,10 +41,10 @@ public class MukBTIServiceImpl implements MukBTIService {
         int EI = 0, NS = 0, TF = 0, JP = 0, Mint = 0, Pine = 0, Die = 0;
 
         for(CalcInfo calcInfo : mukBTICalcRequest.getAnswers()){
-            MukBTIQuestionEntity question = MukBTIQuestionEntity.matchQuestion(questions, calcInfo.getQuizId())
+            MukBTIQuestionEntity question = matchQuestion(questions, calcInfo.getQuizId())
                     .orElseThrow(() -> new MukBTIException(MukBTIErrorCode.NOT_FOUND_QUESTION));
 
-            MukBTIAnswerEntity answer = MukBTIAnswerEntity.matchAnswer(question.getMukBTIAnswerEntities(), calcInfo.getAnswerId())
+            MukBTIAnswerEntity answer = matchAnswer(question.getMukBTIAnswerEntities(), calcInfo.getAnswerId())
                     .orElseThrow(() -> new MukBTIException(MukBTIErrorCode.NOT_FOUND_ANSWER));
 
             switch (question.getMukBTIEntity().getType()) {
@@ -109,6 +110,24 @@ public class MukBTIServiceImpl implements MukBTIService {
                                         .getMukboEntity()
                                         .getMukboId())))
                 .build();
+    }
+
+    private Optional<MukBTIQuestionEntity> matchQuestion(List<MukBTIQuestionEntity> questions, Integer id){
+        for(MukBTIQuestionEntity question : questions){
+            if(question.getQuestionId().equals(id)){
+                return Optional.of(question);
+            }
+        }
+        return Optional.empty();
+    }
+
+    private Optional<MukBTIAnswerEntity> matchAnswer(List<MukBTIAnswerEntity> answers, Integer id){
+        for(MukBTIAnswerEntity answer : answers){
+            if(answer.getAnswerId() == id){
+                return Optional.of(answer);
+            }
+        }
+        return Optional.empty();
     }
 
 }

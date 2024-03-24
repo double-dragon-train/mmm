@@ -1,10 +1,12 @@
 package com.spring.mmm.domain.mbtis.domain;
 
+import com.spring.mmm.domain.mbtis.controller.request.CalcInfo;
 import com.spring.mmm.domain.mbtis.controller.response.Question;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Builder
 @Getter
@@ -37,7 +39,7 @@ public class MukBTIQuestionEntity {
                 .quizId(this.questionId)
                 .context(this.content)
                 .img(this.imageSrc != null ? this.imageSrc : null)
-                .answers(mukBTIAnswerEntities.stream().map(item -> item.toAnswer()).toList())
+                .answers(mukBTIAnswerEntities.stream().map(MukBTIAnswerEntity::toAnswer).toList())
                 .build();
     }
 }
