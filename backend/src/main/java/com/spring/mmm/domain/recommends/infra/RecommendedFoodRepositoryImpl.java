@@ -7,6 +7,8 @@ import com.spring.mmm.domain.recommends.service.port.RecommendedFoodRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 @Repository
 @RequiredArgsConstructor
@@ -18,6 +20,11 @@ public class RecommendedFoodRepositoryImpl implements RecommendedFoodRepository 
     public RecommendedFoodEntity findByRecommendedFoodId(Long recommendedFoodId) {
         return recommendedFoodJpaRepository.findByRecommendedFoodId(recommendedFoodId)
                 .orElseThrow(() -> new RecommendException(RecommendErrorCode.RECOMMENDED_NOT_FOUND));
+    }
+
+    @Override
+    public List<RecommendedFoodEntity> findRecommendedFoodByYearAndMonth(Long mukgroupId, Integer year, Integer month) {
+        return recommendedFoodJpaRepository.findRecommendedFoodByYearAndMonth(mukgroupId, year, month);
     }
 
 }

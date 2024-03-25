@@ -4,7 +4,7 @@ import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 @Builder
@@ -23,7 +23,7 @@ public class FoodRecommendEntity {
     private Boolean hasValue;
 
     @Column(name = "recommend_date")
-    private Instant recommendDate;
+    private LocalDate recommendDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mukgroup_id")
