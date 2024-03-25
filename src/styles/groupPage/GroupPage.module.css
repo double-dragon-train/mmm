@@ -1,0 +1,88 @@
+.wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.wrapper section {
+  background-color: rgba(42, 67, 206, 0.03);
+  width: 95%;
+  border-radius: 5px;
+  padding: 10px 0px;
+}
+.wrapper .header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 24px;
+}
+.wrapper .header .titleBox {
+  border-bottom: 1px solid rgba(42, 67, 206, 0.3);
+}
+.wrapper .header .titleBox > span {
+  font-size: 17px;
+  color: rgba(42, 67, 206, 0.8);
+}
+.wrapper .header .logBox {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  justify-content: center;
+  align-items: center;
+}
+.wrapper .header .logBox > img {
+  width: 24px;
+  aspect-ratio: 1/1;
+}
+.wrapper .header .logBox > span {
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 14px;
+}
+.wrapper .groupInfoSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.wrapper .groupInfoSection .profileBox {
+  padding: 10px 0px;
+}
+.wrapper .groupInfoSection .profileBox > span {
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  font-size: 17px;
+  color: #656565;
+}
+.wrapper .groupInfoSection .groupNameBox {
+  display: flex;
+  gap: 20px;
+  padding: 0px 5px;
+}
+.wrapper .groupInfoSection .rewardBox {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: left;
+  padding-left: 38px;
+}
+.wrapper .groupInfoSection .rewardBox > span {
+  font-size: 17px;
+  color: #656565;
+}
+.wrapper .groupInfoSection .rewardBox > div {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.wrapper .groupInfoSection .rewardBox > div > img {
+  width: 20px;
+  aspect-ratio: 1/1;
+}
+.wrapper .groupInfoSection .rewardBox > div > span {
+  color: rgba(42, 67, 206, 0.8);
+}/*# sourceMappingURL=GroupPage.module.css.map */
