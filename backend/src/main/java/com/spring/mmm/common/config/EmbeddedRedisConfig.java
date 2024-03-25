@@ -8,9 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import redis.embedded.RedisServer;
 import redis.embedded.exceptions.EmbeddedRedisException;
-
-import java.io.IOException;
-
 @Slf4j
 @Profile({"local", "test"})
 @Configuration

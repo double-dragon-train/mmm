@@ -1,7 +1,6 @@
 package com.spring.mmm.domain.mukgroups.domain;
 
 import com.spring.mmm.domain.mbtis.domain.MBTI;
-import com.spring.mmm.domain.mbtis.domain.MukBTIEntity;
 import com.spring.mmm.domain.mbtis.domain.MukBTIResultEntity;
 import com.spring.mmm.domain.mukgroups.controller.response.MukboResponse;
 import com.spring.mmm.domain.recommends.domain.EatenMukboEntity;

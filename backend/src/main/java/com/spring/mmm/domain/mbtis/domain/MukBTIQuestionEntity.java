@@ -1,12 +1,10 @@
 package com.spring.mmm.domain.mbtis.domain;
 
-import com.spring.mmm.domain.mbtis.controller.request.CalcInfo;
 import com.spring.mmm.domain.mbtis.controller.response.Question;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Builder

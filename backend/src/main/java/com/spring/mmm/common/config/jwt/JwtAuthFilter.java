@@ -27,14 +27,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws IOException, ServletException {
         String token = jwtProvider.resolveToken(request);
-        System.out.println("액세스 토큰: "+token);
+        log.debug("액세스 토큰: {}",token);
 
         if (token != null) {
             String email = jwtProvider.getUserInfoFromToken(token);
-            System.out.println("email : "+email);
+            log.debug("email: {}",email);
             if(!jwtProvider.validateToken(token)){
                 String reToken = redisDao.getRefreshToken(email);
-                System.out.println("reToken : "+reToken);
+                log.debug("reToken: {}",reToken);
                 jwtProvider.reissueAtk(email, reToken);
             }
             setAuthentication(email);
