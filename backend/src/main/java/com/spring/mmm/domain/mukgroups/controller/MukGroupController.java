@@ -1,5 +1,6 @@
 package com.spring.mmm.domain.mukgroups.controller;
 
+import com.spring.mmm.common.event.Events;
 import com.spring.mmm.domain.mukgroups.controller.request.*;
 import com.spring.mmm.domain.mukgroups.controller.response.MukbosResponse;
 import com.spring.mmm.domain.mukgroups.controller.response.MukgroupResponse;
@@ -46,16 +47,18 @@ public class MukGroupController {
     @PutMapping("{groupId}/name")
     public ResponseEntity<Void> modifyGroupName(
             @PathVariable Long groupId,
-            @RequestBody MukgroupModifyRequest mukgroupModifyRequest){
-        mukgroupService.modifyGroupName(groupId, mukgroupModifyRequest.getName());
+            @RequestBody MukgroupModifyRequest mukgroupModifyRequest,
+            @AuthenticationPrincipal UserDetailsImpl users){
+        mukgroupService.modifyGroupName(groupId, mukgroupModifyRequest.getName(), users);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("{groupId}/image")
     public ResponseEntity<Void> modifyGroupImage(
             @PathVariable Long groupId,
-            @RequestPart(value = "image") MultipartFile image){
-        mukgroupService.modifyGroupImage(groupId, image);
+            @RequestPart(value = "image") MultipartFile image,
+            @AuthenticationPrincipal UserDetailsImpl users){
+        mukgroupService.modifyGroupImage(groupId, image, users);
         return ResponseEntity.ok().build();
     }
 
@@ -109,8 +112,9 @@ public class MukGroupController {
 
     @DeleteMapping("{groupId}/mukbos/{mokboId}")
     public ResponseEntity<Void> deleteMukbo(
-            @PathVariable Long mukboId){
-        mukgroupService.kickMukbo(mukboId);
+            @PathVariable Long mukboId,
+            @AuthenticationPrincipal UserDetailsImpl users){
+        mukgroupService.kickMukbo(mukboId, users);
         return ResponseEntity.ok().build();
     }
 

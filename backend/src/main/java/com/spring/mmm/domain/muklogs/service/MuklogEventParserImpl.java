@@ -26,12 +26,12 @@ public class MuklogEventParserImpl implements MuklogEventParser {
                     .append("먹적 [")
                     .append(event.getSource())
                     .append("] 을 획득했습니다.");
-            case GROUP_NICKNAME_CHANGED -> sb.append("먹그룹의 이름이 ")
-                    .append(event.getSource())
-                    .append("로 변경되었습니다.");
             case REP_MUKJUK_CHANGED -> sb.append("대표 먹적이 [")
                     .append(event.getSource())
                     .append("] 로 변경되었습니다.");
+            case GROUP_IMAGE_CHANGED ->  sb
+                    .append(event.getSource())
+                    .append("님이 먹그룹 이미지를 변경했습니다.");
             default -> throw new InvalidMuklogAccessException();
         }
         return sb.toString();
@@ -45,6 +45,12 @@ public class MuklogEventParserImpl implements MuklogEventParser {
                     .append("님이 ")
                     .append(event.getTarget())
                     .append("님을 초대했습니다.");
+            case GROUP_NAME_CHANGED -> sb.
+                    append(event.getSource())
+                    .append("님이 ")
+                    .append("먹그룹의 이름을 [")
+                    .append(event.getSource())
+                    .append("]로 변경했습니다.");
             case MUKBOT_CREATED -> sb
                     .append(event.getSource())
                     .append("님이 먹봇 [")
