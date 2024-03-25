@@ -8,6 +8,7 @@ import com.spring.mmm.domain.mbtis.domain.MukBTIType;
 import com.spring.mmm.domain.mbtis.service.port.MukBTIResultRepository;
 import com.spring.mmm.domain.mukgroups.controller.request.MukgroupMBTICalcRequest;
 import com.spring.mmm.domain.mukgroups.domain.MukboType;
+import com.spring.mmm.domain.mukgroups.event.MukboKickedEvent;
 import com.spring.mmm.domain.mukgroups.event.MukbotDeletedEvent;
 import com.spring.mmm.domain.mukgroups.exception.MukGroupErrorCode;
 import com.spring.mmm.domain.mukgroups.exception.MukGroupException;
@@ -86,6 +87,7 @@ public class MukgroupServiceImpl implements MukgroupService{
         if(mukboEntity.getType() == MukboType.HUMAN) {
             UserEntity user = mukboEntity.getUserEntity();
             saveSoloMukGroup(user.getNickname(), user);
+            Events.raise(new MukboKickedEvent(sourceUser.getName(), mukboEntity.getName(), sourceUser.getMukgroupEntity().getMukgroupId()));
         }
         else {
             mukboRepository.delete(mukboEntity);
