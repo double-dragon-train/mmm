@@ -42,6 +42,7 @@ $color-gray: #656565;
       }
     }
   }
+  
   .groupInfoSection {
     display: flex;
     flex-direction: column;
@@ -86,38 +87,6 @@ $color-gray: #656565;
         > span {
           color: rgba($color-main, 0.8);
         }
-      }
-    }
-  }
-  .mbtiSection {
-    position: relative;
-    .mbtiTitleBox {
-      display: flex;
-      flex-direction: center;
-      align-items: center;
-      gap: 10px;
-      position: absolute;
-      top: -20px;
-      left: 20px;
-      > span {
-        color: $color-gray;
-        font-size: 18px;
-      }
-      > div {
-        font-size: 14px;
-        color: rgba(black, 0.7);
-        border: 1px solid rgba(#0e26ae, 0.2);
-        padding: 6px;
-        border-radius: 5px;
-      }
-    }
-    .mbtiBarBox {
-      display: flex;
-      gap: 10px;
-      .mbtiNameBox {
-        display: flex;
-        flex-direction: column;
-        
       }
     }
   }

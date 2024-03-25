@@ -3,8 +3,14 @@ import styles from '../../styles/groupPage/GroupPage.module.css';
 import { useState } from 'react';
 import SmallLabelInput from '../common/SmallLabelInput';
 import Button from '../common/Button';
+// import { useQuery } from '@tanstack/react-query';
+// import { getGroupInfo } from '../../api/groupApi';
 
 function GroupInfoSection() {
+  // const { data, isPending, isError } = useQuery({
+  //   queryKey: ['groupInfo'],
+  //   queryFn: getGroupInfo
+  // })
   const [groupName, setGroupName] = useState('');
   const [isGroupNameValid, setIsGroupNameValid] = useState(true);
   const [isGroupNameDuplicated, setIsGroupNameDuplicated] =

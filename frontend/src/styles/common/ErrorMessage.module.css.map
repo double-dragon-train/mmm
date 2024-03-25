@@ -1,1 +1,1 @@
-{"version":3,"sources":["errorMessage.module.scss","errorMessage.module.css"],"names":[],"mappings":"AAAA;EACE,6BAAA;EACA,eAAA;EACA,gBAAA;ACCF","file":"errorMessage.module.css"}
+{"version":3,"sources":["ErrorMessage.module.scss","ErrorMessage.module.css"],"names":[],"mappings":"AAAA;EACE,6BAAA;EACA,eAAA;EACA,gBAAA;ACCF","file":"ErrorMessage.module.css"}

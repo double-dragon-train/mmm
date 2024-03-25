@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getMbtiQuestionList } from '../api/mbti';
+import { getMbtiQuestionList } from '../api/mbtiApi';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from '../styles/mbtiPage/MbtiPage.module.css';
 import buttonStyles from '../styles/common/Buttons.module.css';
