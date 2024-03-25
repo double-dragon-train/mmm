@@ -17,6 +17,7 @@ public class Events {
     }
 
     public static void raise(Event event) {
-        Objects.requireNonNull(eventPublisher).publishEvent(event);
+        if(eventPublisher != null)
+            eventPublisher.publishEvent(event);
     }
 }
