@@ -91,4 +91,58 @@
 }
 .wrapper .groupInfoSection .rewardBox > div > span {
   color: rgba(42, 67, 206, 0.8);
-}/*# sourceMappingURL=GroupPage.module.css.map */
+}
+
+.memberSection {
+  position: relative;
+}
+.memberSection > span {
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  font-size: 18px;
+  color: #656565;
+  text-shadow: -2px 0px white, 0px 2px white, 2px 0px white, 0px -2px white;
+}
+.memberSection > article {
+  margin-top: 15px;
+  background-color: rgba(42, 67, 206, 0.03);
+  border-radius: 5px;
+  position: relative;
+}
+.memberSection > article > span {
+  color: rgba(42, 67, 206, 0.7);
+  font-size: 15px;
+  text-shadow: -2px 0px white, 0px 2px white, 2px 0px white, 0px -2px white;
+  position: absolute;
+  top: -10px;
+  left: 25px;
+}
+.memberSection > article > .memberBox {
+  padding: 13px;
+  display: flex;
+  align-items: center;
+}
+.memberSection > article > .memberBox > .memberCard {
+  font-size: 16px;
+  box-shadow: 1px 1px 2px rgba(101, 101, 101, 0.3);
+  border-radius: 5px;
+  background-color: white;
+  height: 50px;
+  flex-grow: 4;
+  margin-right: 10px;
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr 4.8fr 2.8fr;
+}
+.memberSection > article > .memberBox > .memberCard > img {
+  width: 18px;
+  justify-self: end;
+}
+.memberSection > article > .memberBox > .memberCard > .memberName {
+  margin: 0 6px;
+  text-align: left;
+}
+.memberSection > article > .memberBox > .miniRedButton {
+  flex-grow: 1;
+}/*# sourceMappingURL=MemberSection.module.css.map */

@@ -2,16 +2,22 @@ $color-main: #2a43ce;
 $color-gray: #656565;
 
 .wrapper {
+  height: calc(100vh - 145px);
+  overflow-y: scroll;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   section {
     background-color: rgba($color-main, 0.03);
     width: 95%;
     border-radius: 5px;
-    padding: 10px 0px;
+    padding: 10px;
+    margin-bottom: 10px;
   }
   .header {
     width: 100%;
@@ -42,7 +48,7 @@ $color-gray: #656565;
       }
     }
   }
-  
+
   .groupInfoSection {
     display: flex;
     flex-direction: column;

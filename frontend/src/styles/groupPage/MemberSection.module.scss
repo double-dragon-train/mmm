@@ -1,0 +1,59 @@
+@import 'GroupPage.module.scss';
+
+.memberSection {
+  position: relative;
+  > span {
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    font-size: 18px;
+    color: $color-gray;
+    text-shadow: -2px 0px white, 0px 2px white, 2px 0px white, 0px -2px white;
+  }
+
+  > article {
+    margin-top: 15px;
+    background-color: rgba($color-main, 0.03);
+    border-radius: 5px;
+    position: relative;
+    > span {
+      color: rgba($color-main, 0.7);
+      font-size: 15px;
+      text-shadow: -2px 0px white, 0px 2px white, 2px 0px white, 0px -2px white;
+      position: absolute;
+      top: -10px;
+      left: 25px;
+      
+    }
+    > .memberBox {
+      padding: 13px;
+      display: flex;
+      align-items: center;
+      > .memberCard {
+        font-size: 16px;
+        box-shadow: 1px 1px 2px rgba($color-gray, 0.3);
+        border-radius: 5px;
+        background-color: white;
+        height: 50px;
+        flex-grow: 4;
+        margin-right: 10px;
+        display: grid;
+        align-items: center;
+        grid-template-columns: 1fr 4.8fr 2.8fr;
+        > img {
+          width: 18px;
+          justify-self: end;
+          // margin-right: 2px;
+        }
+        > .memberName {
+          margin: 0 6px;
+          text-align: left;
+        }
+      }
+      > .miniRedButton {
+        flex-grow: 1;
+      }
+    }
+    
+  }
+}
