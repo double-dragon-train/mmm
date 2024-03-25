@@ -43,13 +43,7 @@ class MukboServiceImplTest {
     private UserRepository userRepository;
 
     @Mock
-    private MukgroupRepository mukgroupRepository;
-
-    @Mock
     private MukBTIResultRepository mukBTIResultRepository;
-
-    @Mock
-    private MukBTIRepository mukBTIRepository;
 
     @InjectMocks
     private MukboServiceImpl mukboService;
@@ -216,7 +210,7 @@ class MukboServiceImplTest {
     }
 
     @Test
-    void 먹봇수정(){
+    void 먹봇수정_성공(){
         BDDMockito.given(mukboRepository.findByMukboId(any()))
                 .willReturn(mukboEntity);
 
@@ -227,7 +221,7 @@ class MukboServiceImplTest {
     }
 
     @Test
-    void 먹보수정(){
+    void 먹보수정_성공(){
         BDDMockito.given(mukboRepository.findByUserId(any()))
                 .willReturn(mukboEntity);
 
@@ -235,7 +229,7 @@ class MukboServiceImplTest {
     }
 
     @Test
-    void 먹보생성(){
+    void 먹보생성_성공(){
         assertDoesNotThrow(() -> mukboService.saveMukbot(user, mukbotCreateRequest));
     }
 
@@ -245,7 +239,7 @@ class MukboServiceImplTest {
     }
 
     @Test
-    void 먹보삭제(){
+    void 먹보삭제_성공(){
         assertDoesNotThrow(() -> mukboService.deleteMukbo(1L));
     }
 
