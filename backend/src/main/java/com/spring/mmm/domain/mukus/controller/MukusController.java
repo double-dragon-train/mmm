@@ -1,9 +1,6 @@
 package com.spring.mmm.domain.mukus.controller;
 
-import com.spring.mmm.domain.mukus.controller.response.FoodCategory;
-import com.spring.mmm.domain.mukus.controller.response.MukusRecentResponse;
-import com.spring.mmm.domain.mukus.controller.response.RecommendData;
-import com.spring.mmm.domain.mukus.controller.response.RecommendFood;
+import com.spring.mmm.domain.mukus.controller.response.*;
 import com.spring.mmm.domain.mukus.service.MukusService;
 import com.spring.mmm.domain.recommends.domain.FoodCategoryEntity;
 import com.spring.mmm.domain.recommends.domain.FoodEntity;
@@ -13,6 +10,7 @@ import com.spring.mmm.domain.recommends.service.port.FoodCategoryRepository;
 import com.spring.mmm.domain.recommends.service.port.FoodRecommendRepository;
 import com.spring.mmm.domain.recommends.service.port.FoodRepository;
 import com.spring.mmm.domain.recommends.service.port.RecommendedFoodRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,16 +22,17 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("mukus")
+@RequiredArgsConstructor
 public class MukusController {
 
-    private MukusService mukusService;
+    private final MukusService mukusService;
 
-    private FoodRepository foodRepository;
-    private FoodCategoryRepository foodCategoryRepository;
-    private FoodRecommendRepository foodRecommendRepository;
-    private RecommendedFoodRepository recommendedFoodRepository;
+    private final FoodRepository foodRepository;
+    private final FoodCategoryRepository foodCategoryRepository;
+    private final FoodRecommendRepository foodRecommendRepository;
+    private final RecommendedFoodRepository recommendedFoodRepository;
 
-    @GetMapping("groups/{groupId}/recent")
+    @GetMapping("/groups/{groupId}/recent")
     public ResponseEntity<MukusRecentResponse> getRecentMukus(@PathVariable Long groupId){
 
         FoodRecommendEntity foodRecommendEntity = foodRecommendRepository.findByMukgroupId(groupId);
@@ -53,12 +52,20 @@ public class MukusController {
         return ResponseEntity.ok(MukusRecentResponse.create(recommendData));
     }
 
-    @PostMapping("groups/{groupId}/recent")
+    @PostMapping("/groups/{groupId}/recent")
     public ResponseEntity<Void> selectRecentMukus(@PathVariable Long groupId, @RequestBody Long recommendFoodId) {
 
         mukusService.selectRecentMukus(recommendFoodId);
         return ResponseEntity.ok().build();
 
+    }
+
+    @GetMapping("/groups/{groupId}")
+    public ResponseEntity<MukusCalendarResponse> getAllMukus(@PathVariable Long groupId,
+                                                             @RequestParam Integer year,
+                                                             @RequestParam Integer month
+    ){
+        return ResponseEntity.ok(mukusService.getMukusMonth(groupId, year, month));
     }
 
 }

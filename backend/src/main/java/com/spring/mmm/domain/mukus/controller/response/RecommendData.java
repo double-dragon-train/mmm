@@ -3,6 +3,7 @@ package com.spring.mmm.domain.mukus.controller.response;
 import lombok.*;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 @Builder
@@ -10,12 +11,12 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class RecommendData {
-    private Instant date;
+    private LocalDate date;
     private List<RecommendFood> foods;
 
-    public static RecommendData create(List foods) {
+    public static RecommendData create(List<RecommendFood> foods) {
         return RecommendData.builder()
-                .date(Instant.now())
+                .date(LocalDate.now())
                 .foods(foods)
                 .build();
     }
