@@ -73,6 +73,14 @@ public class MukGroupController {
                 .build());
     }
 
+    @PostMapping("{groupId}/mukbots")
+    public ResponseEntity<MukbotCreateRequest> saveMukbot(
+            @AuthenticationPrincipal UserDetailsImpl user,
+            @RequestBody MukbotCreateRequest mukbotCreateRequest){
+        mukboService.saveMukbot(user.getUser(), mukbotCreateRequest);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/{groupId}/log")
     public ResponseEntity<MuklogsResponse> findAllLogsByPaging(@PathVariable Long groupId, Pageable pageable,
                                                                @AuthenticationPrincipal UserEntity userEntity){
@@ -85,7 +93,7 @@ public class MukGroupController {
             @PathVariable Long groupId,
             @RequestBody MukboInviteRequest mukboInviteRequest
     ){
-        mukboService.inviteMukbo(user, groupId, mukboInviteRequest);
+        mukboService.inviteMukbo(user.getUser(), groupId, mukboInviteRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -103,7 +111,7 @@ public class MukGroupController {
             @PathVariable Long mukbotsId,
             @RequestBody MukbotModifyRequest mukbotModifyRequest
     ){
-        mukboService.modifyMukbot(user, mukbotsId, mukbotModifyRequest.getMbti(), mukbotModifyRequest.getName());
+        mukboService.modifyMukbot(user.getUser(), mukbotsId, mukbotModifyRequest.getMbti(), mukbotModifyRequest.getName());
         return ResponseEntity.ok().build();
     }
 

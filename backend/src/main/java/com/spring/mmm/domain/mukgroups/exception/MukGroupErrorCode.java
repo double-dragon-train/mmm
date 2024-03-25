@@ -13,7 +13,8 @@ public enum MukGroupErrorCode implements ErrorCode {
     DUPLICATE_ERROR(HttpStatus.CONFLICT, "이미 속한 먹그룹이 있습니다."),
     SOLO_CANT_EXIT(HttpStatus.BAD_REQUEST, "솔로 먹그룹은 나갈 수 없습니다."),
     FORBIDDEN(HttpStatus.FORBIDDEN, "이 먹그룹에 접근할 권한이 없습니다."),
-    ANOTHER_MUKGROUP(HttpStatus.FORBIDDEN, "다른 먹그룹에 속한 먹보입니다.")
+    ANOTHER_MUKGROUP(HttpStatus.FORBIDDEN, "다른 먹그룹에 속한 먹보입니다."),
+    SOLOGROUP_CANT_INVITE(HttpStatus.BAD_REQUEST, "솔로 먹그룹에 먹보를 추가할 수 없습니다.")
     ;
 
     private final HttpStatus httpStatus;
