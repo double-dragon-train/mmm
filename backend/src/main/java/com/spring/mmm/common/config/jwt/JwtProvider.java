@@ -35,13 +35,14 @@ public class JwtProvider {
     private static final long ACCESS_TOKEN_TIME =
             1000 * 60 * 30L; // 30 분 1000ms(=1s) * 60(=1min) * 30 (=30min)
     private static final long REFRESH_TOKEN_TIME = 1000 * 60 * 60 * 24 * 7L; // 7일
+    public static final String CLAIM_KEY = "email";
 
     @Value("${jwt.secret}")
     private String secretKey;
 
     //HMAC-SHA 키를 생성
     private Key key;
-    private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+    private static final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
 
     private final UserDetailsService userDetailsService;
@@ -64,7 +65,7 @@ public class JwtProvider {
     private String createToken(String email, Long tokenExpireTime) {
         Date date = new Date();
         return BEARER_PREFIX + Jwts.builder()
-                .claim("email", email)
+                .claim(CLAIM_KEY, email)
                 .setIssuedAt(date)
                 .setExpiration(new Date(date.getTime() + tokenExpireTime))
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -86,19 +87,17 @@ public class JwtProvider {
         String accessToken = createToken(email, ACCESS_TOKEN_TIME);
         String refreshToken = createToken(email, REFRESH_TOKEN_TIME);
         redisDao.setRefreshToken(email, refreshToken, REFRESH_TOKEN_TIME);
-        System.out.println("Token : " + accessToken + refreshToken);
+        log.debug("Token - access : {}, refresh : {}", accessToken, refreshToken);
         return TokenResponse.create(accessToken, refreshToken);
     }
 
     public String getUserInfoFromToken(String token){
         try {
             Claims claims = Jwts.parser().setSigningKey(key).build().parseClaimsJws(token).getBody();
-            String email = claims.get("email", String.class);
-            return email;
+            return claims.get(CLAIM_KEY, String.class);
         } catch (ExpiredJwtException e) {
             Claims claims = e.getClaims();
-            String email = claims.get("email", String.class);
-            return email;
+            return claims.get(CLAIM_KEY, String.class);
         }
     }
 

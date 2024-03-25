@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,7 +42,7 @@ public class WebSecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring()
+        return web -> web.ignoring()
                 .requestMatchers("/h2-console/**")
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
@@ -50,9 +51,9 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf((auth)->auth.disable());
+                .csrf(AbstractHttpConfigurer::disable);
         http
-                .sessionManagement((session)->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http
                 .authorizeHttpRequests((auth)->auth
@@ -62,7 +63,6 @@ public class WebSecurityConfig {
                         .requestMatchers("/**").permitAll()
                                 .anyRequest().permitAll()
                 );
-//                .anyRequest().authenticated());
 
         http
                 .addFilterBefore(new JwtAuthFilter(redisDao, jwtProvider),

@@ -8,6 +8,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -92,10 +93,12 @@ public class S3ServiceImpl implements S3Service{
 
     // 로컬에 저장된 이미지 지우기
     private void removeNewFile(File targetFile) {
-        if (targetFile.delete()) {
-            return;
+        try {
+            Files.delete(targetFile.toPath());
+            log.debug("Local File Delete Failed!! ");
+        } catch (IOException e) {
+            throw new InternalServerCaughtException(e, this);
         }
-        log.debug("Local File Delete Failed!! ");
     }
 
     // 로컬에 파일 업로드 하기
@@ -104,19 +107,16 @@ public class S3ServiceImpl implements S3Service{
 
         try {
             File convertFile = makeFile(path, file.getBytes());
-
             if (resize) {
                 BufferedImage resizedImage = ImageUtils.resizeImage(convertFile, 320, 320);
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                ImageIO.write(
-                        resizedImage, getExtension(file.getOriginalFilename()), byteArrayOutputStream);
-                convertFile.delete();
-
+                ImageIO.write(resizedImage, getExtension(file.getOriginalFilename()), byteArrayOutputStream);
+                Files.delete(convertFile.toPath());
                 File resizedFile = makeFile(path, byteArrayOutputStream.toByteArray());
                 return Optional.of(resizedFile);
             }
             return Optional.of(convertFile);
-        } catch (InterruptedException | IOException e) {
+        } catch (IOException e) {
             throw new InternalServerCaughtException(e, this);
         }
     }

@@ -35,10 +35,6 @@ public class RedisDao {
         return Boolean.TRUE.equals(redisTemplate.hasKey(key));
     }
 
-    public void flushAll(){
-        redisTemplate.getConnectionFactory().getConnection().serverCommands().flushAll();
-    }
-
     public String getData(String key){
         ValueOperations<String,String> valueOperations=redisTemplate.opsForValue();
         return valueOperations.get(key);

@@ -8,16 +8,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import redis.embedded.RedisServer;
 import redis.embedded.exceptions.EmbeddedRedisException;
-
-import java.io.IOException;
-
 @Slf4j
 @Profile({"local", "test"})
 @Configuration
 public class EmbeddedRedisConfig {
     private RedisServer redisServer;
 
-    public EmbeddedRedisConfig(@Value("${spring.redis.port}") int port) throws IOException {
+    public EmbeddedRedisConfig(@Value("${spring.redis.port}") int port) {
         this.redisServer = new RedisServer(port);
     }
 

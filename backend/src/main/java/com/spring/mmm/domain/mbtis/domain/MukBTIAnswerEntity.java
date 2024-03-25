@@ -4,9 +4,6 @@ import com.spring.mmm.domain.mbtis.controller.response.AnswerResponse;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-import java.util.Optional;
-
 @Builder
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
