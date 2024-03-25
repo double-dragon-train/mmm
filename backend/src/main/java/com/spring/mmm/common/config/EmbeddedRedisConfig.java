@@ -17,7 +17,7 @@ import java.io.IOException;
 public class EmbeddedRedisConfig {
     private RedisServer redisServer;
 
-    public EmbeddedRedisConfig(@Value("${spring.redis.port}") int port) throws IOException {
+    public EmbeddedRedisConfig(@Value("${spring.redis.port}") int port) {
         this.redisServer = new RedisServer(port);
     }
 

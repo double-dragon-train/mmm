@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("mukus")
@@ -44,7 +45,7 @@ public class MukusController {
             FoodCategoryEntity category = foodCategoryRepository.findByFoodId(food.getFoodEntity().getFoodId());
             FoodCategory foodCategory = FoodCategory.create(category.getName(), category.getColor());
             return RecommendFood.create(foodCategory, food);
-        }).toList();
+        }).collect(Collectors.toList());
 
 
         RecommendData recommendData = RecommendData.create(recommendFoods);

@@ -110,15 +110,16 @@ public class S3ServiceImpl implements S3Service{
             if (resize) {
                 BufferedImage resizedImage = ImageUtils.resizeImage(convertFile, 320, 320);
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                ImageIO.write(
-                        resizedImage, getExtension(file.getOriginalFilename()), byteArrayOutputStream);
-                convertFile.delete();
+                ImageIO.write(resizedImage, getExtension(file.getOriginalFilename()), byteArrayOutputStream);
+                if (!convertFile.delete()) {
+                    throw new InternalServerException("File Delete Failed!! ", this);
+                }
 
                 File resizedFile = makeFile(path, byteArrayOutputStream.toByteArray());
                 return Optional.of(resizedFile);
             }
             return Optional.of(convertFile);
-        } catch (InterruptedException | IOException e) {
+        } catch (IOException e) {
             throw new InternalServerCaughtException(e, this);
         }
     }

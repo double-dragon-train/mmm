@@ -13,8 +13,7 @@ public class ImageUtils {
         throw new IllegalStateException("do not create this class");
     }
 
-    public static BufferedImage resizeImage(File image, int width, int height)
-            throws IOException, InterruptedException {
+    public static BufferedImage resizeImage(File image, int width, int height) throws IOException {
         if (isEmpty(image)) {
             return null;
         }

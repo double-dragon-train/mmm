@@ -7,6 +7,7 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -33,10 +34,6 @@ public class RedisDao {
 
     public boolean hasKey(String key) {
         return Boolean.TRUE.equals(redisTemplate.hasKey(key));
-    }
-
-    public void flushAll(){
-        redisTemplate.getConnectionFactory().getConnection().serverCommands().flushAll();
     }
 
     public String getData(String key){

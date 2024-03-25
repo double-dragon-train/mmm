@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,8 +40,8 @@ public class MukboServiceImpl implements MukboService{
     public List<MukboResponse> findAllMukboResponsesByGroupId(Long groupId) {
         return mukboRepository.findAllMukboByGroupId(groupId)
                 .stream()
-                .map(item -> item.toResponse())
-                .toList();
+                .map(MukboEntity::toResponse)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -48,8 +49,8 @@ public class MukboServiceImpl implements MukboService{
         return mukboRepository.findAllMukboByGroupId(groupId)
                 .stream()
                 .filter(item -> item.getType() == MukboType.MUKBOT)
-                .map(item -> item.toResponse())
-                .toList();
+                .map(MukboEntity::toResponse)
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -133,7 +133,7 @@ public class MukBTIServiceImpl implements MukBTIService {
 
     private MukBTIAnswerEntity matchAnswer(List<MukBTIAnswerEntity> answers, Integer id){
         for(MukBTIAnswerEntity answer : answers){
-            if(answer.getAnswerId() == id){
+            if(answer.getAnswerId().equals(id)){
                 return answer;
             }
         }
