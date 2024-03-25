@@ -55,6 +55,7 @@ class MukBTIServiceImplTest {
     private static MukboEntity mukboEntity;
     private static List<MukBTIEntity> mukBTIs;
     private static List<MukBTIResultEntity> mukBTIResultEntities;
+    private static List<MukBTIResultEntity> emptyMukBTIResultEntity;
 
     @BeforeAll
     static void 먹비티아이_자료장전() {
@@ -132,6 +133,8 @@ class MukBTIServiceImplTest {
         }
         // 먹비티아이결과 장전
 
+        emptyMukBTIResultEntity = new ArrayList<>();
+        // 빈 먹비티아이결과 장전
     }
 
     @Test
@@ -232,9 +235,9 @@ class MukBTIServiceImplTest {
     }
 
     @Test
-    void 먹비티아이_확인_NULL_실패(){
+    void 먹비티아이_확인_빈_결과_실패(){
         BDDMockito.given(mukBTIResultRepository.findAllMukBTIResultByMukboId(any()))
-                .willReturn(null);
+                .willReturn(emptyMukBTIResultEntity);
 
         assertThrows(MukBTIException.class, () -> mukBTIService.getMukBTI(user));
     }
