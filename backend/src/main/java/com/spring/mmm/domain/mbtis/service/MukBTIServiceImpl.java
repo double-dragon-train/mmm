@@ -48,11 +48,9 @@ public class MukBTIServiceImpl implements MukBTIService {
         int EI = 0, NS = 0, TF = 0, JP = 0, Mint = 0, Pine = 0, Die = 0;
 
         for(CalcInfo calcInfo : mukBTICalcRequest.getAnswers()){
-            MukBTIQuestionEntity question = matchQuestion(questions, calcInfo.getQuizId())
-                    .orElseThrow(() -> new MukBTIException(MukBTIErrorCode.NOT_FOUND_QUESTION));
+            MukBTIQuestionEntity question = matchQuestion(questions, calcInfo.getQuizId());
 
-            MukBTIAnswerEntity answer = matchAnswer(question.getMukBTIAnswerEntities(), calcInfo.getAnswerId())
-                    .orElseThrow(() -> new MukBTIException(MukBTIErrorCode.NOT_FOUND_ANSWER));
+            MukBTIAnswerEntity answer = matchAnswer(question.getMukBTIAnswerEntities(), calcInfo.getAnswerId());
 
             switch (question.getMukBTIEntity().getType()) {
                 case MukBTIType.EI -> EI += answer.getScore();
@@ -115,7 +113,7 @@ public class MukBTIServiceImpl implements MukBTIService {
                                 .getMukboId()
                                 );
 
-        if(mukBTIResultEntities == null || mukBTIResultEntities.size() == 0){
+        if(mukBTIResultEntities.size() == 0){
             throw new MukBTIException(MukBTIErrorCode.NOT_FOUND_ERROR);
         }
 
@@ -124,22 +122,22 @@ public class MukBTIServiceImpl implements MukBTIService {
                 .build();
     }
 
-    private Optional<MukBTIQuestionEntity> matchQuestion(List<MukBTIQuestionEntity> questions, Integer id){
+    private MukBTIQuestionEntity matchQuestion(List<MukBTIQuestionEntity> questions, Integer id){
         for(MukBTIQuestionEntity question : questions){
             if(question.getQuestionId().equals(id)){
-                return Optional.of(question);
+                return question;
             }
         }
-        return Optional.empty();
+        throw new MukBTIException(MukBTIErrorCode.NOT_FOUND_QUESTION);
     }
 
-    private Optional<MukBTIAnswerEntity> matchAnswer(List<MukBTIAnswerEntity> answers, Integer id){
+    private MukBTIAnswerEntity matchAnswer(List<MukBTIAnswerEntity> answers, Integer id){
         for(MukBTIAnswerEntity answer : answers){
             if(answer.getAnswerId() == id){
-                return Optional.of(answer);
+                return answer;
             }
         }
-        return Optional.empty();
+        throw new MukBTIException(MukBTIErrorCode.NOT_FOUND_ANSWER);
     }
 
 }
