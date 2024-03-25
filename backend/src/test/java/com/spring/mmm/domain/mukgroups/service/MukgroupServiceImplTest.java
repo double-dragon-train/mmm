@@ -44,9 +44,6 @@ class MukgroupServiceImplTest {
     private MukboRepository mukboRepository;
 
     @Mock
-    private S3Service s3Service;
-
-    @Mock
     private MukBTIResultRepository mukBTIResultRepository;
 
     @InjectMocks
@@ -136,7 +133,7 @@ class MukgroupServiceImplTest {
     }
 
     @Test
-    void 솔로먹그룹생성_성공(){
+    void 솔로_먹그룹_생성_성공(){
 
         BDDMockito.given(mukgroupRepository.save(any()))
                         .willReturn(soloMukgroupEntity);
@@ -148,7 +145,7 @@ class MukgroupServiceImplTest {
     }
 
     @Test
-    void 먹그룹생성_성공(){
+    void 먹그룹_생성_성공(){
         BDDMockito.given(mukboRepository.findByUserId(any()))
                 .willReturn(mukboEntitySologroup);
 
@@ -159,7 +156,7 @@ class MukgroupServiceImplTest {
     }
 
     @Test
-    void 다인먹그룹중복생성_실패(){
+    void 다인_먹그룹_중복_생성_실패(){
         BDDMockito.given(mukboRepository.findByUserId(any()))
                 .willReturn(mukboEntityGroup);
 
@@ -167,7 +164,7 @@ class MukgroupServiceImplTest {
     }
 
     @Test
-    void 내_먹그룹찾기_성공(){
+    void 내_먹그룹_찾기_성공(){
         BDDMockito.given(mukboRepository.findByUserId(any()))
                 .willReturn(mukboEntityGroup);
 
@@ -175,7 +172,7 @@ class MukgroupServiceImplTest {
     }
 
     @Test
-    void 먹그룹찾기_성공(){
+    void 먹그룹_찾기_성공(){
         BDDMockito.given(mukgroupRepository.findByMukgroupId(any()))
                 .willReturn(Optional.of(mukgroupEntity));
 
@@ -183,7 +180,7 @@ class MukgroupServiceImplTest {
     }
 
     @Test
-    void 없는먹그룹찾기_실패(){
+    void 없는_먹그룹_찾기_실패(){
         BDDMockito.given(mukgroupRepository.findByMukgroupId(any()))
                 .willReturn(Optional.empty());
 
@@ -191,7 +188,7 @@ class MukgroupServiceImplTest {
     }
 
     @Test
-    void 먹그룹이름수정_성공(){
+    void 먹그룹_이름_수정_성공(){
         BDDMockito.given(mukboRepository.findByUserId(any()))
                         .willReturn(mukboEntityGroup);
 
@@ -202,7 +199,7 @@ class MukgroupServiceImplTest {
     }
 
     @Test
-    void 먹보강퇴_성공(){
+    void 먹보_강퇴_성공(){
         BDDMockito.given(mukboRepository.findByMukboId(any()))
                 .willReturn(mukboEntityGroup);
 
@@ -216,7 +213,7 @@ class MukgroupServiceImplTest {
     }
 
     @Test
-    void 먹봇강퇴_성공(){
+    void 먹봇_강퇴_성공(){
         BDDMockito.given(mukboRepository.findByMukboId(any()))
                 .willReturn(mukbotEntity);
 
@@ -227,12 +224,12 @@ class MukgroupServiceImplTest {
     }
 
     @Test
-    void 다른먹그룹_실패(){
+    void 해당_먹그룹과_먹보_먹그룹이_일치하지않음_실패(){
         assertThrows(MukGroupException.class, () -> mukgroupService.kickMukbo(userWithMukbo, 9999L, 9999L));
     }
 
     @Test
-    void 다른그룹소속_실패(){
+    void 다른_그룹_소속_먹보_강퇴_실패(){
         BDDMockito.given(mukboRepository.findByMukboId(any()))
                         .willReturn(mukboEntityGroup);
 
@@ -240,7 +237,7 @@ class MukgroupServiceImplTest {
     }
 
     @Test
-    void 다인먹그룹나가기_성공(){
+    void 다인_먹그룹_나가기_성공(){
         BDDMockito.given(mukgroupRepository.countAllMukboByMukgroupId(any()))
                 .willReturn(2);
 
@@ -257,7 +254,7 @@ class MukgroupServiceImplTest {
     }
 
     @Test
-    void 혼자남은다인먹그룹나가기_성공(){
+    void 혼자_남은_다인_먹그룹_나가기_성공(){
         BDDMockito.given(mukgroupRepository.countAllMukboByMukgroupId(any()))
                 .willReturn(1);
 
@@ -274,7 +271,7 @@ class MukgroupServiceImplTest {
     }
 
     @Test
-    void 솔로먹그룹나가기_실패(){
+    void 솔로_먹그룹_나가기_실패(){
         BDDMockito.given(mukgroupRepository.findByMukgroupId(any()))
                         .willReturn(Optional.of(soloMukgroupEntity));
 
