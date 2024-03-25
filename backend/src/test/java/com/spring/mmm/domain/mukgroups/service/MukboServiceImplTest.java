@@ -14,6 +14,7 @@ import com.spring.mmm.domain.mukgroups.domain.MukboType;
 import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
 import com.spring.mmm.domain.mukgroups.exception.MukGroupException;
 import com.spring.mmm.domain.mukgroups.service.port.MukboRepository;
+import com.spring.mmm.domain.mukgroups.service.port.MukgroupRepository;
 import com.spring.mmm.domain.users.exception.UserException;
 import com.spring.mmm.domain.users.infra.UserEntity;
 import com.spring.mmm.domain.users.service.port.UserRepository;
@@ -40,6 +41,9 @@ class MukboServiceImplTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private MukgroupRepository mukgroupRepository;
 
     @Mock
     private MukBTIResultRepository mukBTIResultRepository;
@@ -190,6 +194,9 @@ class MukboServiceImplTest {
 
     @Test
     void 먹보초대_성공(){
+        BDDMockito.lenient().when(mukgroupRepository.findByMukgroupId(any()))
+                        .thenReturn(Optional.of(mukgroupEntity));
+
         BDDMockito.given(mukboRepository.findByUserId(any()))
                 .willReturn(mukboEntity);
         
@@ -212,6 +219,9 @@ class MukboServiceImplTest {
 
     @Test
     void 먹봇수정(){
+        BDDMockito.lenient().when(mukgroupRepository.findByMukgroupId(any()))
+                .thenReturn(Optional.of(mukgroupEntity));
+
         BDDMockito.given(mukboRepository.findByMukboId(any()))
                 .willReturn(mukboEntity);
 
@@ -223,6 +233,9 @@ class MukboServiceImplTest {
 
     @Test
     void 먹보수정(){
+        BDDMockito.lenient().when(mukgroupRepository.findByMukgroupId(any()))
+                .thenReturn(Optional.of(mukgroupEntity));
+
         BDDMockito.given(mukboRepository.findByUserId(any()))
                 .willReturn(mukboEntity);
 

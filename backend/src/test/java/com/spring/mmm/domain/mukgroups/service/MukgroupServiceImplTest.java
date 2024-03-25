@@ -192,6 +192,9 @@ class MukgroupServiceImplTest {
 
     @Test
     void 먹그룹이름수정_성공(){
+        BDDMockito.lenient().when(mukgroupRepository.findByMukgroupId(any()))
+                .thenReturn(Optional.of(mukgroupEntity));
+
         BDDMockito.given(mukboRepository.findByUserId(any()))
                         .willReturn(mukboEntityGroup);
 
@@ -203,6 +206,9 @@ class MukgroupServiceImplTest {
 
     @Test
     void 먹보강퇴_성공(){
+        BDDMockito.lenient().when(mukgroupRepository.findByMukgroupId(any()))
+                .thenReturn(Optional.of(mukgroupEntity));
+
         BDDMockito.given(mukboRepository.findByMukboId(any()))
                 .willReturn(mukboEntityGroup);
 
@@ -217,6 +223,9 @@ class MukgroupServiceImplTest {
 
     @Test
     void 먹봇강퇴_성공(){
+        BDDMockito.lenient().when(mukgroupRepository.findByMukgroupId(any()))
+                .thenReturn(Optional.of(mukgroupEntity));
+
         BDDMockito.given(mukboRepository.findByMukboId(any()))
                 .willReturn(mukbotEntity);
 
@@ -241,6 +250,9 @@ class MukgroupServiceImplTest {
 
     @Test
     void 다인먹그룹나가기_성공(){
+        BDDMockito.lenient().when(mukgroupRepository.findByMukgroupId(any()))
+                .thenReturn(Optional.of(mukgroupEntity));
+
         BDDMockito.given(mukgroupRepository.countAllMukboByMukgroupId(any()))
                 .willReturn(2);
 
@@ -258,6 +270,9 @@ class MukgroupServiceImplTest {
 
     @Test
     void 혼자남은다인먹그룹나가기_성공(){
+        BDDMockito.lenient().when(mukgroupRepository.findByMukgroupId(any()))
+                .thenReturn(Optional.of(mukgroupEntity));
+
         BDDMockito.given(mukgroupRepository.countAllMukboByMukgroupId(any()))
                 .willReturn(1);
 
