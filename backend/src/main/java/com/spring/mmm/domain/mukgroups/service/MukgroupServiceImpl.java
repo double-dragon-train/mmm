@@ -102,8 +102,6 @@ public class MukgroupServiceImpl implements MukgroupService{
     public void exitMukgroup(UserDetailsImpl user, Long groupId) {
         MukboEntity mukbo = mukboRepository.findByUserId(user.getUser().getId());
 
-
-
         MukgroupEntity mukgroup = getMukgroupEntity(groupId);
         if(mukgroup.getIsSolo()){
             throw new MukGroupException(MukGroupErrorCode.SOLO_CANT_EXIT);

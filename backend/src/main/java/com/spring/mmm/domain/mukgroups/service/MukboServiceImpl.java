@@ -14,6 +14,7 @@ import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.mukgroups.domain.MukboType;
 import com.spring.mmm.domain.mukgroups.event.MukboInvitedEvent;
 import com.spring.mmm.domain.mukgroups.event.MukboNicknameChangedEvent;
+import com.spring.mmm.domain.mukgroups.event.MukbotModifiedEvent;
 import com.spring.mmm.domain.mukgroups.service.port.MukboRepository;
 import com.spring.mmm.domain.users.exception.UserErrorCode;
 import com.spring.mmm.domain.users.exception.UserException;
@@ -72,6 +73,8 @@ public class MukboServiceImpl implements MukboService{
 
     @Override
     public void modifyMukbot(UserDetailsImpl user, Long mukboId, MBTI mbti, String name) {
+        MukboEntity userMukbo = mukboRepository.findByUserId(user.getUser().getId());
+
         MukboEntity mukbotEntity = mukboRepository.findByMukboId(mukboId);
         mukbotEntity.modifyName(name);
 
@@ -86,6 +89,8 @@ public class MukboServiceImpl implements MukboService{
 
         mukbotEntity.modifyMukBTIResult(mukBTIResults);
         mukboRepository.save(mukbotEntity);
+
+        Events.raise(new MukbotModifiedEvent(userMukbo.getName(), name, userMukbo.getMukgroupEntity().getMukgroupId()));
     }
 
     @Override
