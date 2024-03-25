@@ -8,9 +8,12 @@ import com.spring.mmm.domain.mbtis.domain.MukBTIType;
 import com.spring.mmm.domain.mbtis.service.port.MukBTIRepository;
 import com.spring.mmm.domain.mbtis.service.port.MukBTIResultRepository;
 import com.spring.mmm.domain.mukgroups.controller.request.MukboInviteRequest;
+import com.spring.mmm.domain.mukgroups.controller.request.MukbotCreateRequest;
 import com.spring.mmm.domain.mukgroups.controller.response.MukboResponse;
 import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.mukgroups.domain.MukboType;
+import com.spring.mmm.domain.mukgroups.exception.MukGroupErrorCode;
+import com.spring.mmm.domain.mukgroups.exception.MukGroupException;
 import com.spring.mmm.domain.mukgroups.service.port.MukboRepository;
 import com.spring.mmm.domain.users.exception.UserErrorCode;
 import com.spring.mmm.domain.users.exception.UserException;
@@ -35,7 +38,7 @@ public class MukboServiceImpl implements MukboService{
     public List<MukboResponse> findAllMukboResponsesByGroupId(Long groupId) {
         return mukboRepository.findAllMukboByGroupId(groupId)
                 .stream()
-                .map(item -> item.toResponse())
+                .map(MukboEntity::toResponse)
                 .toList();
     }
 
@@ -44,12 +47,12 @@ public class MukboServiceImpl implements MukboService{
         return mukboRepository.findAllMukboByGroupId(groupId)
                 .stream()
                 .filter(item -> item.getType() == MukboType.MUKBOT)
-                .map(item -> item.toResponse())
+                .map(MukboEntity::toResponse)
                 .toList();
     }
 
     @Override
-    public void inviteMukbo(UserDetailsImpl user, Long groupId, MukboInviteRequest mukboInviteRequest) {
+    public void inviteMukbo(UserEntity user, Long groupId, MukboInviteRequest mukboInviteRequest) {
         MukboEntity mukboEntity = mukboRepository.findByUserId(userRepository.findByEmail(mukboInviteRequest.getEmail())
                 .orElseThrow(() -> new UserException(UserErrorCode.EMAIL_NOT_FOUND)).getId());
 
@@ -62,7 +65,7 @@ public class MukboServiceImpl implements MukboService{
 
 
     @Override
-    public void modifyMukbot(UserDetailsImpl user, Long mukboId, MBTI mbti, String name) {
+    public void modifyMukbot(UserEntity user, Long mukboId, MBTI mbti, String name) {
         MukboEntity mukbotEntity = mukboRepository.findByMukboId(mukboId);
         mukbotEntity.modifyName(name);
 
@@ -84,6 +87,22 @@ public class MukboServiceImpl implements MukboService{
         MukboEntity mukboEntity = mukboRepository.findByUserId(userId);
         mukboEntity.modifyName(name);
         mukboRepository.save(mukboEntity);
+    }
+
+    @Override
+    public void saveMukbot(UserEntity user, MukbotCreateRequest mukbotCreateRequest) {
+        if(user.getMukboEntity().getMukgroupEntity().getIsSolo()){
+            throw new MukGroupException(MukGroupErrorCode.SOLOGROUP_CANT_INVITE);
+        }
+
+        mukboRepository.save(MukboEntity.builder()
+                .name(mukbotCreateRequest.getName())
+                .type(MukboType.MUKBOT)
+                .userEntity(user)
+                .mukgroupEntity(user.getMukboEntity().getMukgroupEntity())
+                .mukBTIResultEntities(MukBTIResultEntity.createByMBTI(mukbotCreateRequest.getMbti(), mukBTIRepository.findAllMukBTI(), user.getMukboEntity()))
+                .build()
+        );
     }
 
     @Override
