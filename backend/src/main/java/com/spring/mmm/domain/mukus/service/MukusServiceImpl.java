@@ -1,9 +1,6 @@
 package com.spring.mmm.domain.mukus.service;
 
-import com.spring.mmm.domain.mukus.controller.response.FoodCategory;
-import com.spring.mmm.domain.mukus.controller.response.MukusCalendarResponse;
-import com.spring.mmm.domain.mukus.controller.response.MukusDayResponse;
-import com.spring.mmm.domain.mukus.controller.response.RecommendFood;
+import com.spring.mmm.domain.mukus.controller.response.*;
 import com.spring.mmm.domain.recommends.domain.FoodCategoryEntity;
 import com.spring.mmm.domain.recommends.domain.FoodRecommendEntity;
 import com.spring.mmm.domain.recommends.domain.RecommendedFoodEntity;
@@ -47,6 +44,17 @@ public class MukusServiceImpl implements MukusService {
         MukusCalendarResponse mukusCalendarResponse = MukusCalendarResponse.create(mukusMonthResponse);
 
         return mukusCalendarResponse;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public MukusDetailResponse getMukusDetail(Long groupId, Integer year, Integer month, Integer day) {
+        RecommendedFoodEntity recommendedFoodEntity =
+                recommendedFoodRepository.findRecommendedFoodByDate(groupId, year, month, day);
+
+        MukusDetailResponse mukusDetailResponse = MukusDetailResponse.create(recommendedFoodEntity);
+
+        return mukusDetailResponse;
     }
 
 }
