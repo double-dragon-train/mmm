@@ -13,6 +13,7 @@ import com.spring.mmm.domain.mukgroups.controller.response.MukboResponse;
 import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.mukgroups.domain.MukboType;
 import com.spring.mmm.domain.mukgroups.event.MukboInvitedEvent;
+import com.spring.mmm.domain.mukgroups.event.MukboNicknameChangedEvent;
 import com.spring.mmm.domain.mukgroups.service.port.MukboRepository;
 import com.spring.mmm.domain.users.exception.UserErrorCode;
 import com.spring.mmm.domain.users.exception.UserException;
@@ -92,6 +93,7 @@ public class MukboServiceImpl implements MukboService{
         MukboEntity mukboEntity = mukboRepository.findByUserId(userId);
         mukboEntity.modifyName(name);
         mukboRepository.save(mukboEntity);
+        Events.raise(new MukboNicknameChangedEvent(name, mukboEntity.getMukgroupEntity().getMukgroupId()));
     }
 
     @Override
