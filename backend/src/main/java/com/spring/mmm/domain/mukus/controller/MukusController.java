@@ -10,6 +10,7 @@ import com.spring.mmm.domain.recommends.service.port.FoodCategoryRepository;
 import com.spring.mmm.domain.recommends.service.port.FoodRecommendRepository;
 import com.spring.mmm.domain.recommends.service.port.FoodRepository;
 import com.spring.mmm.domain.recommends.service.port.RecommendedFoodRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,14 +22,15 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("mukus")
+@RequiredArgsConstructor
 public class MukusController {
 
-    private MukusService mukusService;
+    private final MukusService mukusService;
 
-    private FoodRepository foodRepository;
-    private FoodCategoryRepository foodCategoryRepository;
-    private FoodRecommendRepository foodRecommendRepository;
-    private RecommendedFoodRepository recommendedFoodRepository;
+    private final FoodRepository foodRepository;
+    private final FoodCategoryRepository foodCategoryRepository;
+    private final FoodRecommendRepository foodRecommendRepository;
+    private final RecommendedFoodRepository recommendedFoodRepository;
 
     @GetMapping("groups/{groupId}/recent")
     public ResponseEntity<MukusRecentResponse> getRecentMukus(@PathVariable Long groupId){

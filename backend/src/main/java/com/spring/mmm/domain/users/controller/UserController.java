@@ -18,12 +18,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("users")
@@ -85,24 +87,29 @@ public class UserController {
     }
 
     @PostMapping ("/email/verification-request")
-    public ResponseEntity<String> mailSend(@RequestBody @Valid UserEmailRequest userEmailRequest){
+    public ResponseEntity<Void> mailSend(@RequestBody @Valid UserEmailRequest userEmailRequest){
 
         if (userService.isAuthenticated()) {
             throw new UserException(UserErrorCode.IS_AUTHENTICATED);
         }
+        log.debug("유저 이메일 : {}", userEmailRequest.getEmail());
 
-        return ResponseEntity.ok(userEmailSendService.joinEmail(userEmailRequest.getEmail()));
+        String authNum = userEmailSendService.joinEmail(userEmailRequest.getEmail());
+        log.debug("인증번호 : {}", authNum);
+
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/email/verification")
-    public ResponseEntity<String> authCheck(@RequestBody @Valid UserEmailCheckRequest userEmailCheckRequest){
+    public ResponseEntity<Void> authCheck(@RequestBody @Valid UserEmailCheckRequest userEmailCheckRequest){
 
         Boolean checked=userEmailSendService.checkAuthNum(
                 userEmailCheckRequest.getEmail(),
                 userEmailCheckRequest.getAuthNum()
         );
         if(checked){
-            return ResponseEntity.ok("인증 완료");
+            log.debug("인증 완료");
+            return ResponseEntity.ok().build();
         }
         else{
             throw new UserException(UserErrorCode.CODE_NOT_SAME_ERROR);

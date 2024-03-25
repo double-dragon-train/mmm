@@ -37,14 +37,12 @@ public class MukusServiceImpl implements MukusService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public MukusCalendarResponse getMukusMonth(Long groupId, Integer year, Integer month) {
         List<RecommendedFoodEntity> recommendedFoodEntities =
                 recommendedFoodRepository.findRecommendedFoodByYearAndMonth(groupId, year, month);
 
-        List<MukusDayResponse> mukusMonthResponse = recommendedFoodEntities.stream().map(recommend -> {
-            return MukusDayResponse.create(recommend);
-        }).toList();
+        List<MukusDayResponse> mukusMonthResponse = recommendedFoodEntities.stream().map(MukusDayResponse::create).toList();
 
         MukusCalendarResponse mukusCalendarResponse = MukusCalendarResponse.create(mukusMonthResponse);
 
