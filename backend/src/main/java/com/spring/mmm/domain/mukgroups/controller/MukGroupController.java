@@ -109,8 +109,9 @@ public class MukGroupController {
 
     @DeleteMapping("{groupId}/mukbos/{mokboId}")
     public ResponseEntity<Void> deleteMukbo(
-            @PathVariable Long mukboId){
-        mukgroupService.kickMukbo(mukboId);
+            @PathVariable Long mukboId,
+            @AuthenticationPrincipal UserDetailsImpl users){
+        mukgroupService.kickMukbo(mukboId, users);
         return ResponseEntity.ok().build();
     }
 

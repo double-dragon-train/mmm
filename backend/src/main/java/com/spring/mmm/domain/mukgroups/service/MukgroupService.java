@@ -19,7 +19,7 @@ public interface MukgroupService {
 
     void modifyGroupImage(Long groupId, MultipartFile multipartFile);
 
-    void kickMukbo(Long mukboId);
+    void kickMukbo(Long mukboId, UserDetailsImpl users);
 
     void exitMukgroup(UserDetailsImpl user, Long groupId);
 

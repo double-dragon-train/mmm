@@ -1,5 +1,6 @@
 package com.spring.mmm.domain.mukgroups.service;
 
+import com.spring.mmm.common.event.Events;
 import com.spring.mmm.common.service.S3Service;
 import com.spring.mmm.domain.mbtis.domain.MBTI;
 import com.spring.mmm.domain.mbtis.domain.MukBTIResultEntity;
@@ -7,6 +8,7 @@ import com.spring.mmm.domain.mbtis.domain.MukBTIType;
 import com.spring.mmm.domain.mbtis.service.port.MukBTIResultRepository;
 import com.spring.mmm.domain.mukgroups.controller.request.MukgroupMBTICalcRequest;
 import com.spring.mmm.domain.mukgroups.domain.MukboType;
+import com.spring.mmm.domain.mukgroups.event.MukbotDeletedEvent;
 import com.spring.mmm.domain.mukgroups.exception.MukGroupErrorCode;
 import com.spring.mmm.domain.mukgroups.exception.MukGroupException;
 import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
@@ -76,7 +78,10 @@ public class MukgroupServiceImpl implements MukgroupService{
     }
 
     @Override
-    public void kickMukbo(Long mukboId) {
+    public void kickMukbo(Long mukboId, UserDetailsImpl users) {
+        MukboEntity sourceUser = mukboRepository.findByUserId(users.getUser().getId());
+        // FIXME 소스유저 검증필요
+        
         MukboEntity mukboEntity = mukboRepository.findByMukboId(mukboId);
         if(mukboEntity.getType() == MukboType.HUMAN) {
             UserEntity user = mukboEntity.getUserEntity();
@@ -84,6 +89,7 @@ public class MukgroupServiceImpl implements MukgroupService{
         }
         else {
             mukboRepository.delete(mukboEntity);
+            Events.raise(new MukbotDeletedEvent(sourceUser.getName(), mukboEntity.getName(), sourceUser.getMukgroupEntity().getMukgroupId()));
         }
     }
 
