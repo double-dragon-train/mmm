@@ -1,0 +1,50 @@
+$color-main: #2a43ce;
+
+.recordModalWrapper {
+  > h2 {
+    color: rgba($color-main, 0.8);
+    font-size: 17px;
+    text-align: left;
+    text-decoration: underline;
+    text-decoration-color: rgba($color-main, 0.3);
+    font-weight: 100;
+  }
+  > p {
+    margin: 12px 0px;
+    font-size: 16px;
+    color: rgba(black, 0.7);
+    .boldWord {
+      color: rgba($color-main, 0.7);
+      font-size: 18px;
+    }
+  }
+  .recommendBox {
+    background-color: rgba($color-main, 0.03);
+    padding: 12px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 10px;
+    .recommendItem {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      > img {
+        width: 60px;
+        aspect-ratio: 1/1;
+        border-radius: 50%;
+      }
+      > span {
+        color: rgba(black, 0.6);
+      }
+    }
+  }
+  .buttonBox {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+}

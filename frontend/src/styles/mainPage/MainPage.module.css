@@ -1,0 +1,46 @@
+.recordModalWrapper > h2 {
+  color: rgba(42, 67, 206, 0.8);
+  font-size: 17px;
+  text-align: left;
+  text-decoration: underline;
+  text-decoration-color: rgba(42, 67, 206, 0.3);
+  font-weight: 100;
+}
+.recordModalWrapper > p {
+  margin: 12px 0px;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.7);
+}
+.recordModalWrapper > p .boldWord {
+  color: rgba(42, 67, 206, 0.7);
+  font-size: 18px;
+}
+.recordModalWrapper .recommendBox {
+  background-color: rgba(42, 67, 206, 0.03);
+  padding: 12px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 10px;
+}
+.recordModalWrapper .recommendBox .recommendItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+.recordModalWrapper .recommendBox .recommendItem > img {
+  width: 60px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+}
+.recordModalWrapper .recommendBox .recommendItem > span {
+  color: rgba(0, 0, 0, 0.6);
+}
+.recordModalWrapper .buttonBox {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}/*# sourceMappingURL=MainPage.module.css.map */
