@@ -49,7 +49,7 @@ public class MukGroupController {
             @PathVariable Long groupId,
             @RequestBody MukgroupModifyRequest mukgroupModifyRequest,
             @AuthenticationPrincipal UserDetailsImpl users){
-        mukgroupService.modifyGroupName(groupId, mukgroupModifyRequest.getName(), users);
+        mukgroupService.modifyGroupName(groupId, mukgroupModifyRequest.getName(), users.getUser());
         return ResponseEntity.ok().build();
     }
 
@@ -76,6 +76,14 @@ public class MukGroupController {
                 .build());
     }
 
+    @PostMapping("{groupId}/mukbots")
+    public ResponseEntity<MukbotCreateRequest> saveMukbot(
+            @AuthenticationPrincipal UserDetailsImpl user,
+            @RequestBody MukbotCreateRequest mukbotCreateRequest){
+        mukboService.saveMukbot(user.getUser(), mukbotCreateRequest);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/{groupId}/log")
     public ResponseEntity<MuklogsResponse> findAllLogsByPaging(@PathVariable Long groupId, Pageable pageable,
                                                                @AuthenticationPrincipal UserEntity userEntity){
@@ -88,7 +96,7 @@ public class MukGroupController {
             @PathVariable Long groupId,
             @RequestBody MukboInviteRequest mukboInviteRequest
     ){
-        mukboService.inviteMukbo(user, groupId, mukboInviteRequest);
+        mukboService.inviteMukbo(user.getUser(), groupId, mukboInviteRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -106,23 +114,24 @@ public class MukGroupController {
             @PathVariable Long mukbotsId,
             @RequestBody MukbotModifyRequest mukbotModifyRequest
     ){
-        mukboService.modifyMukbot(user, mukbotsId, mukbotModifyRequest.getMbti(), mukbotModifyRequest.getName());
+        mukboService.modifyMukbot(user.getUser(), mukbotsId, mukbotModifyRequest.getMbti(), mukbotModifyRequest.getName());
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("{groupId}/mukbos/{mokboId}")
     public ResponseEntity<Void> deleteMukbo(
+            @PathVariable Long groupId,
             @PathVariable Long mukboId,
             @AuthenticationPrincipal UserDetailsImpl users){
-        mukgroupService.kickMukbo(mukboId, users);
+        mukgroupService.kickMukbo(users.getUser(), groupId, mukboId);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("{groupId}/exit")
     public ResponseEntity<Void> exitMukgroup(
-            @AuthenticationPrincipal UserDetailsImpl user,
-            @PathVariable Long groupId){
-        mukgroupService.exitMukgroup(user, groupId);
+            @PathVariable Long groupId,
+            @AuthenticationPrincipal UserDetailsImpl user){
+        mukgroupService.exitMukgroup(user.getUser(), groupId);
         return ResponseEntity.ok().build();
     }
 

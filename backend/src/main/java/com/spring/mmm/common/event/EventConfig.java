@@ -5,8 +5,10 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 
+@EnableAsync
 @RequiredArgsConstructor
 @Configuration
 public class EventConfig {
