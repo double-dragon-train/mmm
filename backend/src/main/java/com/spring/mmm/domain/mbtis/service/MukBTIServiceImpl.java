@@ -13,11 +13,13 @@ import com.spring.mmm.domain.mbtis.service.port.MukBTIRepository;
 import com.spring.mmm.domain.mbtis.service.port.MukBTIResultRepository;
 import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.users.infra.UserDetailsImpl;
+import com.spring.mmm.domain.users.infra.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -35,28 +37,29 @@ public class MukBTIServiceImpl implements MukBTIService {
 
     @Override
     public MukBTIResult calcMBTI(MukBTICalcRequest mukBTICalcRequest) {
+        for(CalcInfo calcInfo : mukBTICalcRequest.getAnswers()){
+            if(calcInfo.getQuizId() == null || calcInfo.getAnswerId() == null){
+                throw new MukBTIException(MukBTIErrorCode.BAD_REQUEST);
+            }
+        }
+
         List<MukBTIQuestionEntity> questions = findAllMukBTIQuestion();
 
         int EI = 0, NS = 0, TF = 0, JP = 0, Mint = 0, Pine = 0, Die = 0;
-        for (CalcInfo calcInfo : mukBTICalcRequest.getAnswers()) {
-            for (MukBTIQuestionEntity question : questions) {
-                if (question.getQuestionId() == calcInfo.getQuizId()) {
-                    for (MukBTIAnswerEntity answer : question.getMukBTIAnswerEntities()) {
-                        if (answer.getAnswerId() == calcInfo.getAnswerId()) {
-                            switch (question.getMukBTIEntity().getType()) {
-                                case MukBTIType.EI -> EI += answer.getScore();
-                                case MukBTIType.NS -> NS += answer.getScore();
-                                case MukBTIType.TF -> TF += answer.getScore();
-                                case MukBTIType.JP -> JP += answer.getScore();
-                                case MukBTIType.MINT -> Mint += answer.getScore();
-                                case MukBTIType.PINE -> Pine += answer.getScore();
-                                case MukBTIType.DIE -> Die += answer.getScore();
-                            }
-                            break;
-                        }
-                    }
-                    break;
-                }
+
+        for(CalcInfo calcInfo : mukBTICalcRequest.getAnswers()){
+            MukBTIQuestionEntity question = matchQuestion(questions, calcInfo.getQuizId());
+
+            MukBTIAnswerEntity answer = matchAnswer(question.getMukBTIAnswerEntities(), calcInfo.getAnswerId());
+
+            switch (question.getMukBTIEntity().getType()) {
+                case MukBTIType.EI -> EI += answer.getScore();
+                case MukBTIType.NS -> NS += answer.getScore();
+                case MukBTIType.TF -> TF += answer.getScore();
+                case MukBTIType.JP -> JP += answer.getScore();
+                case MukBTIType.MINT -> Mint += answer.getScore();
+                case MukBTIType.PINE -> Pine += answer.getScore();
+                case MukBTIType.DIE -> Die += answer.getScore();
             }
         }
 
@@ -76,17 +79,17 @@ public class MukBTIServiceImpl implements MukBTIService {
     }
 
     @Override
-    public void save(UserDetailsImpl user, String key) {
+    public void save(UserEntity user, String key) {
         MBTI mbti = redisRepository.getData(key, MBTI.class)
                 .orElseThrow(() -> new MukBTIException(MukBTIErrorCode.NOT_FOUND));
 
-        MukboEntity mukboEntity = user.getUser().getMukboEntity();
+        MukboEntity mukboEntity = user.getMukboEntity();
 
         List<MukBTIResultEntity> results = new ArrayList<>();
         List<MukBTIEntity> mukBTIs = mukBTIRepository.findAllMukBTI();
 
         for(MukBTIEntity mukBTIEntity : mukBTIs){
-            MukBTIResultEntity mukBTIResult = MukBTIResultEntity.createWithoutScore(mukBTIEntity, mukboEntity, user.getUser());
+            MukBTIResultEntity mukBTIResult = MukBTIResultEntity.createWithoutScore(mukBTIEntity, mukboEntity, user);
             switch (mukBTIEntity.getType()){
                 case EI -> mukBTIResult.modifyScore(mbti.getEI());
                 case NS -> mukBTIResult.modifyScore(mbti.getNS());
@@ -103,15 +106,38 @@ public class MukBTIServiceImpl implements MukBTIService {
     }
 
     @Override
-    public MukBTIResponse getMukBTI(UserDetailsImpl user) {
+    public MukBTIResponse getMukBTI(UserEntity user) {
+        List<MukBTIResultEntity> mukBTIResultEntities = mukBTIResultRepository.findAllMukBTIResultByMukboId(
+                                user
+                                .getMukboEntity()
+                                .getMukboId()
+                                );
+
+        if(mukBTIResultEntities.size() == 0){
+            throw new MukBTIException(MukBTIErrorCode.NOT_FOUND_ERROR);
+        }
+
         return MukBTIResponse.builder()
-                .mbti(MBTI
-                        .create(mukBTIResultRepository
-                                .findAllMukBTIResultByMukboId(user
-                                        .getUser()
-                                        .getMukboEntity()
-                                        .getMukboId())))
+                .mbti(MBTI.create(mukBTIResultEntities))
                 .build();
+    }
+
+    private MukBTIQuestionEntity matchQuestion(List<MukBTIQuestionEntity> questions, Integer id){
+        for(MukBTIQuestionEntity question : questions){
+            if(question.getQuestionId().equals(id)){
+                return question;
+            }
+        }
+        throw new MukBTIException(MukBTIErrorCode.NOT_FOUND_QUESTION);
+    }
+
+    private MukBTIAnswerEntity matchAnswer(List<MukBTIAnswerEntity> answers, Integer id){
+        for(MukBTIAnswerEntity answer : answers){
+            if(answer.getAnswerId() == id){
+                return answer;
+            }
+        }
+        throw new MukBTIException(MukBTIErrorCode.NOT_FOUND_ANSWER);
     }
 
 }

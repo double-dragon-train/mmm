@@ -15,13 +15,13 @@ public interface MukgroupService {
 
     MukgroupEntity findMukgroupById(Long groupId);
 
-    void modifyGroupName(Long groupId, String name);
+    void modifyGroupName(Long groupId, String name, UserEntity users);
 
-    void modifyGroupImage(Long groupId, MultipartFile multipartFile);
+    void modifyGroupImage(Long groupId, MultipartFile multipartFile, UserDetailsImpl users);
 
     void kickMukbo(UserEntity user, Long groupId, Long mukboId);
 
-    void exitMukgroup(UserEntity user);
+    void exitMukgroup(UserEntity user, Long groupId);
 
     MBTI calcGroupMukBTI(Long groupId, MukgroupMBTICalcRequest mbtiCalcRequest);
 }

@@ -1,5 +1,8 @@
 package com.spring.mmm.domain.mukgroups.service;
 
+import com.spring.mmm.common.event.Event;
+import com.spring.mmm.common.event.EventConfig;
+import com.spring.mmm.common.event.Events;
 import com.spring.mmm.common.exception.S3Exception;
 import com.spring.mmm.common.service.S3Service;
 import com.spring.mmm.common.service.S3ServiceImpl;
@@ -62,6 +65,7 @@ class MukgroupServiceImplTest {
 
     @BeforeAll
     static void 자료장전(){
+
         user = UserEntity.builder()
                 .id(1L)
                 .email("ssafy@ssafy.com")
@@ -188,10 +192,13 @@ class MukgroupServiceImplTest {
 
     @Test
     void 먹그룹이름수정_성공(){
+        BDDMockito.given(mukboRepository.findByUserId(any()))
+                        .willReturn(mukboEntityGroup);
+
         BDDMockito.given(mukgroupRepository.findByMukgroupId(any()))
                 .willReturn(Optional.of(mukgroupEntity));
 
-        assertDoesNotThrow(() -> mukgroupService.modifyGroupName(1L, "1234"));
+        assertDoesNotThrow(() -> mukgroupService.modifyGroupName(1L, "1234", user));
     }
 
     @Test
@@ -240,7 +247,7 @@ class MukgroupServiceImplTest {
         BDDMockito.given(mukboRepository.findByUserId(any()))
                 .willReturn(mukboEntitySologroup);
 
-        assertDoesNotThrow(() -> mukgroupService.exitMukgroup(userWithMukbo));
+        assertDoesNotThrow(() -> mukgroupService.exitMukgroup(userWithMukbo, 1L));
     }
 
     @Test
@@ -254,12 +261,15 @@ class MukgroupServiceImplTest {
         BDDMockito.given(mukboRepository.findByUserId(any()))
                 .willReturn(mukboEntitySologroup);
 
-        assertDoesNotThrow(() -> mukgroupService.exitMukgroup(userWithMukbo));
+        assertDoesNotThrow(() -> mukgroupService.exitMukgroup(userWithMukbo, 1L));
     }
 
     @Test
     void 솔로먹그룹나가기_실패(){
-        assertThrows(MukGroupException.class, () -> mukgroupService.exitMukgroup(userWithMukboSoloGroup));
+        BDDMockito.given(mukgroupRepository.findByMukgroupId(any()))
+                        .willReturn(Optional.of(soloMukgroupEntity));
+
+        assertThrows(MukGroupException.class, () -> mukgroupService.exitMukgroup(userWithMukboSoloGroup, 3L));
     }
 
     @Test

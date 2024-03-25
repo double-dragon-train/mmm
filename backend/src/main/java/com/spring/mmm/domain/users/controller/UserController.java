@@ -113,7 +113,7 @@ public class UserController {
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @RequestBody MukBTIRequest mukBTIRequest
             ){
-        mukBTIService.save(userDetails, mukBTIRequest.getKey());
+        mukBTIService.save(userDetails.getUser(), mukBTIRequest.getKey());
         return ResponseEntity.ok().build();
     }
 
@@ -121,7 +121,7 @@ public class UserController {
     public ResponseEntity<MukBTIResponse> findMukBTIResult(
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ){
-        return ResponseEntity.ok(mukBTIService.getMukBTI(userDetails));
+        return ResponseEntity.ok(mukBTIService.getMukBTI(userDetails.getUser()));
     }
 
 }

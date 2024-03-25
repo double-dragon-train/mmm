@@ -1,5 +1,6 @@
 package com.spring.mmm.domain.mukgroups.controller;
 
+import com.spring.mmm.common.event.Events;
 import com.spring.mmm.domain.mukgroups.controller.request.*;
 import com.spring.mmm.domain.mukgroups.controller.response.MukbosResponse;
 import com.spring.mmm.domain.mukgroups.controller.response.MukgroupResponse;
@@ -46,16 +47,18 @@ public class MukGroupController {
     @PutMapping("{groupId}/name")
     public ResponseEntity<Void> modifyGroupName(
             @PathVariable Long groupId,
-            @RequestBody MukgroupModifyRequest mukgroupModifyRequest){
-        mukgroupService.modifyGroupName(groupId, mukgroupModifyRequest.getName());
+            @RequestBody MukgroupModifyRequest mukgroupModifyRequest,
+            @AuthenticationPrincipal UserDetailsImpl users){
+        mukgroupService.modifyGroupName(groupId, mukgroupModifyRequest.getName(), users.getUser());
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("{groupId}/image")
     public ResponseEntity<Void> modifyGroupImage(
             @PathVariable Long groupId,
-            @RequestPart(value = "image") MultipartFile image){
-        mukgroupService.modifyGroupImage(groupId, image);
+            @RequestPart(value = "image") MultipartFile image,
+            @AuthenticationPrincipal UserDetailsImpl users){
+        mukgroupService.modifyGroupImage(groupId, image, users);
         return ResponseEntity.ok().build();
     }
 
@@ -117,17 +120,18 @@ public class MukGroupController {
 
     @DeleteMapping("{groupId}/mukbos/{mokboId}")
     public ResponseEntity<Void> deleteMukbo(
-            @AuthenticationPrincipal UserDetailsImpl user,
             @PathVariable Long groupId,
-            @PathVariable Long mukboId){
-        mukgroupService.kickMukbo(user.getUser(), groupId, mukboId);
+            @PathVariable Long mukboId,
+            @AuthenticationPrincipal UserDetailsImpl users){
+        mukgroupService.kickMukbo(users.getUser(), groupId, mukboId);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("{groupId}/exit")
     public ResponseEntity<Void> exitMukgroup(
+            @PathVariable Long groupId,
             @AuthenticationPrincipal UserDetailsImpl user){
-        mukgroupService.exitMukgroup(user.getUser());
+        mukgroupService.exitMukgroup(user.getUser(), groupId);
         return ResponseEntity.ok().build();
     }
 

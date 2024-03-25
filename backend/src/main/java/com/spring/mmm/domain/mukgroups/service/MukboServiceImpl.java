@@ -1,6 +1,7 @@
 package com.spring.mmm.domain.mukgroups.service;
 
 
+import com.spring.mmm.common.event.Events;
 import com.spring.mmm.domain.mbtis.domain.MBTI;
 import com.spring.mmm.domain.mbtis.domain.MukBTIEntity;
 import com.spring.mmm.domain.mbtis.domain.MukBTIResultEntity;
@@ -12,6 +13,9 @@ import com.spring.mmm.domain.mukgroups.controller.request.MukbotCreateRequest;
 import com.spring.mmm.domain.mukgroups.controller.response.MukboResponse;
 import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.mukgroups.domain.MukboType;
+import com.spring.mmm.domain.mukgroups.event.MukboInvitedEvent;
+import com.spring.mmm.domain.mukgroups.event.MukboNicknameChangedEvent;
+import com.spring.mmm.domain.mukgroups.event.MukbotModifiedEvent;
 import com.spring.mmm.domain.mukgroups.exception.MukGroupErrorCode;
 import com.spring.mmm.domain.mukgroups.exception.MukGroupException;
 import com.spring.mmm.domain.mukgroups.service.port.MukboRepository;
@@ -56,11 +60,26 @@ public class MukboServiceImpl implements MukboService{
         MukboEntity mukboEntity = mukboRepository.findByUserId(userRepository.findByEmail(mukboInviteRequest.getEmail())
                 .orElseThrow(() -> new UserException(UserErrorCode.EMAIL_NOT_FOUND)).getId());
 
-        mukboRepository.delete(mukboRepository.findByMukboId(mukboInviteRequest.getMukbotId()));
+        if(!mukboEntity.getMukgroupEntity().getMukgroupId().equals(groupId)){
+            throw new MukGroupException(MukGroupErrorCode.FORBIDDEN);
+        }
+
+        if(mukboEntity.getMukgroupEntity().getIsSolo()){
+            throw new MukGroupException(MukGroupErrorCode.SOLOGROUP_CANT_INVITE);
+        }
+
+        if(mukboInviteRequest.getMukbotId() != null) {
+            mukboRepository.delete(mukboRepository.findByMukboId(mukboInviteRequest.getMukbotId()));
+        }
 
         mukboEntity.modifyName(mukboInviteRequest.getNickname());
         mukboEntity.modifyGroup(groupId);
         mukboRepository.save(mukboEntity);
+
+
+        MukboEntity userMukbo = mukboRepository.findByUserId(user.getId());
+
+        Events.raise(new MukboInvitedEvent(userMukbo.getName(),mukboInviteRequest.getNickname(), groupId));
     }
 
 
@@ -80,6 +99,8 @@ public class MukboServiceImpl implements MukboService{
 
         mukbotEntity.modifyMukBTIResult(mukBTIResults);
         mukboRepository.save(mukbotEntity);
+
+        Events.raise(new MukbotModifiedEvent(user.getMukboEntity().getName(), name, user.getMukboEntity().getMukgroupEntity().getMukgroupId()));
     }
 
     @Override
@@ -87,6 +108,7 @@ public class MukboServiceImpl implements MukboService{
         MukboEntity mukboEntity = mukboRepository.findByUserId(userId);
         mukboEntity.modifyName(name);
         mukboRepository.save(mukboEntity);
+        Events.raise(new MukboNicknameChangedEvent(name, mukboEntity.getMukgroupEntity().getMukgroupId()));
     }
 
     @Override
