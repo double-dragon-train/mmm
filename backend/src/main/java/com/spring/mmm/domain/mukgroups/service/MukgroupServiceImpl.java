@@ -11,6 +11,7 @@ import com.spring.mmm.domain.mukgroups.domain.MukboType;
 import com.spring.mmm.domain.mukgroups.event.MukboExitedEvent;
 import com.spring.mmm.domain.mukgroups.event.MukboKickedEvent;
 import com.spring.mmm.domain.mukgroups.event.MukbotDeletedEvent;
+import com.spring.mmm.domain.mukgroups.event.MukgroupNameChangedEvent;
 import com.spring.mmm.domain.mukgroups.exception.MukGroupErrorCode;
 import com.spring.mmm.domain.mukgroups.exception.MukGroupException;
 import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
@@ -69,12 +70,14 @@ public class MukgroupServiceImpl implements MukgroupService{
     }
 
     @Override
-    public void modifyGroupName(Long groupId, String name) {
+    public void modifyGroupName(Long groupId, String name, UserDetailsImpl users) {
+        MukboEntity mukboEntity = mukboRepository.findByUserId(users.getUser().getId());
         mukgroupRepository.save(getMukgroupEntity(groupId).modifyMukgroupName(name));
+        Events.raise(new MukgroupNameChangedEvent(mukboEntity.getName(), groupId));
     }
 
     @Override
-    public void modifyGroupImage(Long groupId, MultipartFile multipartFile) {
+    public void modifyGroupImage(Long groupId, MultipartFile multipartFile, UserDetailsImpl users) {
         String imageSrc = s3Service.uploadFile(multipartFile);
         mukgroupRepository.save(getMukgroupEntity(groupId).modifyMukgroupImage(imageSrc));
     }

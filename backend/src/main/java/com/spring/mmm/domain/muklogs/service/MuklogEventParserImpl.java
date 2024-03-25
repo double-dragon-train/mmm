@@ -26,7 +26,7 @@ public class MuklogEventParserImpl implements MuklogEventParser {
                     .append("먹적 [")
                     .append(event.getSource())
                     .append("] 을 획득했습니다.");
-            case GROUP_NICKNAME_CHANGED -> sb.append("먹그룹의 이름이 ")
+            case GROUP_NAME_CHANGED -> sb.append("먹그룹의 이름이 ")
                     .append(event.getSource())
                     .append("로 변경되었습니다.");
             case REP_MUKJUK_CHANGED -> sb.append("대표 먹적이 [")
