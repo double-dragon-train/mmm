@@ -14,8 +14,6 @@ import java.util.Date;
 @RequestMapping("mukus")
 public class MukusMockController {
 
-
-
     @GetMapping("groups/{groupId}/date")
     public ResponseEntity<MukusDetailResponse> getDetailMukus(@PathVariable Long groupId){
         // 1.

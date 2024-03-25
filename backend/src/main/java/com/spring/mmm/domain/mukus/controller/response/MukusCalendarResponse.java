@@ -11,4 +11,10 @@ import java.util.List;
 public class MukusCalendarResponse {
 
     private List<MukusDayResponse> res;
+
+    public static MukusCalendarResponse create(List res) {
+        return MukusCalendarResponse.builder()
+                .res(res)
+                .build();
+    }
 }

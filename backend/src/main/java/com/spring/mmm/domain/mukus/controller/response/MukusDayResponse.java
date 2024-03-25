@@ -1,6 +1,6 @@
 package com.spring.mmm.domain.mukus.controller.response;
 
-import com.spring.mmm.domain.recommends.domain.FoodRecommendEntity;
+import com.spring.mmm.domain.recommends.domain.RecommendedFoodEntity;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -15,11 +15,11 @@ public class MukusDayResponse {
     private String colorCode;
     private String category;
 
-    public static MukusDayResponse create(FoodRecommendEntity recommend) {
+    public static MukusDayResponse create(RecommendedFoodEntity recommend) {
         return MukusDayResponse.builder()
-                .date(recommend.getRecommendDate())
-                .colorCode()
-                .category()
+                .date(recommend.getFoodRecommendEntity().getRecommendDate())
+                .colorCode(recommend.getFoodEntity().getFoodCategoryEntity().getColor())
+                .category(recommend.getFoodEntity().getFoodCategoryEntity().getName())
                 .build();
     }
 }

@@ -19,6 +19,11 @@ public class MukBTIResultRepositoryImpl implements MukBTIResultRepository {
 
     @Override
     public List<MukBTIResultEntity> findAllMukBTIResultByMukboIdAndMukBTIType(List<Long> mukboId, MukBTIType mukBTIType) {
-        return findAllMukBTIResultByMukboIdAndMukBTIType(mukboId, mukBTIType);
+        return mukBTIResultJpaRepository.findAllMukBTIResultByMukboIdAndMukBTIType(mukboId, mukBTIType);
+    }
+
+    @Override
+    public void saveAll(List<MukBTIResultEntity> mukBTIResultEntities) {
+        mukBTIResultJpaRepository.saveAll(mukBTIResultEntities);
     }
 }

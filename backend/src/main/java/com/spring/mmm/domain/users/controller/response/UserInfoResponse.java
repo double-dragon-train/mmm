@@ -5,12 +5,14 @@ import lombok.*;
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(force = true)
-public class UserEmailResponse {
+public class UserInfoResponse {
 
     private final String email;
+    private final String nickname;
 
-    public static UserEmailResponse of(String email){
-        return new UserEmailResponse(email);
+    public static UserInfoResponse of(String email, String nickname) {
+
+        return new UserInfoResponse(email, nickname);
     }
 
 }

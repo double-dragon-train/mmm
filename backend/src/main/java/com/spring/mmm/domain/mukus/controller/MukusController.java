@@ -63,10 +63,9 @@ public class MukusController {
                                                              @RequestParam Integer year,
                                                              @RequestParam Integer month
     ){
-        // 서비스에서 그룹 id로 Entity 찾기
-        mukusService.
+        MukusCalendarResponse res = mukusService.getMukusMonth(groupId, year, month);
 
-        return ResponseEntity.ok(mukusResponse);
+        return ResponseEntity.ok(res);
     }
 
 }
