@@ -1,7 +1,9 @@
 package com.spring.mmm.domain.muklogs.event;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@AllArgsConstructor
 @Getter
 public abstract class AbstractBiFunctionMuklogEvent  implements MuklogEvent{
 

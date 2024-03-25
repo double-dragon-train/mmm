@@ -1,6 +1,7 @@
 package com.spring.mmm.domain.mukgroups.service;
 
 
+import com.spring.mmm.common.event.Events;
 import com.spring.mmm.domain.mbtis.domain.MBTI;
 import com.spring.mmm.domain.mbtis.domain.MukBTIEntity;
 import com.spring.mmm.domain.mbtis.domain.MukBTIResultEntity;
@@ -11,6 +12,7 @@ import com.spring.mmm.domain.mukgroups.controller.request.MukboInviteRequest;
 import com.spring.mmm.domain.mukgroups.controller.response.MukboResponse;
 import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.mukgroups.domain.MukboType;
+import com.spring.mmm.domain.mukgroups.event.MukboInvitedEvent;
 import com.spring.mmm.domain.mukgroups.service.port.MukboRepository;
 import com.spring.mmm.domain.users.exception.UserErrorCode;
 import com.spring.mmm.domain.users.exception.UserException;
@@ -50,14 +52,20 @@ public class MukboServiceImpl implements MukboService{
 
     @Override
     public void inviteMukbo(UserDetailsImpl user, Long groupId, MukboInviteRequest mukboInviteRequest) {
-        MukboEntity mukboEntity = mukboRepository.findByUserId(userRepository.findByEmail(mukboInviteRequest.getEmail())
+        MukboEntity mukboEntity = mukboRepository.findByUserId(
+                userRepository.findByEmail(mukboInviteRequest.getEmail())
                 .orElseThrow(() -> new UserException(UserErrorCode.EMAIL_NOT_FOUND)).getId());
-
+        // FIXME 로직 수정 필요. user가 이 먹그룹에 속한지도 체크해야 함. MukboEntity가 일반 그룹에 속해있는지 체크 해야 함, 그리고 먹봇이랑 링크 안할 수 있기 때문에, 아래 delete도 제거해야 함.
         mukboRepository.delete(mukboRepository.findByMukboId(mukboInviteRequest.getMukbotId()));
 
         mukboEntity.modifyName(mukboInviteRequest.getNickname());
         mukboEntity.modifyGroup(groupId);
         mukboRepository.save(mukboEntity);
+
+
+        MukboEntity userMukbo = mukboRepository.findByUserId(user.getUser().getId());
+
+        Events.raise(new MukboInvitedEvent(userMukbo.getName(),mukboInviteRequest.getNickname(), groupId));
     }
 
 
