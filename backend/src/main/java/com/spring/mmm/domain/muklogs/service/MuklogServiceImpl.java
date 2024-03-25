@@ -18,6 +18,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class MuklogServiceImpl implements MuklogService{
@@ -40,7 +42,9 @@ public class MuklogServiceImpl implements MuklogService{
         pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "createdAt"));
         Page<MuklogEntity> result = muklogRepository.findAllMuklogByGroupId(groupId, pageable);
         return MuklogsResponse.builder()
-                .contents(result.getContent().stream().map(MuklogEntity::toReseponse).toList())
+                .contents(result.getContent().stream()
+                        .map(MuklogEntity::toReseponse)
+                        .collect(Collectors.toList()))
                 .hasNext(result.hasNext())
                 .build();
     }

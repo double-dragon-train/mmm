@@ -12,14 +12,12 @@ import com.spring.mmm.domain.mbtis.service.port.MukBTIQuestionRepository;
 import com.spring.mmm.domain.mbtis.service.port.MukBTIRepository;
 import com.spring.mmm.domain.mbtis.service.port.MukBTIResultRepository;
 import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
-import com.spring.mmm.domain.users.infra.UserDetailsImpl;
 import com.spring.mmm.domain.users.infra.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -133,7 +131,7 @@ public class MukBTIServiceImpl implements MukBTIService {
 
     private MukBTIAnswerEntity matchAnswer(List<MukBTIAnswerEntity> answers, Integer id){
         for(MukBTIAnswerEntity answer : answers){
-            if(answer.getAnswerId() == id){
+            if(answer.getAnswerId().equals(id)){
                 return answer;
             }
         }

@@ -1,18 +1,15 @@
 package com.spring.mmm.domain.mukgroups.controller;
 
-import com.spring.mmm.common.event.Events;
 import com.spring.mmm.domain.mukgroups.controller.request.*;
 import com.spring.mmm.domain.mukgroups.controller.response.MukbosResponse;
 import com.spring.mmm.domain.mukgroups.controller.response.MukgroupResponse;
 import com.spring.mmm.domain.mukgroups.service.MukboService;
 import com.spring.mmm.domain.mukgroups.service.MukgroupService;
-import com.spring.mmm.domain.muklogs.controller.request.MuklogRequest;
 import com.spring.mmm.domain.muklogs.controller.response.MuklogsResponse;
 import com.spring.mmm.domain.muklogs.service.MuklogService;
 import com.spring.mmm.domain.users.infra.UserDetailsImpl;
 import com.spring.mmm.domain.users.infra.UserEntity;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

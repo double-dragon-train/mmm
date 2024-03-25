@@ -1,30 +1,37 @@
 package com.spring.mmm.domain.users.service;
 
 import com.spring.mmm.common.config.RedisDao;
+import com.spring.mmm.common.exception.InternalServerCaughtException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Random;
 
+@RequiredArgsConstructor
 @Service
 public class UserEmailSendService {
-    @Autowired
-    private JavaMailSender mailSender;
-    @Autowired
-    private RedisDao redisDao;
+
+    private final JavaMailSender mailSender;
+    private final RedisDao redisDao;
 
 
     private String makeRandomNumber() {
         StringBuilder authNumber = new StringBuilder();
-        Random r = new Random();
-        for(int i = 0; i < 6; i++) {
-            authNumber.append(r.nextInt(10));
+        try {
+            Random r = SecureRandom.getInstanceStrong();
+            for(int i = 0; i < 6; i++) {
+                authNumber.append(r.nextInt(10));
+            }
+        } catch (NoSuchAlgorithmException e) {
+            throw new InternalServerCaughtException(e, this);
         }
-
         return authNumber.toString();
     }
 
@@ -55,18 +62,12 @@ public class UserEmailSendService {
             helper.setText(content,true);
             mailSender.send(message);
         } catch (MessagingException e) {
-            e.printStackTrace();
+            throw new InternalServerCaughtException(e, this);
         }
         redisDao.setDataExpire(authNumber,toMail,60*5L);
     }
 
     public boolean checkAuthNum(String email,String authNum){
-        if(redisDao.getData(authNum)==null | !redisDao.getData(authNum).equals(email)){
-            return false;
-        }
-        else {
-            return true;
-        }
+        return !(redisDao.getData(authNum) == null | !redisDao.getData(authNum).equals(email));
     }
-
 }

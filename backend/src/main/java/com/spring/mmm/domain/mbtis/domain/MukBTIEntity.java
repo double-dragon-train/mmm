@@ -1,6 +1,5 @@
 package com.spring.mmm.domain.mbtis.domain;
 
-import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.recommends.domain.FoodMBTIEntity;
 import jakarta.persistence.*;
 import lombok.*;

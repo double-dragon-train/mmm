@@ -1,12 +1,11 @@
 package com.spring.mmm.domain.mbtis.domain;
 
-import com.spring.mmm.domain.mbtis.controller.request.CalcInfo;
 import com.spring.mmm.domain.mbtis.controller.response.Question;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Builder
 @Getter
@@ -34,12 +33,13 @@ public class MukBTIQuestionEntity {
     @JoinColumn(name = "mbti_id")
     private MukBTIEntity mukBTIEntity;
 
-    public Question toQuestion(){
+    public Question toQuestion() {
         return Question.builder()
                 .quizId(this.questionId)
                 .context(this.content)
                 .img(this.imageSrc != null ? this.imageSrc : null)
-                .answers(mukBTIAnswerEntities.stream().map(MukBTIAnswerEntity::toAnswer).toList())
+                .answers(mukBTIAnswerEntities.stream().map(MukBTIAnswerEntity::toAnswer)
+                        .collect(Collectors.toList()))
                 .build();
     }
 }
