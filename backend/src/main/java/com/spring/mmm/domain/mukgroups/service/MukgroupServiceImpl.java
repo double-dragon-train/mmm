@@ -78,6 +78,9 @@ public class MukgroupServiceImpl implements MukgroupService{
     @Override
     public void kickMukbo(Long mukboId) {
         MukboEntity mukboEntity = mukboRepository.findByMukboId(mukboId);
+
+
+
         if(mukboEntity.getType() == MukboType.HUMAN) {
             UserEntity user = mukboEntity.getUserEntity();
             saveSoloMukGroup(user.getNickname(), user);
