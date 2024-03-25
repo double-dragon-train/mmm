@@ -32,7 +32,7 @@ public class MukusController {
     private final FoodRecommendRepository foodRecommendRepository;
     private final RecommendedFoodRepository recommendedFoodRepository;
 
-    @GetMapping("groups/{groupId}/recent")
+    @GetMapping("/groups/{groupId}/recent")
     public ResponseEntity<MukusRecentResponse> getRecentMukus(@PathVariable Long groupId){
 
         FoodRecommendEntity foodRecommendEntity = foodRecommendRepository.findByMukgroupId(groupId);
@@ -52,7 +52,7 @@ public class MukusController {
         return ResponseEntity.ok(MukusRecentResponse.create(recommendData));
     }
 
-    @PostMapping("groups/{groupId}/recent")
+    @PostMapping("/groups/{groupId}/recent")
     public ResponseEntity<Void> selectRecentMukus(@PathVariable Long groupId, @RequestBody Long recommendFoodId) {
 
         mukusService.selectRecentMukus(recommendFoodId);
@@ -60,14 +60,12 @@ public class MukusController {
 
     }
 
-    @GetMapping("groups/{groupId}")
+    @GetMapping("/groups/{groupId}")
     public ResponseEntity<MukusCalendarResponse> getAllMukus(@PathVariable Long groupId,
                                                              @RequestParam Integer year,
                                                              @RequestParam Integer month
     ){
-        MukusCalendarResponse res = mukusService.getMukusMonth(groupId, year, month);
-
-        return ResponseEntity.ok(res);
+        return ResponseEntity.ok(mukusService.getMukusMonth(groupId, year, month));
     }
 
 }
