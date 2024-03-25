@@ -8,6 +8,7 @@ import com.spring.mmm.domain.mbtis.domain.MukBTIType;
 import com.spring.mmm.domain.mbtis.service.port.MukBTIResultRepository;
 import com.spring.mmm.domain.mukgroups.controller.request.MukgroupMBTICalcRequest;
 import com.spring.mmm.domain.mukgroups.domain.MukboType;
+import com.spring.mmm.domain.mukgroups.event.MukboExitedEvent;
 import com.spring.mmm.domain.mukgroups.event.MukboKickedEvent;
 import com.spring.mmm.domain.mukgroups.event.MukbotDeletedEvent;
 import com.spring.mmm.domain.mukgroups.exception.MukGroupErrorCode;
@@ -97,6 +98,10 @@ public class MukgroupServiceImpl implements MukgroupService{
 
     @Override
     public void exitMukgroup(UserDetailsImpl user, Long groupId) {
+        MukboEntity mukbo = mukboRepository.findByUserId(user.getUser().getId());
+
+
+
         MukgroupEntity mukgroup = getMukgroupEntity(groupId);
         if(mukgroup.getIsSolo()){
             throw new MukGroupException(MukGroupErrorCode.SOLO_CANT_EXIT);
@@ -106,6 +111,7 @@ public class MukgroupServiceImpl implements MukgroupService{
             mukgroupRepository.delete(mukgroup);
         }
         saveSoloMukGroup(user.getUsername(), user.getUser());
+        Events.raise(new MukboExitedEvent(mukbo.getName(), groupId));
     }
 
     @Override
