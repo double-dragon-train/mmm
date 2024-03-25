@@ -76,14 +76,22 @@ public class MukgroupServiceImpl implements MukgroupService{
     }
 
     @Override
-    public void kickMukbo(Long mukboId) {
+    public void kickMukbo(UserEntity user, Long groupId, Long mukboId) {
+
+        if(!user.getMukboEntity().getMukgroupEntity().getMukgroupId().equals(groupId)){
+            throw new MukGroupException(MukGroupErrorCode.FORBIDDEN);
+        }
+
         MukboEntity mukboEntity = mukboRepository.findByMukboId(mukboId);
 
-
+        if(!user.getMukboEntity().getMukgroupEntity().getMukgroupId()
+                .equals(mukboEntity.getMukgroupEntity().getMukgroupId())){
+            throw new MukGroupException(MukGroupErrorCode.ANOTHER_MUKGROUP);
+        }
 
         if(mukboEntity.getType() == MukboType.HUMAN) {
-            UserEntity user = mukboEntity.getUserEntity();
-            saveSoloMukGroup(user.getNickname(), user);
+            UserEntity mukboUser = mukboEntity.getUserEntity();
+            saveSoloMukGroup(user.getNickname(), mukboUser);
         }
         else {
             mukboRepository.delete(mukboEntity);
@@ -91,16 +99,15 @@ public class MukgroupServiceImpl implements MukgroupService{
     }
 
     @Override
-    public void exitMukgroup(UserDetailsImpl user, Long groupId) {
-        MukgroupEntity mukgroup = getMukgroupEntity(groupId);
-        if(mukgroup.getIsSolo()){
+    public void exitMukgroup(UserEntity user) {
+        if(user.getMukboEntity().getMukgroupEntity().getIsSolo()){
             throw new MukGroupException(MukGroupErrorCode.SOLO_CANT_EXIT);
         }
-        Integer mukboCount = mukgroupRepository.countAllMukboByMukgroupId(groupId);
+        Integer mukboCount = mukgroupRepository.countAllMukboByMukgroupId(user.getMukboEntity().getMukgroupEntity().getMukgroupId());
         if(mukboCount == 1){
-            mukgroupRepository.delete(mukgroup);
+            mukgroupRepository.delete(user.getMukboEntity().getMukgroupEntity());
         }
-        saveSoloMukGroup(user.getUsername(), user.getUser());
+        saveSoloMukGroup(user.getNickname(), user);
     }
 
     @Override

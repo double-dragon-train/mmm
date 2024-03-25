@@ -109,16 +109,17 @@ public class MukGroupController {
 
     @DeleteMapping("{groupId}/mukbos/{mokboId}")
     public ResponseEntity<Void> deleteMukbo(
+            @AuthenticationPrincipal UserDetailsImpl user,
+            @PathVariable Long groupId,
             @PathVariable Long mukboId){
-        mukgroupService.kickMukbo(mukboId);
+        mukgroupService.kickMukbo(user.getUser(), groupId, mukboId);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("{groupId}/exit")
     public ResponseEntity<Void> exitMukgroup(
-            @AuthenticationPrincipal UserDetailsImpl user,
-            @PathVariable Long groupId){
-        mukgroupService.exitMukgroup(user, groupId);
+            @AuthenticationPrincipal UserDetailsImpl user){
+        mukgroupService.exitMukgroup(user.getUser());
         return ResponseEntity.ok().build();
     }
 

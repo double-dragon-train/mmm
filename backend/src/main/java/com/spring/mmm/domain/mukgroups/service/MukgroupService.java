@@ -19,9 +19,9 @@ public interface MukgroupService {
 
     void modifyGroupImage(Long groupId, MultipartFile multipartFile);
 
-    void kickMukbo(Long mukboId);
+    void kickMukbo(UserEntity user, Long groupId, Long mukboId);
 
-    void exitMukgroup(UserDetailsImpl user, Long groupId);
+    void exitMukgroup(UserEntity user);
 
     MBTI calcGroupMukBTI(Long groupId, MukgroupMBTICalcRequest mbtiCalcRequest);
 }
