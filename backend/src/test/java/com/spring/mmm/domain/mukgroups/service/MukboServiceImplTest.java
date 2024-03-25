@@ -45,6 +45,9 @@ class MukboServiceImplTest {
     @Mock
     private MukBTIResultRepository mukBTIResultRepository;
 
+    @Mock
+    private MukBTIRepository mukBTIRepository;
+
     @InjectMocks
     private MukboServiceImpl mukboService;
 
@@ -59,7 +62,6 @@ class MukboServiceImplTest {
     private static UserEntity user;
     private static UserEntity sologroupUser;
     private static MukbotCreateRequest mukbotCreateRequest;
-    private static MukbotCreateRequest sologroupMukbotCreateRequest;
     private static MukgroupEntity mukgroupEntity;
     private static MukgroupEntity soloMukgroupEntity;
 
@@ -230,6 +232,8 @@ class MukboServiceImplTest {
 
     @Test
     void 먹보생성_성공(){
+        BDDMockito.given(mukBTIRepository.findAllMukBTI())
+                        .willReturn(mukBTIEntities);
         assertDoesNotThrow(() -> mukboService.saveMukbot(user, mukbotCreateRequest));
     }
 
