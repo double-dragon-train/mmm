@@ -1,1 +1,1 @@
-{"version":3,"sources":["protectedRoute.module.scss","protectedRoute.module.css"],"names":[],"mappings":"AAAA;EACE,WAAA;EACA,aAAA;EACA,aAAA;EACA,sBAAA;EACA,mBAAA;ACCF;;ADEA;EACE,WAAA;EACA,yBAAA;ACCF","file":"protectedRoute.module.css"}
+{"version":3,"sources":["ProtectedRoute.module.scss","ProtectedRoute.module.css"],"names":[],"mappings":"AAAA;EACE,WAAA;EACA,aAAA;EACA,aAAA;EACA,sBAAA;EACA,mBAAA;ACCF;;ADEA;EACE,WAAA;EACA,yBAAA;ACCF","file":"ProtectedRoute.module.css"}

@@ -85,35 +85,4 @@
 }
 .wrapper .groupInfoSection .rewardBox > div > span {
   color: rgba(42, 67, 206, 0.8);
-}
-.wrapper .mbtiSection {
-  position: relative;
-}
-.wrapper .mbtiSection .mbtiTitleBox {
-  display: flex;
-  flex-direction: center;
-  align-items: center;
-  gap: 10px;
-  position: absolute;
-  top: -20px;
-  left: 20px;
-}
-.wrapper .mbtiSection .mbtiTitleBox > span {
-  color: #656565;
-  font-size: 18px;
-}
-.wrapper .mbtiSection .mbtiTitleBox > div {
-  font-size: 14px;
-  color: rgba(0, 0, 0, 0.7);
-  border: 1px solid rgba(14, 38, 174, 0.2);
-  padding: 6px;
-  border-radius: 5px;
-}
-.wrapper .mbtiSection .mbtiBarBox {
-  display: flex;
-  gap: 10px;
-}
-.wrapper .mbtiSection .mbtiBarBox .mbtiNameBox {
-  display: flex;
-  flex-direction: column;
 }/*# sourceMappingURL=GroupPage.module.css.map */
