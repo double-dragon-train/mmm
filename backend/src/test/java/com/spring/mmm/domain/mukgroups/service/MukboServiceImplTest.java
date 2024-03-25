@@ -96,8 +96,16 @@ class MukboServiceImplTest {
                 .build();
         // 먹비티아이
 
-        mukgroupEntity = MukgroupEntity.create("123", Boolean.FALSE);
-        soloMukgroupEntity = MukgroupEntity.create("456", Boolean.TRUE);
+        mukgroupEntity = MukgroupEntity.builder()
+                .mukgroupId(1L)
+                .name("123")
+                .isSolo(Boolean.FALSE)
+                .build();
+        soloMukgroupEntity = MukgroupEntity.builder()
+                .mukgroupId(2L)
+                .name("456")
+                .isSolo(Boolean.TRUE)
+                .build();
 
         mukboInviteRequest = MukboInviteRequest.builder()
                 .email("ssafy@ssafy.com")

@@ -220,6 +220,9 @@ class MukgroupServiceImplTest {
         BDDMockito.given(mukboRepository.findByMukboId(any()))
                 .willReturn(mukbotEntity);
 
+        BDDMockito.given(mukboRepository.findByUserId(any()))
+                        .willReturn(mukboEntityGroup);
+
         assertDoesNotThrow(() -> mukgroupService.kickMukbo(userWithMukbo, 1L, 3L));
     }
 
@@ -247,6 +250,9 @@ class MukgroupServiceImplTest {
         BDDMockito.given(mukboRepository.findByUserId(any()))
                 .willReturn(mukboEntitySologroup);
 
+        BDDMockito.given(mukgroupRepository.findByMukgroupId(any()))
+                        .willReturn(Optional.of(mukgroupEntity));
+
         assertDoesNotThrow(() -> mukgroupService.exitMukgroup(userWithMukbo, 1L));
     }
 
@@ -260,6 +266,9 @@ class MukgroupServiceImplTest {
 
         BDDMockito.given(mukboRepository.findByUserId(any()))
                 .willReturn(mukboEntitySologroup);
+
+        BDDMockito.given(mukgroupRepository.findByMukgroupId(any()))
+                        .willReturn(Optional.of(mukgroupEntity));
 
         assertDoesNotThrow(() -> mukgroupService.exitMukgroup(userWithMukbo, 1L));
     }
