@@ -5,6 +5,9 @@ import com.spring.mmm.domain.users.infra.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Builder
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -51,5 +54,21 @@ public class MukBTIResultEntity {
                 .mukboEntity(mukboEntity)
                 .userEntity(userEntity)
                 .build();
+    }
+
+    public static List<MukBTIResultEntity> createByMBTI(MBTI mbti, List<MukBTIEntity> mukBTIEntities, MukboEntity mukbo){
+        List<MukBTIResultEntity> mukBTIResultEntities = new ArrayList<>();
+        for(MukBTIEntity mukBTI : mukBTIEntities){
+            switch (mukBTI.getType()){
+                case EI -> mukBTIResultEntities.add(MukBTIResultEntity.createByType(mbti.getEI(), mukBTI, mukbo));
+                case NS -> mukBTIResultEntities.add(MukBTIResultEntity.createByType(mbti.getNS(), mukBTI, mukbo));
+                case TF -> mukBTIResultEntities.add(MukBTIResultEntity.createByType(mbti.getTF(), mukBTI, mukbo));
+                case JP -> mukBTIResultEntities.add(MukBTIResultEntity.createByType(mbti.getJP(), mukBTI, mukbo));
+                case MINT -> mukBTIResultEntities.add(MukBTIResultEntity.createByType(mbti.getMint(), mukBTI, mukbo));
+                case PINE -> mukBTIResultEntities.add(MukBTIResultEntity.createByType(mbti.getPine(), mukBTI, mukbo));
+                case DIE -> mukBTIResultEntities.add(MukBTIResultEntity.createByType(mbti.getDie(), mukBTI, mukbo));
+            }
+        }
+        return mukBTIResultEntities;
     }
 }

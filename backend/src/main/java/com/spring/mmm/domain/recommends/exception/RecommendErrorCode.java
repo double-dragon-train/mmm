@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum RecommendErrorCode implements ErrorCode {
     RECOMMEND_NOT_FOUND(HttpStatus.NOT_FOUND, "처리되지 않은 최근 추천 메뉴가 없습니다."),
+    FOOD_RECOMMEND_NOT_FOUND(HttpStatus.NOT_FOUND, "추천받은 음식 데이터가 없습니다."),
     RECOMMENDED_NOT_FOUND(HttpStatus.NOT_FOUND, "추천받은 음식 데이터에 해당 음식이 존재하지 않습니다.");
 
     private final HttpStatus httpStatus;

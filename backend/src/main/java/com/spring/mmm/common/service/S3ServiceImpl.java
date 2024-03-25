@@ -14,10 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 import javax.imageio.ImageIO;
 
-import com.spring.mmm.common.exception.CustomException;
-import com.spring.mmm.common.exception.GlobalErrorCode;
-import com.spring.mmm.common.exception.InternalServerCaughtException;
-import com.spring.mmm.common.exception.InternalServerException;
+import com.spring.mmm.common.exception.*;
 import com.spring.mmm.common.utils.ImageUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,8 +38,9 @@ public class S3ServiceImpl implements S3Service{
     public String uploadFile(MultipartFile multipartFile) {
 
         if (isEmpty(multipartFile)) {
-            return null;
+            throw new S3Exception(S3ErrorCode.EMPTY_FILE);
         }
+
         validateIsClientSendImageFile(multipartFile);
         return uploadFiles(multipartFile, false);
     }
