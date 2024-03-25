@@ -11,4 +11,6 @@ public interface RecommendedFoodRepository {
 
     List<RecommendedFoodEntity> findRecommendedFoodByYearAndMonth(Long mukgroupId, Integer year, Integer month);
 
+    RecommendedFoodEntity findRecommendedFoodByDate(Long mukgroupId, Integer year, Integer month, Integer day);
+
 }
