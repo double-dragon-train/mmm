@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -39,11 +40,10 @@ public class MukusServiceImpl implements MukusService {
         List<RecommendedFoodEntity> recommendedFoodEntities =
                 recommendedFoodRepository.findRecommendedFoodByYearAndMonth(groupId, year, month);
 
-        List<MukusDayResponse> mukusMonthResponse = recommendedFoodEntities.stream().map(MukusDayResponse::create).toList();
+        List<MukusDayResponse> mukusMonthResponse =
+                recommendedFoodEntities.stream().map(MukusDayResponse::create).collect(Collectors.toList());
 
-        MukusCalendarResponse mukusCalendarResponse = MukusCalendarResponse.create(mukusMonthResponse);
-
-        return mukusCalendarResponse;
+        return MukusCalendarResponse.create(mukusMonthResponse);
     }
 
     @Override
@@ -52,9 +52,7 @@ public class MukusServiceImpl implements MukusService {
         RecommendedFoodEntity recommendedFoodEntity =
                 recommendedFoodRepository.findRecommendedFoodByDate(groupId, year, month, day);
 
-        MukusDetailResponse mukusDetailResponse = MukusDetailResponse.create(recommendedFoodEntity);
-
-        return mukusDetailResponse;
+        return MukusDetailResponse.create(recommendedFoodEntity);
     }
 
 }

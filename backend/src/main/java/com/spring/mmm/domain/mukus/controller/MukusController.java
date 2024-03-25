@@ -69,7 +69,7 @@ public class MukusController {
     }
 
     @GetMapping("/groups/{groupId}/date")
-    public ResponseEntity<MukusDetailResponse> getDetailMukus(@PathVariable Long groupId,
+    public ResponseEntity<MukusDetailResponse> getMukusDetail(@PathVariable Long groupId,
                                            @RequestParam Integer year,
                                            @RequestParam Integer month,
                                            @RequestParam Integer day

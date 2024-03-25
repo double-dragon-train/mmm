@@ -5,6 +5,7 @@ import com.spring.mmm.domain.recommends.domain.RecommendedFoodEntity;
 import lombok.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Builder
 @Getter
@@ -22,7 +23,7 @@ public class MukusDetailResponse {
                             String mukboName = eatenMukbo.getMukboEntity().getName();
                             return Mukbo.create(mukboName);
                         }
-                ).toList())
+                ).collect(Collectors.toList()))
                 .build();
     }
 }
