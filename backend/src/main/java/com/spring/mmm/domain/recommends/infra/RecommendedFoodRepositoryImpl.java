@@ -27,4 +27,10 @@ public class RecommendedFoodRepositoryImpl implements RecommendedFoodRepository 
         return recommendedFoodJpaRepository.findRecommendedFoodByYearAndMonth(mukgroupId, year, month);
     }
 
+    @Override
+    public RecommendedFoodEntity findRecommendedFoodByDate(Long mukgroupId, Integer year, Integer month, Integer day) {
+        return recommendedFoodJpaRepository.findRecommendedFoodByDate(mukgroupId, year, month, day)
+                .orElseThrow(() -> new RecommendException(RecommendErrorCode.RECOMMENDED_NOT_FOUND));
+    }
+
 }

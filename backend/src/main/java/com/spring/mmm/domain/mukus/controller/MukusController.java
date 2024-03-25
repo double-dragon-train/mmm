@@ -69,4 +69,13 @@ public class MukusController {
         return ResponseEntity.ok(mukusService.getMukusMonth(groupId, year, month));
     }
 
+    @GetMapping("/groups/{groupId}/date")
+    public ResponseEntity<MukusDetailResponse> getMukusDetail(@PathVariable Long groupId,
+                                           @RequestParam Integer year,
+                                           @RequestParam Integer month,
+                                           @RequestParam Integer day
+    ) {
+        return ResponseEntity.ok(mukusService.getMukusDetail(groupId, year, month, day));
+    }
+
 }

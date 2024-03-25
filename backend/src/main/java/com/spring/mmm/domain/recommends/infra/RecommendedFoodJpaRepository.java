@@ -20,4 +20,13 @@ public interface RecommendedFoodJpaRepository extends JpaRepository<RecommendedF
             "MONTH(f.recommendDate) = :month")
     List<RecommendedFoodEntity> findRecommendedFoodByYearAndMonth(Long mukgroupId, Integer year, Integer month);
 
+    @Query("SELECT r FROM RecommendedFoodEntity r " +
+            "JOIN FETCH r.foodRecommendEntity f " +
+            "WHERE r.eaten = true " +
+            "AND f.mukgroupEntity.mukgroupId = :mukgroupId " +
+            "AND YEAR(f.recommendDate) = :year " +
+            "AND MONTH(f.recommendDate) = :month " +
+            "AND DAY(f.recommendDate) = :day"
+    )
+    Optional<RecommendedFoodEntity> findRecommendedFoodByDate(Long mukgroupId, Integer year, Integer month, Integer day);
 }
