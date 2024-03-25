@@ -15,11 +15,11 @@ public interface MukgroupService {
 
     MukgroupEntity findMukgroupById(Long groupId);
 
-    void modifyGroupName(Long groupId, String name);
+    void modifyGroupName(Long groupId, String name, UserDetailsImpl users);
 
-    void modifyGroupImage(Long groupId, MultipartFile multipartFile);
+    void modifyGroupImage(Long groupId, MultipartFile multipartFile, UserDetailsImpl users);
 
-    void kickMukbo(Long mukboId);
+    void kickMukbo(Long mukboId, UserDetailsImpl users);
 
     void exitMukgroup(UserDetailsImpl user, Long groupId);
 

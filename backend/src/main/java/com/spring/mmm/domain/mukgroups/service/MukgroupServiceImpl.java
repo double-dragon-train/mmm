@@ -1,5 +1,6 @@
 package com.spring.mmm.domain.mukgroups.service;
 
+import com.spring.mmm.common.event.Events;
 import com.spring.mmm.common.service.S3Service;
 import com.spring.mmm.domain.mbtis.domain.MBTI;
 import com.spring.mmm.domain.mbtis.domain.MukBTIResultEntity;
@@ -7,6 +8,7 @@ import com.spring.mmm.domain.mbtis.domain.MukBTIType;
 import com.spring.mmm.domain.mbtis.service.port.MukBTIResultRepository;
 import com.spring.mmm.domain.mukgroups.controller.request.MukgroupMBTICalcRequest;
 import com.spring.mmm.domain.mukgroups.domain.MukboType;
+import com.spring.mmm.domain.mukgroups.event.*;
 import com.spring.mmm.domain.mukgroups.exception.MukGroupErrorCode;
 import com.spring.mmm.domain.mukgroups.exception.MukGroupException;
 import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
@@ -65,30 +67,41 @@ public class MukgroupServiceImpl implements MukgroupService{
     }
 
     @Override
-    public void modifyGroupName(Long groupId, String name) {
+    public void modifyGroupName(Long groupId, String name, UserDetailsImpl users) {
+        MukboEntity mukboEntity = mukboRepository.findByUserId(users.getUser().getId());
         mukgroupRepository.save(getMukgroupEntity(groupId).modifyMukgroupName(name));
+        Events.raise(new MukgroupNameChangedEvent(mukboEntity.getName(),  name, groupId));
     }
 
     @Override
-    public void modifyGroupImage(Long groupId, MultipartFile multipartFile) {
+    public void modifyGroupImage(Long groupId, MultipartFile multipartFile, UserDetailsImpl users) {
+        MukboEntity mukboEntity = mukboRepository.findByUserId(users.getUser().getId());
         String imageSrc = s3Service.uploadFile(multipartFile);
         mukgroupRepository.save(getMukgroupEntity(groupId).modifyMukgroupImage(imageSrc));
+        Events.raise(new MukgroupImageChangedEvent(mukboEntity.getName(), groupId));
     }
 
     @Override
-    public void kickMukbo(Long mukboId) {
+    public void kickMukbo(Long mukboId, UserDetailsImpl users) {
+        MukboEntity sourceUser = mukboRepository.findByUserId(users.getUser().getId());
+        // FIXME 소스유저 검증필요
+        
         MukboEntity mukboEntity = mukboRepository.findByMukboId(mukboId);
         if(mukboEntity.getType() == MukboType.HUMAN) {
             UserEntity user = mukboEntity.getUserEntity();
             saveSoloMukGroup(user.getNickname(), user);
+            Events.raise(new MukboKickedEvent(sourceUser.getName(), mukboEntity.getName(), sourceUser.getMukgroupEntity().getMukgroupId()));
         }
         else {
             mukboRepository.delete(mukboEntity);
+            Events.raise(new MukbotDeletedEvent(sourceUser.getName(), mukboEntity.getName(), sourceUser.getMukgroupEntity().getMukgroupId()));
         }
     }
 
     @Override
     public void exitMukgroup(UserDetailsImpl user, Long groupId) {
+        MukboEntity mukbo = mukboRepository.findByUserId(user.getUser().getId());
+
         MukgroupEntity mukgroup = getMukgroupEntity(groupId);
         if(mukgroup.getIsSolo()){
             throw new MukGroupException(MukGroupErrorCode.SOLO_CANT_EXIT);
@@ -98,6 +111,7 @@ public class MukgroupServiceImpl implements MukgroupService{
             mukgroupRepository.delete(mukgroup);
         }
         saveSoloMukGroup(user.getUsername(), user.getUser());
+        Events.raise(new MukboExitedEvent(mukbo.getName(), groupId));
     }
 
     @Override
