@@ -22,7 +22,7 @@ public class MukBTIController {
         return ResponseEntity.ok(QuestionsResponse.builder()
                 .questions(mukBTIQuestions
                         .stream()
-                        .map(item -> item.toQuestion())
+                        .map(MukBTIQuestionEntity::toQuestion)
                         .toList())
                 .build());
     }
