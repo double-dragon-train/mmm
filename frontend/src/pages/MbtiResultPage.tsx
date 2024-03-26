@@ -1,92 +1,63 @@
 // import MbtiSection from '../components/common/MbtiSection';
-// import styles from '../styles/introducePage/IntroducePage.module.css';
-import ignite from '../assets/images/ignite.png';
-import emergency from '../assets/images/emergency.png';
-import ssal from '../assets/images/ssal.png';
-import noodle from '../assets/images/noodle.png';
-import fitness from '../assets/images/fitness.png';
-import total from '../assets/images/total.png';
-import papa from '../assets/images/papa.png';
-import jammin from '../assets/images/jammin.png';
-import IntroducePage from './IntroducePage';
+import styles from '../styles/mbtiResultPage/MbtiResultPage.module.css'
+import buttonStyles from '../styles/common/Buttons.module.css'
+import { useMutation } from 'react-query';
+import { getMbtiResult, postMbtiResult } from '../api/mbtiApi';
+import { useNavigate } from 'react-router-dom';
+import userStore from '../stores/userStore';
+import MbtiIntroduceSection from '../components/common/MbtiIntroduceSection';
+import MbtiSection from '../components/common/MbtiSection';
+import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 
-interface firstSecondType {
-  eng: string;
-  kor: string;
-  img: string;
-}
-
-interface mbtiIntroduceOptionsType {
-  id: number;
-  title: string;
-  first: firstSecondType;
-  second: firstSecondType;
-}
-
-const MBTI_INTRODUCE_OPTIONS: mbtiIntroduceOptionsType[] = [
-  {
-    id: 1,
-    title: '매운맛 척도',
-    first: {
-      eng: 'Ignite',
-      kor: '어느 맛이든\n두렵지 않은 맵당당이',
-      img: ignite,
-    },
-    second: {
-      eng: 'Emergency',
-      kor: '눈물 쏙! 콧물 쏙!\n맵찔이',
-      img: emergency,
-    },
-  },
-  {
-    id: 2,
-    title: '선호 탄수화물',
-    first: {
-      eng: 'Ssal',
-      kor: '한국인은 밥심!\n밥파',
-      img: ssal,
-    },
-    second: {
-      eng: 'Noodle',
-      kor: '면치기의 나라!\n면파',
-      img: noodle,
-    },
-  },
-  {
-    id: 3,
-    title: '건강 중요도',
-    first: {
-      eng: 'Fitness',
-      kor: '맛보다는 건강!\n건강식파',
-      img: fitness,
-    },
-    second: {
-      eng: 'Total',
-      kor: '먹을 때 제일 행복해!\n일반식파!',
-      img: total,
-    },
-  },
-  {
-    id: 4,
-    title: '입맛의 성숙함',
-    first: {
-      eng: 'Papa',
-      kor: '점심은 뜨끈~한 국밥!\n아재입맛',
-      img: papa,
-    },
-    second: {
-      eng: 'Jammin',
-      kor: '엄망 소세지 없엉?\잼민입맛',
-      img: jammin,
-    },
-  },
-];
-console.log(MBTI_INTRODUCE_OPTIONS)
 
 function MbtiResultPage() {
+  const { isLogin, answerList, mbtiKey, setMbtiKey } = userStore();
+  console.log(answerList, isLogin)
+  const navigate = useNavigate();
+
+  const { mutate: mutateCreateUserMbti } = useMutation({
+    mutationFn: postMbtiResult,
+    onSuccess: () => navigate('/')
+  });
+
+  const { data: mbtiResult, isPending, isError: getMbtiResultError } = useQuery({
+    queryKey: ['mbtiResult'],
+    queryFn: () => getMbtiResult(answerList),
+  })
+
+  useEffect(() => {
+    setMbtiKey(mbtiResult?.key)
+  }, [mbtiResult])
+
+  const goNextStep = () => {
+    if (isLogin) {
+      console.log(mbtiKey)
+      mutateCreateUserMbti(mbtiKey)
+    } else {
+      navigate('/signup')
+    }
+  };
+
+  if (isPending) {
+    return <div>isLoding...</div>;
+  }
+  if (getMbtiResultError) {
+    return <div>error</div>;
+  }
+
   return (
-    <IntroducePage />
-  )
+    <div className={styles.wrapper}>
+      <MbtiSection mbti={mbtiResult.mbti}/>
+      <MbtiIntroduceSection />
+      <button
+          onClick={goNextStep}
+          className={buttonStyles.miniRoundedButton}
+        >
+          다음
+        </button>
+    </div>
+  );
 }
 
-export default MbtiResultPage
+export default MbtiResultPage;

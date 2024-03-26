@@ -1,5 +1,5 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { getMbtiQuestionList, getMbtiResult } from '../api/mbtiApi';
+import { useQuery } from '@tanstack/react-query';
+import { getMbtiQuestionList } from '../api/mbtiApi';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from '../styles/mbtiPage/MbtiPage.module.css';
 import buttonStyles from '../styles/common/Buttons.module.css';
@@ -19,10 +19,7 @@ function MbtiPage() {
   const [selectedAnswer, setSelectedAnswer] = useState('');
   const { updateAnswerList, answerList } = userStore();
   const { mbtiId } = useParams();
-  const { mutate: mutateMbtiResult } = useMutation({
-    mutationFn: getMbtiResult,
-    onSuccess: () => navigate('/introduce'),
-  });
+  
   const {
     data: questionList,
     isPending,
@@ -41,7 +38,7 @@ function MbtiPage() {
       updateAnswerList([]);
     }
   }, []);
-  
+
   const handleSelectAnswer = (answerId: string) => {
     setSelectedAnswer(answerId);
   };
@@ -74,7 +71,7 @@ function MbtiPage() {
     }
 
     if (mbtiId === '14') {
-      mutateMbtiResult(answerList);
+      navigate('/result')
     } else {
       navigate(`/mbti/${Number(mbtiId) + 1}`);
     }
@@ -90,7 +87,7 @@ function MbtiPage() {
 
   if (Number(mbtiId) === 8)
     return (
-      <div className={styles.wrapper3}>
+      <div className={styles.wrapperBaekBan}>
         <h1>{questionList[Number(mbtiId)].context}</h1>
         <div className={styles.questionNumBox}>
           {Number(mbtiId) + 1} / {questionList.length}
@@ -100,11 +97,11 @@ function MbtiPage() {
           {questionList[Number(mbtiId)].answers.map(
             (answer: answerType) => {
               return (
-                <div key={answer.answerId}>
+                <div
+                  key={answer.answerId}
+                  onClick={() => handleSelectAnswer(answer.answerId)}
+                >
                   <CheckCircle
-                    handleSelectAnswer={() =>
-                      handleSelectAnswer(answer.answerId)
-                    }
                     isSelected={selectedAnswer == answer.answerId}
                   />
                   <span>{answer.answerContext}</span>
@@ -127,7 +124,7 @@ function MbtiPage() {
 
   if (questionList[Number(mbtiId)].answers.length === 5)
     return (
-      <div className={styles.wrapper}>
+      <div className={styles.wrapperFive}>
         <h1>{questionList[Number(mbtiId)].context}</h1>
         <div className={styles.questionNumBox}>
           {Number(mbtiId) + 1} / {questionList.length}
@@ -136,11 +133,11 @@ function MbtiPage() {
           {questionList[Number(mbtiId)].answers.map(
             (answer: answerType) => {
               return (
-                <div key={answer.answerId}>
+                <div
+                  key={answer.answerId}
+                  onClick={() => handleSelectAnswer(answer.answerId)}
+                >
                   <CheckCircle
-                    handleSelectAnswer={() =>
-                      handleSelectAnswer(answer.answerId)
-                    }
                     isSelected={selectedAnswer == answer.answerId}
                   />
                   <span>{answer.answerContext}</span>
@@ -166,7 +163,7 @@ function MbtiPage() {
 
   if (questionList[Number(mbtiId)].answers.length === 2)
     return (
-      <div className={styles.wrapper2}>
+      <div className={styles.wrapperTwo}>
         <h1>{questionList[Number(mbtiId)].context}</h1>
         <div className={styles.questionNumBox}>
           {Number(mbtiId) + 1} / {questionList.length}

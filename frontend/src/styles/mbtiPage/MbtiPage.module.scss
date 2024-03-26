@@ -1,7 +1,7 @@
 $color-main: #2a43ce;
 $color-circle: #b4bef4;
 
-.wrapper {
+.wrapperFive {
   // padding: 4vh 0 5vh 0;
   //   width: 90%;
   height: 100%;
@@ -41,6 +41,7 @@ $color-circle: #b4bef4;
       align-items: center;
       justify-content: center;
       gap: 20px;
+      cursor: pointer;
       > span {
         color: rgba($color-main, 0.5);
         font-size: 22px;
@@ -75,7 +76,7 @@ $color-circle: #b4bef4;
   //   }
 }
 
-.wrapper2 {
+.wrapperTwo {
   height: 100%;
   width: 100%;
   display: flex;
@@ -137,6 +138,7 @@ $color-circle: #b4bef4;
         position: absolute;
         top: 50%;
         left: 50%;
+        cursor: pointer;
         transform: translate(-50%, -50%);
         > img {
           opacity: 0.8;
@@ -205,10 +207,9 @@ $color-circle: #b4bef4;
   //   }
 }
 
-.wrapper3 {
+.wrapperBaekBan {
   height: 100%;
   width: 100%;
-  // background-color: aqua;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -231,29 +232,31 @@ $color-circle: #b4bef4;
   }
   section {
     padding: 24px 0px;
-    justify-content: center;
     width: 90%;
     height: 100%;
     border-radius: 15px;
     margin-top: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    // flex-direction: column;
-    align-items: center;
-    gap: 60px;
-    row-gap: 30px;
+    // display: flex;
+    // flex-wrap: wrap;
+    // justify-content: center;
+    // align-items: center;
+    // gap: 60px;
+    // row-gap: 30px;
+    display: grid;
+    place-items: center;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
     position: relative;
     background-color: rgba($color-main, 0.03);
-
     .circleLine {
       display: none;
     }
-
     > div {
       display: flex;
       align-items: center;
       gap: 20px;
       align-items: center;
+      cursor: pointer;
       > span {
         font-size: 22px;
         color: rgba($color-main, 0.5);
