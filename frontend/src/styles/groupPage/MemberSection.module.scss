@@ -39,7 +39,7 @@
         margin-right: 10px;
         display: grid;
         align-items: center;
-        grid-template-columns: 1fr 4.8fr 2.8fr;
+        grid-template-columns: 1fr 6fr 2.4fr;
         > img {
           width: 18px;
           justify-self: end;
@@ -48,6 +48,9 @@
         > .memberName {
           margin: 0 6px;
           text-align: left;
+        }
+        > .memberMBTI {
+          margin-right: 10px;
         }
       }
       > .miniRedButton {

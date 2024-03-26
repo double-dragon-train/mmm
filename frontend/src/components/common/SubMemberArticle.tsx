@@ -25,7 +25,7 @@ function SubMemberArticle({
             <div className={styles.memberName}>
               {memberName}
             </div>
-            <div>{memberMBTI}</div>
+            <div className={styles.memberMBTI}>{memberMBTI}</div>
           </div>
           <MiniRedButton clickEvent={() => {}} buttonName={buttonName} />
         </div>

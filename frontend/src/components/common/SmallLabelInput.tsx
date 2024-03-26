@@ -34,7 +34,7 @@ function SmallLabelInput({
         <input
           name={inputName}
           type={inputType}
-          className={inputWidth}
+          className={`${styles[inputWidth]}`}
           value={inputValue}
           onChange={onChange}
           onBlur={onBlur}

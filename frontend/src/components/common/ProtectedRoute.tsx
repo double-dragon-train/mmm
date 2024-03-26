@@ -15,9 +15,9 @@ function ProtectedRoute() {
       <Link to="/">
         <img className={styles.subLogo} src={subLogo} alt="" />
       </Link>
-      <div>
+      {/* <div> */}
         <Outlet />
-      </div>
+      {/* </div> */}
       <NavBar />
     </div>
   );

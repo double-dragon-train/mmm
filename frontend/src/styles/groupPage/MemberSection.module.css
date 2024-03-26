@@ -133,7 +133,7 @@
   margin-right: 10px;
   display: grid;
   align-items: center;
-  grid-template-columns: 1fr 4.8fr 2.8fr;
+  grid-template-columns: 1fr 6fr 2.4fr;
 }
 .memberSection > article > .memberBox > .memberCard > img {
   width: 18px;
@@ -142,6 +142,9 @@
 .memberSection > article > .memberBox > .memberCard > .memberName {
   margin: 0 6px;
   text-align: left;
+}
+.memberSection > article > .memberBox > .memberCard > .memberMBTI {
+  margin-right: 10px;
 }
 .memberSection > article > .memberBox > .miniRedButton {
   flex-grow: 1;
