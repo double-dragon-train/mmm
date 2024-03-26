@@ -13,6 +13,8 @@ interface userStoreType {
   setAccessToken: (value: string) => void;
   isLogin: boolean;
   setIsLogin: (value: boolean) => void;
+  mbtiKey: string;
+  setMbtiKey: (value: string) => void;
 }
 const userStore = create(
   persist<userStoreType>(
@@ -24,6 +26,8 @@ const userStore = create(
       answerList: [],
       updateAnswerList: (value: answerType[]) =>
         set({ answerList: value }),
+      mbtiKey: '',
+      setMbtiKey: (value: string) => set({ mbtiKey: value }),
       //   loginModalOpen: false,
       //   setLoginModalOpen: (value) => set({ loginModalOpen: value }),
       //   isMyPage: true,
