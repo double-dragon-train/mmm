@@ -1,5 +1,5 @@
 .wrapper {
-  flex: 1;
+  height: 707px;
   display: flex;
   flex-direction: column;
   justify-content: center;
