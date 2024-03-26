@@ -27,8 +27,8 @@ public class RecommendServiceImpl implements RecommendService{
 
     @Override
     public List<FoodInformation> recommendRandomFood() {
-        int randFirst = (int) (Math.random() + 1) * 10;
-        int randSecond = (int) (Math.random() + 1) * 10;
+        int randFirst = (int) (Math.random() * 9) + 1;
+        int randSecond = (int) (Math.random() * randFirst);
         return foodRepository.findAll().stream()
                 .map(FoodEntity::toFoodInformation)
                 .filter(item -> item.getFoodId() % randFirst == randSecond)
