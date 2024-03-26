@@ -20,18 +20,21 @@ import com.spring.mmm.domain.users.infra.UserDetailsImpl;
 import com.spring.mmm.domain.users.infra.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MukgroupServiceImpl implements MukgroupService{
     private final MukgroupRepository mukgroupRepository;
     private final MukboRepository mukboRepository;
     private final S3Service s3Service;
     private final MukBTIResultRepository mukBTIResultRepository;
     @Override
+    @Transactional
     public void saveSoloMukGroup(String name, UserEntity user) {
         MukgroupEntity mukgroupEntity = mukgroupRepository.save(MukgroupEntity.create(name, Boolean.TRUE));
         mukboRepository.save(mukboRepository.findByUserId(user.getId())
@@ -39,11 +42,16 @@ public class MukgroupServiceImpl implements MukgroupService{
     }
 
     @Override
-    public void saveMukGroup(String name, UserEntity user) {
+    @Transactional
+    public void saveMukGroup(String name, UserEntity user, MultipartFile image) {
         MukboEntity mukboEntity = mukboRepository.findByUserId(user.getId());
         MukgroupEntity originMukgroup = mukboEntity.getMukgroupEntity();
         if(originMukgroup.getIsSolo()){
-            MukgroupEntity mukgroupEntity = mukgroupRepository.save(MukgroupEntity.create(name, Boolean.FALSE));
+            MukgroupEntity mukgroupEntity = mukgroupRepository.save(
+                    MukgroupEntity
+                    .create(name, Boolean.FALSE)
+                    .modifyMukgroupImage(s3Service.uploadFile(image))
+            );
             mukboRepository.save(mukboEntity.modifyGroup(mukgroupEntity.getMukgroupId()));
             mukgroupRepository.delete(originMukgroup);
         } else {
@@ -62,11 +70,11 @@ public class MukgroupServiceImpl implements MukgroupService{
     }
 
     private MukgroupEntity getMukgroupEntity(Long groupId) {
-        return mukgroupRepository.findByMukgroupId(groupId)
-                .orElseThrow(MukgroupNotFoundException::new);
+        return mukgroupRepository.findByMukgroupId(groupId);
     }
 
     @Override
+    @Transactional
     public void modifyGroupName(Long groupId, String name, UserEntity user) {
         MukboEntity mukboEntity = mukboRepository.findByUserId(user.getId());
         mukgroupRepository.save(getMukgroupEntity(groupId).modifyMukgroupName(name));
@@ -74,6 +82,7 @@ public class MukgroupServiceImpl implements MukgroupService{
     }
 
     @Override
+    @Transactional
     public void modifyGroupImage(Long groupId, MultipartFile multipartFile, UserDetailsImpl users) {
         MukboEntity mukboEntity = mukboRepository.findByUserId(users.getUser().getId());
         String imageSrc = s3Service.uploadFile(multipartFile);
@@ -82,6 +91,7 @@ public class MukgroupServiceImpl implements MukgroupService{
     }
 
     @Override
+    @Transactional
     public void kickMukbo(UserEntity user, Long groupId, Long mukboId) {
 
         MukboEntity sourceUser = mukboRepository.findByUserId(user.getId());
@@ -109,6 +119,7 @@ public class MukgroupServiceImpl implements MukgroupService{
     }
 
     @Override
+    @Transactional
     public void exitMukgroup(UserEntity user, Long groupId) {
         MukboEntity mukbo = mukboRepository.findByUserId(user.getId());
 

@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("groups")
+@RequestMapping("/groups")
 public class MukGroupController {
 
     private final MukgroupService mukgroupService;
@@ -37,11 +37,11 @@ public class MukGroupController {
             @RequestPart(value = "data", required = true) MukgroupCreateRequest mukgroupCreateRequest,
             @RequestPart(value = "image", required = false) MultipartFile image
     ){
-        mukgroupService.saveMukGroup(mukgroupCreateRequest.getName(), user.getUser());
+        mukgroupService.saveMukGroup(mukgroupCreateRequest.getName(), user.getUser(), image);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping("{groupId}/name")
+    @PutMapping("/{groupId}/name")
     public ResponseEntity<Void> modifyGroupName(
             @PathVariable Long groupId,
             @RequestBody MukgroupModifyRequest mukgroupModifyRequest,
@@ -50,7 +50,7 @@ public class MukGroupController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("{groupId}/image")
+    @PostMapping("/{groupId}/image")
     public ResponseEntity<Void> modifyGroupImage(
             @PathVariable Long groupId,
             @RequestPart(value = "image") MultipartFile image,
@@ -59,21 +59,21 @@ public class MukGroupController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("{groupId}/users")
+    @GetMapping("/{groupId}/users")
     public ResponseEntity<MukbosResponse> findAllMukbos(@PathVariable Long groupId){
         return ResponseEntity.ok(MukbosResponse.builder()
                 .users(mukboService.findAllMukboResponsesByGroupId(groupId))
                 .build());
     }
 
-    @GetMapping("{groupId}/mukbots")
+    @GetMapping("/{groupId}/mukbots")
     public ResponseEntity<MukbosResponse> findAllMukbots(@PathVariable Long groupId){
         return ResponseEntity.ok(MukbosResponse.builder()
                 .users(mukboService.findAllMukbotResponsesByGroupId(groupId))
                 .build());
     }
 
-    @PostMapping("{groupId}/mukbots")
+    @PostMapping("/{groupId}/mukbots")
     public ResponseEntity<MukbotCreateRequest> saveMukbot(
             @AuthenticationPrincipal UserDetailsImpl user,
             @RequestBody MukbotCreateRequest mukbotCreateRequest){
@@ -87,7 +87,7 @@ public class MukGroupController {
         return ResponseEntity.ok(muklogService.findAllMuklogByGroupId(groupId, pageable, userEntity));
     }
 
-    @PostMapping("{groupId}/users")
+    @PostMapping("/{groupId}/users")
     public ResponseEntity<Void> inviteUser(
             @AuthenticationPrincipal UserDetailsImpl user,
             @PathVariable Long groupId,
@@ -97,7 +97,7 @@ public class MukGroupController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping("{groupId}/users/{userId}/nickname")
+    @PutMapping("/{groupId}/users/{userId}/nickname")
     public ResponseEntity<Void> modifyMukboName(
             @PathVariable Long userId,
             @RequestBody MukboModifyRequest mukboModifyRequest){
@@ -105,7 +105,7 @@ public class MukGroupController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("{groupId}/mukbots/{mukbotsId}")
+    @PutMapping("/{groupId}/mukbots/{mukbotsId}")
     public ResponseEntity<Void> modifyMukbot(
             @AuthenticationPrincipal UserDetailsImpl user,
             @PathVariable Long mukbotsId,
@@ -115,7 +115,7 @@ public class MukGroupController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("{groupId}/mukbos/{mokboId}")
+    @DeleteMapping("/{groupId}/mukbos/{mokboId}")
     public ResponseEntity<Void> deleteMukbo(
             @PathVariable Long groupId,
             @PathVariable Long mukboId,
@@ -124,7 +124,7 @@ public class MukGroupController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("{groupId}/exit")
+    @DeleteMapping("/{groupId}/exit")
     public ResponseEntity<Void> exitMukgroup(
             @PathVariable Long groupId,
             @AuthenticationPrincipal UserDetailsImpl user){
@@ -132,13 +132,12 @@ public class MukGroupController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("{groupId}/mbti")
+    @PostMapping("/{groupId}/mbti")
     public ResponseEntity<MukgroupMBTIResponse> getGroupMBTI(
             @PathVariable Long groupId,
             @RequestBody MukgroupMBTICalcRequest mbtiCalcRequest
     ){
-        return ResponseEntity.ok(MukgroupMBTIResponse
-                .builder()
+        return ResponseEntity.ok(MukgroupMBTIResponse.builder()
                 .mbti(mukgroupService.calcGroupMukBTI(groupId, mbtiCalcRequest))
                 .build());
     }

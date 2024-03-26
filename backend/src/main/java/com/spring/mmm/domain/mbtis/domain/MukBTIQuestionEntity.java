@@ -1,6 +1,6 @@
 package com.spring.mmm.domain.mbtis.domain;
 
-import com.spring.mmm.domain.mbtis.controller.response.Question;
+import com.spring.mmm.domain.mbtis.controller.response.MukBTIQuestion;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -33,8 +33,8 @@ public class MukBTIQuestionEntity {
     @JoinColumn(name = "mbti_id")
     private MukBTIEntity mukBTIEntity;
 
-    public Question toQuestion() {
-        return Question.builder()
+    public MukBTIQuestion toQuestion() {
+        return MukBTIQuestion.builder()
                 .quizId(this.questionId)
                 .context(this.content)
                 .img(this.imageSrc != null ? this.imageSrc : null)
