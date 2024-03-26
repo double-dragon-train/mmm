@@ -23,6 +23,8 @@ public class RecommendController {
 
     @GetMapping
     public ResponseEntity<RecommandRandomFood> recommendRandomFood(){
-        return ResponseEntity.ok(RecommandRandomFood.builder().foods(recommendService.recommendRandomFood()).build());
+        return ResponseEntity.ok(RecommandRandomFood.builder()
+                .foods(recommendService.recommendRandomFood())
+                .build());
     }
 }
