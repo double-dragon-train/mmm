@@ -23,16 +23,25 @@ function MbtiPage() {
     mutationFn: getMbtiResult,
     onSuccess: () => navigate('/introduce'),
   });
-  console.log('answerList:', answerList);
-  const { data, isPending, isError } = useQuery({
+  const {
+    data: questionList,
+    isPending,
+    isError,
+  } = useQuery({
     queryKey: ['mbtiQuestionList'],
     queryFn: getMbtiQuestionList,
   });
-  console.log('data:', data);
+
   useEffect(() => {
     setSelectedAnswer('');
   }, [mbtiId]);
 
+  useEffect(() => {
+    if (mbtiId === '0') {
+      updateAnswerList([]);
+    }
+  }, []);
+  
   const handleSelectAnswer = (answerId: string) => {
     setSelectedAnswer(answerId);
   };
@@ -40,23 +49,25 @@ function MbtiPage() {
   const goNextQuestion = () => {
     if (!selectedAnswer) return;
 
-    const targetQuizId = data[Number(mbtiId)].quizId;
+    const targetQuizId = questionList[Number(mbtiId)].quizId;
 
-    const isExist = answerList.some((answer) => answer.quizId === targetQuizId)
-    
+    const isExist = answerList.some(
+      (answer) => answer.quizId === targetQuizId
+    );
+
     if (isExist) {
       const updatedList = answerList.map((answer) => {
         if (answer.quizId === targetQuizId) {
-          return {...answer, answerId: selectedAnswer}
+          return { ...answer, answerId: selectedAnswer };
         }
         return answer;
-      })
+      });
       updateAnswerList(updatedList);
     } else {
-    updateAnswerList([
+      updateAnswerList([
         ...answerList,
         {
-          quizId: data[Number(mbtiId)].quizId,
+          quizId: questionList[Number(mbtiId)].quizId,
           answerId: selectedAnswer,
         },
       ]);
@@ -80,25 +91,27 @@ function MbtiPage() {
   if (Number(mbtiId) === 8)
     return (
       <div className={styles.wrapper3}>
-        <h1>{data[Number(mbtiId)].context}</h1>
+        <h1>{questionList[Number(mbtiId)].context}</h1>
         <div className={styles.questionNumBox}>
-          {Number(mbtiId) + 1} / {data.length}
+          {Number(mbtiId) + 1} / {questionList.length}
         </div>
-        <img src={data[Number(mbtiId)].img} alt="" />
+        <img src={questionList[Number(mbtiId)].img} alt="" />
         <section>
-          {data[Number(mbtiId)].answers.map((answer: answerType) => {
-            return (
-              <div key={answer.answerId}>
-                <CheckCircle
-                  handleSelectAnswer={() =>
-                    handleSelectAnswer(answer.answerId)
-                  }
-                  isSelected={selectedAnswer == answer.answerId}
-                />
-                <span>{answer.answerContext}</span>
-              </div>
-            );
-          })}
+          {questionList[Number(mbtiId)].answers.map(
+            (answer: answerType) => {
+              return (
+                <div key={answer.answerId}>
+                  <CheckCircle
+                    handleSelectAnswer={() =>
+                      handleSelectAnswer(answer.answerId)
+                    }
+                    isSelected={selectedAnswer == answer.answerId}
+                  />
+                  <span>{answer.answerContext}</span>
+                </div>
+              );
+            }
+          )}
         </section>
         <div className={styles.randomFoodBox}>
           <img className={styles.randomFood} alt="" />
@@ -112,30 +125,32 @@ function MbtiPage() {
       </div>
     );
 
-  if (data[Number(mbtiId)].answers.length === 5)
+  if (questionList[Number(mbtiId)].answers.length === 5)
     return (
       <div className={styles.wrapper}>
-        <h1>{data[Number(mbtiId)].context}</h1>
+        <h1>{questionList[Number(mbtiId)].context}</h1>
         <div className={styles.questionNumBox}>
-          {Number(mbtiId) + 1} / {data.length}
+          {Number(mbtiId) + 1} / {questionList.length}
         </div>
         <section>
-          {data[Number(mbtiId)].answers.map((answer: answerType) => {
-            return (
-              <div key={answer.answerId}>
-                <CheckCircle
-                  handleSelectAnswer={() =>
-                    handleSelectAnswer(answer.answerId)
-                  }
-                  isSelected={selectedAnswer == answer.answerId}
-                />
-                <span>{answer.answerContext}</span>
-                <div className={styles.imageBox}>
-                  <img src={answer.answerImage} alt="" />
+          {questionList[Number(mbtiId)].answers.map(
+            (answer: answerType) => {
+              return (
+                <div key={answer.answerId}>
+                  <CheckCircle
+                    handleSelectAnswer={() =>
+                      handleSelectAnswer(answer.answerId)
+                    }
+                    isSelected={selectedAnswer == answer.answerId}
+                  />
+                  <span>{answer.answerContext}</span>
+                  <div className={styles.imageBox}>
+                    <img src={answer.answerImage} alt="" />
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            }
+          )}
         </section>
         <div className={styles.randomFoodBox}>
           <img className={styles.randomFood} alt="" />
@@ -149,40 +164,48 @@ function MbtiPage() {
       </div>
     );
 
-  if (data[Number(mbtiId)].answers.length === 2)
+  if (questionList[Number(mbtiId)].answers.length === 2)
     return (
       <div className={styles.wrapper2}>
-        <h1>{data[Number(mbtiId)].context}</h1>
+        <h1>{questionList[Number(mbtiId)].context}</h1>
         <div className={styles.questionNumBox}>
-          {Number(mbtiId) + 1} / {data.length}
+          {Number(mbtiId) + 1} / {questionList.length}
         </div>
         <section>
           <AnswerBox
             handleSelectAnswer={() =>
               handleSelectAnswer(
-                data[Number(mbtiId)].answers[0].answerId
+                questionList[Number(mbtiId)].answers[0].answerId
               )
             }
             isSelected={
               selectedAnswer ==
-              data[Number(mbtiId)].answers[0].answerId
+              questionList[Number(mbtiId)].answers[0].answerId
             }
-            text={data[Number(mbtiId)].answers[0].answerContext}
-            imgSrc={data[Number(mbtiId)].answers[0].answerImage}
+            text={
+              questionList[Number(mbtiId)].answers[0].answerContext
+            }
+            imgSrc={
+              questionList[Number(mbtiId)].answers[0].answerImage
+            }
           />
           <div className={styles.vsText}>VS</div>
           <AnswerBox
             handleSelectAnswer={() =>
               handleSelectAnswer(
-                data[Number(mbtiId)].answers[1].answerId
+                questionList[Number(mbtiId)].answers[1].answerId
               )
             }
             isSelected={
               selectedAnswer ==
-              data[Number(mbtiId)].answers[1].answerId
+              questionList[Number(mbtiId)].answers[1].answerId
             }
-            text={data[Number(mbtiId)].answers[1].answerContext}
-            imgSrc={data[Number(mbtiId)].answers[1].answerImage}
+            text={
+              questionList[Number(mbtiId)].answers[1].answerContext
+            }
+            imgSrc={
+              questionList[Number(mbtiId)].answers[1].answerImage
+            }
           />
         </section>
         <div className={styles.randomFoodBox}>

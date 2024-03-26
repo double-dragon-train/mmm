@@ -17,6 +17,7 @@ import ProtectedRoute from './components/common/ProtectedRoute';
 import MainPage from './pages/MainPage';
 import CalendarPage from './pages/CalendarPage';
 import IntroducePage from './pages/IntroducePage';
+import MbtiResultPage from './pages/MbtiResultPage';
 
 const queryClient = new QueryClient();
 
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
   {
     path: '/introduce',
     element: <IntroducePage />,
+  },
+  {
+    path: '/result',
+    element: <MbtiResultPage />,
   },
 ]);
 
