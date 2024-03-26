@@ -9,7 +9,7 @@ function GroupPage() {
     <div className={styles.wrapper}>
       <Header />
       <GroupInfoSection />
-      <MbtiSection />
+      <MbtiSection mbti=''/>
       <MemberSection />
     </div>
   );

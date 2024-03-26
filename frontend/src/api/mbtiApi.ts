@@ -8,16 +8,27 @@ interface answerType {
 export async function getMbtiQuestionList() {
   try {
     const res = await instance.get('/mbti');
-    console.log(res);
-    return res.data.questions;
+    return res.data.mukBTIQuestions;
   } catch (e) {
     console.log(e);
   }
 }
 
-export async function getMbtiResult(answerList: answerType[]) {
+export async function getMbtiResult(answers: answerType[]) {
+  const data = { answers, }
   try {
-    const res = await instance.post('/mbti', answerList);
+    const res = await instance.post('/mbti', data);
+    console.log(res);
+    return res.data.mukBTIResult;
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+export async function postMbtiResult(key: string) {
+  const data = { key, }
+  try {
+    const res = await instance.post('/users/mbti', data);
     console.log(res);
     return res.data;
   } catch (e) {

@@ -39,7 +39,21 @@ const MBTI_OPTIONS: mbtiOptionsType[] = [
   },
 ];
 
-function MbtiSection() {
+interface mbtiType {
+  ei: number;
+  ns: number;
+  tf: number;
+  jp: number;
+  mint: number;
+  pine: number;
+  die: number;
+}
+
+interface propsType {
+  mbti: mbtiType | string;
+}
+
+function MbtiSection({ mbti }: propsType) {
   // const { data, isPending, isError } = useQuery({
   //   queryKey: ['mbtiResult'],
   //   queryFn: getMbtiResult
@@ -51,7 +65,7 @@ function MbtiSection() {
   // if (isError) {
   //   return <div>error</div>;
   // }
-
+  console.log(mbti)
   return (
     <section className={styles.mbtiSection}>
       <div className={styles.mbtiTitleBox}>
@@ -66,7 +80,12 @@ function MbtiSection() {
               <span>{mbtiOption.first.kor}</span>
             </div>
             <div className={styles.mbtiBarBackGround}>
-              <div className={styles.mbtiBar} style={{backgroundColor: mbtiOption.barColor}}>gd</div>
+              <div
+                className={styles.mbtiBar}
+                style={{ backgroundColor: mbtiOption.barColor }}
+              >
+                gd
+              </div>
             </div>
             <div className={styles.mbtiNameBox}>
               <span>{mbtiOption.second.eng}</span>
