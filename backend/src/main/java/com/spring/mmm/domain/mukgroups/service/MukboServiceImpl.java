@@ -26,6 +26,7 @@ import com.spring.mmm.domain.users.infra.UserEntity;
 import com.spring.mmm.domain.users.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -33,6 +34,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MukboServiceImpl implements MukboService{
     private final MukboRepository mukboRepository;
     private final UserRepository userRepository;
@@ -57,6 +59,7 @@ public class MukboServiceImpl implements MukboService{
     }
 
     @Override
+    @Transactional
     public void inviteMukbo(UserEntity user, Long groupId, MukboInviteRequest mukboInviteRequest) {
         MukboEntity mukboEntity = mukboRepository.findByUserId(userRepository.findByEmail(mukboInviteRequest.getEmail())
                 .orElseThrow(() -> new UserException(UserErrorCode.EMAIL_NOT_FOUND)).getId());
@@ -85,6 +88,7 @@ public class MukboServiceImpl implements MukboService{
 
 
     @Override
+    @Transactional
     public void modifyMukbot(UserEntity user, Long mukboId, MBTI mbti, String name) {
         MukboEntity mukbotEntity = mukboRepository.findByMukboId(mukboId);
         mukbotEntity.modifyName(name);
@@ -105,6 +109,7 @@ public class MukboServiceImpl implements MukboService{
     }
 
     @Override
+    @Transactional
     public void modifyMokbo(Long userId, String name) {
         MukboEntity mukboEntity = mukboRepository.findByUserId(userId);
         mukboEntity.modifyName(name);
@@ -113,6 +118,7 @@ public class MukboServiceImpl implements MukboService{
     }
 
     @Override
+    @Transactional
     public void saveMukbot(UserEntity user, MukbotCreateRequest mukbotCreateRequest) {
         if(user.getMukboEntity().getMukgroupEntity().getIsSolo()){
             throw new MukGroupException(MukGroupErrorCode.SOLOGROUP_CANT_INVITE);
@@ -129,6 +135,7 @@ public class MukboServiceImpl implements MukboService{
     }
 
     @Override
+    @Transactional
     public void deleteMukbo(Long mukboId) {
         mukboRepository.delete(mukboRepository.findByMukboId(mukboId));
     }

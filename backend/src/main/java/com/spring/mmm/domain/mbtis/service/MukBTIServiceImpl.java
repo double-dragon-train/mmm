@@ -15,6 +15,7 @@ import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.users.infra.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MukBTIServiceImpl implements MukBTIService {
     private final MukBTIQuestionRepository mukBTIQuestionRepository;
     private final RedisRepository redisRepository;
@@ -77,6 +79,7 @@ public class MukBTIServiceImpl implements MukBTIService {
     }
 
     @Override
+    @Transactional
     public void save(UserEntity user, String key) {
         MBTI mbti = redisRepository.getData(key, MBTI.class)
                 .orElseThrow(() -> new MukBTIException(MukBTIErrorCode.NOT_FOUND));
