@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Input from '../components/common/Input';
 import styles from '../styles/userPage/UserPage.module.css';
+import buttonStyles from '../styles/common/Buttons.module.css';
 import userTitleStyles from '../styles/common/UserTitle.module.css';
 import Button from '../components/common/Button';
 import closedEye from '../assets/images/closedEye.png';
@@ -16,7 +17,7 @@ import {
   postEditProfile,
   getProfile,
 } from '../api/userApi';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useMutation } from '@tanstack/react-query';
 import userStore from '../stores/userStore';
 
@@ -61,11 +62,11 @@ function ProfilePage() {
   };
 
   // 닉네임 중복 확인 api
-  const { refetch } = useQuery(
-    ['nicknameValidate'],
-    () => getNicknameValidate(nickname),
-    { enabled: false }
-  );
+  const { refetch } = useQuery({
+    queryKey: ['nicknameValidate'],
+    queryFn: () => getNicknameValidate(nickname),
+    enabled: false,
+  });
   const [isNicknameDuplicated, setIsNicknameDuplicated] =
     useState<boolean>();
 
@@ -132,7 +133,21 @@ function ProfilePage() {
   };
 
   // 현재 사용자 정보 조회 api
-  const {  } = useQuery(['profileList'], () => getProfile(accessToken));
+  const { data: userInfo, isPending } = useQuery({
+    queryKey: ['userInfo'], 
+    queryFn: () =>
+    getProfile(accessToken)},
+  );
+  
+  useEffect(() => {
+    if (!isPending && userInfo) {
+      setInputList({
+        ...inputList,
+        nickname: userInfo.nickname
+      });
+    }
+  }, [isPending, userInfo]);
+
 
   return (
     <div className={styles.wrapper}>
@@ -231,7 +246,7 @@ function ProfilePage() {
       </section>
       <button
         onClick={handleEditProfile}
-        className="userButton"
+        className={buttonStyles.userButton}
         // 닉네임 중복 || 비번 같지X || 닉네임, 비번 유효X || inputList 하나라도 비어있음
         disabled={
           isNicknameDuplicated ||
