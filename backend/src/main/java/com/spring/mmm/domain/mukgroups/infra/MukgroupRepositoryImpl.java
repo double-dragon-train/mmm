@@ -1,6 +1,8 @@
 package com.spring.mmm.domain.mukgroups.infra;
 
 import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
+import com.spring.mmm.domain.mukgroups.exception.MukGroupErrorCode;
+import com.spring.mmm.domain.mukgroups.exception.MukGroupException;
 import com.spring.mmm.domain.mukgroups.exception.MukboErrorCode;
 import com.spring.mmm.domain.mukgroups.exception.MukboException;
 import com.spring.mmm.domain.mukgroups.service.port.MukgroupRepository;
@@ -20,8 +22,9 @@ public class MukgroupRepositoryImpl implements MukgroupRepository {
     }
 
     @Override
-    public Optional<MukgroupEntity> findByMukgroupId(Long mukgroupId) {
-        return mukgroupJpaRepository.findByMukgroupId(mukgroupId);
+    public MukgroupEntity findByMukgroupId(Long mukgroupId) {
+        return mukgroupJpaRepository.findByMukgroupId(mukgroupId)
+                .orElseThrow(() -> new MukGroupException(MukGroupErrorCode.NOT_FOUND));
     }
 
     @Override

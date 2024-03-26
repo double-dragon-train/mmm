@@ -31,7 +31,6 @@ public class MukboEntity {
     private MukboType type;
 
     @OneToMany(mappedBy = "mukboEntity")
-
     private List<MukBTIResultEntity> mukBTIResultEntities;
 
     @OneToMany(mappedBy = "mukboEntity", cascade = CascadeType.REMOVE)
