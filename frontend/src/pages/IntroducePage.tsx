@@ -81,6 +81,7 @@ const MBTI_INTRODUCE_OPTIONS: mbtiIntroduceOptionsType[] = [
   },
 ];
 function IntroducePage() {
+
   return (
     <div className={styles.wrapper}>
       <MbtiSection />

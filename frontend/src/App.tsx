@@ -41,10 +41,7 @@ const router = createBrowserRouter([
         path: '/profile',
         element: <ProfilePage />,
       },
-      {
-        path: '/introduce',
-        element: <IntroducePage />,
-      },
+      
     ],
   },
   {
@@ -62,6 +59,10 @@ const router = createBrowserRouter([
   {
     path: '/mbti/:mbtiId',
     element: <MbtiPage />,
+  },
+  {
+    path: '/introduce',
+    element: <IntroducePage />,
   },
 ]);
 

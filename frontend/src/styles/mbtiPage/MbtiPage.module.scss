@@ -10,7 +10,13 @@ $color-circle: #b4bef4;
   align-items: center;
   justify-content: center;
   position: relative;
-  > span {
+  > h1 {
+    font-size: 26px;
+    width: 90%;
+    color: #656565;
+  }
+  .questionNumBox {
+    width: 90%;
     color: rgba(#656565, 0.8);
     text-align: right;
   }
@@ -25,6 +31,11 @@ $color-circle: #b4bef4;
     flex-direction: column;
     gap: 40px;
     position: relative;
+    :last-child {
+      .circleLine {
+        display: none;
+      }
+    }
     > div {
       display: flex;
       align-items: center;
@@ -33,7 +44,7 @@ $color-circle: #b4bef4;
       > span {
         color: rgba($color-main, 0.5);
         font-size: 22px;
-        width: 100px;
+        width: 120px;
       }
       .imageBox {
         display: flex;
@@ -72,7 +83,13 @@ $color-circle: #b4bef4;
   align-items: center;
   justify-content: center;
   position: relative;
-  > span {
+  > h1 {
+    font-size: 26px;
+
+    color: #656565;
+  }
+  .questionNumBox {
+    width: 90%;
     color: rgba(#656565, 0.8);
     text-align: right;
   }
@@ -115,15 +132,18 @@ $color-circle: #b4bef4;
           -3px 0px 0 rgba(white, 1);
       }
       > div {
+        width: 200px;
         z-index: 100;
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
         > img {
+          opacity: 0.8;
           //   width: 190px;
           width: 100%;
           aspect-ratio: 1/1;
+          border-radius: 50%;
         }
       }
     }
@@ -154,6 +174,7 @@ $color-circle: #b4bef4;
           -3px 0px 0 rgba(white, 1);
       }
       > div {
+        width: 200px;
         z-index: 100;
         position: absolute;
         top: 50%;
@@ -162,8 +183,151 @@ $color-circle: #b4bef4;
         > img {
           //   width: 190px;
           width: 100%;
+          opacity: 0.5;
           aspect-ratio: 1/1;
+          border-radius: 50%;
         }
+      }
+    }
+  }
+
+  > span {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: rgba(#656565, 0.8);
+  }
+  //   > div {
+  //     display: flex;
+  //     flex-direction: column;
+  //     width: 100%;
+  //     align-items: center;
+  //   }
+}
+
+.wrapper3 {
+  height: 100%;
+  width: 100%;
+  // background-color: aqua;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  > img {
+    min-width: 100%;
+    width: 100%;
+    margin: 12px 0px;
+  }
+  > h1 {
+    font-size: 26px;
+    width: 90%;
+    color: #656565;
+  }
+  .questionNumBox {
+    width: 90%;
+    color: rgba(#656565, 0.8);
+    text-align: right;
+  }
+  section {
+    padding: 24px 0px;
+    justify-content: center;
+    width: 90%;
+    height: 100%;
+    border-radius: 15px;
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    // flex-direction: column;
+    align-items: center;
+    gap: 60px;
+    row-gap: 30px;
+    position: relative;
+    background-color: rgba($color-main, 0.03);
+
+    .circleLine {
+      display: none;
+    }
+
+    > div {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      align-items: center;
+      > span {
+        font-size: 22px;
+        color: rgba($color-main, 0.5);
+      }
+    }
+    .selectedAnswerBox {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5vw;
+      border-radius: 15px;
+      background-color: rgba($color-main, 0.15);
+      border: 1px solid rgba($color-main, 0.7);
+      position: relative;
+      width: 300px;
+      height: 250px;
+      > span {
+        color: rgba($color-main, 0.75);
+        font-size: 40px;
+        width: 200px;
+        font-weight: 500;
+        z-index: 500;
+        text-shadow:
+          -3px -3px 0 rgba(white, 1),
+          0px -3px 0 rgba(white, 1),
+          3px -3px 0 rgba(white, 1),
+          3px 0px 0 rgba(white, 1),
+          3px 3px 0 rgba(white, 1),
+          0px 3px 0 rgba(white, 1),
+          -3px 3px 0 rgba(white, 1),
+          -3px 0px 0 rgba(white, 1);
+      }
+      > div {
+        width: 200px;
+        z-index: 100;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+    .answerBox {
+      width: 300px;
+      height: 250px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5vw;
+      border-radius: 15px;
+      background-color: rgba($color-main, 0.03);
+      position: relative;
+      > span {
+        color: rgba($color-main, 0.75);
+        font-size: 40px;
+        width: 200px;
+        font-weight: 500;
+        z-index: 500;
+        text-shadow:
+          -3px -3px 0 rgba(white, 1),
+          0px -3px 0 rgba(white, 1),
+          3px -3px 0 rgba(white, 1),
+          3px 0px 0 rgba(white, 1),
+          3px 3px 0 rgba(white, 1),
+          0px 3px 0 rgba(white, 1),
+          -3px 3px 0 rgba(white, 1),
+          -3px 0px 0 rgba(white, 1);
+      }
+      > div {
+        width: 200px;
+        z-index: 100;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
       }
     }
   }
@@ -194,6 +358,15 @@ h1 {
   aspect-ratio: 1/1;
   border-radius: 50%;
   position: relative;
+
+  .circleLine {
+    position: absolute;
+    right: 15px;
+    top: 30px;
+    height: 80px;
+    border-right: 2px solid #b4bef4;
+  }
+
   .childCheckCircle {
     background-color: white;
     width: 14px;
@@ -202,6 +375,7 @@ h1 {
     position: absolute;
     top: 50%;
     left: 50%;
+
     transform: translate(-50%, -50%);
   }
   .selectedChildCheckCircle {

@@ -5,10 +5,19 @@ interface propsType {
   isSelected: boolean;
 }
 function CheckCircle({ handleSelectAnswer, isSelected }: propsType) {
-  
   return (
-    <div className={styles.parentCheckCircle} onClick={handleSelectAnswer}>
-      <div className={isSelected ? styles.selectedChildCheckCircle :styles.childCheckCircle}></div>
+    <div
+      className={styles.parentCheckCircle}
+      onClick={handleSelectAnswer}
+    >
+      <div className={styles.circleLine} />
+      <div
+        className={
+          isSelected
+            ? styles.selectedChildCheckCircle
+            : styles.childCheckCircle
+        }
+      ></div>
     </div>
   );
 }
