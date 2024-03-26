@@ -54,6 +54,7 @@
 }
 
 .miniRoundedButton {
+  font-size: 17px;
   width: 100px;
   height: 55px;
   border: 1.5px solid rgba(42, 67, 206, 0.4);

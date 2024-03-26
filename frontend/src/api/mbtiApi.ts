@@ -1,5 +1,10 @@
 import instance from './axios';
 
+interface answerType {
+  quizId: string;
+  answerId: string;
+}
+
 export async function getMbtiQuestionList() {
   try {
     const res = await instance.get('/mbti');
@@ -10,9 +15,9 @@ export async function getMbtiQuestionList() {
   }
 }
 
-export async function getMbtiResult() {
+export async function getMbtiResult(answerList: answerType[]) {
   try {
-    const res = await instance.get('/users/mbti');
+    const res = await instance.post('/mbti', answerList);
     console.log(res);
     return res.data;
   } catch (e) {

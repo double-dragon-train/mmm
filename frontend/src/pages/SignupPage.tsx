@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Input from '../components/common/Input';
 import styles from '../styles/userPage/UserPage.module.css';
+import buttonStyles from '../styles/common/Buttons.module.css';
 import Button from '../components/common/Button';
 import subLogo from '../assets/images/subLogo.png';
 import closedEye from '../assets/images/closedEye.png';
@@ -280,7 +281,7 @@ function SignupPage() {
       </section>
       <button
         onClick={handleSignup}
-        className="userButton"
+        className={buttonStyles.userButton}
         // 닉네임 중복 || 비번 같지X || 닉네임, 비번, 인증번호 유효X || inputList 하나라도 비어있음
         disabled={
           isNicknameDuplicated ||

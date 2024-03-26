@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import { getMbtiQuestionList } from '../api/mbtiApi';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { getMbtiQuestionList, getMbtiResult } from '../api/mbtiApi';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from '../styles/mbtiPage/MbtiPage.module.css';
 import buttonStyles from '../styles/common/Buttons.module.css';
@@ -17,14 +17,18 @@ interface answerType {
 function MbtiPage() {
   const navigate = useNavigate();
   const [selectedAnswer, setSelectedAnswer] = useState('');
-  const { addAnswerList, answerList, accessToken } = userStore();
+  const { updateAnswerList, answerList } = userStore();
   const { mbtiId } = useParams();
-  console.log(mbtiId);
+  const { mutate: mutateMbtiResult } = useMutation({
+    mutationFn: getMbtiResult,
+    onSuccess: () => navigate('/introduce'),
+  });
+  console.log('answerList:', answerList);
   const { data, isPending, isError } = useQuery({
     queryKey: ['mbtiQuestionList'],
     queryFn: getMbtiQuestionList,
   });
-  console.log('gdgdgdgd', data);
+  console.log('data:', data);
   useEffect(() => {
     setSelectedAnswer('');
   }, [mbtiId]);
@@ -36,22 +40,33 @@ function MbtiPage() {
   const goNextQuestion = () => {
     if (!selectedAnswer) return;
 
-    if (mbtiId === '14') {
-      if (accessToken) {
-        navigate('/main');
-      } else {
-        navigate('/signup');
-      }
-      return;
+    const targetQuizId = data[Number(mbtiId)].quizId;
+
+    const isExist = answerList.some((answer) => answer.quizId === targetQuizId)
+    
+    if (isExist) {
+      const updatedList = answerList.map((answer) => {
+        if (answer.quizId === targetQuizId) {
+          return {...answer, answerId: selectedAnswer}
+        }
+        return answer;
+      })
+      updateAnswerList(updatedList);
+    } else {
+    updateAnswerList([
+        ...answerList,
+        {
+          quizId: data[Number(mbtiId)].quizId,
+          answerId: selectedAnswer,
+        },
+      ]);
     }
-    addAnswerList([
-      ...answerList,
-      {
-        quizId: data[Number(mbtiId)].quizId,
-        answerId: selectedAnswer,
-      },
-    ]);
-    navigate(`/mbti/${Number(mbtiId) + 1}`);
+
+    if (mbtiId === '14') {
+      mutateMbtiResult(answerList);
+    } else {
+      navigate(`/mbti/${Number(mbtiId) + 1}`);
+    }
   };
 
   if (isPending) {
@@ -62,13 +77,48 @@ function MbtiPage() {
     return <div>error</div>;
   }
 
+  if (Number(mbtiId) === 8)
+    return (
+      <div className={styles.wrapper3}>
+        <h1>{data[Number(mbtiId)].context}</h1>
+        <div className={styles.questionNumBox}>
+          {Number(mbtiId) + 1} / {data.length}
+        </div>
+        <img src={data[Number(mbtiId)].img} alt="" />
+        <section>
+          {data[Number(mbtiId)].answers.map((answer: answerType) => {
+            return (
+              <div key={answer.answerId}>
+                <CheckCircle
+                  handleSelectAnswer={() =>
+                    handleSelectAnswer(answer.answerId)
+                  }
+                  isSelected={selectedAnswer == answer.answerId}
+                />
+                <span>{answer.answerContext}</span>
+              </div>
+            );
+          })}
+        </section>
+        <div className={styles.randomFoodBox}>
+          <img className={styles.randomFood} alt="" />
+        </div>
+        <button
+          onClick={goNextQuestion}
+          className={buttonStyles.miniRoundedButton}
+        >
+          다음
+        </button>
+      </div>
+    );
+
   if (data[Number(mbtiId)].answers.length === 5)
     return (
       <div className={styles.wrapper}>
         <h1>{data[Number(mbtiId)].context}</h1>
-        <span>
+        <div className={styles.questionNumBox}>
           {Number(mbtiId) + 1} / {data.length}
-        </span>
+        </div>
         <section>
           {data[Number(mbtiId)].answers.map((answer: answerType) => {
             return (
@@ -103,9 +153,9 @@ function MbtiPage() {
     return (
       <div className={styles.wrapper2}>
         <h1>{data[Number(mbtiId)].context}</h1>
-        <span>
+        <div className={styles.questionNumBox}>
           {Number(mbtiId) + 1} / {data.length}
-        </span>
+        </div>
         <section>
           <AnswerBox
             handleSelectAnswer={() =>
@@ -140,7 +190,7 @@ function MbtiPage() {
         </div>
         <button
           onClick={goNextQuestion}
-          className="miniRoundedButton"
+          className={buttonStyles.miniRoundedButton}
         >
           다음
         </button>

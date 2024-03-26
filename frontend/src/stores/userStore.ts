@@ -8,7 +8,7 @@ interface answerType {
 
 interface userStoreType {
   answerList: answerType[];
-  addAnswerList: (value: answerType[]) => void;
+  updateAnswerList: (value: answerType[]) => void;
   accessToken: string;
   setAccessToken: (value: string) => void;
   isLogin: boolean;
@@ -22,7 +22,7 @@ const userStore = create(
       isLogin: false,
       setIsLogin: (value: boolean) => set({ isLogin: value }),
       answerList: [],
-      addAnswerList: (value: answerType[]) =>
+      updateAnswerList: (value: answerType[]) =>
         set({ answerList: value }),
       //   loginModalOpen: false,
       //   setLoginModalOpen: (value) => set({ loginModalOpen: value }),

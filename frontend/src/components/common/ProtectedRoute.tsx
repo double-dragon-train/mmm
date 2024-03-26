@@ -16,7 +16,7 @@ function ProtectedRoute() {
         <img className={styles.subLogo} src={subLogo} alt="" />
       </Link>
       <Outlet />
-      <NavBar />
+      {isLogin && <NavBar />}
     </div>
   );
 }
