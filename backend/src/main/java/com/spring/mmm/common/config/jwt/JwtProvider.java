@@ -63,14 +63,6 @@ public class JwtProvider {
         return null;
     }
 
-    public String resolveNewToken(HttpServletResponse response) {
-        String bearerToken = response.getHeader(AUTHORIZATION_HEADER);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
-
     private String createToken(String email, Long tokenExpireTime) {
         Date date = new Date();
         return BEARER_PREFIX + Jwts.builder()
