@@ -18,10 +18,10 @@ import java.util.stream.Collectors;
 public class MukBTIController {
     private final MukBTIService mukBTIService;
     @GetMapping
-    public ResponseEntity<QuestionsResponse> sendQuestion(){
+    public ResponseEntity<MukBTIQuestionsResponse> sendQuestion(){
         List<MukBTIQuestionEntity> mukBTIQuestions = mukBTIService.findAllMukBTIQuestion();
-        return ResponseEntity.ok(QuestionsResponse.builder()
-                .questions(mukBTIQuestions
+        return ResponseEntity.ok(MukBTIQuestionsResponse.builder()
+                .mukBTIQuestions(mukBTIQuestions
                         .stream()
                         .map(MukBTIQuestionEntity::toQuestion)
                         .collect(Collectors.toList()))

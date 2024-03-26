@@ -8,6 +8,6 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class QuestionsResponse {
-    List<Question> questions;
+public class MukBTIQuestionsResponse {
+    List<MukBTIQuestion> mukBTIQuestions;
 }

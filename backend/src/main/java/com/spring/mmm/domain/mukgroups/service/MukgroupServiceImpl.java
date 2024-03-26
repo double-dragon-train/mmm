@@ -39,11 +39,15 @@ public class MukgroupServiceImpl implements MukgroupService{
     }
 
     @Override
-    public void saveMukGroup(String name, UserEntity user) {
+    public void saveMukGroup(String name, UserEntity user, MultipartFile image) {
         MukboEntity mukboEntity = mukboRepository.findByUserId(user.getId());
         MukgroupEntity originMukgroup = mukboEntity.getMukgroupEntity();
         if(originMukgroup.getIsSolo()){
-            MukgroupEntity mukgroupEntity = mukgroupRepository.save(MukgroupEntity.create(name, Boolean.FALSE));
+            MukgroupEntity mukgroupEntity = mukgroupRepository.save(
+                    MukgroupEntity
+                    .create(name, Boolean.FALSE)
+                    .modifyMukgroupImage(s3Service.uploadFile(image))
+            );
             mukboRepository.save(mukboEntity.modifyGroup(mukgroupEntity.getMukgroupId()));
             mukgroupRepository.delete(originMukgroup);
         } else {
@@ -62,8 +66,7 @@ public class MukgroupServiceImpl implements MukgroupService{
     }
 
     private MukgroupEntity getMukgroupEntity(Long groupId) {
-        return mukgroupRepository.findByMukgroupId(groupId)
-                .orElseThrow(MukgroupNotFoundException::new);
+        return mukgroupRepository.findByMukgroupId(groupId);
     }
 
     @Override
