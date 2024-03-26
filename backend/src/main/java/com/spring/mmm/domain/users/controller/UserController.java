@@ -1,5 +1,6 @@
 package com.spring.mmm.domain.users.controller;
 
+import com.spring.mmm.common.config.RedisDao;
 import com.spring.mmm.common.config.jwt.JwtProvider;
 import com.spring.mmm.domain.mbtis.controller.request.MukBTIRequest;
 import com.spring.mmm.domain.mbtis.controller.response.MukBTIResponse;
@@ -36,6 +37,7 @@ public class UserController {
     private final JwtProvider jwtProvider;
     private final UserEmailSendService userEmailSendService;
     private final MukBTIService mukBTIService;
+    private final RedisDao redisDao;
 
     @PostMapping("/join")
     public ResponseEntity<Void> join(@RequestBody UserJoinRequest userJoinRequest) {
@@ -84,6 +86,15 @@ public class UserController {
         UserInfoResponse userInfoResponse = UserInfoResponse.of(email, nickname);
 
         return ResponseEntity.ok(userInfoResponse);
+    }
+
+    @GetMapping("/reissue")
+    public ResponseEntity<TokenResponse> getToken(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody UserReissueTokenRequest request) {
+        String email = userDetails.getUsername();
+        String rtk = request.getRefreshToken();
+        TokenResponse newToken = jwtProvider.reissueAtk(email, rtk);
+
+        return ResponseEntity.ok(newToken);
     }
 
     @PostMapping ("/email/verification-request")
