@@ -131,6 +131,7 @@ public class MukgroupServiceImpl implements MukgroupService{
             int calcResult = calcMBTI(mukBTIResultRepository.findAllMukBTIResultByMukboIdAndMukBTIType(mbtiCalcRequest.getMukbos(), mukBTIType));
             mbti.modifyScore(calcResult, mukBTIType);
         }
+        Events.raise(new GroupMukBTICalculatedEvent(groupId, mbti));
         return mbti;
     }
 
