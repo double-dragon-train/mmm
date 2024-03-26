@@ -1,6 +1,7 @@
 package com.spring.mmm.domain.recommends.controller;
 
 import com.spring.mmm.domain.recommends.controller.response.RecommandRandomFood;
+import com.spring.mmm.domain.recommends.service.RecommendService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,23 +19,10 @@ import java.util.Map;
 @RequestMapping("/recommend")
 public class RecommendController {
 
-
-    private final JdbcTemplate jdbcTemplate;
-
-    @Transactional
-    @GetMapping
-    public Map<String, List<Map<String,Object>>> recommendRandomFood(){
-
-        List<Map<String, Object>> maps = jdbcTemplate.queryForList("select name, image as 'imageSrc' from food");
-        System.out.println(maps);
-
-        Map<String, List<Map<String,Object>>> map = new HashMap<>();
-        map.put("foods", maps);
-        return map;
-    }
+    private final RecommendService recommendService;
 
     @GetMapping
     public ResponseEntity<RecommandRandomFood> recommendRandomFood(){
-
+        return ResponseEntity.ok(RecommandRandomFood.builder().foods(recommendService.recommendRandomFood()).build());
     }
 }

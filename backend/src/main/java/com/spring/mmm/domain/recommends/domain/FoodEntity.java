@@ -1,5 +1,6 @@
 package com.spring.mmm.domain.recommends.domain;
 
+import com.spring.mmm.domain.recommends.controller.response.FoodInformation;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,4 +33,12 @@ public class FoodEntity {
 
     @OneToMany(mappedBy = "foodEntity", cascade = CascadeType.REMOVE)
     private List<FoodMBTIEntity> foodMBTIEntities;
+
+    public FoodInformation toFoodInformation(){
+        return FoodInformation.builder()
+                .foodId(this.foodId)
+                .name(this.name)
+                .imageSrc(this.image)
+                .build();
+    }
 }
