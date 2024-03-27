@@ -1,5 +1,6 @@
 .wrapper {
-  height: calc(100vh - 145px);
+  padding-bottom: 10px;
+  height: calc(100vh - 142px);
   overflow-y: scroll;
   width: 100%;
   display: flex;
@@ -14,8 +15,6 @@
   background-color: rgba(42, 67, 206, 0.03);
   width: 95%;
   border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 10px;
 }
 .wrapper .header {
   width: 100%;
@@ -95,6 +94,8 @@
 
 .memberSection {
   position: relative;
+  margin-top: 10px;
+  padding: 10px;
 }
 .memberSection > span {
   position: absolute;

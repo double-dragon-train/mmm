@@ -12,10 +12,8 @@ function GroupInfoSection() {
   //   queryFn: getGroupInfo
   // })
   const [groupName, setGroupName] = useState('');
-  const [isGroupNameValid, setIsGroupNameValid] = useState(true);
-  const [isGroupNameDuplicated, setIsGroupNameDuplicated] =
-    useState<boolean>();
-    console.log(setIsGroupNameDuplicated)
+  const [isGroupNameValid] = useState(true);
+  const [isGroupNameDuplicated] = useState<boolean>();
   // 닉네임 중복 확인 api
   //   const { refetch } = useQuery({
   //     ['nicknameValidate'],
@@ -36,13 +34,14 @@ function GroupInfoSection() {
 
   const handleValidateGroupName = () => {};
 
-  console.log(setIsGroupNameValid);
   const changeGroupName = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     setGroupName(e.target.value);
   };
+
   const checkGroupName = () => {};
+
   return (
     <section className={styles.groupInfoSection}>
       <div className={styles.profileBox}>

@@ -11,6 +11,7 @@ interface mbtiOptionsType {
   first: firstSecondType;
   second: firstSecondType;
   barColor: string;
+  name: string;
 }
 const MBTI_OPTIONS: mbtiOptionsType[] = [
   {
@@ -18,24 +19,28 @@ const MBTI_OPTIONS: mbtiOptionsType[] = [
     first: { eng: 'Ignite', kor: '맵당당' },
     second: { eng: 'Emergency', kor: '맵찌질' },
     barColor: '#FF0000',
+    name: 'ei',
   },
   {
     id: 2,
     first: { eng: 'Ssal', kor: '밥파' },
     second: { eng: 'Noodle', kor: '면파' },
     barColor: '#FFB800',
+    name: 'ns',
   },
   {
     id: 3,
     first: { eng: 'Fitness', kor: '건강식' },
     second: { eng: 'Total', kor: '일반식' },
     barColor: '#11CF00',
+    name: 'tf',
   },
   {
     id: 4,
-    first: { eng: 'Papa', kor: '아재입맛' },
-    second: { eng: 'Jammine', kor: '잼민입맛' },
+    first: { eng: 'Jammine', kor: '잼민입맛' },
+    second: { eng: 'Papa', kor: '아재입맛' },
     barColor: '#0029FF',
+    name: 'jp',
   },
 ];
 
@@ -47,10 +52,11 @@ interface mbtiType {
   mint: number;
   pine: number;
   die: number;
+  [key: string]: number;
 }
 
 interface propsType {
-  mbti: mbtiType | string;
+  mbti: mbtiType;
 }
 
 function MbtiSection({ mbti }: propsType) {
@@ -65,31 +71,53 @@ function MbtiSection({ mbti }: propsType) {
   // if (isError) {
   //   return <div>error</div>;
   // }
-  console.log(mbti)
+
+  let mbtiString = '';
+  mbtiString += (mbti.ei / 3) * 10 <= 50 ? 'I' : 'E';
+  mbtiString += (mbti.ns / 3) * 10 <= 50 ? 'S' : 'N';
+  mbtiString += (mbti.tf / 3) * 10 <= 50 ? 'F' : 'T';
+  mbtiString += (mbti.jp / 3) * 10 <= 50 ? 'J' : 'P';
+
   return (
     <section className={styles.mbtiSection}>
       <div className={styles.mbtiTitleBox}>
         <span>먹BTI</span>
-        <div>ISTP</div>
+        <div>{mbtiString}</div>
       </div>
       {MBTI_OPTIONS.map((mbtiOption) => {
+        const mbtiScore = Math.round(
+          (mbti[mbtiOption.name] / 3) * 10
+        );
+
+        const absMbtiScore = 50 + Math.abs(50 - mbtiScore);
+
         return (
           <div className={styles.mbtiBarBox} key={mbtiOption.id}>
             <div className={styles.mbtiNameBox}>
-              <span>{mbtiOption.first.eng}</span>
-              <span>{mbtiOption.first.kor}</span>
+              <span className={styles.mbtiNameEng}>
+                {mbtiOption.first.eng}
+              </span>
+              <span className={styles.mbtiNameKor}>
+                {mbtiOption.first.kor}
+              </span>
             </div>
             <div className={styles.mbtiBarBackGround}>
+              <span>{absMbtiScore}</span>
               <div
-                className={styles.mbtiBar}
-                style={{ backgroundColor: mbtiOption.barColor }}
-              >
-                gd
-              </div>
+                className={mbtiScore > 50 ? styles.rightMbtiBar : styles.leftMbtiBar}
+                style={{
+                  backgroundColor: mbtiOption.barColor,
+                  width: `${absMbtiScore}%`,
+                }}
+              ></div>
             </div>
             <div className={styles.mbtiNameBox}>
-              <span>{mbtiOption.second.eng}</span>
-              <span>{mbtiOption.second.kor}</span>
+              <span className={styles.mbtiNameEng}>
+                {mbtiOption.second.eng}
+              </span>
+              <span className={styles.mbtiNameKor}>
+                {mbtiOption.second.kor}
+              </span>
             </div>
           </div>
         );

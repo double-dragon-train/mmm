@@ -15,7 +15,7 @@ export async function getMbtiQuestionList() {
 }
 
 export async function getMbtiResult(answers: answerType[]) {
-  const data = { answers, }
+  const data = { answers };
   try {
     const res = await instance.post('/mbti', data);
     console.log(res);
@@ -26,7 +26,8 @@ export async function getMbtiResult(answers: answerType[]) {
 }
 
 export async function postMbtiResult(key: string) {
-  const data = { key, }
+  const data = { key };
+  console.log(data);
   try {
     const res = await instance.post('/users/mbti', data);
     console.log(res);
