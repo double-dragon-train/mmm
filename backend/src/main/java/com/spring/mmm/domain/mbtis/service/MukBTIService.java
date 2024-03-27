@@ -13,7 +13,7 @@ public interface MukBTIService {
 
     MukBTIResult calcMBTI(MukBTICalcRequest mukBTICalcRequest);
 
-    void save(UserEntity user, String key);
+    void save(String email, String key);
 
-    MukBTIResponse getMukBTI(UserEntity user);
+    MukBTIResponse getMukBTI(String email);
 }

@@ -12,6 +12,7 @@ import com.spring.mmm.domain.mukgroups.infra.MukgroupJpaRepository;
 import com.spring.mmm.domain.mukgroups.service.port.MukboRepository;
 import com.spring.mmm.domain.mukgroups.service.port.MukgroupRepository;
 import com.spring.mmm.domain.users.infra.UserEntity;
+import com.spring.mmm.domain.users.service.port.UserRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,7 +40,7 @@ class MukgroupServiceImplTest {
     private MukBTIResultRepository mukBTIResultRepository;
 
     @Mock
-    private MukgroupJpaRepository mukgroupJpaRepository;
+    private UserRepository userRepository;
 
     @InjectMocks
     private MukgroupServiceImpl mukgroupService;
@@ -136,23 +137,27 @@ class MukgroupServiceImplTest {
         BDDMockito.given(mukboRepository.findByUserId(1L))
                         .willReturn(mukboEntitySologroup);
 
-        assertDoesNotThrow(() -> mukgroupService.saveSoloMukGroup("1234", user));
+        BDDMockito.given(userRepository.findByEmail(any()))
+                        .willReturn(Optional.of(user));
+
+        assertDoesNotThrow(() -> mukgroupService.saveSoloMukGroup(user.getEmail()));
     }
 
     @Test
     void 다인_먹그룹_중복_생성_실패(){
-        BDDMockito.given(mukboRepository.findByUserId(any()))
-                .willReturn(mukboEntityGroup);
+        BDDMockito.given(userRepository.findByEmail(any()))
+                .willReturn(Optional.of(userWithMukbo));
 
-        assertThrows(MukGroupException.class, () -> mukgroupService.saveMukGroup("1234", user, null));
+        assertThrows(MukGroupException.class, () -> mukgroupService.saveMukGroup("1234", userWithMukbo.getEmail(), null));
     }
 
     @Test
     void 내_먹그룹_찾기_성공(){
-        BDDMockito.given(mukboRepository.findByUserId(any()))
-                .willReturn(mukboEntityGroup);
 
-        assertDoesNotThrow(() -> mukgroupService.findMyMukgroup(user));
+        BDDMockito.given(userRepository.findByEmail(any()))
+                .willReturn(Optional.of(userWithMukbo));
+
+        assertDoesNotThrow(() -> mukgroupService.findMyMukgroup(userWithMukbo.getEmail()));
     }
 
     @Test
@@ -173,13 +178,13 @@ class MukgroupServiceImplTest {
 
     @Test
     void 먹그룹_이름_수정_성공(){
-        BDDMockito.given(mukboRepository.findByUserId(any()))
-                        .willReturn(mukboEntityGroup);
-
         BDDMockito.given(mukgroupRepository.findByMukgroupId(any()))
                 .willReturn(mukgroupEntity);
 
-        assertDoesNotThrow(() -> mukgroupService.modifyGroupName(1L, "1234", user));
+        BDDMockito.given(userRepository.findByEmail(any()))
+                .willReturn(Optional.of(userWithMukbo));
+
+        assertDoesNotThrow(() -> mukgroupService.modifyGroupName(1L, "1234", userWithMukbo.getEmail()));
     }
 
     @Test
@@ -192,8 +197,11 @@ class MukgroupServiceImplTest {
 
         BDDMockito.given(mukboRepository.findByUserId(any()))
                         .willReturn(mukboEntityGroup);
+
+        BDDMockito.given(userRepository.findByEmail(any()))
+                .willReturn(Optional.of(userWithMukbo));
         
-        assertDoesNotThrow(() -> mukgroupService.kickMukbo(userWithMukbo, 1L, 1L));
+        assertDoesNotThrow(() -> mukgroupService.kickMukbo(userWithMukbo.getEmail(), 1L, 1L));
     }
 
     @Test
@@ -201,15 +209,18 @@ class MukgroupServiceImplTest {
         BDDMockito.given(mukboRepository.findByMukboId(any()))
                 .willReturn(mukbotEntity);
 
-        BDDMockito.given(mukboRepository.findByUserId(any()))
-                        .willReturn(mukboEntityGroup);
+        BDDMockito.given(userRepository.findByEmail(any()))
+                .willReturn(Optional.of(userWithMukbo));
 
-        assertDoesNotThrow(() -> mukgroupService.kickMukbo(userWithMukbo, 1L, 3L));
+        assertDoesNotThrow(() -> mukgroupService.kickMukbo(userWithMukbo.getEmail(), 1L, 3L));
     }
 
     @Test
     void 해당_먹그룹과_먹보_먹그룹이_일치하지않음_실패(){
-        assertThrows(MukGroupException.class, () -> mukgroupService.kickMukbo(userWithMukbo, 9999L, 9999L));
+        BDDMockito.given(userRepository.findByEmail(any()))
+                .willReturn(Optional.of(userWithMukbo));
+
+        assertThrows(MukGroupException.class, () -> mukgroupService.kickMukbo(userWithMukbo.getEmail(), 9999L, 9999L));
     }
 
     @Test
@@ -217,7 +228,10 @@ class MukgroupServiceImplTest {
         BDDMockito.given(mukboRepository.findByMukboId(any()))
                         .willReturn(mukboEntityGroup);
 
-        assertThrows(MukGroupException.class, () -> mukgroupService.kickMukbo(userWithMukboSoloGroup, 2L, 1L));
+        BDDMockito.given(userRepository.findByEmail(any()))
+                .willReturn(Optional.of(userWithMukboSoloGroup));
+
+        assertThrows(MukGroupException.class, () -> mukgroupService.kickMukbo(userWithMukboSoloGroup.getEmail(), 2L, 1L));
     }
 
     @Test
@@ -234,7 +248,10 @@ class MukgroupServiceImplTest {
         BDDMockito.given(mukgroupRepository.findByMukgroupId(any()))
                         .willReturn(mukgroupEntity);
 
-        assertDoesNotThrow(() -> mukgroupService.exitMukgroup(userWithMukbo, 1L));
+        BDDMockito.given(userRepository.findByEmail(any()))
+                .willReturn(Optional.of(userWithMukbo));
+
+        assertDoesNotThrow(() -> mukgroupService.exitMukgroup(userWithMukbo.getEmail(), 1L));
     }
 
     @Test
@@ -251,7 +268,10 @@ class MukgroupServiceImplTest {
         BDDMockito.given(mukgroupRepository.findByMukgroupId(any()))
                         .willReturn(mukgroupEntity);
 
-        assertDoesNotThrow(() -> mukgroupService.exitMukgroup(userWithMukbo, 1L));
+        BDDMockito.given(userRepository.findByEmail(any()))
+                .willReturn(Optional.of(userWithMukbo));
+
+        assertDoesNotThrow(() -> mukgroupService.exitMukgroup(userWithMukbo.getEmail(), 1L));
     }
 
     @Test
@@ -259,7 +279,10 @@ class MukgroupServiceImplTest {
         BDDMockito.given(mukgroupRepository.findByMukgroupId(any()))
                         .willReturn(soloMukgroupEntity);
 
-        assertThrows(MukGroupException.class, () -> mukgroupService.exitMukgroup(userWithMukboSoloGroup, 3L));
+        BDDMockito.given(userRepository.findByEmail(any()))
+                .willReturn(Optional.of(userWithMukboSoloGroup));
+
+        assertThrows(MukGroupException.class, () -> mukgroupService.exitMukgroup(userWithMukboSoloGroup.getEmail(), 3L));
     }
 
     @Test
