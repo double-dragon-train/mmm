@@ -31,8 +31,7 @@ public class MuklogServiceImpl implements MuklogService{
     @Override
     public MuklogsResponse findAllMuklogByGroupId(Long groupId, Pageable pageable, UserEntity userEntity) {
 
-        MukgroupEntity group = mukgroupRepository.findByMukgroupId(groupId)
-                .orElseThrow(MukgroupNotFoundException::new);
+        MukgroupEntity group = mukgroupRepository.findByMukgroupId(groupId);
         MukboEntity mukboEntity = mukboRepository.findByUserId(userEntity.getId());
         if (!mukboEntity.getMukgroupEntity().equals(group)) {
             throw new MukGroupException(MukGroupErrorCode.FORBIDDEN);
@@ -51,8 +50,7 @@ public class MuklogServiceImpl implements MuklogService{
 
     @Override
     public void saveLog(Long mukgroupId, String content) {
-        MukgroupEntity mukGroup = mukgroupRepository.findByMukgroupId(mukgroupId)
-                        .orElseThrow(MukgroupNotFoundException::new);
+        MukgroupEntity mukGroup = mukgroupRepository.findByMukgroupId(mukgroupId);
         muklogRepository.save(MuklogEntity.create(mukGroup, content));
     }
 }

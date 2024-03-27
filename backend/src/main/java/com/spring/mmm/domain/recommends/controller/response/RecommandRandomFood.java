@@ -1,4 +1,4 @@
-package com.spring.mmm.domain.mbtis.controller.response;
+package com.spring.mmm.domain.recommends.controller.response;
 
 import lombok.*;
 
@@ -8,6 +8,6 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class QuestionsResponse {
-    List<Question> questions;
+public class RecommandRandomFood {
+    private List<FoodInformation> foods;
 }

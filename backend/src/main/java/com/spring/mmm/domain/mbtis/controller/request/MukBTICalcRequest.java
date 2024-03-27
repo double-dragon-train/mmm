@@ -9,5 +9,5 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class MukBTICalcRequest {
-    private List<CalcInfo> answers;
+    private List<MukBTICalcInfo> answers;
 }

@@ -1,6 +1,6 @@
 package com.spring.mmm.domain.mbtis.domain;
 
-import com.spring.mmm.domain.mbtis.controller.response.AnswerResponse;
+import com.spring.mmm.domain.mbtis.controller.response.MukBTIAnswerResponse;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,8 +29,8 @@ public class MukBTIAnswerEntity {
     @JoinColumn(name = "question_id")
     private MukBTIQuestionEntity mukBTIQuestionEntity;
 
-    public AnswerResponse toAnswer(){
-        return AnswerResponse.builder()
+    public MukBTIAnswerResponse toAnswer(){
+        return MukBTIAnswerResponse.builder()
                 .answerId(this.answerId)
                 .answerContext(this.content)
                 .answerImage(this.imageSrc != null ? this.imageSrc : null)

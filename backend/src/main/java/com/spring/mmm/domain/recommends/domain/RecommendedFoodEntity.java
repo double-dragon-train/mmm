@@ -1,5 +1,7 @@
 package com.spring.mmm.domain.recommends.domain;
 
+import com.spring.mmm.common.event.Events;
+import com.spring.mmm.domain.mukus.event.RecommendedFoodEatenEvent;
 import com.spring.mmm.domain.recommends.controller.request.RecommendedFoodRequest;
 import jakarta.persistence.*;
 import lombok.*;
@@ -33,7 +35,7 @@ public class RecommendedFoodEntity {
 
     public void eat() {
         this.eaten = true;
-
+        Events.raise(new RecommendedFoodEatenEvent(this.recommendedFoodId));
     }
 
 }

@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface MukgroupService {
     void saveSoloMukGroup(String name, UserEntity user);
-    void saveMukGroup(String name, UserEntity user);
+    void saveMukGroup(String name, UserEntity user, MultipartFile image);
 
     MukgroupEntity findMyMukgroup(UserEntity user);
 
