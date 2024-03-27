@@ -1,5 +1,22 @@
 $color-main: #2a43ce;
 
+.wrapper {
+  padding: 10px 0;
+  height: calc(100vh - 142px);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  .recommendSection {
+    width: 95%;
+    background-color: rgba($color-main, 0.03);
+    border-radius: 15px;
+  }
+}
 .recordModalWrapper {
   > h2 {
     color: rgba($color-main, 0.8);

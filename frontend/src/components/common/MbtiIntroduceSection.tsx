@@ -1,4 +1,4 @@
-import styles from '../../styles/common/MbtiIntroduceSection.module.css'
+import styles from '../../styles/common/MbtiIntroduceSection.module.css';
 import ignite from '../../assets/images/ignite.png';
 import emergency from '../../assets/images/emergency.png';
 import ssal from '../../assets/images/ssal.png';
@@ -27,7 +27,7 @@ const MBTI_INTRODUCE_OPTIONS: mbtiIntroduceOptionsType[] = [
     title: '매운맛 척도',
     first: {
       eng: 'Ignite',
-      kor: '어느 맛이든\n두렵지 않은 맵당당이',
+      kor: '매운 맛이 두렵지 않은\n맵당당이',
       img: ignite,
     },
     second: {
@@ -60,7 +60,7 @@ const MBTI_INTRODUCE_OPTIONS: mbtiIntroduceOptionsType[] = [
     },
     second: {
       eng: 'Total',
-      kor: '먹을 때 제일 행복해!\n일반식파!',
+      kor: '먹을 때 제일 행복해!\n일반식파',
       img: total,
     },
   },
@@ -68,14 +68,14 @@ const MBTI_INTRODUCE_OPTIONS: mbtiIntroduceOptionsType[] = [
     id: 4,
     title: '입맛의 성숙함',
     first: {
-      eng: 'Papa',
-      kor: '점심은 뜨끈~한 국밥!\n아재입맛',
-      img: papa,
+      eng: 'Jammin',
+      kor: '엄망 소세지 없엉?\n잼민입맛',
+      img: jammin,
     },
     second: {
-      eng: 'Jammin',
-      kor: '엄망 소세지 없엉?\잼민입맛',
-      img: jammin,
+      eng: 'Papa',
+      kor: '점심은 뜨끈한 국밥!\n아재입맛',
+      img: papa,
     },
   },
 ];

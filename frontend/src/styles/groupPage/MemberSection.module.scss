@@ -2,13 +2,19 @@
 
 .memberSection {
   position: relative;
+  margin-top: 10px;
+  padding: 10px;
   > span {
     position: absolute;
     top: -10px;
     left: 20px;
     font-size: 18px;
     color: $color-gray;
-    text-shadow: -2px 0px white, 0px 2px white, 2px 0px white, 0px -2px white;
+    text-shadow:
+      -2px 0px white,
+      0px 2px white,
+      2px 0px white,
+      0px -2px white;
   }
 
   > article {
@@ -19,11 +25,14 @@
     > span {
       color: rgba($color-main, 0.7);
       font-size: 15px;
-      text-shadow: -2px 0px white, 0px 2px white, 2px 0px white, 0px -2px white;
+      text-shadow:
+        -2px 0px white,
+        0px 2px white,
+        2px 0px white,
+        0px -2px white;
       position: absolute;
       top: -10px;
       left: 25px;
-      
     }
     > .memberBox {
       padding: 13px;
@@ -57,6 +66,5 @@
         flex-grow: 1;
       }
     }
-    
   }
 }
