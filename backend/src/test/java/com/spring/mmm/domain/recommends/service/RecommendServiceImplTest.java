@@ -7,7 +7,9 @@ import com.spring.mmm.domain.recommends.controller.response.LunchRecommendFoodIn
 import com.spring.mmm.domain.recommends.domain.FoodCategoryEntity;
 import com.spring.mmm.domain.recommends.domain.FoodEntity;
 import com.spring.mmm.domain.recommends.domain.FoodMBTIEntity;
+import com.spring.mmm.domain.recommends.domain.RecommendedFoodEntity;
 import com.spring.mmm.domain.recommends.service.port.FoodRepository;
+import com.spring.mmm.domain.recommends.service.port.RecommendedFoodRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,12 +22,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 class RecommendServiceImplTest {
 
     @Mock
     private FoodRepository foodRepository;
+
+    @Mock
+    private RecommendedFoodRepository recommendedFoodRepository;
 
     @InjectMocks
     private RecommendServiceImpl recommendService;
@@ -89,6 +95,19 @@ class RecommendServiceImplTest {
                 .willReturn(foods);
 
         assertEquals(7, recommendService.lunchRecommendFood(lunchRecommendRequest).size());
+    }
+
+    @Test
+    void 새_메뉴추천_성공(){
+        List<Integer> recommendedFoods = new ArrayList<>();
+
+        BDDMockito.given(recommendedFoodRepository.findAllFoodIdByMukgroupId(any()))
+                .willReturn(recommendedFoods);
+
+        BDDMockito.given(foodRepository.findAll())
+                .willReturn(foods);
+
+        assertDoesNotThrow(() -> recommendService.newRecommendFood(1L));
     }
 
 }
