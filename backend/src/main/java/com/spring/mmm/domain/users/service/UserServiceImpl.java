@@ -10,6 +10,9 @@ import com.spring.mmm.domain.mukgroups.service.port.MukgroupRepository;
 import com.spring.mmm.domain.users.controller.request.UserJoinRequest;
 import com.spring.mmm.domain.users.controller.request.UserLoginRequest;
 import com.spring.mmm.domain.users.controller.request.UserModifyRequest;
+import com.spring.mmm.domain.users.controller.request.UserReissueTokenRequest;
+import com.spring.mmm.domain.users.controller.response.TokenResponse;
+import com.spring.mmm.domain.users.controller.response.UserInfoResponse;
 import com.spring.mmm.domain.users.exception.UserErrorCode;
 import com.spring.mmm.domain.users.exception.UserException;
 import com.spring.mmm.domain.users.infra.UserDetailsImpl;
@@ -112,10 +115,32 @@ public class UserServiceImpl implements UserService{
         UserEntity user = userRepository.findByEmail(email).orElseThrow(
                 () -> new UserException(UserErrorCode.INVALID_USER)
         );
+
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new UserException(UserErrorCode.INVALID_USER);
         }
         return Optional.of(user);
+    }
+
+    @Override
+    @Transactional
+    public UserInfoResponse getUserInfo(String jwtToken) {
+
+        String email = jwtProvider.getUserInfoFromToken(jwtToken);
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+        String nickname = user.getNickname();
+
+        return UserInfoResponse.of(email, nickname);
+    }
+
+    @Override
+    public TokenResponse getToken(UserDetailsImpl userDetails, UserReissueTokenRequest request) {
+
+        String email = userDetails.getUsername();
+        String rtk = request.getRefreshToken();
+
+        return jwtProvider.reissueAtk(email, rtk);
     }
 
 

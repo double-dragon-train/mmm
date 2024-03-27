@@ -1,5 +1,6 @@
 package com.spring.mmm.domain.users.controller;
 
+import com.spring.mmm.common.config.RedisDao;
 import com.spring.mmm.common.config.jwt.JwtProvider;
 import com.spring.mmm.domain.mbtis.controller.request.MukBTIRequest;
 import com.spring.mmm.domain.mbtis.controller.response.MukBTIResponse;
@@ -36,11 +37,13 @@ public class UserController {
     private final JwtProvider jwtProvider;
     private final UserEmailSendService userEmailSendService;
     private final MukBTIService mukBTIService;
+    private final RedisDao redisDao;
 
     @PostMapping("/join")
     public ResponseEntity<Void> join(@RequestBody UserJoinRequest userJoinRequest) {
 
         userService.join(userJoinRequest);
+
         return ResponseEntity.ok().build();
     }
 
@@ -54,20 +57,25 @@ public class UserController {
     public ResponseEntity<Void> modify(@AuthenticationPrincipal UserDetailsImpl user, @RequestBody UserModifyRequest userModifyRequest) {
 
         userService.modify(user, userModifyRequest);
+
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/login")
     public ResponseEntity<TokenResponse> login(@RequestBody UserLoginRequest userLoginRequest, HttpServletResponse response) {
+
         userService.login(userLoginRequest);
         TokenResponse token = jwtProvider.createTokenByLogin(userLoginRequest.getEmail());
         response.addHeader(jwtProvider.AUTHORIZATION_HEADER, token.getAccessToken());
+
         return ResponseEntity.ok(token);
     }
 
     @DeleteMapping("/logout")
     public ResponseEntity logout(@AuthenticationPrincipal UserDetailsImpl userDetails, HttpServletRequest request){
+
         userService.logout(jwtProvider.resolveToken(request),userDetails.getUsername());
+
         return ResponseEntity.ok().build();
     }
 
@@ -76,14 +84,13 @@ public class UserController {
 
         String jwtToken = token.substring(7);
 
-        String email = jwtProvider.getUserInfoFromToken(jwtToken);
-        UserEntity user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
-        String nickname = user.getNickname();
+        return ResponseEntity.ok(userService.getUserInfo(jwtToken));
+    }
 
-        UserInfoResponse userInfoResponse = UserInfoResponse.of(email, nickname);
+    @GetMapping("/reissue")
+    public ResponseEntity<TokenResponse> getToken(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody UserReissueTokenRequest request) {
 
-        return ResponseEntity.ok(userInfoResponse);
+        return ResponseEntity.ok(userService.getToken(userDetails, request));
     }
 
     @PostMapping ("/email/verification-request")
@@ -92,10 +99,8 @@ public class UserController {
         if (userService.isAuthenticated()) {
             throw new UserException(UserErrorCode.IS_AUTHENTICATED);
         }
-        log.debug("유저 이메일 : {}", userEmailRequest.getEmail());
 
-        String authNum = userEmailSendService.joinEmail(userEmailRequest.getEmail());
-        log.debug("인증번호 : {}", authNum);
+        userEmailSendService.joinEmail(userEmailRequest.getEmail());
 
         return ResponseEntity.ok().build();
     }
@@ -108,7 +113,6 @@ public class UserController {
                 userEmailCheckRequest.getAuthNum()
         );
         if(checked){
-            log.debug("인증 완료");
             return ResponseEntity.ok().build();
         }
         else{
