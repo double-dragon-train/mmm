@@ -7,7 +7,7 @@ import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
 import com.spring.mmm.domain.mukjuks.controller.response.Badge;
 import com.spring.mmm.domain.mukjuks.domain.MukjukEntity;
 import com.spring.mmm.domain.users.infra.UserEntity;
-import lombok.Getter;
+
 
 import java.util.ArrayList;
 import java.util.List;
