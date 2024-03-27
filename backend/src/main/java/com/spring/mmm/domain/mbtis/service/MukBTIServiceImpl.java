@@ -64,10 +64,10 @@ public class MukBTIServiceImpl implements MukBTIService {
         }
 
         MBTI mbti = MBTI.builder()
-                .EI(EI / 3)
-                .NS(NS / 3)
-                .TF(TF / 3)
-                .JP(JP / 3)
+                .EI(EI)
+                .NS(NS)
+                .TF(TF)
+                .JP(JP)
                 .Mint(Mint)
                 .Pine(Pine)
                 .Die(Die)
