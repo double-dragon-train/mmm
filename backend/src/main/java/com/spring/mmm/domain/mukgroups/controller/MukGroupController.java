@@ -28,7 +28,7 @@ public class MukGroupController {
 
     @GetMapping
     public ResponseEntity<MukgroupResponse> findMukgroup(@AuthenticationPrincipal UserDetailsImpl user){
-        return ResponseEntity.ok(mukgroupService.findMyMukgroup(user.getUser()).createMukgroupResponse());
+        return ResponseEntity.ok(mukgroupService.findMyMukgroup(user.getEmail()).createMukgroupResponse());
     }
 
     @PostMapping
@@ -37,7 +37,7 @@ public class MukGroupController {
             @RequestPart(value = "data", required = true) MukgroupCreateRequest mukgroupCreateRequest,
             @RequestPart(value = "image", required = false) MultipartFile image
     ){
-        mukgroupService.saveMukGroup(mukgroupCreateRequest.getName(), user.getUser(), image);
+        mukgroupService.saveMukGroup(mukgroupCreateRequest.getName(), user.getEmail(), image);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -46,7 +46,7 @@ public class MukGroupController {
             @PathVariable Long groupId,
             @RequestBody MukgroupModifyRequest mukgroupModifyRequest,
             @AuthenticationPrincipal UserDetailsImpl users){
-        mukgroupService.modifyGroupName(groupId, mukgroupModifyRequest.getName(), users.getUser());
+        mukgroupService.modifyGroupName(groupId, mukgroupModifyRequest.getName(), users.getEmail());
         return ResponseEntity.ok().build();
     }
 
@@ -55,7 +55,7 @@ public class MukGroupController {
             @PathVariable Long groupId,
             @RequestPart(value = "image") MultipartFile image,
             @AuthenticationPrincipal UserDetailsImpl users){
-        mukgroupService.modifyGroupImage(groupId, image, users);
+        mukgroupService.modifyGroupImage(groupId, image, users.getEmail());
         return ResponseEntity.ok().build();
     }
 
@@ -77,7 +77,7 @@ public class MukGroupController {
     public ResponseEntity<MukbotCreateRequest> saveMukbot(
             @AuthenticationPrincipal UserDetailsImpl user,
             @RequestBody MukbotCreateRequest mukbotCreateRequest){
-        mukboService.saveMukbot(user.getUser(), mukbotCreateRequest);
+        mukboService.saveMukbot(user.getEmail(), mukbotCreateRequest);
         return ResponseEntity.ok().build();
     }
 
@@ -93,7 +93,7 @@ public class MukGroupController {
             @PathVariable Long groupId,
             @RequestBody MukboInviteRequest mukboInviteRequest
     ){
-        mukboService.inviteMukbo(user.getUser(), groupId, mukboInviteRequest);
+        mukboService.inviteMukbo(user.getEmail(), groupId, mukboInviteRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -111,7 +111,7 @@ public class MukGroupController {
             @PathVariable Long mukbotsId,
             @RequestBody MukbotModifyRequest mukbotModifyRequest
     ){
-        mukboService.modifyMukbot(user.getUser(), mukbotsId, mukbotModifyRequest.getMbti(), mukbotModifyRequest.getName());
+        mukboService.modifyMukbot(user.getEmail(), mukbotsId, mukbotModifyRequest.getMbti(), mukbotModifyRequest.getName());
         return ResponseEntity.ok().build();
     }
 
@@ -120,7 +120,7 @@ public class MukGroupController {
             @PathVariable Long groupId,
             @PathVariable Long mukboId,
             @AuthenticationPrincipal UserDetailsImpl users){
-        mukgroupService.kickMukbo(users.getUser(), groupId, mukboId);
+        mukgroupService.kickMukbo(users.getEmail(), groupId, mukboId);
         return ResponseEntity.ok().build();
     }
 
@@ -128,7 +128,7 @@ public class MukGroupController {
     public ResponseEntity<Void> exitMukgroup(
             @PathVariable Long groupId,
             @AuthenticationPrincipal UserDetailsImpl user){
-        mukgroupService.exitMukgroup(user.getUser(), groupId);
+        mukgroupService.exitMukgroup(user.getEmail(), groupId);
         return ResponseEntity.ok().build();
     }
 

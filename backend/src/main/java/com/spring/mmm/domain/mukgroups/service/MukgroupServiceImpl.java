@@ -16,8 +16,11 @@ import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
 import com.spring.mmm.domain.mukgroups.service.port.MukboRepository;
 import com.spring.mmm.domain.mukgroups.service.port.MukgroupRepository;
 import com.spring.mmm.domain.muklogs.exception.MukgroupNotFoundException;
+import com.spring.mmm.domain.users.exception.UserErrorCode;
+import com.spring.mmm.domain.users.exception.UserException;
 import com.spring.mmm.domain.users.infra.UserDetailsImpl;
 import com.spring.mmm.domain.users.infra.UserEntity;
+import com.spring.mmm.domain.users.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,18 +36,23 @@ public class MukgroupServiceImpl implements MukgroupService{
     private final MukboRepository mukboRepository;
     private final S3Service s3Service;
     private final MukBTIResultRepository mukBTIResultRepository;
+    private final UserRepository userRepository;
     @Override
     @Transactional
-    public void saveSoloMukGroup(String name, UserEntity user) {
-        MukgroupEntity mukgroupEntity = mukgroupRepository.save(MukgroupEntity.create(name, Boolean.TRUE));
+    public void saveSoloMukGroup(String email) {
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+        MukgroupEntity mukgroupEntity = mukgroupRepository.save(MukgroupEntity.create(user.getNickname(), Boolean.TRUE));
         mukboRepository.save(mukboRepository.findByUserId(user.getId())
                 .modifyGroup(mukgroupEntity.getMukgroupId()));
     }
 
     @Override
     @Transactional
-    public void saveMukGroup(String name, UserEntity user, MultipartFile image) {
-        MukboEntity mukboEntity = mukboRepository.findByUserId(user.getId());
+    public void saveMukGroup(String name, String email, MultipartFile image) {
+        MukboEntity mukboEntity = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND))
+                .getMukboEntity();
         MukgroupEntity originMukgroup = mukboEntity.getMukgroupEntity();
         if(originMukgroup.getIsSolo()){
             MukgroupEntity mukgroupEntity = mukgroupRepository.save(
@@ -60,8 +68,11 @@ public class MukgroupServiceImpl implements MukgroupService{
     }
 
     @Override
-    public MukgroupEntity findMyMukgroup(UserEntity user) {
-        return mukboRepository.findByUserId(user.getId()).getMukgroupEntity();
+    public MukgroupEntity findMyMukgroup(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND))
+                .getMukboEntity()
+                .getMukgroupEntity();
     }
 
     @Override
@@ -75,16 +86,20 @@ public class MukgroupServiceImpl implements MukgroupService{
 
     @Override
     @Transactional
-    public void modifyGroupName(Long groupId, String name, UserEntity user) {
-        MukboEntity mukboEntity = mukboRepository.findByUserId(user.getId());
+    public void modifyGroupName(Long groupId, String name, String email) {
+        MukboEntity mukboEntity = userRepository.findByEmail(email)
+                        .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND))
+                                .getMukboEntity();
         mukgroupRepository.save(getMukgroupEntity(groupId).modifyMukgroupName(name));
         Events.raise(new MukgroupNameChangedEvent(mukboEntity.getName(),  name, groupId));
     }
 
     @Override
     @Transactional
-    public void modifyGroupImage(Long groupId, MultipartFile multipartFile, UserDetailsImpl users) {
-        MukboEntity mukboEntity = mukboRepository.findByUserId(users.getUser().getId());
+    public void modifyGroupImage(Long groupId, MultipartFile multipartFile, String email) {
+        MukboEntity mukboEntity = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND))
+                .getMukboEntity();
         String imageSrc = s3Service.uploadFile(multipartFile);
         mukgroupRepository.save(getMukgroupEntity(groupId).modifyMukgroupImage(imageSrc));
         Events.raise(new MukgroupImageChangedEvent(mukboEntity.getName(), groupId));
@@ -92,9 +107,12 @@ public class MukgroupServiceImpl implements MukgroupService{
 
     @Override
     @Transactional
-    public void kickMukbo(UserEntity user, Long groupId, Long mukboId) {
+    public void kickMukbo(String email, Long groupId, Long mukboId) {
 
-        MukboEntity sourceUser = mukboRepository.findByUserId(user.getId());
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+
+        MukboEntity sourceUser = user.getMukboEntity();
 
         if(!user.getMukboEntity().getMukgroupEntity().getMukgroupId().equals(groupId)){
             throw new MukGroupException(MukGroupErrorCode.FORBIDDEN);
@@ -108,8 +126,7 @@ public class MukgroupServiceImpl implements MukgroupService{
         }
 
         if(mukboEntity.getType() == MukboType.HUMAN) {
-            UserEntity mukboUser = mukboEntity.getUserEntity();
-            saveSoloMukGroup(user.getNickname(), mukboUser);
+            saveSoloMukGroup(user.getEmail());
             Events.raise(new MukboKickedEvent(sourceUser.getName(), mukboEntity.getName(), sourceUser.getMukgroupEntity().getMukgroupId()));
         }
         else {
@@ -120,8 +137,11 @@ public class MukgroupServiceImpl implements MukgroupService{
 
     @Override
     @Transactional
-    public void exitMukgroup(UserEntity user, Long groupId) {
-        MukboEntity mukbo = mukboRepository.findByUserId(user.getId());
+    public void exitMukgroup(String email, Long groupId) {
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+
+        MukboEntity mukbo = user.getMukboEntity();
 
         MukgroupEntity mukgroup = getMukgroupEntity(groupId);
         if(mukgroup.getIsSolo()){
@@ -131,7 +151,7 @@ public class MukgroupServiceImpl implements MukgroupService{
         if(mukboCount == 1){
             mukgroupRepository.delete(user.getMukboEntity().getMukgroupEntity());
         }
-        saveSoloMukGroup(user.getNickname(), user);
+        saveSoloMukGroup(user.getEmail());
         Events.raise(new MukboExitedEvent(mukbo.getName(), groupId));
     }
 

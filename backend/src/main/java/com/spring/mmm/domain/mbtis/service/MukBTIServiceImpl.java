@@ -12,7 +12,10 @@ import com.spring.mmm.domain.mbtis.service.port.MukBTIQuestionRepository;
 import com.spring.mmm.domain.mbtis.service.port.MukBTIRepository;
 import com.spring.mmm.domain.mbtis.service.port.MukBTIResultRepository;
 import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
+import com.spring.mmm.domain.users.exception.UserErrorCode;
+import com.spring.mmm.domain.users.exception.UserException;
 import com.spring.mmm.domain.users.infra.UserEntity;
+import com.spring.mmm.domain.users.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +32,7 @@ public class MukBTIServiceImpl implements MukBTIService {
     private final RedisRepository redisRepository;
     private final MukBTIResultRepository mukBTIResultRepository;
     private final MukBTIRepository mukBTIRepository;
+    private final UserRepository userRepository;
 
     @Override
     public List<MukBTIQuestionEntity> findAllMukBTIQuestion() {
@@ -80,10 +84,12 @@ public class MukBTIServiceImpl implements MukBTIService {
 
     @Override
     @Transactional
-    public void save(UserEntity user, String key) {
+    public void save(String email, String key) {
         MBTI mbti = redisRepository.getData(key, MBTI.class)
                 .orElseThrow(() -> new MukBTIException(MukBTIErrorCode.NOT_FOUND));
 
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
         MukboEntity mukboEntity = user.getMukboEntity();
 
         List<MukBTIResultEntity> results = new ArrayList<>();
@@ -107,9 +113,10 @@ public class MukBTIServiceImpl implements MukBTIService {
     }
 
     @Override
-    public MukBTIResponse getMukBTI(UserEntity user) {
+    public MukBTIResponse getMukBTI(String email) {
         List<MukBTIResultEntity> mukBTIResultEntities = mukBTIResultRepository.findAllMukBTIResultByMukboId(
-                                user
+                                userRepository.findByEmail(email)
+                                        .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND))
                                 .getMukboEntity()
                                 .getMukboId()
                                 );
