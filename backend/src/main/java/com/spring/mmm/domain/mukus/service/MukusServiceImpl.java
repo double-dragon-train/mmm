@@ -4,6 +4,7 @@ import com.spring.mmm.domain.mukus.controller.response.*;
 import com.spring.mmm.domain.recommends.domain.FoodCategoryEntity;
 import com.spring.mmm.domain.recommends.domain.FoodRecommendEntity;
 import com.spring.mmm.domain.recommends.domain.RecommendedFoodEntity;
+import com.spring.mmm.domain.recommends.service.port.FoodCategoryRepository;
 import com.spring.mmm.domain.recommends.service.port.FoodRecommendRepository;
 import com.spring.mmm.domain.recommends.service.port.RecommendedFoodRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,8 @@ import java.util.stream.Collectors;
 public class MukusServiceImpl implements MukusService {
 
     private final RecommendedFoodRepository recommendedFoodRepository;
+    private final FoodRecommendRepository foodRecommendRepository;
+    private final FoodCategoryRepository foodCategoryRepository;
 
     @Override
     @Transactional
@@ -44,6 +47,23 @@ public class MukusServiceImpl implements MukusService {
                 recommendedFoodEntities.stream().map(MukusDayResponse::create).collect(Collectors.toList());
 
         return MukusCalendarResponse.create(mukusMonthResponse);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public MukusRecentResponse getRecentMukus(Long groupId) {
+
+        FoodRecommendEntity foodRecommendEntity = foodRecommendRepository.findByMukgroupId(groupId);
+
+        List<RecommendedFoodEntity> recommendedFoodEntities = foodRecommendEntity.getRecommendedFoodEntities();
+
+        List<RecommendFood> recommendFoods = recommendedFoodEntities.stream().map(food -> {
+            FoodCategoryEntity category = foodCategoryRepository.findByFoodId(food.getFoodEntity().getFoodId());
+            FoodCategory foodCategory = FoodCategory.create(category.getName(), category.getColor());
+            return RecommendFood.create(foodCategory, food);
+        }).collect(Collectors.toList());
+
+        return MukusRecentResponse.create(RecommendData.create(recommendFoods));
     }
 
     @Override
