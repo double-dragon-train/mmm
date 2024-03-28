@@ -49,7 +49,7 @@ class MukjukServiceImplTest {
 
 
         given(mukgroupRepository.findByMukgroupId(any()))
-                .willReturn(TestFixture.mukgroupEntity);
+                .willReturn(Optional.of(TestFixture.mukgroupEntity));
         given(mukboRepository.findByUserId(any()))
                 .willReturn(TestFixture.mukboEntityGroup);
         given(mukjukRepository.findAllBadges(any()))
@@ -75,7 +75,7 @@ class MukjukServiceImplTest {
                 , "tester@naver.com");
 
         given(mukgroupRepository.findByMukgroupId(any()))
-                .willReturn(TestFixture.mukgroupEntity);
+                .willReturn(Optional.of(TestFixture.mukgroupEntity));
         given(mukboRepository.findByUserId(any()))
                 .willReturn(TestFixture.mukboEntitySologroup);
         // when // then
@@ -94,7 +94,7 @@ class MukjukServiceImplTest {
                 , "tester@naver.com");
 
         given(mukgroupRepository.findByMukgroupId(any()))
-                .willReturn(TestFixture.soloMukgroupEntity);
+                .willReturn(Optional.of(TestFixture.soloMukgroupEntity));
         // when // then
         assertThatThrownBy(() -> mukjukService.findAllMukjuks(groupId, users))
                 .isInstanceOf(MukGroupException.class)

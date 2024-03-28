@@ -81,7 +81,8 @@ public class MukgroupServiceImpl implements MukgroupService{
     }
 
     private MukgroupEntity getMukgroupEntity(Long groupId) {
-        return mukgroupRepository.findByMukgroupId(groupId);
+        return mukgroupRepository.findByMukgroupId(groupId)
+                .orElseThrow(() -> new MukGroupException(MukGroupErrorCode.NOT_FOUND));
     }
 
     @Override
