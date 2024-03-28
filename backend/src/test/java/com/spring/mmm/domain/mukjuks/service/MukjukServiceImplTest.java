@@ -78,8 +78,8 @@ class MukjukServiceImplTest {
                 .willReturn(Optional.empty());
         // when // then
         assertThatThrownBy(() -> mukjukService.findAllMukjuks(groupId, users))
-                .isInstanceOf(MukgroupNotFoundException.class)
-                .hasFieldOrPropertyWithValue("errorCode", MuklogErrorCode.MUKGROUP_NOT_FOUND);
+                .isInstanceOf(MukGroupException.class)
+                .hasFieldOrPropertyWithValue("errorCode", MukGroupErrorCode.MUKGROUP_NOT_FOUND);
     }
 
     @Test

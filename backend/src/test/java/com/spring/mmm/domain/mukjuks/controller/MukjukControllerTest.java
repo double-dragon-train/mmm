@@ -79,7 +79,7 @@ class MukjukControllerTest {
     void 먹적_조회_테스트_실패_그룹_아이디가_존재하지_않는_경우() throws Exception{
         // given
         given(mukjukService.findAllMukjuks(any(), any()))
-                .willThrow(new MukgroupNotFoundException());
+                .willThrow(new MukGroupException(MukGroupErrorCode.MUKGROUP_NOT_FOUND));
         // when
         mvc.perform(MockMvcRequestBuilders.get(MUKJUK_RETRIEVE_URL))
                 // then
