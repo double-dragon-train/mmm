@@ -12,6 +12,7 @@ import com.spring.mmm.domain.recommends.domain.RecommendedFoodEntity;
 import com.spring.mmm.domain.recommends.service.port.FoodRecommendRepository;
 import com.spring.mmm.domain.recommends.service.port.FoodRepository;
 import com.spring.mmm.domain.recommends.service.port.RecommendedFoodRepository;
+import com.spring.mmm.domain.weathers.service.WeatherService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,9 +31,10 @@ public class RecommendServiceImpl implements RecommendService{
 
     private final FoodRecommendRepository foodRecommendRepository;
     private final MukgroupRepository mukgroupRepository;
+    private final RecommendedFoodRepository recommendedFoodRepository;
 
     private final FoodRepository foodRepository;
-    private final RecommendedFoodRepository recommendedFoodRepository;
+    private final WeatherService weatherService;
 
     @Override
     public List<FoodInformation> recommendRandomFood() {
@@ -93,4 +95,5 @@ public class RecommendServiceImpl implements RecommendService{
 
         return Integer.compare(sumOne, sumTwo);
     }
+
 }

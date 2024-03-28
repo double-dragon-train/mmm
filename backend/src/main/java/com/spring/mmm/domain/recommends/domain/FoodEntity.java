@@ -34,6 +34,9 @@ public class FoodEntity {
     @OneToMany(mappedBy = "foodEntity", cascade = CascadeType.REMOVE)
     private List<FoodMBTIEntity> foodMBTIEntities;
 
+    @OneToOne(mappedBy = "foodEntity", cascade = CascadeType.REMOVE)
+    private FoodWeatherEntity foodWeatherEntity;
+
     public FoodInformation toFoodInformation(){
         return FoodInformation.builder()
                 .foodId(this.foodId)
