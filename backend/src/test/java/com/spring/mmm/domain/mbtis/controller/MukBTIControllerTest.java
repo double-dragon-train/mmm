@@ -87,13 +87,13 @@ class MukBTIControllerTest {
         // 먹비티아이 키
 
         mbti = MBTI.builder()
-                .EI(100)
-                .NS(50)
-                .TF(50)
-                .JP(100)
-                .Mint(100)
-                .Pine(0)
-                .Die(100)
+                .ei(100)
+                .ns(50)
+                .tf(50)
+                .jp(100)
+                .mint(100)
+                .pine(0)
+                .die(100)
                 .build();
         // 먹비티아이 장전
 

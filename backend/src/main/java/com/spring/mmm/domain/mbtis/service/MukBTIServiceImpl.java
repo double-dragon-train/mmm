@@ -92,6 +92,9 @@ public class MukBTIServiceImpl implements MukBTIService {
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
         MukboEntity mukboEntity = user.getMukboEntity();
 
+        List<MukBTIResultEntity> originResult = user.getMukBTIResultEntities();
+        mukBTIResultRepository.deleteAll(originResult);
+
         List<MukBTIResultEntity> results = new ArrayList<>();
         List<MukBTIEntity> mukBTIs = mukBTIRepository.findAllMukBTI();
 
