@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MukboRepository {
-    MukboEntity save(MukboEntity mukboEntity);
+    void save(MukboEntity mukboEntity);
 
-    MukboEntity findByUserId(Long userId);
+    Optional<MukboEntity> findByUserId(Long userId);
 
     List<MukboEntity> findAllMukboByGroupId(Long groupId);
 
-    MukboEntity findByMukboId(Long mukboId);
+    Optional<MukboEntity> findByMukboId(Long mukboId);
 
     void delete(MukboEntity mukboEntity);
 }

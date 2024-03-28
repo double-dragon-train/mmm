@@ -192,10 +192,10 @@ class MukboServiceImplTest {
     void 먹보초대_성공(){
 
         BDDMockito.given(mukboRepository.findByUserId(any()))
-                .willReturn(mukboEntity);
+                .willReturn(Optional.of(mukboEntity));
         
         BDDMockito.given(mukboRepository.findByMukboId(any()))
-                .willReturn(mukboEntity);
+                .willReturn(Optional.of(mukboEntity));
 
         BDDMockito.given(userRepository.findByEmail(any()))
                         .willReturn(Optional.of(user));
@@ -214,7 +214,7 @@ class MukboServiceImplTest {
     @Test
     void 먹봇수정_성공(){
         BDDMockito.given(mukboRepository.findByMukboId(any()))
-                .willReturn(mukboEntity);
+                .willReturn(Optional.of(mukboEntity));
 
         BDDMockito.given(mukBTIResultRepository.findAllMukBTIResultByMukboId(any()))
                 .willReturn(mukBTIResultEntities);
@@ -228,7 +228,7 @@ class MukboServiceImplTest {
     @Test
     void 먹보수정_성공(){
         BDDMockito.given(mukboRepository.findByUserId(any()))
-                .willReturn(mukboEntity);
+                .willReturn(Optional.of(mukboEntity));
 
         assertDoesNotThrow(() -> mukboService.modifyMokbo(1L, "ssasfy1234"));
     }
@@ -254,6 +254,9 @@ class MukboServiceImplTest {
 
     @Test
     void 먹보삭제_성공(){
+        BDDMockito.given(mukboRepository.findByMukboId(any()))
+                        .willReturn(Optional.of(mukboEntity));
+
         assertDoesNotThrow(() -> mukboService.deleteMukbo(1L));
     }
 

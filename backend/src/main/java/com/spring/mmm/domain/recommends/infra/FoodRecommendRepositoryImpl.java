@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
@@ -18,9 +19,8 @@ public class FoodRecommendRepositoryImpl implements FoodRecommendRepository {
     private final FoodRecommendJpaRepository foodRecommendJpaRepository;
 
     @Override
-    public FoodRecommendEntity findByMukgroupId(Long mukgroupId) {
-        return foodRecommendJpaRepository.findRecommendByMukgroupId(mukgroupId)
-                .orElseThrow(() -> new RecommendException(RecommendErrorCode.RECOMMEND_NOT_FOUND));
+    public Optional<FoodRecommendEntity> findByMukgroupId(Long mukgroupId) {
+        return foodRecommendJpaRepository.findRecommendByMukgroupId(mukgroupId);
     }
 
 }

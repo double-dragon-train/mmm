@@ -4,10 +4,11 @@ import com.spring.mmm.domain.recommends.controller.response.WeatherDTO;
 import com.spring.mmm.domain.recommends.domain.FoodEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface FoodRepository {
 
-    FoodEntity findByName(String name);
+    Optional<FoodEntity> findByName(String name);
 
     List<FoodEntity> findAll();
 

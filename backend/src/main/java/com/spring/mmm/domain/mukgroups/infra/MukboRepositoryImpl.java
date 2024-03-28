@@ -16,14 +16,13 @@ import java.util.Optional;
 public class MukboRepositoryImpl implements MukboRepository {
     private final MukboJpaRepository mukboJpaRepository;
     @Override
-    public MukboEntity save(MukboEntity mukboEntity) {
-        return mukboJpaRepository.save(mukboEntity);
+    public void save(MukboEntity mukboEntity) {
+        mukboJpaRepository.save(mukboEntity);
     }
 
     @Override
-    public MukboEntity findByUserId(Long userId) {
-        return mukboJpaRepository.findByUserId(userId)
-                .orElseThrow(() -> new MukboException(MukboErrorCode.NOT_FOUND));
+    public Optional<MukboEntity> findByUserId(Long userId) {
+        return mukboJpaRepository.findByUserId(userId);
     }
 
     @Override
@@ -32,9 +31,8 @@ public class MukboRepositoryImpl implements MukboRepository {
     }
 
     @Override
-    public MukboEntity findByMukboId(Long mukboId) {
-        return mukboJpaRepository.findByMukboId(mukboId)
-                .orElseThrow(() -> new MukboException(MukboErrorCode.NOT_FOUND));
+    public Optional<MukboEntity> findByMukboId(Long mukboId) {
+        return mukboJpaRepository.findByMukboId(mukboId);
     }
 
     @Override
