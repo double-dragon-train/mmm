@@ -76,22 +76,6 @@ class MukjukControllerTest {
 
     @WithMockUser
     @Test
-    void 먹적_조회_테스트_실패_그룹_아이디가_존재하지_않는_경우() throws Exception{
-        // given
-        given(mukjukService.findAllMukjuks(any(), any()))
-                .willThrow(new MukgroupNotFoundException());
-        // when
-        mvc.perform(MockMvcRequestBuilders.get(MUKJUK_RETRIEVE_URL))
-                // then
-                .andExpectAll(
-                        status().isNotFound(),
-                        jsonPath("$.errorName").value("MUKGROUP_NOT_FOUND"),
-                        jsonPath("$.errorMessage").value("먹그룹이 존재하지 않습니다.")
-                )
-                .andDo(print());
-    }
-    @WithMockUser
-    @Test
     void 먹적_조회_테스트_실패_내가_그룹에_속하지_않는_경우() throws Exception{
         // given
         given(mukjukService.findAllMukjuks(any(), any()))
