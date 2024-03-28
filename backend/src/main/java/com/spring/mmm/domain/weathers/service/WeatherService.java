@@ -114,7 +114,7 @@ public class WeatherService {
         public double y;
     }
 
-    public getGRID convertGRID_GPS(double latitude, double longitude) {
+    public Grid convertGPStoGPS(double latitude, double longitude) {
         double RE = 6371.00877; // 지구 반경(km)
         double GRID = 5.0; // 격자 간격(km)
         double SLAT1 = 30.0; // 투영 위도1(degree)
