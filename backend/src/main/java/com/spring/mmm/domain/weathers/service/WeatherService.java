@@ -42,7 +42,7 @@ public class WeatherService {
 
     public WeatherDTO getWeather(double latitude, double longitude)  {
         try {
-            getGRID tmp = convertGRID_GPS(latitude, longitude);
+            Grid tmp = convertGridGPS(latitude, longitude);
             LocalDate today = LocalDate.now();
             String formattedDate = today.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
@@ -109,12 +109,12 @@ public class WeatherService {
         }
     }
 
-    public static class getGRID {
+    public static class Grid {
         public double x;
         public double y;
     }
 
-    public getGRID convertGRID_GPS(double latitude, double longitude) {
+    public Grid convertGridGPS(double latitude, double longitude) {
         double RE = 6371.00877; // 지구 반경(km)
         double GRID = 5.0; // 격자 간격(km)
         double SLAT1 = 30.0; // 투영 위도1(degree)
@@ -139,7 +139,7 @@ public class WeatherService {
         double ro = Math.tan(Math.PI * 0.25 + olat * 0.5);
         ro = re * sf / Math.pow(ro, sn);
 
-        getGRID xy = new getGRID();
+        Grid xy = new Grid();
 
         double ra = Math.tan(Math.PI * 0.25 + (latitude) * DEGRAD * 0.5);
         if (ra<0) {
