@@ -11,6 +11,8 @@ interface userStoreType {
   updateAnswerList: (value: answerType[]) => void;
   accessToken: string;
   setAccessToken: (value: string) => void;
+  refreshToken: string;
+  setRefreshToken: (value: string) => void;
   isLogin: boolean;
   setIsLogin: (value: boolean) => void;
   mbtiKey: string;
@@ -21,6 +23,9 @@ const userStore = create(
     (set) => ({
       accessToken: '',
       setAccessToken: (value: string) => set({ accessToken: value }),
+      refreshToken: '',
+      setRefreshToken: (value: string) =>
+        set({ refreshToken: value }),
       isLogin: false,
       setIsLogin: (value: boolean) => set({ isLogin: value }),
       answerList: [],
@@ -39,7 +44,7 @@ const userStore = create(
       //   followingUsers: [],
       //   setFollowingUsers: (value) => set({ followingUsers: value }),
     }),
-    { name: 'accessToken' }
+    { name: 'userData' }
   )
 );
 

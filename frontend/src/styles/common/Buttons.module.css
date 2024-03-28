@@ -1,5 +1,6 @@
 .landingButton {
   width: 95%;
+  max-width: 340px;
   border: 1px solid rgba(42, 67, 206, 0.4);
   font-size: 20px;
   color: rgba(42, 67, 206, 0.65);

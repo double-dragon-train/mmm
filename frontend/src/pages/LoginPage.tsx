@@ -15,7 +15,7 @@ import { useMutation } from '@tanstack/react-query';
 import userStore from '../stores/userStore';
 
 function LoginPage() {
-  const { setAccessToken, setIsLogin } = userStore();
+  const { setAccessToken, setRefreshToken, setIsLogin } = userStore();
   const navigate = useNavigate();
   const [inputList, setInputList] = useState({
     email: '',
@@ -58,6 +58,7 @@ function LoginPage() {
     mutationFn: postLogin,
     onSuccess: (data) => {
       setAccessToken(data.accessToken);
+      setRefreshToken(data.refreshToken);
       setIsLogin(true);
       navigate('/');
     },
