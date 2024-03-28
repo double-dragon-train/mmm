@@ -86,13 +86,13 @@ class MukboServiceImplTest {
         // 한 먹보에 대한 먹비티아이 결과
 
         mbti = MBTI.builder()
-                .EI(70)
-                .NS(50)
-                .TF(30)
-                .JP(10)
-                .Mint(100)
-                .Pine(100)
-                .Die(100)
+                .ei(70)
+                .ns(50)
+                .tf(30)
+                .jp(10)
+                .mint(100)
+                .pine(100)
+                .die(100)
                 .build();
         // 먹비티아이
 
