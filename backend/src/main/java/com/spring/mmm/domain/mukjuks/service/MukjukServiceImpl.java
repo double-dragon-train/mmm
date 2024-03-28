@@ -4,6 +4,8 @@ import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
 import com.spring.mmm.domain.mukgroups.exception.MukGroupErrorCode;
 import com.spring.mmm.domain.mukgroups.exception.MukGroupException;
+import com.spring.mmm.domain.mukgroups.exception.MukboErrorCode;
+import com.spring.mmm.domain.mukgroups.exception.MukboException;
 import com.spring.mmm.domain.mukgroups.service.port.MukboRepository;
 import com.spring.mmm.domain.mukgroups.service.port.MukgroupRepository;
 import com.spring.mmm.domain.mukjuks.controller.response.MukjukResponse;
@@ -35,7 +37,8 @@ public class MukjukServiceImpl implements MukjukService {
         if (mukgroup.getIsSolo()) {
             throw new MukGroupException(MukGroupErrorCode.SOLO_CANT_ACCESS_MUKJUK);
         }
-        MukboEntity mukbo = mukboRepository.findByUserId(users.getUser().getId());
+        MukboEntity mukbo = mukboRepository.findByUserId(users.getUser().getId())
+                .orElseThrow(() -> new MukboException(MukboErrorCode.NOT_FOUND));
         if (!mukbo.getMukgroupEntity().equals(mukgroup)) {
             throw new MukGroupException(MukGroupErrorCode.FORBIDDEN);
         }

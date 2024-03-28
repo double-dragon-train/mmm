@@ -171,7 +171,8 @@ public class WeatherService {
         if (weatherId != 0) {
             log.debug("weatherId : {}", weatherId);
             log.debug("수제비나와라 : {}", foodRepository.findByName("수제비"));
-            FoodEntity soojebi = foodRepository.findByName("수제비");
+            FoodEntity soojebi = foodRepository.findByName("수제비")
+                    .orElseThrow(() -> new RecommendException(RecommendErrorCode.FOOD_NOT_FOUND));
             log.debug("수제비의 id : {}", soojebi.getFoodId());
             log.debug("수제비의 foodWeatherEntity : {}",soojebi.getFoodWeatherEntity());
             log.debug("수제비의 weatherId : {}",soojebi.getFoodWeatherEntity().getWeatherEntity());

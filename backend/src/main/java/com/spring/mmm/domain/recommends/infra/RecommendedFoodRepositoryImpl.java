@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
@@ -17,9 +18,8 @@ public class RecommendedFoodRepositoryImpl implements RecommendedFoodRepository 
     private final RecommendedFoodJpaRepository recommendedFoodJpaRepository;
 
     @Override
-    public RecommendedFoodEntity findByRecommendedFoodId(Long recommendedFoodId) {
-        return recommendedFoodJpaRepository.findByRecommendedFoodId(recommendedFoodId)
-                .orElseThrow(() -> new RecommendException(RecommendErrorCode.RECOMMENDED_NOT_FOUND));
+    public Optional<RecommendedFoodEntity> findByRecommendedFoodId(Long recommendedFoodId) {
+        return recommendedFoodJpaRepository.findByRecommendedFoodId(recommendedFoodId);
     }
 
     @Override
@@ -28,9 +28,8 @@ public class RecommendedFoodRepositoryImpl implements RecommendedFoodRepository 
     }
 
     @Override
-    public RecommendedFoodEntity findRecommendedFoodByDate(Long mukgroupId, Integer year, Integer month, Integer day) {
-        return recommendedFoodJpaRepository.findRecommendedFoodByDate(mukgroupId, year, month, day)
-                .orElseThrow(() -> new RecommendException(RecommendErrorCode.RECOMMENDED_NOT_FOUND));
+    public Optional<RecommendedFoodEntity> findRecommendedFoodByDate(Long mukgroupId, Integer year, Integer month, Integer day) {
+        return recommendedFoodJpaRepository.findRecommendedFoodByDate(mukgroupId, year, month, day);
     }
 
     @Override

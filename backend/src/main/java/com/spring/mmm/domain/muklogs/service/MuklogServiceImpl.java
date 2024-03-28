@@ -4,6 +4,8 @@ import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
 import com.spring.mmm.domain.mukgroups.exception.MukGroupErrorCode;
 import com.spring.mmm.domain.mukgroups.exception.MukGroupException;
+import com.spring.mmm.domain.mukgroups.exception.MukboErrorCode;
+import com.spring.mmm.domain.mukgroups.exception.MukboException;
 import com.spring.mmm.domain.mukgroups.service.port.MukboRepository;
 import com.spring.mmm.domain.mukgroups.service.port.MukgroupRepository;
 import com.spring.mmm.domain.muklogs.controller.response.MuklogsResponse;
@@ -33,7 +35,8 @@ public class MuklogServiceImpl implements MuklogService{
 
         MukgroupEntity group = mukgroupRepository.findByMukgroupId(groupId)
                 .orElseThrow(() -> new MukGroupException(MukGroupErrorCode.NOT_FOUND));
-        MukboEntity mukboEntity = mukboRepository.findByUserId(userEntity.getId());
+        MukboEntity mukboEntity = mukboRepository.findByUserId(userEntity.getId())
+                .orElseThrow(() -> new MukboException(MukboErrorCode.NOT_FOUND));
         if (!mukboEntity.getMukgroupEntity().equals(group)) {
             throw new MukGroupException(MukGroupErrorCode.FORBIDDEN);
         }

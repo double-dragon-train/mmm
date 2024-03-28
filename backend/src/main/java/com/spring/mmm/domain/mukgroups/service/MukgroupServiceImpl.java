@@ -13,6 +13,8 @@ import com.spring.mmm.domain.mukgroups.exception.MukGroupErrorCode;
 import com.spring.mmm.domain.mukgroups.exception.MukGroupException;
 import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
+import com.spring.mmm.domain.mukgroups.exception.MukboErrorCode;
+import com.spring.mmm.domain.mukgroups.exception.MukboException;
 import com.spring.mmm.domain.mukgroups.service.port.MukboRepository;
 import com.spring.mmm.domain.mukgroups.service.port.MukgroupRepository;
 import com.spring.mmm.domain.muklogs.exception.MukgroupNotFoundException;
@@ -42,8 +44,10 @@ public class MukgroupServiceImpl implements MukgroupService{
     public void saveSoloMukGroup(String email) {
         UserEntity user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
-        MukgroupEntity mukgroupEntity = mukgroupRepository.save(MukgroupEntity.create(user.getNickname(), Boolean.TRUE));
+        MukgroupEntity mukgroupEntity = MukgroupEntity.create(user.getNickname(), Boolean.TRUE);
+        mukgroupRepository.save(mukgroupEntity);
         mukboRepository.save(mukboRepository.findByUserId(user.getId())
+                        .orElseThrow(() -> new MukboException(MukboErrorCode.NOT_FOUND))
                 .modifyGroup(mukgroupEntity.getMukgroupId()));
     }
 
@@ -55,11 +59,10 @@ public class MukgroupServiceImpl implements MukgroupService{
                 .getMukboEntity();
         MukgroupEntity originMukgroup = mukboEntity.getMukgroupEntity();
         if(originMukgroup.getIsSolo()){
-            MukgroupEntity mukgroupEntity = mukgroupRepository.save(
-                    MukgroupEntity
+            MukgroupEntity mukgroupEntity = MukgroupEntity
                     .create(name, Boolean.FALSE)
-                    .modifyMukgroupImage(s3Service.uploadFile(image))
-            );
+                    .modifyMukgroupImage(s3Service.uploadFile(image));
+            mukgroupRepository.save(mukgroupEntity);
             mukboRepository.save(mukboEntity.modifyGroup(mukgroupEntity.getMukgroupId()));
             mukgroupRepository.delete(originMukgroup);
         } else {
@@ -119,7 +122,8 @@ public class MukgroupServiceImpl implements MukgroupService{
             throw new MukGroupException(MukGroupErrorCode.FORBIDDEN);
         }
 
-        MukboEntity mukboEntity = mukboRepository.findByMukboId(mukboId);
+        MukboEntity mukboEntity = mukboRepository.findByMukboId(mukboId)
+                .orElseThrow(() -> new MukboException(MukboErrorCode.NOT_FOUND));
 
         if(!user.getMukboEntity().getMukgroupEntity().getMukgroupId()
                 .equals(mukboEntity.getMukgroupEntity().getMukgroupId())){

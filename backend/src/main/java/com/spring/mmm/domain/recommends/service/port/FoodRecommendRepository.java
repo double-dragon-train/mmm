@@ -7,6 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface FoodRecommendRepository {
-    FoodRecommendEntity findByMukgroupId(Long mukgroupId);
+    Optional<FoodRecommendEntity> findByMukgroupId(Long mukgroupId);
 
 }

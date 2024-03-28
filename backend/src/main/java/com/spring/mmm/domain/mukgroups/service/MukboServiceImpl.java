@@ -18,6 +18,8 @@ import com.spring.mmm.domain.mukgroups.event.MukboNicknameChangedEvent;
 import com.spring.mmm.domain.mukgroups.event.MukbotModifiedEvent;
 import com.spring.mmm.domain.mukgroups.exception.MukGroupErrorCode;
 import com.spring.mmm.domain.mukgroups.exception.MukGroupException;
+import com.spring.mmm.domain.mukgroups.exception.MukboErrorCode;
+import com.spring.mmm.domain.mukgroups.exception.MukboException;
 import com.spring.mmm.domain.mukgroups.service.port.MukboRepository;
 import com.spring.mmm.domain.users.exception.UserErrorCode;
 import com.spring.mmm.domain.users.exception.UserException;
@@ -75,7 +77,8 @@ public class MukboServiceImpl implements MukboService{
         }
 
         if(mukboInviteRequest.getMukbotId() != null) {
-            mukboRepository.delete(mukboRepository.findByMukboId(mukboInviteRequest.getMukbotId()));
+            mukboRepository.delete(mukboRepository.findByMukboId(mukboInviteRequest.getMukbotId())
+                    .orElseThrow(() -> new MukboException(MukboErrorCode.NOT_FOUND)));
         }
 
         mukboEntity.modifyName(mukboInviteRequest.getNickname());
@@ -83,7 +86,8 @@ public class MukboServiceImpl implements MukboService{
         mukboRepository.save(mukboEntity);
 
 
-        MukboEntity userMukbo = mukboRepository.findByUserId(user.getId());
+        MukboEntity userMukbo = mukboRepository.findByUserId(user.getId())
+                .orElseThrow(() -> new MukboException(MukboErrorCode.NOT_FOUND));
 
         Events.raise(new MukboInvitedEvent(userMukbo.getName(),mukboInviteRequest.getNickname(), groupId));
     }
@@ -92,7 +96,8 @@ public class MukboServiceImpl implements MukboService{
     @Override
     @Transactional
     public void modifyMukbot(String email, Long mukboId, MBTI mbti, String name) {
-        MukboEntity mukbotEntity = mukboRepository.findByMukboId(mukboId);
+        MukboEntity mukbotEntity = mukboRepository.findByMukboId(mukboId)
+                .orElseThrow(() -> new MukboException(MukboErrorCode.NOT_FOUND));
         mukbotEntity.modifyName(name);
 
         List<MukBTIResultEntity> mukBTIResults = mukBTIResultRepository.findAllMukBTIResultByMukboId(mukboId);
@@ -116,7 +121,8 @@ public class MukboServiceImpl implements MukboService{
     @Override
     @Transactional
     public void modifyMokbo(Long userId, String name) {
-        MukboEntity mukboEntity = mukboRepository.findByUserId(userId);
+        MukboEntity mukboEntity = mukboRepository.findByUserId(userId)
+                .orElseThrow(() -> new MukboException(MukboErrorCode.NOT_FOUND));
         mukboEntity.modifyName(name);
         mukboRepository.save(mukboEntity);
         Events.raise(new MukboNicknameChangedEvent(name, mukboEntity.getMukgroupEntity().getMukgroupId()));
@@ -145,7 +151,8 @@ public class MukboServiceImpl implements MukboService{
     @Override
     @Transactional
     public void deleteMukbo(Long mukboId) {
-        mukboRepository.delete(mukboRepository.findByMukboId(mukboId));
+        mukboRepository.delete(mukboRepository.findByMukboId(mukboId)
+                .orElseThrow(() -> new MukboException(MukboErrorCode.NOT_FOUND)));
     }
 
     private void createMukBTIResults(List<MukBTIResultEntity> results, MukboEntity mukbo, MBTI mbti){

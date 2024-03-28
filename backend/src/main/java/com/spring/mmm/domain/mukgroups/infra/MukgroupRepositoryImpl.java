@@ -17,8 +17,8 @@ public class MukgroupRepositoryImpl implements MukgroupRepository {
     private final MukgroupJpaRepository mukgroupJpaRepository;
     
     @Override
-    public MukgroupEntity save(MukgroupEntity mukgroupEntity) {
-        return mukgroupJpaRepository.save(mukgroupEntity);
+    public void save(MukgroupEntity mukgroupEntity) {
+        mukgroupJpaRepository.save(mukgroupEntity);
     }
 
     @Override

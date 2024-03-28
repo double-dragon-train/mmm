@@ -4,6 +4,8 @@ import com.spring.mmm.domain.mukus.controller.response.*;
 import com.spring.mmm.domain.recommends.domain.FoodCategoryEntity;
 import com.spring.mmm.domain.recommends.domain.FoodRecommendEntity;
 import com.spring.mmm.domain.recommends.domain.RecommendedFoodEntity;
+import com.spring.mmm.domain.recommends.exception.RecommendErrorCode;
+import com.spring.mmm.domain.recommends.exception.RecommendException;
 import com.spring.mmm.domain.recommends.service.port.FoodCategoryRepository;
 import com.spring.mmm.domain.recommends.service.port.FoodRecommendRepository;
 import com.spring.mmm.domain.recommends.service.port.RecommendedFoodRepository;
@@ -31,7 +33,8 @@ public class MukusServiceImpl implements MukusService {
     public void selectRecentMukus(Long recommendFoodId) {
 
         RecommendedFoodEntity recommendedFoodEntity =
-                recommendedFoodRepository.findByRecommendedFoodId(recommendFoodId);
+                recommendedFoodRepository.findByRecommendedFoodId(recommendFoodId)
+                        .orElseThrow(() -> new RecommendException(RecommendErrorCode.RECOMMEND_NOT_FOUND));
 
         recommendedFoodEntity.eat();
 
@@ -53,7 +56,8 @@ public class MukusServiceImpl implements MukusService {
     @Transactional(readOnly = true)
     public MukusRecentResponse getRecentMukus(Long groupId) {
 
-        FoodRecommendEntity foodRecommendEntity = foodRecommendRepository.findByMukgroupId(groupId);
+        FoodRecommendEntity foodRecommendEntity = foodRecommendRepository.findByMukgroupId(groupId)
+                .orElseThrow(() -> new RecommendException(RecommendErrorCode.FOOD_RECOMMEND_NOT_FOUND));
 
         List<RecommendedFoodEntity> recommendedFoodEntities = foodRecommendEntity.getRecommendedFoodEntities();
 
@@ -72,7 +76,8 @@ public class MukusServiceImpl implements MukusService {
     @Transactional(readOnly = true)
     public MukusDetailResponse getMukusDetail(Long groupId, Integer year, Integer month, Integer day) {
         RecommendedFoodEntity recommendedFoodEntity =
-                recommendedFoodRepository.findRecommendedFoodByDate(groupId, year, month, day);
+                recommendedFoodRepository.findRecommendedFoodByDate(groupId, year, month, day)
+                        .orElseThrow(() -> new RecommendException(RecommendErrorCode.RECOMMENDED_NOT_FOUND));
 
         return MukusDetailResponse.create(recommendedFoodEntity);
     }
