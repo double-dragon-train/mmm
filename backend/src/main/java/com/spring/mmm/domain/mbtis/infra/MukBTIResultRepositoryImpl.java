@@ -26,4 +26,9 @@ public class MukBTIResultRepositoryImpl implements MukBTIResultRepository {
     public void saveAll(List<MukBTIResultEntity> mukBTIResultEntities) {
         mukBTIResultJpaRepository.saveAll(mukBTIResultEntities);
     }
+
+    @Override
+    public void deleteAll(List<MukBTIResultEntity> mukBTIResultEntities) {
+        mukBTIResultJpaRepository.deleteAll(mukBTIResultEntities);
+    }
 }
