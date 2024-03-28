@@ -109,7 +109,7 @@ public class WeatherService {
         }
     }
 
-    public static class getGRID {
+    public static class Grid{
         public double x;
         public double y;
     }
