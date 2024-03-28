@@ -24,4 +24,11 @@ public class MukgroupMukjukEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mukgroup_id")
     private MukgroupEntity mukgroupEntity;
+
+    public static MukgroupMukjukEntity create(MukgroupEntity mukgroupEntity, MukjukEntity mukjukEntity){
+        return MukgroupMukjukEntity.builder()
+                .mukjukEntity(mukjukEntity)
+                .mukgroupEntity(mukgroupEntity)
+                .build();
+    }
 }

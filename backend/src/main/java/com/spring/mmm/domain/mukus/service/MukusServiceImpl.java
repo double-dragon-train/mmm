@@ -63,7 +63,7 @@ public class MukusServiceImpl implements MukusService {
 
         List<RecommendFood> recommendFoods = recommendedFoodEntities.stream().map(food -> {
             FoodCategory foodCategory = FoodCategory.create(
-                    food.getFoodEntity().getFoodCategoryEntity().getName(),
+                    food.getFoodEntity().getFoodCategoryEntity().getName().getKoreanName(),
                     food.getFoodEntity().getFoodCategoryEntity().getColor()
             );
             return RecommendFood.create(foodCategory, food);
