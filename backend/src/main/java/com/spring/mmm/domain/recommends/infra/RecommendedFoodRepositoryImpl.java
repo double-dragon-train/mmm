@@ -33,4 +33,9 @@ public class RecommendedFoodRepositoryImpl implements RecommendedFoodRepository 
                 .orElseThrow(() -> new RecommendException(RecommendErrorCode.RECOMMENDED_NOT_FOUND));
     }
 
+    @Override
+    public List<Integer> findAllFoodIdByMukgroupId(Long mukgroupId) {
+        return recommendedFoodJpaRepository.findAllFoodIdByMukgroupId(mukgroupId);
+    }
+
 }

@@ -60,9 +60,11 @@ public class MukboServiceImpl implements MukboService{
 
     @Override
     @Transactional
-    public void inviteMukbo(UserEntity user, Long groupId, MukboInviteRequest mukboInviteRequest) {
-        MukboEntity mukboEntity = mukboRepository.findByUserId(userRepository.findByEmail(mukboInviteRequest.getEmail())
-                .orElseThrow(() -> new UserException(UserErrorCode.EMAIL_NOT_FOUND)).getId());
+    public void inviteMukbo(String email, Long groupId, MukboInviteRequest mukboInviteRequest) {
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+
+        MukboEntity mukboEntity = user.getMukboEntity();
 
         if(!mukboEntity.getMukgroupEntity().getMukgroupId().equals(groupId)){
             throw new MukGroupException(MukGroupErrorCode.FORBIDDEN);
@@ -89,7 +91,7 @@ public class MukboServiceImpl implements MukboService{
 
     @Override
     @Transactional
-    public void modifyMukbot(UserEntity user, Long mukboId, MBTI mbti, String name) {
+    public void modifyMukbot(String email, Long mukboId, MBTI mbti, String name) {
         MukboEntity mukbotEntity = mukboRepository.findByMukboId(mukboId);
         mukbotEntity.modifyName(name);
 
@@ -105,6 +107,9 @@ public class MukboServiceImpl implements MukboService{
         mukbotEntity.modifyMukBTIResult(mukBTIResults);
         mukboRepository.save(mukbotEntity);
 
+        UserEntity user = userRepository.findByEmail(email)
+                        .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+
         Events.raise(new MukbotModifiedEvent(user.getMukboEntity().getName(), name, user.getMukboEntity().getMukgroupEntity().getMukgroupId()));
     }
 
@@ -119,7 +124,10 @@ public class MukboServiceImpl implements MukboService{
 
     @Override
     @Transactional
-    public void saveMukbot(UserEntity user, MukbotCreateRequest mukbotCreateRequest) {
+    public void saveMukbot(String email, MukbotCreateRequest mukbotCreateRequest) {
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+
         if(user.getMukboEntity().getMukgroupEntity().getIsSolo()){
             throw new MukGroupException(MukGroupErrorCode.SOLOGROUP_CANT_INVITE);
         }
