@@ -26,6 +26,7 @@ import com.spring.mmm.domain.users.infra.UserEntity;
 import com.spring.mmm.domain.users.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -33,6 +34,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MukboServiceImpl implements MukboService{
     private final MukboRepository mukboRepository;
     private final UserRepository userRepository;
@@ -57,9 +59,12 @@ public class MukboServiceImpl implements MukboService{
     }
 
     @Override
-    public void inviteMukbo(UserEntity user, Long groupId, MukboInviteRequest mukboInviteRequest) {
-        MukboEntity mukboEntity = mukboRepository.findByUserId(userRepository.findByEmail(mukboInviteRequest.getEmail())
-                .orElseThrow(() -> new UserException(UserErrorCode.EMAIL_NOT_FOUND)).getId());
+    @Transactional
+    public void inviteMukbo(String email, Long groupId, MukboInviteRequest mukboInviteRequest) {
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+
+        MukboEntity mukboEntity = user.getMukboEntity();
 
         if(!mukboEntity.getMukgroupEntity().getMukgroupId().equals(groupId)){
             throw new MukGroupException(MukGroupErrorCode.FORBIDDEN);
@@ -85,7 +90,8 @@ public class MukboServiceImpl implements MukboService{
 
 
     @Override
-    public void modifyMukbot(UserEntity user, Long mukboId, MBTI mbti, String name) {
+    @Transactional
+    public void modifyMukbot(String email, Long mukboId, MBTI mbti, String name) {
         MukboEntity mukbotEntity = mukboRepository.findByMukboId(mukboId);
         mukbotEntity.modifyName(name);
 
@@ -101,10 +107,14 @@ public class MukboServiceImpl implements MukboService{
         mukbotEntity.modifyMukBTIResult(mukBTIResults);
         mukboRepository.save(mukbotEntity);
 
+        UserEntity user = userRepository.findByEmail(email)
+                        .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+
         Events.raise(new MukbotModifiedEvent(user.getMukboEntity().getName(), name, user.getMukboEntity().getMukgroupEntity().getMukgroupId()));
     }
 
     @Override
+    @Transactional
     public void modifyMokbo(Long userId, String name) {
         MukboEntity mukboEntity = mukboRepository.findByUserId(userId);
         mukboEntity.modifyName(name);
@@ -113,7 +123,11 @@ public class MukboServiceImpl implements MukboService{
     }
 
     @Override
-    public void saveMukbot(UserEntity user, MukbotCreateRequest mukbotCreateRequest) {
+    @Transactional
+    public void saveMukbot(String email, MukbotCreateRequest mukbotCreateRequest) {
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+
         if(user.getMukboEntity().getMukgroupEntity().getIsSolo()){
             throw new MukGroupException(MukGroupErrorCode.SOLOGROUP_CANT_INVITE);
         }
@@ -129,6 +143,7 @@ public class MukboServiceImpl implements MukboService{
     }
 
     @Override
+    @Transactional
     public void deleteMukbo(Long mukboId) {
         mukboRepository.delete(mukboRepository.findByMukboId(mukboId));
     }

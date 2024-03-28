@@ -16,7 +16,7 @@ public enum MukGroupErrorCode implements ErrorCode {
     FORBIDDEN(HttpStatus.FORBIDDEN, "이 먹그룹에 접근할 권한이 없습니다."),
     ANOTHER_MUKGROUP(HttpStatus.FORBIDDEN, "다른 먹그룹에 속한 먹보입니다."),
     SOLOGROUP_CANT_INVITE(HttpStatus.BAD_REQUEST, "솔로 먹그룹에 먹보를 추가할 수 없습니다."),
-    MUKGROUP_NOT_FOUND(HttpStatus.NOT_FOUND, "먹그룹이 존재하지 않습니다."),
+    NOT_FOUND(HttpStatus.NOT_FOUND, "해당 먹그룹을 찾을 수 없습니다.")
     ;
 
     private final HttpStatus httpStatus;

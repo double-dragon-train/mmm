@@ -8,9 +8,9 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class Question {
+public class MukBTIQuestion {
     private Integer quizId;
     private String context;
     private String img;
-    private List<AnswerResponse> answers;
+    private List<MukBTIAnswerResponse> answers;
 }

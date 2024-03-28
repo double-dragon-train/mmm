@@ -36,21 +36,7 @@ public class MukusController {
     @GetMapping("/groups/{groupId}/recent")
     public ResponseEntity<MukusRecentResponse> getRecentMukus(@PathVariable Long groupId){
 
-        FoodRecommendEntity foodRecommendEntity = foodRecommendRepository.findByMukgroupId(groupId);
-
-        List<RecommendedFoodEntity> recommendedFoodEntities = foodRecommendEntity.getRecommendedFoodEntities();
-
-        List<RecommendFood> recommendFoods = recommendedFoodEntities.stream().map(food -> {
-            FoodCategoryEntity category = foodCategoryRepository.findByFoodId(food.getFoodEntity().getFoodId());
-            FoodCategory foodCategory = FoodCategory.create(category.getName(), category.getColor());
-            return RecommendFood.create(foodCategory, food);
-        }).collect(Collectors.toList());
-
-
-        RecommendData recommendData = RecommendData.create(recommendFoods);
-
-
-        return ResponseEntity.ok(MukusRecentResponse.create(recommendData));
+        return ResponseEntity.ok(mukusService.getRecentMukus(groupId));
     }
 
     @PostMapping("/groups/{groupId}/recent")

@@ -5,6 +5,8 @@ import com.spring.mmm.domain.recommends.service.port.FoodRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class FoodRepositoryImpl implements FoodRepository {
@@ -14,5 +16,10 @@ public class FoodRepositoryImpl implements FoodRepository {
     @Override
     public FoodEntity findByName(String name) {
         return foodJpaRepository.findByName(name);
+    }
+
+    @Override
+    public List<FoodEntity> findAll() {
+        return foodJpaRepository.findAll();
     }
 }

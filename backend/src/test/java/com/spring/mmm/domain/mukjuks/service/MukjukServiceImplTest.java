@@ -49,7 +49,7 @@ class MukjukServiceImplTest {
 
 
         given(mukgroupRepository.findByMukgroupId(any()))
-                .willReturn(Optional.of(TestFixture.mukgroupEntity));
+                .willReturn(TestFixture.mukgroupEntity);
         given(mukboRepository.findByUserId(any()))
                 .willReturn(TestFixture.mukboEntityGroup);
         given(mukjukRepository.findAllBadges(any()))
@@ -64,23 +64,6 @@ class MukjukServiceImplTest {
         sa.assertAll();
     }
 
-    @Test
-    void 먹적_조회_테스트_실패_그룹_아이디가_존재하지_않는_경우() throws Exception {
-// given
-        Long groupId = 1L;
-        UserDetailsImpl users = new UserDetailsImpl(
-                UserEntity.builder()
-                        .id(1L)
-                        .build()
-                , "tester@naver.com");
-
-        given(mukgroupRepository.findByMukgroupId(any()))
-                .willReturn(Optional.empty());
-        // when // then
-        assertThatThrownBy(() -> mukjukService.findAllMukjuks(groupId, users))
-                .isInstanceOf(MukGroupException.class)
-                .hasFieldOrPropertyWithValue("errorCode", MukGroupErrorCode.MUKGROUP_NOT_FOUND);
-    }
 
     @Test
     void 먹적_조회_테스트_실패_내가_그룹에_속하지_않는_경우() throws Exception {
@@ -92,7 +75,7 @@ class MukjukServiceImplTest {
                 , "tester@naver.com");
 
         given(mukgroupRepository.findByMukgroupId(any()))
-                .willReturn(Optional.of(TestFixture.mukgroupEntity));
+                .willReturn(TestFixture.mukgroupEntity);
         given(mukboRepository.findByUserId(any()))
                 .willReturn(TestFixture.mukboEntitySologroup);
         // when // then
@@ -111,7 +94,7 @@ class MukjukServiceImplTest {
                 , "tester@naver.com");
 
         given(mukgroupRepository.findByMukgroupId(any()))
-                .willReturn(Optional.of(TestFixture.soloMukgroupEntity));
+                .willReturn(TestFixture.soloMukgroupEntity);
         // when // then
         assertThatThrownBy(() -> mukjukService.findAllMukjuks(groupId, users))
                 .isInstanceOf(MukGroupException.class)

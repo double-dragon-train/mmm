@@ -15,13 +15,13 @@ public interface MukboService {
 
     List<MukboResponse> findAllMukbotResponsesByGroupId(Long groupId);
 
-    void inviteMukbo(UserEntity user, Long groupId, MukboInviteRequest mukboInviteRequest);
+    void inviteMukbo(String email, Long groupId, MukboInviteRequest mukboInviteRequest);
 
-    void modifyMukbot(UserEntity user, Long mukbotId, MBTI mbti, String name);
+    void modifyMukbot(String email, Long mukbotId, MBTI mbti, String name);
 
     void modifyMokbo(Long userId, String name);
 
-    void saveMukbot(UserEntity user, MukbotCreateRequest mukbotCreateRequest);
+    void saveMukbot(String email, MukbotCreateRequest mukbotCreateRequest);
 
     void deleteMukbo(Long mukbotId);
 }

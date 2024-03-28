@@ -200,7 +200,7 @@ class MukboServiceImplTest {
         BDDMockito.given(userRepository.findByEmail(any()))
                         .willReturn(Optional.of(user));
         
-        assertDoesNotThrow(() -> mukboService.inviteMukbo(user, 1L, mukboInviteRequest));
+        assertDoesNotThrow(() -> mukboService.inviteMukbo(user.getEmail(), 1L, mukboInviteRequest));
     }
 
     @Test
@@ -208,7 +208,7 @@ class MukboServiceImplTest {
         BDDMockito.given(userRepository.findByEmail(any()))
                 .willReturn(Optional.empty());
 
-        assertThrows(UserException.class, () -> mukboService.inviteMukbo(user, 1L, mukboInviteRequest));
+        assertThrows(UserException.class, () -> mukboService.inviteMukbo(user.getEmail(), 1L, mukboInviteRequest));
     }
 
     @Test
@@ -219,7 +219,10 @@ class MukboServiceImplTest {
         BDDMockito.given(mukBTIResultRepository.findAllMukBTIResultByMukboId(any()))
                 .willReturn(mukBTIResultEntities);
 
-        assertDoesNotThrow(() -> mukboService.modifyMukbot(user, 2L, mbti, "ssafy123"));
+        BDDMockito.given(userRepository.findByEmail(any()))
+                .willReturn(Optional.of(user));
+
+        assertDoesNotThrow(() -> mukboService.modifyMukbot(user.getEmail(), 2L, mbti, "ssafy123"));
     }
 
     @Test
@@ -234,12 +237,19 @@ class MukboServiceImplTest {
     void 먹보생성_성공(){
         BDDMockito.given(mukBTIRepository.findAllMukBTI())
                         .willReturn(mukBTIEntities);
-        assertDoesNotThrow(() -> mukboService.saveMukbot(user, mukbotCreateRequest));
+
+        BDDMockito.given(userRepository.findByEmail(any()))
+                .willReturn(Optional.of(user));
+
+        assertDoesNotThrow(() -> mukboService.saveMukbot(user.getEmail(), mukbotCreateRequest));
     }
 
     @Test
     void 솔로그룹_먹보생성_실패(){
-        assertThrows(MukGroupException.class, () -> mukboService.saveMukbot(sologroupUser, mukbotCreateRequest));
+        BDDMockito.given(userRepository.findByEmail(any()))
+                .willReturn(Optional.of(sologroupUser));
+
+        assertThrows(MukGroupException.class, () -> mukboService.saveMukbot(sologroupUser.getEmail(), mukbotCreateRequest));
     }
 
     @Test

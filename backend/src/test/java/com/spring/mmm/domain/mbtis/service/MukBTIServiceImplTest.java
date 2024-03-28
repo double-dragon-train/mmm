@@ -1,7 +1,7 @@
 package com.spring.mmm.domain.mbtis.service;
 
 import com.spring.mmm.common.service.RedisRepository;
-import com.spring.mmm.domain.mbtis.controller.request.CalcInfo;
+import com.spring.mmm.domain.mbtis.controller.request.MukBTICalcInfo;
 import com.spring.mmm.domain.mbtis.controller.request.MukBTICalcRequest;
 import com.spring.mmm.domain.mbtis.controller.response.MukBTIResult;
 import com.spring.mmm.domain.mbtis.domain.*;
@@ -11,11 +11,9 @@ import com.spring.mmm.domain.mbtis.service.port.MukBTIRepository;
 import com.spring.mmm.domain.mbtis.service.port.MukBTIResultRepository;
 import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.mukgroups.domain.MukboType;
-import com.spring.mmm.domain.users.infra.UserDetailsImpl;
 import com.spring.mmm.domain.users.infra.UserEntity;
-import org.aspectj.lang.annotation.Before;
+import com.spring.mmm.domain.users.service.port.UserRepository;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
@@ -45,6 +43,9 @@ class MukBTIServiceImplTest {
     @Mock
     private RedisRepository redisRepository;
 
+    @Mock
+    private UserRepository userRepository;
+
     @InjectMocks
     private MukBTIServiceImpl mukBTIService;
 
@@ -59,9 +60,9 @@ class MukBTIServiceImplTest {
 
     @BeforeAll
     static void 먹비티아이_자료장전() {
-        List<CalcInfo> calcInfos = new ArrayList<>();
+        List<MukBTICalcInfo> mukBTICalcInfos = new ArrayList<>();
         for (int i = 1; i <= 7; i++) {
-            calcInfos.add(CalcInfo.builder()
+            mukBTICalcInfos.add(MukBTICalcInfo.builder()
                     .quizId(i)
                     .answerId(i)
                     .build()
@@ -70,7 +71,7 @@ class MukBTIServiceImplTest {
         // 질문리스트 장전
 
         mukBTICalcRequest = MukBTICalcRequest.builder()
-                .answers(calcInfos)
+                .answers(mukBTICalcInfos)
                 .build();
         // 요청 장전
 
@@ -156,8 +157,8 @@ class MukBTIServiceImplTest {
 
     @Test
     void 먹비티아이_없는질문_들이댐_실패() {
-        List<CalcInfo> test = new ArrayList<>();
-        test.add(CalcInfo.builder()
+        List<MukBTICalcInfo> test = new ArrayList<>();
+        test.add(MukBTICalcInfo.builder()
                 .quizId(8)
                         .answerId(7)
                 .build()
@@ -175,8 +176,8 @@ class MukBTIServiceImplTest {
 
     @Test
     void 먹비티아이_없는답변_들이댐_실패() {
-        List<CalcInfo> test = new ArrayList<>();
-        test.add(CalcInfo.builder()
+        List<MukBTICalcInfo> test = new ArrayList<>();
+        test.add(MukBTICalcInfo.builder()
                 .quizId(7)
                         .answerId(1)
                 .build()
@@ -194,8 +195,8 @@ class MukBTIServiceImplTest {
 
     @Test
     void NULL값이_포함됨_실패(){
-        List<CalcInfo> test = new ArrayList<>();
-        test.add(CalcInfo.builder()
+        List<MukBTICalcInfo> test = new ArrayList<>();
+        test.add(MukBTICalcInfo.builder()
                 .answerId(1)
                 .build()
         );
@@ -212,7 +213,7 @@ class MukBTIServiceImplTest {
         BDDMockito.given(redisRepository.getData(any(), any()))
                 .willReturn(Optional.empty());
 
-        assertThrows(MukBTIException.class, () -> mukBTIService.save(user, "1234"));
+        assertThrows(MukBTIException.class, () -> mukBTIService.save(user.getEmail(), "1234"));
     }
 
     @Test
@@ -223,7 +224,10 @@ class MukBTIServiceImplTest {
         BDDMockito.given(mukBTIRepository.findAllMukBTI())
                 .willReturn(mukBTIs);
 
-        assertDoesNotThrow(() -> mukBTIService.save(user, "1234"));
+        BDDMockito.given(userRepository.findByEmail(any()))
+                .willReturn(Optional.of(user));
+
+        assertDoesNotThrow(() -> mukBTIService.save(user.getEmail(), "1234"));
     }
 
     @Test
@@ -231,7 +235,10 @@ class MukBTIServiceImplTest {
         BDDMockito.given(mukBTIResultRepository.findAllMukBTIResultByMukboId(any()))
                 .willReturn(mukBTIResultEntities);
 
-        assertDoesNotThrow(() -> mukBTIService.getMukBTI(user));
+        BDDMockito.given(userRepository.findByEmail(any()))
+                        .willReturn(Optional.of(user));
+
+        assertDoesNotThrow(() -> mukBTIService.getMukBTI(user.getEmail()));
     }
 
     @Test
@@ -239,7 +246,10 @@ class MukBTIServiceImplTest {
         BDDMockito.given(mukBTIResultRepository.findAllMukBTIResultByMukboId(any()))
                 .willReturn(emptyMukBTIResultEntity);
 
-        assertThrows(MukBTIException.class, () -> mukBTIService.getMukBTI(user));
+        BDDMockito.given(userRepository.findByEmail(any()))
+                .willReturn(Optional.of(user));
+
+        assertThrows(MukBTIException.class, () -> mukBTIService.getMukBTI(user.getEmail()));
     }
 
     @Test
@@ -247,6 +257,9 @@ class MukBTIServiceImplTest {
         BDDMockito.given(mukBTIResultRepository.findAllMukBTIResultByMukboId(any()))
                 .willReturn(new ArrayList<>());
 
-        assertThrows(MukBTIException.class, () -> mukBTIService.getMukBTI(user));
+        BDDMockito.given(userRepository.findByEmail(any()))
+                .willReturn(Optional.of(user));
+
+        assertThrows(MukBTIException.class, () -> mukBTIService.getMukBTI(user.getEmail()));
     }
 }

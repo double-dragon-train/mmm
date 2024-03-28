@@ -1,7 +1,7 @@
 package com.spring.mmm.domain.mbtis.service;
 
 import com.spring.mmm.common.service.RedisRepository;
-import com.spring.mmm.domain.mbtis.controller.request.CalcInfo;
+import com.spring.mmm.domain.mbtis.controller.request.MukBTICalcInfo;
 import com.spring.mmm.domain.mbtis.controller.request.MukBTICalcRequest;
 import com.spring.mmm.domain.mbtis.controller.response.MukBTIResponse;
 import com.spring.mmm.domain.mbtis.controller.response.MukBTIResult;
@@ -12,9 +12,13 @@ import com.spring.mmm.domain.mbtis.service.port.MukBTIQuestionRepository;
 import com.spring.mmm.domain.mbtis.service.port.MukBTIRepository;
 import com.spring.mmm.domain.mbtis.service.port.MukBTIResultRepository;
 import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
+import com.spring.mmm.domain.users.exception.UserErrorCode;
+import com.spring.mmm.domain.users.exception.UserException;
 import com.spring.mmm.domain.users.infra.UserEntity;
+import com.spring.mmm.domain.users.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +26,13 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MukBTIServiceImpl implements MukBTIService {
     private final MukBTIQuestionRepository mukBTIQuestionRepository;
     private final RedisRepository redisRepository;
     private final MukBTIResultRepository mukBTIResultRepository;
     private final MukBTIRepository mukBTIRepository;
+    private final UserRepository userRepository;
 
     @Override
     public List<MukBTIQuestionEntity> findAllMukBTIQuestion() {
@@ -35,8 +41,8 @@ public class MukBTIServiceImpl implements MukBTIService {
 
     @Override
     public MukBTIResult calcMBTI(MukBTICalcRequest mukBTICalcRequest) {
-        for(CalcInfo calcInfo : mukBTICalcRequest.getAnswers()){
-            if(calcInfo.getQuizId() == null || calcInfo.getAnswerId() == null){
+        for(MukBTICalcInfo mukBTICalcInfo : mukBTICalcRequest.getAnswers()){
+            if(mukBTICalcInfo.getQuizId() == null || mukBTICalcInfo.getAnswerId() == null){
                 throw new MukBTIException(MukBTIErrorCode.BAD_REQUEST);
             }
         }
@@ -45,10 +51,10 @@ public class MukBTIServiceImpl implements MukBTIService {
 
         int EI = 0, NS = 0, TF = 0, JP = 0, Mint = 0, Pine = 0, Die = 0;
 
-        for(CalcInfo calcInfo : mukBTICalcRequest.getAnswers()){
-            MukBTIQuestionEntity question = matchQuestion(questions, calcInfo.getQuizId());
+        for(MukBTICalcInfo mukBTICalcInfo : mukBTICalcRequest.getAnswers()){
+            MukBTIQuestionEntity question = matchQuestion(questions, mukBTICalcInfo.getQuizId());
 
-            MukBTIAnswerEntity answer = matchAnswer(question.getMukBTIAnswerEntities(), calcInfo.getAnswerId());
+            MukBTIAnswerEntity answer = matchAnswer(question.getMukBTIAnswerEntities(), mukBTICalcInfo.getAnswerId());
 
             switch (question.getMukBTIEntity().getType()) {
                 case MukBTIType.EI -> EI += answer.getScore();
@@ -62,10 +68,10 @@ public class MukBTIServiceImpl implements MukBTIService {
         }
 
         MBTI mbti = MBTI.builder()
-                .EI(EI / 3)
-                .NS(NS / 3)
-                .TF(TF / 3)
-                .JP(JP / 3)
+                .EI(EI)
+                .NS(NS)
+                .TF(TF)
+                .JP(JP)
                 .Mint(Mint)
                 .Pine(Pine)
                 .Die(Die)
@@ -77,10 +83,13 @@ public class MukBTIServiceImpl implements MukBTIService {
     }
 
     @Override
-    public void save(UserEntity user, String key) {
+    @Transactional
+    public void save(String email, String key) {
         MBTI mbti = redisRepository.getData(key, MBTI.class)
                 .orElseThrow(() -> new MukBTIException(MukBTIErrorCode.NOT_FOUND));
 
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
         MukboEntity mukboEntity = user.getMukboEntity();
 
         List<MukBTIResultEntity> results = new ArrayList<>();
@@ -104,9 +113,10 @@ public class MukBTIServiceImpl implements MukBTIService {
     }
 
     @Override
-    public MukBTIResponse getMukBTI(UserEntity user) {
+    public MukBTIResponse getMukBTI(String email) {
         List<MukBTIResultEntity> mukBTIResultEntities = mukBTIResultRepository.findAllMukBTIResultByMukboId(
-                                user
+                                userRepository.findByEmail(email)
+                                        .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND))
                                 .getMukboEntity()
                                 .getMukboId()
                                 );

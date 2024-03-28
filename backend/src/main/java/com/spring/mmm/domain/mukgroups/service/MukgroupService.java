@@ -8,20 +8,20 @@ import com.spring.mmm.domain.users.infra.UserEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface MukgroupService {
-    void saveSoloMukGroup(String name, UserEntity user);
-    void saveMukGroup(String name, UserEntity user);
+    void saveSoloMukGroup(String email);
+    void saveMukGroup(String name, String email, MultipartFile image);
 
-    MukgroupEntity findMyMukgroup(UserEntity user);
+    MukgroupEntity findMyMukgroup(String email);
 
     MukgroupEntity findMukgroupById(Long groupId);
 
-    void modifyGroupName(Long groupId, String name, UserEntity users);
+    void modifyGroupName(Long groupId, String name, String email);
 
-    void modifyGroupImage(Long groupId, MultipartFile multipartFile, UserDetailsImpl users);
+    void modifyGroupImage(Long groupId, MultipartFile multipartFile, String email);
 
-    void kickMukbo(UserEntity user, Long groupId, Long mukboId);
+    void kickMukbo(String email, Long groupId, Long mukboId);
 
-    void exitMukgroup(UserEntity user, Long groupId);
+    void exitMukgroup(String email, Long groupId);
 
     MBTI calcGroupMukBTI(Long groupId, MukgroupMBTICalcRequest mbtiCalcRequest);
 }

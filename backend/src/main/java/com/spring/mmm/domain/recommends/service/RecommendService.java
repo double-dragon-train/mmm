@@ -1,23 +1,16 @@
 package com.spring.mmm.domain.recommends.service;
 
-import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
-import com.spring.mmm.domain.mukgroups.service.port.MukgroupRepository;
-import com.spring.mmm.domain.recommends.domain.FoodRecommendEntity;
-import com.spring.mmm.domain.recommends.service.port.FoodRecommendRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.spring.mmm.domain.recommends.controller.request.LunchRecommendRequest;
+import com.spring.mmm.domain.recommends.controller.response.FoodInformation;
+import com.spring.mmm.domain.recommends.controller.response.LunchRecommendFoodInformation;
+import com.spring.mmm.domain.recommends.controller.response.NewRecommendedFoodInformation;
 
-import java.util.Optional;
+import java.util.List;
 
-@Slf4j
-@Service
-@RequiredArgsConstructor
-@Transactional(readOnly = true)
-public class RecommendService {
+public interface RecommendService {
+    List<FoodInformation> recommendRandomFood();
 
-    private final FoodRecommendRepository foodRecommendRepository;
-    private final MukgroupRepository mukgroupRepository;
+    List<LunchRecommendFoodInformation> lunchRecommendFood(LunchRecommendRequest lunchRecommendRequest);
 
+    NewRecommendedFoodInformation newRecommendFood(Long mukgroupId);
 }
