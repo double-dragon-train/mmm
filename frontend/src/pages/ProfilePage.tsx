@@ -22,7 +22,7 @@ import { useMutation } from '@tanstack/react-query';
 import userStore from '../stores/userStore';
 
 function ProfilePage() {
-  const { accessToken, setAccessToken, setIsLogin } = userStore();
+  const { setAccessToken, setRefreshToken, setIsLogin } = userStore();
   const navigate = useNavigate();
   const [inputList, setInputList] = useState({
     nickname: '',
@@ -125,18 +125,19 @@ function ProfilePage() {
     onSuccess: () => {
       navigate('/landing');
       setAccessToken('');
+      setRefreshToken('');
       setIsLogin(false);
     },
   });
   const handleLogout = () => {
-    mutateLogout(accessToken);
+    mutateLogout();
   };
 
   // 현재 사용자 정보 조회 api
   const { data: userInfo, isPending } = useQuery({
     queryKey: ['userInfo'], 
     queryFn: () =>
-    getProfile(accessToken)},
+    getProfile()},
   );
   
   useEffect(() => {

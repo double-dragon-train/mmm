@@ -1,3 +1,4 @@
+import userStore from '../stores/userStore';
 import instance from './axios';
 
 // 닉네임 중복 확인
@@ -91,12 +92,9 @@ export const postLogin = async (loginData: LoginData) => {
 };
 
 // 로그아웃
-export const deleteLogout = async (accessToken: string) => {
+export const deleteLogout = async () => {
   try {
     const res = await instance.delete('/users/logout', {
-      headers: {
-        Authorization: accessToken,
-      },
     });
     console.log('로그아웃 성공:', res);
     // console.log('userStore accessToken:', accessToken);
@@ -128,16 +126,32 @@ export const postEditProfile = async (editProfileData: EditProfileData) => {
 };
 
 // 현재 사용자 정보 조회
-export const getProfile = async (accessToken: string) => {
+export const getProfile = async () => {
   try {
     const res = await instance.get('/users', {
-      headers: {
-        Authorization: accessToken,
-      },
+      // headers: {
+      //   Authorization: accessToken,
+      // },
     });
     console.log('사용자 정보 조회 성공:', res);
     return res.data;
   } catch (e) {
     console.log('사용자 정보 조회 실패:', e);
+  }
+};
+
+// 토큰 재발급
+export const getRefreshToken = async () => {
+  try {
+    const {refreshToken} = userStore();
+    const res = await instance.get('/users/reissue', {
+      headers: {
+        Authorization: refreshToken,
+      },
+    });
+    console.log('토큰 재발급 성공:', res);
+    return res.data;
+  } catch (e) {
+    console.log('토큰 재발급 실패:', e);
   }
 };
