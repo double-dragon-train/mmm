@@ -1,7 +1,7 @@
 spring:
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     properties:
       hibernate:
         show_sql: true
@@ -17,4 +17,6 @@ spring:
     username: ssafy
     password: 1q2w3e4r!
     url: jdbc:mariadb://j10a110a.p.ssafy.io:3306/mmm?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-
+logging:
+  level:
+    com.spring.mmm: debug
