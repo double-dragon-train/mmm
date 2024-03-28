@@ -60,14 +60,6 @@ public class MukboEntity {
                 .build();
     }
 
-    public MukboResponse toResponse(){
-        return MukboResponse.builder()
-                .name(this.name)
-                .type(this.type)
-                .mbti(MBTI.create(this.mukBTIResultEntities))
-                .build();
-    }
-
     public void modifyName(String name){
         this.name = name;
     }
