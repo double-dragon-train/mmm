@@ -45,7 +45,7 @@ public class MukboServiceImpl implements MukboService{
     public List<MukboResponse> findAllMukboResponsesByGroupId(Long groupId) {
         return mukboRepository.findAllMukboByGroupId(groupId)
                 .stream()
-                .map(MukboEntity::toResponse)
+                .map(MukboResponse::create)
                 .collect(Collectors.toList());
     }
 
@@ -54,7 +54,7 @@ public class MukboServiceImpl implements MukboService{
         return mukboRepository.findAllMukboByGroupId(groupId)
                 .stream()
                 .filter(item -> item.getType() == MukboType.MUKBOT)
-                .map(MukboEntity::toResponse)
+                .map(MukboResponse::create)
                 .collect(Collectors.toList());
     }
 
