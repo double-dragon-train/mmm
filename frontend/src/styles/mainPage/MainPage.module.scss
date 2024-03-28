@@ -11,12 +11,29 @@ $color-main: #2a43ce;
   &::-webkit-scrollbar {
     display: none;
   }
-  .recommendSection {
-    width: 95%;
-    background-color: rgba($color-main, 0.03);
-    border-radius: 15px;
+}
+
+.recommendSection {
+  width: 95%;
+  background-color: rgba($color-main, 0.03);
+  border-radius: 15px;
+  .header {
+    display: flex;
+    h2 {
+      font-weight: 500;
+      font-size: 17px;
+      text-decoration: underline;
+      text-decoration-color: ;
+      color: rgba($color-main, 0.8);
+    }
+    img {
+      max-width: 16px;
+      width: 16px;
+      aspect-ratio: 1/1;
+    }
   }
 }
+
 .recordModalWrapper {
   > h2 {
     color: rgba($color-main, 0.8);

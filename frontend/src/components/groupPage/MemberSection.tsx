@@ -1,7 +1,11 @@
 import styles from '../../styles/groupPage/MemberSection.module.css';
 import SubMemberArticle from '../common/SubMemberArticle';
 
-function MemberSection() {
+interface propsType {
+  groupId: number;
+}
+function MemberSection({ groupId }: propsType) {
+  console.log(groupId)
   return (
     <section className={styles.memberSection}>
       <span>구성원</span>

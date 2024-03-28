@@ -10,10 +10,23 @@
 .wrapper::-webkit-scrollbar {
   display: none;
 }
-.wrapper .recommendSection {
+
+.recommendSection {
   width: 95%;
   background-color: rgba(42, 67, 206, 0.03);
   border-radius: 15px;
+}
+.recommendSection .header {
+  display: flex;
+}
+.recommendSection .header h2 {
+  font-weight: 500;
+  color: rgba(42, 67, 206, 0.8);
+}
+.recommendSection .header img {
+  max-width: 16px;
+  width: 16px;
+  aspect-ratio: 1/1;
 }
 
 .recordModalWrapper > h2 {
