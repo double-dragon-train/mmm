@@ -23,7 +23,7 @@ public class MukBTIController {
                 .mukBTIQuestions(
                         mukBTIService.findAllMukBTIQuestion()
                         .stream()
-                        .map(MukBTIQuestionEntity::toQuestion)
+                        .map(MukBTIQuestion::createByMukBTIQuestionEntity)
                         .collect(Collectors.toList()))
                 .build());
     }

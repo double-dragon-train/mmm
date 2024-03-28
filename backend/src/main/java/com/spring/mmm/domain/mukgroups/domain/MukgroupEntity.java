@@ -78,13 +78,4 @@ public class MukgroupEntity {
                 .imageSrc(imageSrc)
                 .build();
     }
-
-    public MukgroupResponse createMukgroupResponse(){
-        return MukgroupResponse.builder()
-                .mukgroupId(this.mukgroupId)
-                .name(this.name)
-                .isSolo(this.isSolo)
-                .imageSrc(this.imageSrc)
-                .build();
-    }
 }
