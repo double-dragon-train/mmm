@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Modal from '../components/common/Modal';
 import RecordModal from '../components/mainPage/RecordModal';
 import styles from '../styles/mainPage/MainPage.module.css';
+import MainRecommendSection from '../components/mainPage/MainRecommendSection';
 
 function MainPage() {
   const [isRecordModalOpen, setIsRecordModalOpen] = useState(false);
@@ -13,13 +14,13 @@ function MainPage() {
   const handleCreateRecord = () => {};
 
   useEffect(() => {
-    setIsRecordModalOpen(true);
+    // setIsRecordModalOpen(true);
+    setIsRecordModalOpen(false);
   }, []);
+
   return (
     <div className={styles.wrapper}>
-      <section className={styles.recommendSection}>
-        <h2></h2>
-      </section>
+      <MainRecommendSection />
 
       {isRecordModalOpen && (
         <Modal clickEvent={handleCloseModal}>
