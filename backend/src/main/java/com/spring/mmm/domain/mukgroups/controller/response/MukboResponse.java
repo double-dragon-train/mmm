@@ -10,6 +10,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class MukboResponse {
+    private Long mukboId;
     private MukboType type;
     private String name;
     private String mukBTI;
@@ -17,6 +18,7 @@ public class MukboResponse {
 
     public static MukboResponse create(MukboEntity mukbo){
         return MukboResponse.builder()
+                .mukboId(mukbo.getMukboId())
                 .name(mukbo.getName())
                 .type(mukbo.getType())
                 .mukBTI(calcMukBTI(MBTI.create(mukbo.getMukBTIResultEntities())))
