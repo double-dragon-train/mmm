@@ -97,13 +97,13 @@ class MukBTIServiceImplTest {
         // 질문답변장전
 
         mbti = MBTI.builder()
-                .EI(70)
-                .NS(50)
-                .TF(30)
-                .JP(10)
-                .Mint(100)
-                .Pine(100)
-                .Die(100)
+                .ei(70)
+                .ns(50)
+                .tf(30)
+                .jp(10)
+                .mint(100)
+                .pine(100)
+                .die(100)
                 .build();
         // MBTI장전
 
