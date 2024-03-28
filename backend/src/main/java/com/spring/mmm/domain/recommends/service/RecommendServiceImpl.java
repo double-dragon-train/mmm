@@ -5,13 +5,13 @@ import com.spring.mmm.domain.recommends.controller.response.FoodInformation;
 import com.spring.mmm.domain.recommends.domain.FoodEntity;
 import com.spring.mmm.domain.recommends.service.port.FoodRecommendRepository;
 import com.spring.mmm.domain.recommends.service.port.FoodRepository;
+import com.spring.mmm.domain.weathers.service.WeatherService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -24,6 +24,7 @@ public class RecommendServiceImpl implements RecommendService{
     private final MukgroupRepository mukgroupRepository;
 
     private final FoodRepository foodRepository;
+    private final WeatherService weatherService;
 
     @Override
     public List<FoodInformation> recommendRandomFood() {
@@ -35,4 +36,5 @@ public class RecommendServiceImpl implements RecommendService{
                 .limit(7)
                 .collect(Collectors.toList());
     }
+
 }
