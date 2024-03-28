@@ -15,9 +15,9 @@ public class MukjukResponse {
     private List<Badge> badges;
 
     public static MukjukResponse create(MukgroupEntity group, List<Badge> badges){
-
+        Long titleMukjukId = group.getMukjukEntity() == null ? null : group.getMukjukEntity().getMukjukId();
         return MukjukResponse.builder()
-                .titleMukjukId(group.getMukjukEntity().getMukjukId())
+                .titleMukjukId(titleMukjukId)
                 .badges(badges)
                 .build();
 
