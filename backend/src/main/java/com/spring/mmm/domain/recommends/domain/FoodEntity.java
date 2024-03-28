@@ -37,11 +37,4 @@ public class FoodEntity {
     @OneToOne(mappedBy = "foodEntity", cascade = CascadeType.REMOVE)
     private FoodWeatherEntity foodWeatherEntity;
 
-    public FoodInformation toFoodInformation(){
-        return FoodInformation.builder()
-                .foodId(this.foodId)
-                .name(this.name)
-                .imageSrc(this.image)
-                .build();
-    }
 }

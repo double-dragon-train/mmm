@@ -8,6 +8,7 @@ import com.spring.mmm.domain.mukgroups.exception.MukboErrorCode;
 import com.spring.mmm.domain.mukgroups.exception.MukboException;
 import com.spring.mmm.domain.mukgroups.service.port.MukboRepository;
 import com.spring.mmm.domain.mukgroups.service.port.MukgroupRepository;
+import com.spring.mmm.domain.muklogs.controller.response.MuklogResponse;
 import com.spring.mmm.domain.muklogs.controller.response.MuklogsResponse;
 import com.spring.mmm.domain.muklogs.domain.MuklogEntity;
 import com.spring.mmm.domain.muklogs.exception.MukgroupNotFoundException;
@@ -46,7 +47,7 @@ public class MuklogServiceImpl implements MuklogService{
         Page<MuklogEntity> result = muklogRepository.findAllMuklogByGroupId(groupId, pageable);
         return MuklogsResponse.builder()
                 .contents(result.getContent().stream()
-                        .map(MuklogEntity::toReseponse)
+                        .map(MuklogResponse::createByMuklogEntity)
                         .collect(Collectors.toList()))
                 .hasNext(result.hasNext())
                 .build();

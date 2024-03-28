@@ -41,7 +41,7 @@ public class RecommendServiceImpl implements RecommendService{
         int randFirst = (int) (Math.random() * 9) + 1;
         int randSecond = (int) (Math.random() * randFirst);
         return foodRepository.findAll().stream()
-                .map(FoodEntity::toFoodInformation)
+                .map(FoodInformation::createByFoodEntity)
                 .filter(item -> item.getFoodId() % randFirst == randSecond)
                 .limit(7)
                 .collect(Collectors.toList());
