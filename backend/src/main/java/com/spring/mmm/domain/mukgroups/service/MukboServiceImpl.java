@@ -45,7 +45,7 @@ public class MukboServiceImpl implements MukboService{
     public List<MukboResponse> findAllMukboResponsesByGroupId(Long groupId) {
         return mukboRepository.findAllMukboByGroupId(groupId)
                 .stream()
-                .map(MukboEntity::toResponse)
+                .map(MukboResponse::create)
                 .collect(Collectors.toList());
     }
 
@@ -54,7 +54,7 @@ public class MukboServiceImpl implements MukboService{
         return mukboRepository.findAllMukboByGroupId(groupId)
                 .stream()
                 .filter(item -> item.getType() == MukboType.MUKBOT)
-                .map(MukboEntity::toResponse)
+                .map(MukboResponse::create)
                 .collect(Collectors.toList());
     }
 
@@ -157,10 +157,10 @@ public class MukboServiceImpl implements MukboService{
 //            Integer value = field.get(mbti);
 //            results.add(MukBTIResultEntity.createByType(value, mukBTI, mukbo, user));
             switch (mukBTI.getType()){
-                case MukBTIType.EI -> results.add(MukBTIResultEntity.createByType(mbti.getEI(), mukBTI, mukbo));
-                case MukBTIType.NS -> results.add(MukBTIResultEntity.createByType(mbti.getNS(), mukBTI, mukbo));
-                case MukBTIType.TF -> results.add(MukBTIResultEntity.createByType(mbti.getTF(), mukBTI, mukbo));
-                case MukBTIType.JP -> results.add(MukBTIResultEntity.createByType(mbti.getJP(), mukBTI, mukbo));
+                case MukBTIType.EI -> results.add(MukBTIResultEntity.createByType(mbti.getEi(), mukBTI, mukbo));
+                case MukBTIType.NS -> results.add(MukBTIResultEntity.createByType(mbti.getNs(), mukBTI, mukbo));
+                case MukBTIType.TF -> results.add(MukBTIResultEntity.createByType(mbti.getTf(), mukBTI, mukbo));
+                case MukBTIType.JP -> results.add(MukBTIResultEntity.createByType(mbti.getJp(), mukBTI, mukbo));
                 case MukBTIType.PINE -> results.add(MukBTIResultEntity.createByType(mbti.getPine(), mukBTI, mukbo));
                 case MukBTIType.MINT -> results.add(MukBTIResultEntity.createByType(mbti.getMint(), mukBTI, mukbo));
                 case MukBTIType.DIE -> results.add(MukBTIResultEntity.createByType(mbti.getDie(), mukBTI, mukbo));
@@ -172,10 +172,10 @@ public class MukboServiceImpl implements MukboService{
         // 원래 mbti가 있는경우
         for(MukBTIResultEntity mukBTIResult : results){
             switch (mukBTIResult.getMukBTIEntity().getType()){
-                case MukBTIType.EI -> mukBTIResult.modifyScore(mbti.getEI());
-                case MukBTIType.NS -> mukBTIResult.modifyScore(mbti.getNS());
-                case MukBTIType.TF -> mukBTIResult.modifyScore(mbti.getTF());
-                case MukBTIType.JP -> mukBTIResult.modifyScore(mbti.getJP());
+                case MukBTIType.EI -> mukBTIResult.modifyScore(mbti.getEi());
+                case MukBTIType.NS -> mukBTIResult.modifyScore(mbti.getNs());
+                case MukBTIType.TF -> mukBTIResult.modifyScore(mbti.getTf());
+                case MukBTIType.JP -> mukBTIResult.modifyScore(mbti.getJp());
                 case MukBTIType.MINT -> mukBTIResult.modifyScore(mbti.getMint());
                 case MukBTIType.PINE -> mukBTIResult.modifyScore(mbti.getPine());
                 case MukBTIType.DIE -> mukBTIResult.modifyScore(mbti.getDie());

@@ -27,10 +27,10 @@ public class MukboResponse {
     private static String calcMukBTI(MBTI mbti){
         char[] res = new char[4];
 
-        res[0] = mbti.getEI() > 17 ? 'E' : 'I';
-        res[1] = mbti.getNS() > 15 ? 'S' : 'N';
-        res[2] = mbti.getTF() > 15 ? 'F' : 'T';
-        res[3] = mbti.getJP() > 15 ? 'J' : 'P';
+        res[0] = mbti.getEi() > 17 ? 'E' : 'I';
+        res[1] = mbti.getNs() > 15 ? 'S' : 'N';
+        res[2] = mbti.getTf() > 15 ? 'F' : 'T';
+        res[3] = mbti.getJp() > 15 ? 'J' : 'P';
 
         return String.copyValueOf(res);
     }

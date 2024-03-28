@@ -21,10 +21,10 @@ public class GroupMukBTICalculatedEvent implements MukBTICalculatedEvent {
 
     public GroupMukBTICalculatedEvent(Long groupId, MBTI mbti) {
         this.groupId = groupId;
-        ei = mbti.getEI();
-        ns = mbti.getNS();
-        tf = mbti.getTF();
-        jp = mbti.getJP();
+        ei = mbti.getEi();
+        ns = mbti.getNs();
+        tf = mbti.getTf();
+        jp = mbti.getJp();
         pine = mbti.getPine();
         die = mbti.getDie();
         mint = mbti.getMint();
