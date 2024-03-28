@@ -19,9 +19,9 @@ public class MukBTIController {
     private final MukBTIService mukBTIService;
     @GetMapping
     public ResponseEntity<MukBTIQuestionsResponse> sendQuestion(){
-        List<MukBTIQuestionEntity> mukBTIQuestions = mukBTIService.findAllMukBTIQuestion();
         return ResponseEntity.ok(MukBTIQuestionsResponse.builder()
-                .mukBTIQuestions(mukBTIQuestions
+                .mukBTIQuestions(
+                        mukBTIService.findAllMukBTIQuestion()
                         .stream()
                         .map(MukBTIQuestionEntity::toQuestion)
                         .collect(Collectors.toList()))
