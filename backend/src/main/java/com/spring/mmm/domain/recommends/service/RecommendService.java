@@ -13,4 +13,5 @@ public interface RecommendService {
     List<LunchRecommendFoodInformation> lunchRecommendFood(LunchRecommendRequest lunchRecommendRequest);
 
     NewRecommendedFoodInformation newRecommendFood(Long mukgroupId);
+
 }

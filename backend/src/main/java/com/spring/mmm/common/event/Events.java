@@ -14,7 +14,7 @@ public class Events {
 
     static void setEventPublisher(ApplicationEventPublisher eventPublisher) {
         Events.eventPublisher = eventPublisher;
-        log.info("setting publisher!");
+        log.debug("setting publisher!");
     }
 
     public static void raise(Event event) {
