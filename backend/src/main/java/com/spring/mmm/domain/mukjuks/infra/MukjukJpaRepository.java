@@ -15,4 +15,17 @@ public interface MukjukJpaRepository extends JpaRepository<MukjukEntity, Long> {
             "from MukgroupMukjukEntity mgmj right join mgmj.mukjukEntity mj " +
             "on mgmj.mukgroupEntity.mukgroupId =:groupId")
     List<Badge> findAllMukjuks(Long groupId);
+
+
+
+
+    @Query("select case when mgmj is null THEN mj.mukjukId else -1 end " +
+            "from MukgroupMukjukEntity mgmj right join mgmj.mukjukEntity mj " +
+            "on mgmj.mukgroupEntity.mukgroupId =:groupId" +
+            " where mj.name=:mukjukTitle")
+    Long getMukgetIdIfUncleared(Long groupId, String mukjukTitle);
+
+    @Query("select mj from MukgroupMukjukEntity mgmj right join mgmj.mukjukEntity mj " +
+            " on mgmj.mukgroupEntity.mukgroupId =:groupId where mgmj is null")
+    List<MukjukEntity> findUnclearedMukjuk(Long groupId);
 }

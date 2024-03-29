@@ -28,7 +28,7 @@ public class MukGroupController {
 
     @GetMapping
     public ResponseEntity<MukgroupResponse> findMukgroup(@AuthenticationPrincipal UserDetailsImpl user){
-        return ResponseEntity.ok(mukgroupService.findMyMukgroup(user.getEmail()).createMukgroupResponse());
+        return ResponseEntity.ok(MukgroupResponse.createByMukgroupEntity(mukgroupService.findMyMukgroup(user.getEmail())));
     }
 
     @PostMapping
@@ -78,7 +78,7 @@ public class MukGroupController {
             @AuthenticationPrincipal UserDetailsImpl user,
             @RequestBody MukbotCreateRequest mukbotCreateRequest){
         mukboService.saveMukbot(user.getEmail(), mukbotCreateRequest);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/{groupId}/log")
@@ -115,7 +115,7 @@ public class MukGroupController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{groupId}/mukbos/{mokboId}")
+    @DeleteMapping("/{groupId}/mukbos/{mukboId}")
     public ResponseEntity<Void> deleteMukbo(
             @PathVariable Long groupId,
             @PathVariable Long mukboId,

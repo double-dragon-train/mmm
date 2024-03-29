@@ -7,11 +7,11 @@ import java.util.Optional;
 
 public interface RecommendedFoodRepository {
 
-    RecommendedFoodEntity findByRecommendedFoodId(Long recommendedFoodId);
+    Optional<RecommendedFoodEntity> findByRecommendedFoodId(Long recommendedFoodId);
 
     List<RecommendedFoodEntity> findRecommendedFoodByYearAndMonth(Long mukgroupId, Integer year, Integer month);
 
-    RecommendedFoodEntity findRecommendedFoodByDate(Long mukgroupId, Integer year, Integer month, Integer day);
+    Optional<RecommendedFoodEntity> findRecommendedFoodByDate(Long mukgroupId, Integer year, Integer month, Integer day);
 
     List<Integer> findAllFoodIdByMukgroupId(Long mukgroupId);
 

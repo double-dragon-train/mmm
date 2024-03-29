@@ -68,13 +68,13 @@ public class MukBTIServiceImpl implements MukBTIService {
         }
 
         MBTI mbti = MBTI.builder()
-                .EI(EI)
-                .NS(NS)
-                .TF(TF)
-                .JP(JP)
-                .Mint(Mint)
-                .Pine(Pine)
-                .Die(Die)
+                .ei(EI)
+                .ns(NS)
+                .tf(TF)
+                .jp(JP)
+                .mint(Mint)
+                .pine(Pine)
+                .die(Die)
                 .build();
 
         String key = UUID.randomUUID().toString();
@@ -92,16 +92,19 @@ public class MukBTIServiceImpl implements MukBTIService {
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
         MukboEntity mukboEntity = user.getMukboEntity();
 
+        List<MukBTIResultEntity> originResult = user.getMukBTIResultEntities();
+        mukBTIResultRepository.deleteAll(originResult);
+
         List<MukBTIResultEntity> results = new ArrayList<>();
         List<MukBTIEntity> mukBTIs = mukBTIRepository.findAllMukBTI();
 
         for(MukBTIEntity mukBTIEntity : mukBTIs){
             MukBTIResultEntity mukBTIResult = MukBTIResultEntity.createWithoutScore(mukBTIEntity, mukboEntity, user);
             switch (mukBTIEntity.getType()){
-                case EI -> mukBTIResult.modifyScore(mbti.getEI());
-                case NS -> mukBTIResult.modifyScore(mbti.getNS());
-                case TF -> mukBTIResult.modifyScore(mbti.getTF());
-                case JP -> mukBTIResult.modifyScore(mbti.getJP());
+                case EI -> mukBTIResult.modifyScore(mbti.getEi());
+                case NS -> mukBTIResult.modifyScore(mbti.getNs());
+                case TF -> mukBTIResult.modifyScore(mbti.getTf());
+                case JP -> mukBTIResult.modifyScore(mbti.getJp());
                 case MINT -> mukBTIResult.modifyScore(mbti.getMint());
                 case PINE -> mukBTIResult.modifyScore(mbti.getPine());
                 case DIE -> mukBTIResult.modifyScore(mbti.getDie());

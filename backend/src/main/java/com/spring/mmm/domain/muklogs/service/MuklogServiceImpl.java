@@ -4,8 +4,11 @@ import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
 import com.spring.mmm.domain.mukgroups.exception.MukGroupErrorCode;
 import com.spring.mmm.domain.mukgroups.exception.MukGroupException;
+import com.spring.mmm.domain.mukgroups.exception.MukboErrorCode;
+import com.spring.mmm.domain.mukgroups.exception.MukboException;
 import com.spring.mmm.domain.mukgroups.service.port.MukboRepository;
 import com.spring.mmm.domain.mukgroups.service.port.MukgroupRepository;
+import com.spring.mmm.domain.muklogs.controller.response.MuklogResponse;
 import com.spring.mmm.domain.muklogs.controller.response.MuklogsResponse;
 import com.spring.mmm.domain.muklogs.domain.MuklogEntity;
 import com.spring.mmm.domain.muklogs.exception.MukgroupNotFoundException;
@@ -31,8 +34,10 @@ public class MuklogServiceImpl implements MuklogService{
     @Override
     public MuklogsResponse findAllMuklogByGroupId(Long groupId, Pageable pageable, UserEntity userEntity) {
 
-        MukgroupEntity group = mukgroupRepository.findByMukgroupId(groupId);
-        MukboEntity mukboEntity = mukboRepository.findByUserId(userEntity.getId());
+        MukgroupEntity group = mukgroupRepository.findByMukgroupId(groupId)
+                .orElseThrow(() -> new MukGroupException(MukGroupErrorCode.NOT_FOUND));
+        MukboEntity mukboEntity = mukboRepository.findByUserId(userEntity.getId())
+                .orElseThrow(() -> new MukboException(MukboErrorCode.NOT_FOUND));
         if (!mukboEntity.getMukgroupEntity().equals(group)) {
             throw new MukGroupException(MukGroupErrorCode.FORBIDDEN);
         }
@@ -42,7 +47,7 @@ public class MuklogServiceImpl implements MuklogService{
         Page<MuklogEntity> result = muklogRepository.findAllMuklogByGroupId(groupId, pageable);
         return MuklogsResponse.builder()
                 .contents(result.getContent().stream()
-                        .map(MuklogEntity::toReseponse)
+                        .map(MuklogResponse::createByMuklogEntity)
                         .collect(Collectors.toList()))
                 .hasNext(result.hasNext())
                 .build();
@@ -50,7 +55,8 @@ public class MuklogServiceImpl implements MuklogService{
 
     @Override
     public void saveLog(Long mukgroupId, String content) {
-        MukgroupEntity mukGroup = mukgroupRepository.findByMukgroupId(mukgroupId);
+        MukgroupEntity mukGroup = mukgroupRepository.findByMukgroupId(mukgroupId)
+                .orElseThrow(() -> new MukGroupException(MukGroupErrorCode.NOT_FOUND));
         muklogRepository.save(MuklogEntity.create(mukGroup, content));
     }
 }

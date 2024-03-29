@@ -19,7 +19,7 @@ public class MukusDayResponse {
         return MukusDayResponse.builder()
                 .date(recommend.getFoodRecommendEntity().getRecommendDate())
                 .colorCode(recommend.getFoodEntity().getFoodCategoryEntity().getColor())
-                .category(recommend.getFoodEntity().getFoodCategoryEntity().getName())
+                .category(recommend.getFoodEntity().getFoodCategoryEntity().getName().getKoreanName())
                 .build();
     }
 }

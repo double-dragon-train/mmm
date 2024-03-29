@@ -39,13 +39,6 @@ public class MuklogEntity {
                 .build();
     }
 
-    public MuklogResponse toReseponse(){
-        return MuklogResponse.builder()
-                .content(this.content)
-                .createdAt(createdAt.toEpochMilli())
-                .build();
-    }
-
     @Override
     public String toString() {
         return "MuklogEntity{" +

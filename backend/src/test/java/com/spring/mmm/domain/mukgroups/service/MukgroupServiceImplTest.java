@@ -131,11 +131,8 @@ class MukgroupServiceImplTest {
     @Test
     void 솔로_먹그룹_생성_성공(){
 
-        BDDMockito.given(mukgroupRepository.save(any()))
-                        .willReturn(soloMukgroupEntity);
-
         BDDMockito.given(mukboRepository.findByUserId(1L))
-                        .willReturn(mukboEntitySologroup);
+                        .willReturn(Optional.of(mukboEntitySologroup));
 
         BDDMockito.given(userRepository.findByEmail(any()))
                         .willReturn(Optional.of(user));
@@ -163,7 +160,7 @@ class MukgroupServiceImplTest {
     @Test
     void 먹그룹_찾기_성공(){
         BDDMockito.given(mukgroupRepository.findByMukgroupId(any()))
-                .willReturn(mukgroupEntity);
+                .willReturn(Optional.of(mukgroupEntity));
 
         assertDoesNotThrow(() -> mukgroupService.findMukgroupById(1L));
     }
@@ -179,7 +176,7 @@ class MukgroupServiceImplTest {
     @Test
     void 먹그룹_이름_수정_성공(){
         BDDMockito.given(mukgroupRepository.findByMukgroupId(any()))
-                .willReturn(mukgroupEntity);
+                .willReturn(Optional.of(mukgroupEntity));
 
         BDDMockito.given(userRepository.findByEmail(any()))
                 .willReturn(Optional.of(userWithMukbo));
@@ -190,13 +187,10 @@ class MukgroupServiceImplTest {
     @Test
     void 먹보_강퇴_성공(){
         BDDMockito.given(mukboRepository.findByMukboId(any()))
-                .willReturn(mukboEntityGroup);
-
-        BDDMockito.given(mukgroupRepository.save(any()))
-                        .willReturn(mukgroupEntity);
+                .willReturn(Optional.of(mukboEntityGroup));
 
         BDDMockito.given(mukboRepository.findByUserId(any()))
-                        .willReturn(mukboEntityGroup);
+                        .willReturn(Optional.of(mukboEntityGroup));
 
         BDDMockito.given(userRepository.findByEmail(any()))
                 .willReturn(Optional.of(userWithMukbo));
@@ -207,7 +201,7 @@ class MukgroupServiceImplTest {
     @Test
     void 먹봇_강퇴_성공(){
         BDDMockito.given(mukboRepository.findByMukboId(any()))
-                .willReturn(mukbotEntity);
+                .willReturn(Optional.of(mukbotEntity));
 
         BDDMockito.given(userRepository.findByEmail(any()))
                 .willReturn(Optional.of(userWithMukbo));
@@ -226,7 +220,7 @@ class MukgroupServiceImplTest {
     @Test
     void 다른_그룹_소속_먹보_강퇴_실패(){
         BDDMockito.given(mukboRepository.findByMukboId(any()))
-                        .willReturn(mukboEntityGroup);
+                        .willReturn(Optional.of(mukboEntityGroup));
 
         BDDMockito.given(userRepository.findByEmail(any()))
                 .willReturn(Optional.of(userWithMukboSoloGroup));
@@ -239,14 +233,11 @@ class MukgroupServiceImplTest {
         BDDMockito.given(mukgroupRepository.countAllMukboByMukgroupId(any()))
                 .willReturn(2);
 
-        BDDMockito.given(mukgroupRepository.save(any()))
-                .willReturn(mukgroupEntity);
-
         BDDMockito.given(mukboRepository.findByUserId(any()))
-                .willReturn(mukboEntitySologroup);
+                .willReturn(Optional.of(mukboEntitySologroup));
 
         BDDMockito.given(mukgroupRepository.findByMukgroupId(any()))
-                        .willReturn(mukgroupEntity);
+                        .willReturn(Optional.of(mukgroupEntity));
 
         BDDMockito.given(userRepository.findByEmail(any()))
                 .willReturn(Optional.of(userWithMukbo));
@@ -259,14 +250,11 @@ class MukgroupServiceImplTest {
         BDDMockito.given(mukgroupRepository.countAllMukboByMukgroupId(any()))
                 .willReturn(1);
 
-        BDDMockito.given(mukgroupRepository.save(any()))
-                .willReturn(mukgroupEntity);
-
         BDDMockito.given(mukboRepository.findByUserId(any()))
-                .willReturn(mukboEntitySologroup);
+                .willReturn(Optional.of(mukboEntitySologroup));
 
         BDDMockito.given(mukgroupRepository.findByMukgroupId(any()))
-                        .willReturn(mukgroupEntity);
+                        .willReturn(Optional.of(mukgroupEntity));
 
         BDDMockito.given(userRepository.findByEmail(any()))
                 .willReturn(Optional.of(userWithMukbo));
@@ -277,7 +265,7 @@ class MukgroupServiceImplTest {
     @Test
     void 솔로_먹그룹_나가기_실패(){
         BDDMockito.given(mukgroupRepository.findByMukgroupId(any()))
-                        .willReturn(soloMukgroupEntity);
+                        .willReturn(Optional.of(soloMukgroupEntity));
 
         BDDMockito.given(userRepository.findByEmail(any()))
                 .willReturn(Optional.of(userWithMukboSoloGroup));

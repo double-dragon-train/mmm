@@ -86,13 +86,13 @@ class MukboServiceImplTest {
         // 한 먹보에 대한 먹비티아이 결과
 
         mbti = MBTI.builder()
-                .EI(70)
-                .NS(50)
-                .TF(30)
-                .JP(10)
-                .Mint(100)
-                .Pine(100)
-                .Die(100)
+                .ei(70)
+                .ns(50)
+                .tf(30)
+                .jp(10)
+                .mint(100)
+                .pine(100)
+                .die(100)
                 .build();
         // 먹비티아이
 
@@ -192,10 +192,10 @@ class MukboServiceImplTest {
     void 먹보초대_성공(){
 
         BDDMockito.given(mukboRepository.findByUserId(any()))
-                .willReturn(mukboEntity);
+                .willReturn(Optional.of(mukboEntity));
         
         BDDMockito.given(mukboRepository.findByMukboId(any()))
-                .willReturn(mukboEntity);
+                .willReturn(Optional.of(mukboEntity));
 
         BDDMockito.given(userRepository.findByEmail(any()))
                         .willReturn(Optional.of(user));
@@ -214,7 +214,7 @@ class MukboServiceImplTest {
     @Test
     void 먹봇수정_성공(){
         BDDMockito.given(mukboRepository.findByMukboId(any()))
-                .willReturn(mukboEntity);
+                .willReturn(Optional.of(mukboEntity));
 
         BDDMockito.given(mukBTIResultRepository.findAllMukBTIResultByMukboId(any()))
                 .willReturn(mukBTIResultEntities);
@@ -228,7 +228,7 @@ class MukboServiceImplTest {
     @Test
     void 먹보수정_성공(){
         BDDMockito.given(mukboRepository.findByUserId(any()))
-                .willReturn(mukboEntity);
+                .willReturn(Optional.of(mukboEntity));
 
         assertDoesNotThrow(() -> mukboService.modifyMokbo(1L, "ssasfy1234"));
     }
@@ -254,6 +254,9 @@ class MukboServiceImplTest {
 
     @Test
     void 먹보삭제_성공(){
+        BDDMockito.given(mukboRepository.findByMukboId(any()))
+                        .willReturn(Optional.of(mukboEntity));
+
         assertDoesNotThrow(() -> mukboService.deleteMukbo(1L));
     }
 

@@ -56,14 +56,14 @@ public class UserServiceImpl implements UserService{
         boolean isNicknameExist = userRepository.existsByNickname(nickname);
 
         if (isEmailExist | isNicknameExist) {
-            log.debug("?");
             return;
         }
-        log.debug("!");
-        MukgroupEntity mukgroupEntity = mukgroupRepository.save(MukgroupEntity.create(nickname, Boolean.TRUE));
-        MukboEntity mukboEntity = mukboRepository.save(MukboEntity.create(nickname, MukboType.HUMAN, mukgroupEntity.getMukgroupId()));
+
+        MukgroupEntity mukgroupEntity = MukgroupEntity.create(nickname, Boolean.TRUE);
+        mukgroupRepository.save(mukgroupEntity);
+        MukboEntity mukboEntity = MukboEntity.create(nickname, MukboType.HUMAN, mukgroupEntity.getMukgroupId());
+        mukboRepository.save(mukboEntity);
         UserEntity user = UserEntity.create(userJoinRequest, encodedPW, mukboEntity);
-        log.debug("user : {}", user);
         userRepository.create(user);
     }
 

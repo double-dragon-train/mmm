@@ -1,5 +1,6 @@
 package com.spring.mmm.domain.muklogs.controller.response;
 
+import com.spring.mmm.domain.muklogs.domain.MuklogEntity;
 import lombok.*;
 
 @Getter
@@ -9,4 +10,11 @@ import lombok.*;
 public class MuklogResponse {
     private String content;
     private Long createdAt;
+
+    public static MuklogResponse createByMuklogEntity(MuklogEntity muklogEntity){
+        return MuklogResponse.builder()
+                .content(muklogEntity.getContent())
+                .createdAt(muklogEntity.getCreatedAt().toEpochMilli())
+                .build();
+    }
 }

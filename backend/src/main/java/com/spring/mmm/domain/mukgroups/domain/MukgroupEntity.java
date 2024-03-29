@@ -79,12 +79,13 @@ public class MukgroupEntity {
                 .build();
     }
 
-    public MukgroupResponse createMukgroupResponse(){
-        return MukgroupResponse.builder()
-                .mukgroupId(this.mukgroupId)
-                .name(this.name)
-                .isSolo(this.isSolo)
-                .imageSrc(this.imageSrc)
-                .build();
+    @Override
+    public String toString() {
+        return "MukgroupEntity{" +
+                "mukgroupId=" + mukgroupId +
+                ", name='" + name + '\'' +
+                ", imageSrc='" + imageSrc + '\'' +
+                ", isSolo=" + isSolo +
+                '}';
     }
 }

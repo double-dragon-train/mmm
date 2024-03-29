@@ -53,7 +53,7 @@ public class WeatherService {
             urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("1000", "UTF-8")); /*한 페이지 결과 수*/
             urlBuilder.append("&" + URLEncoder.encode("dataType", "UTF-8") + "=" + URLEncoder.encode("JSON", "UTF-8"));
             urlBuilder.append("&" + URLEncoder.encode("base_date", "UTF-8") + "=" + URLEncoder.encode(formattedDate, "UTF-8"));
-            urlBuilder.append("&" + URLEncoder.encode("base_time", "UTF-8") + "=" + URLEncoder.encode("1200", "UTF-8"));
+            urlBuilder.append("&" + URLEncoder.encode("base_time", "UTF-8") + "=" + URLEncoder.encode("0900", "UTF-8"));
             urlBuilder.append("&" + URLEncoder.encode("nx", "UTF-8") + "=" + URLEncoder.encode(String.valueOf((int) tmp.x), "UTF-8")); /*예보지점의 X 좌표값*/
             urlBuilder.append("&" + URLEncoder.encode("ny", "UTF-8") + "=" + URLEncoder.encode(String.valueOf((int) tmp.y), "UTF-8")); /*예보지점의 Y 좌표값*/
             URL url = new URL(urlBuilder.toString());
@@ -172,7 +172,7 @@ public class WeatherService {
         }
         if (weatherId != 0) {
             List<FoodEntity> foodEntities = foodRepository.findByWeatherId(weatherId);
-
+            log.debug("foodEntities : {}", foodEntities);
             Random random = new Random();
             int randomIndex = random.nextInt(foodEntities.size());
             FoodEntity randomFoodEntity = foodEntities.get(randomIndex);

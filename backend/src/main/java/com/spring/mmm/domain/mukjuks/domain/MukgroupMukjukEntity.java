@@ -24,4 +24,27 @@ public class MukgroupMukjukEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mukgroup_id")
     private MukgroupEntity mukgroupEntity;
+
+    public static MukgroupMukjukEntity create(MukgroupEntity mukgroupEntity, MukjukEntity mukjukEntity){
+        return MukgroupMukjukEntity.builder()
+                .mukjukEntity(mukjukEntity)
+                .mukgroupEntity(mukgroupEntity)
+                .build();
+    }
+    public static MukgroupMukjukEntity create(MukgroupEntity mukgroupEntity, Long mukjukId){
+        return MukgroupMukjukEntity.builder()
+                .mukjukEntity(MukjukEntity.builder()
+                        .mukjukId(mukjukId)
+                        .build())
+                .mukgroupEntity(mukgroupEntity)
+                .build();
+    }
+
+    @Override
+    public String toString() {
+        return "MukgroupMukjukEntity{" +
+                "mukgorupMukjukId=" + mukgorupMukjukId +
+                ", mukgroupEntity=" + mukgroupEntity +
+                '}';
+    }
 }

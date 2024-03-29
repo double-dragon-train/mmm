@@ -6,6 +6,7 @@ import com.spring.mmm.domain.mukgroups.exception.MukGroupException;
 import com.spring.mmm.domain.mukgroups.exception.MukboErrorCode;
 import com.spring.mmm.domain.mukgroups.exception.MukboException;
 import com.spring.mmm.domain.mukgroups.service.port.MukgroupRepository;
+import com.spring.mmm.domain.recommends.domain.FoodCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -17,14 +18,13 @@ public class MukgroupRepositoryImpl implements MukgroupRepository {
     private final MukgroupJpaRepository mukgroupJpaRepository;
     
     @Override
-    public MukgroupEntity save(MukgroupEntity mukgroupEntity) {
-        return mukgroupJpaRepository.save(mukgroupEntity);
+    public void save(MukgroupEntity mukgroupEntity) {
+        mukgroupJpaRepository.save(mukgroupEntity);
     }
 
     @Override
-    public MukgroupEntity findByMukgroupId(Long mukgroupId) {
-        return mukgroupJpaRepository.findByMukgroupId(mukgroupId)
-                .orElseThrow(() -> new MukGroupException(MukGroupErrorCode.NOT_FOUND));
+    public Optional<MukgroupEntity> findByMukgroupId(Long mukgroupId) {
+        return mukgroupJpaRepository.findByMukgroupId(mukgroupId);
     }
 
     @Override
@@ -35,5 +35,10 @@ public class MukgroupRepositoryImpl implements MukgroupRepository {
     @Override
     public Integer countAllMukboByMukgroupId(Long mukgroupId) {
         return mukgroupJpaRepository.countAllMukboByMukgroupId(mukgroupId);
+    }
+
+    @Override
+    public Integer countMukusByFoodCategory(Long mukgroupId, FoodCategory foodCategory) {
+        return mukgroupJpaRepository.countMukusByFoodCategory(mukgroupId, foodCategory);
     }
 }

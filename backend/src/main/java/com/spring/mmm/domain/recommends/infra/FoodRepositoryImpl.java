@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -15,7 +16,7 @@ public class FoodRepositoryImpl implements FoodRepository {
     private final FoodJpaRepository foodJpaRepository;
 
     @Override
-    public FoodEntity findByName(String name) {
+    public Optional<FoodEntity> findByName(String name) {
         return foodJpaRepository.findByName(name);
     }
 

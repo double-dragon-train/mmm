@@ -60,10 +60,10 @@ public class MukBTIResultEntity {
         List<MukBTIResultEntity> mukBTIResultEntities = new ArrayList<>();
         for(MukBTIEntity mukBTI : mukBTIEntities){
             switch (mukBTI.getType()){
-                case EI -> mukBTIResultEntities.add(MukBTIResultEntity.createByType(mbti.getEI(), mukBTI, mukbo));
-                case NS -> mukBTIResultEntities.add(MukBTIResultEntity.createByType(mbti.getNS(), mukBTI, mukbo));
-                case TF -> mukBTIResultEntities.add(MukBTIResultEntity.createByType(mbti.getTF(), mukBTI, mukbo));
-                case JP -> mukBTIResultEntities.add(MukBTIResultEntity.createByType(mbti.getJP(), mukBTI, mukbo));
+                case EI -> mukBTIResultEntities.add(MukBTIResultEntity.createByType(mbti.getEi(), mukBTI, mukbo));
+                case NS -> mukBTIResultEntities.add(MukBTIResultEntity.createByType(mbti.getNs(), mukBTI, mukbo));
+                case TF -> mukBTIResultEntities.add(MukBTIResultEntity.createByType(mbti.getTf(), mukBTI, mukbo));
+                case JP -> mukBTIResultEntities.add(MukBTIResultEntity.createByType(mbti.getJp(), mukBTI, mukbo));
                 case MINT -> mukBTIResultEntities.add(MukBTIResultEntity.createByType(mbti.getMint(), mukBTI, mukbo));
                 case PINE -> mukBTIResultEntities.add(MukBTIResultEntity.createByType(mbti.getPine(), mukBTI, mukbo));
                 case DIE -> mukBTIResultEntities.add(MukBTIResultEntity.createByType(mbti.getDie(), mukBTI, mukbo));

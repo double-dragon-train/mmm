@@ -2,32 +2,33 @@ package com.spring.mmm.domain.mbtis.domain;
 
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Builder
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class MBTI {
-    private Integer EI;
-    private Integer NS;
-    private Integer TF;
-    private Integer JP;
-    private Integer Mint;
-    private Integer Pine;
-    private Integer Die;
+public class MBTI implements Serializable {
+    private Integer ei;
+    private Integer ns;
+    private Integer tf;
+    private Integer jp;
+    private Integer mint;
+    private Integer pine;
+    private Integer die;
 
     public static MBTI create(List<MukBTIResultEntity> mukBTIResultEntities){
         MBTIBuilder mbtiBuilder = new MBTIBuilder();
         for(MukBTIResultEntity mukBTIResult : mukBTIResultEntities){
             switch (mukBTIResult.getMukBTIEntity().getType()){
-                case MukBTIType.EI -> mbtiBuilder.EI(mukBTIResult.getScore());
-                case MukBTIType.NS -> mbtiBuilder.NS(mukBTIResult.getScore());
-                case MukBTIType.TF -> mbtiBuilder.TF(mukBTIResult.getScore());
-                case MukBTIType.JP -> mbtiBuilder.JP(mukBTIResult.getScore());
-                case MukBTIType.MINT -> mbtiBuilder.Mint(mukBTIResult.getScore());
-                case MukBTIType.PINE -> mbtiBuilder.Pine(mukBTIResult.getScore());
-                case MukBTIType.DIE -> mbtiBuilder.Die(mukBTIResult.getScore());
+                case MukBTIType.EI -> mbtiBuilder.ei(mukBTIResult.getScore());
+                case MukBTIType.NS -> mbtiBuilder.ns(mukBTIResult.getScore());
+                case MukBTIType.TF -> mbtiBuilder.tf(mukBTIResult.getScore());
+                case MukBTIType.JP -> mbtiBuilder.jp(mukBTIResult.getScore());
+                case MukBTIType.MINT -> mbtiBuilder.mint(mukBTIResult.getScore());
+                case MukBTIType.PINE -> mbtiBuilder.pine(mukBTIResult.getScore());
+                case MukBTIType.DIE -> mbtiBuilder.die(mukBTIResult.getScore());
             }
         }
         return mbtiBuilder.build();
@@ -35,13 +36,13 @@ public class MBTI {
 
     public void modifyScore(Integer score, MukBTIType mukBTIType){
         switch (mukBTIType){
-            case MukBTIType.EI -> this.EI = score;
-            case MukBTIType.NS -> this.NS = score;
-            case MukBTIType.TF -> this.TF = score;
-            case MukBTIType.JP -> this.JP = score;
-            case MukBTIType.MINT -> this.Mint = score;
-            case MukBTIType.PINE -> this.Pine = score;
-            case MukBTIType.DIE -> this.Die = score;
+            case MukBTIType.EI -> this.ei = score;
+            case MukBTIType.NS -> this.ns = score;
+            case MukBTIType.TF -> this.tf = score;
+            case MukBTIType.JP -> this.jp = score;
+            case MukBTIType.MINT -> this.mint = score;
+            case MukBTIType.PINE -> this.pine = score;
+            case MukBTIType.DIE -> this.die = score;
         }
     }
 }

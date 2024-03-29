@@ -15,12 +15,6 @@ import java.util.List;
 public class MukBTIRepositoryImpl implements MukBTIRepository {
     private final MukBTIJpaRepository mukBTIJpaRepository;
     @Override
-    public MukBTIEntity findMukBTIByMukBTIType(MukBTIType mukBTIType) {
-        return mukBTIJpaRepository.findMukBTIByMukBTIType(mukBTIType)
-                .orElseThrow(() -> new MukBTIException(MukBTIErrorCode.NOT_FOUND));
-    }
-
-    @Override
     public List<MukBTIEntity> findAllMukBTI() {
         return mukBTIJpaRepository.findAllMukBTI();
     }

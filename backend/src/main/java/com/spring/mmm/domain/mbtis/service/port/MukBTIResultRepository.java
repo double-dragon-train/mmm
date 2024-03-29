@@ -11,4 +11,6 @@ public interface MukBTIResultRepository {
     List<MukBTIResultEntity> findAllMukBTIResultByMukboIdAndMukBTIType(List<Long> mukboId, MukBTIType mukBTIType);
 
     void saveAll(List<MukBTIResultEntity> mukBTIResultEntities);
+
+    void deleteAll(List<MukBTIResultEntity> mukBTIResultEntities);
 }
