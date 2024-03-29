@@ -56,12 +56,14 @@ public class UserServiceImpl implements UserService{
         boolean isNicknameExist = userRepository.existsByNickname(nickname);
 
         if (isEmailExist | isNicknameExist) {
+            log.debug("?");
             return;
         }
-
+        log.debug("!");
         MukgroupEntity mukgroupEntity = mukgroupRepository.save(MukgroupEntity.create(nickname, Boolean.TRUE));
         MukboEntity mukboEntity = mukboRepository.save(MukboEntity.create(nickname, MukboType.HUMAN, mukgroupEntity.getMukgroupId()));
         UserEntity user = UserEntity.create(userJoinRequest, encodedPW, mukboEntity);
+        log.debug("user : {}", user);
         userRepository.create(user);
     }
 
@@ -93,13 +95,19 @@ public class UserServiceImpl implements UserService{
             boolean isNicknameExist = userRepository.existsByNickname(nickname);
 
             if (isNicknameExist) {
-                return;
+                throw new UserException(UserErrorCode.EXIST_NICKNAME);
             }
         }
 
         String password = userEntity.getPassword();
 
         if (userModifyRequest.getNewPassword() != null) {
+            if (!passwordEncoder.matches(userModifyRequest.getPassword(), password)) {
+                throw new UserException(UserErrorCode.PASSWORD_CONFLICT);
+            }
+            if (!userModifyRequest.getNewPassword().equals(userModifyRequest.getNewPasswordConfirm())) {
+                throw new UserException(UserErrorCode.PASSWORD_CONFIRM_CONFLICT);
+            }
             password = passwordEncoder.encode(userModifyRequest.getNewPassword());
         }
 

@@ -3,6 +3,8 @@ package com.spring.mmm.domain.recommends.controller;
 import com.spring.mmm.domain.recommends.controller.request.LunchRecommendRequest;
 import com.spring.mmm.domain.recommends.controller.request.XYRequest;
 import com.spring.mmm.domain.recommends.controller.response.*;
+import com.spring.mmm.domain.recommends.exception.RecommendErrorCode;
+import com.spring.mmm.domain.recommends.exception.RecommendException;
 import com.spring.mmm.domain.recommends.service.RecommendService;
 import com.spring.mmm.domain.weathers.service.WeatherService;
 import lombok.RequiredArgsConstructor;
@@ -55,6 +57,8 @@ public class RecommendController {
         WeatherDTO weatherDTO = weatherService.getWeather(latitude, longitude);
         log.debug("weatherDTO : {}",weatherDTO);
         FoodInformation foodInformation = weatherService.getWeatherFood(weatherDTO);
+        log.info("foodInformation : {}", foodInformation);
+        if (foodInformation==null) throw new RecommendException(RecommendErrorCode.FOOD_RECOMMEND_NOT_FOUND);
         log.debug("foodInfo : {}",foodInformation);
 
         return ResponseEntity.ok(foodInformation);

@@ -1,9 +1,11 @@
 package com.spring.mmm.common.exception;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -23,4 +25,11 @@ public class GlobalErrorExceptionHandler {
         log.warn("Unhandled Exception 발생!!", e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ErrorResponse.createErrorResponse(GlobalErrorCode.INTERNAL_SERVER_ERROR_CODE, request.getRequestURI()));
     }
+    @ExceptionHandler(MissingRequestHeaderException.class)
+    public ResponseEntity<ErrorResponse> handleMissingRequestHeaderException(Exception e, HttpServletRequest request){
+        log.warn("Unhandled Exception 발생!!", e);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ErrorResponse.createErrorResponse(GlobalErrorCode.UNAUTHORIZED_ACCESS, request.getRequestURI()));
+    }
+
+
 }

@@ -22,6 +22,8 @@ import org.springframework.util.StringUtils;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @Component
@@ -84,6 +86,8 @@ public class JwtProvider {
     public TokenResponse reissueAtk(String email, String reToken) {
         // 레디스 저장된 리프레쉬토큰값을 가져와서 입력된 reToken 같은지 유무 확인
         if (!redisDao.getRefreshToken(email).equals(reToken)) {
+            log.debug("email : {}", email);
+            log.debug("reToken : {}", reToken);
             throw new UserException(UserErrorCode.INVALID_USER);
         }
         String accessToken = createToken(email, ACCESS_TOKEN_TIME);
@@ -94,26 +98,15 @@ public class JwtProvider {
     }
 
     public String getUserInfoFromToken(String token){
-        try {
-            Claims claims = Jwts.parser().setSigningKey(key).build().parseClaimsJws(token).getBody();
-            return claims.get(CLAIM_KEY, String.class);
-        } catch (ExpiredJwtException e) {
-            Claims claims = e.getClaims();
-            return claims.get(CLAIM_KEY, String.class);
-        }
+
+        Claims claims = Jwts.parser().setSigningKey(key).build().parseClaimsJws(token).getBody();
+        return claims.get(CLAIM_KEY, String.class);
+
     }
 
     public boolean validateToken(String token) {
-        try {
-            Jwts.parser().setSigningKey(key).build().parseClaimsJws(token);
-            return true;
-        } catch (SecurityException | MalformedJwtException |
-                 UnsupportedJwtException | ExpiredJwtException e) {
-            log.info("Invalid JWT token, 만료된 JWT 입니다.");
-        } catch (IllegalArgumentException e) {
-            log.info("JWT claims is empty, 잘못된 JWT 입니다.");
-        }
-        return false;
+        Jwts.parser().setSigningKey(key).build().parseClaimsJws(token);
+        return true;
     }
 
 

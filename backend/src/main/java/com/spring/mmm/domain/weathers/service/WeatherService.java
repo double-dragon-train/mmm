@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -52,7 +53,7 @@ public class WeatherService {
             urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("1000", "UTF-8")); /*한 페이지 결과 수*/
             urlBuilder.append("&" + URLEncoder.encode("dataType", "UTF-8") + "=" + URLEncoder.encode("JSON", "UTF-8"));
             urlBuilder.append("&" + URLEncoder.encode("base_date", "UTF-8") + "=" + URLEncoder.encode(formattedDate, "UTF-8"));
-            urlBuilder.append("&" + URLEncoder.encode("base_time", "UTF-8") + "=" + URLEncoder.encode("0900", "UTF-8"));
+            urlBuilder.append("&" + URLEncoder.encode("base_time", "UTF-8") + "=" + URLEncoder.encode("1200", "UTF-8"));
             urlBuilder.append("&" + URLEncoder.encode("nx", "UTF-8") + "=" + URLEncoder.encode(String.valueOf((int) tmp.x), "UTF-8")); /*예보지점의 X 좌표값*/
             urlBuilder.append("&" + URLEncoder.encode("ny", "UTF-8") + "=" + URLEncoder.encode(String.valueOf((int) tmp.y), "UTF-8")); /*예보지점의 Y 좌표값*/
             URL url = new URL(urlBuilder.toString());
@@ -106,6 +107,9 @@ public class WeatherService {
         }
         catch (IOException e) {
             throw new InternalServerCaughtException(e, this);
+        }
+        catch (JSONException e) {
+            throw new RecommendException(RecommendErrorCode.LOCATION_NOT_MATCHED);
         }
     }
 
@@ -166,17 +170,9 @@ public class WeatherService {
         if (weatherDTO.getRN1() >= 0.5) {
             weatherId = 1;
         }
-        log.debug("weatherDTO.getT1H() : {}",weatherDTO.getT1H());
-        log.debug("weatherDTO.getRN1() : {}",weatherDTO.getRN1());
         if (weatherId != 0) {
-            log.debug("weatherId : {}", weatherId);
-            log.debug("수제비나와라 : {}", foodRepository.findByName("수제비"));
-            FoodEntity soojebi = foodRepository.findByName("수제비");
-            log.debug("수제비의 id : {}", soojebi.getFoodId());
-            log.debug("수제비의 foodWeatherEntity : {}",soojebi.getFoodWeatherEntity());
-            log.debug("수제비의 weatherId : {}",soojebi.getFoodWeatherEntity().getWeatherEntity());
             List<FoodEntity> foodEntities = foodRepository.findByWeatherId(weatherId);
-            log.debug("foodEntities : {}", foodEntities);
+
             Random random = new Random();
             int randomIndex = random.nextInt(foodEntities.size());
             FoodEntity randomFoodEntity = foodEntities.get(randomIndex);
