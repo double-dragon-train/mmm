@@ -5,11 +5,14 @@ import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.mukgroups.domain.MukboType;
 import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
 import com.spring.mmm.domain.mukjuks.controller.response.Badge;
+import com.spring.mmm.domain.mukjuks.domain.FoodMukjukLevel;
 import com.spring.mmm.domain.mukjuks.domain.MukjukEntity;
+import com.spring.mmm.domain.recommends.domain.*;
 import com.spring.mmm.domain.users.infra.UserEntity;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -25,23 +28,25 @@ public class TestFixture {
     public static MukBTIResultEntity mukBTIResult;
     public static List<Badge> badges;
 
+    public static List<MukjukEntity> mukjuks;
+
+    public static RecommendedFoodEntity recommendedFood;
+
 
     static {
-        badges = new ArrayList<>();
+        List<Badge> tempBadges = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            badges.add(Badge.builder()
+            tempBadges.add(Badge.builder()
                     .id((long) i)
                     .name("먹적"+i)
                     .isCleared(i<5)
                     .build());
         }
 
-        MukjukEntity mukjuk = MukjukEntity.builder()
-                .name("먹적먹적")
-                .context("이 먹적은 회득 조건을 공개하지 않습니다.")
-                .imageSrc("")
-                .mukjukId(100L)
-                .build();
+        badges = Collections.unmodifiableList(tempBadges);
+        // 먹적
+        createMukjuks();
+
 
         user = UserEntity.builder()
                 .id(1L)
@@ -53,7 +58,7 @@ public class TestFixture {
                 .isSolo(Boolean.FALSE)
                 .mukgroupId(1L)
                 .name("ssafygroup")
-                .mukjukEntity(mukjuk)
+                .mukjukEntity(mukjuks.getFirst())
                 .build();
         // 먹그룹장전
 
@@ -112,8 +117,44 @@ public class TestFixture {
         // 먹비티아이장전
 
 
-        // 먹적
+        FoodEntity food = FoodEntity.builder()
+                .name("평양 냉면")
+                .foodId(1)
+                .foodCategoryEntity(FoodCategoryEntity.builder()
+                        .foodCategoryId(1)
+                        .name(FoodCategory.KOREA)
+                        .build())
+                .build();
 
 
+        FoodRecommendEntity foodRecommend = FoodRecommendEntity.builder()
+                .foodRecommendId(1)
+                .mukgroupEntity(mukgroupEntity)
+                .build();
+
+
+        recommendedFood = RecommendedFoodEntity.builder()
+                .category(RecommendCategory.NORMAL)
+                .eaten(true)
+                .foodEntity(food)
+                .foodRecommendEntity(foodRecommend)
+                .build();
+
+
+    }
+
+    private static void createMukjuks(){
+        List<MukjukEntity> tempMukjuks = new ArrayList<>();
+        int id = 1;
+        for (FoodCategory category : FoodCategory.values()) {
+            for (FoodMukjukLevel level : FoodMukjukLevel.values()) {
+                tempMukjuks.add(MukjukEntity.builder()
+                                .mukjukId((long) id++)
+                        .name(category.getKoreanName() + " " +level.getTitle())
+                        .context(category.getKoreanName() + " " + level.getCondition()+"번 먹기")
+                        .build());
+            }
+        }
+        mukjuks = Collections.unmodifiableList(tempMukjuks);
     }
 }

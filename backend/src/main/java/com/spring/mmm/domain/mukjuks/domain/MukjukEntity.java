@@ -33,4 +33,15 @@ public class MukjukEntity {
 
     @OneToMany(mappedBy = "mukjukEntity")
     private List<MukgroupEntity> mukGroupEntities;
+
+    @Override
+    public String toString() {
+        return "MukjukEntity{" +
+                "mukjukId=" + mukjukId +
+                ", name='" + name + '\'' +
+                ", context='" + context + '\'' +
+                ", imageSrc='" + imageSrc + '\'' +
+                ", mukGroupMukJukEntities=" + mukGroupMukJukEntities +
+                '}';
+    }
 }
