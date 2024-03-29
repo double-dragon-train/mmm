@@ -127,8 +127,8 @@ function SignupPage() {
   // 이메일 인증코드 확인 api
   const { mutate: mutateEmailCode } = useMutation({
     mutationFn: postEmailCode,
-    onSuccess: (data) => {
-      setIsEmailCodeValid(data);
+    onSuccess: () => {
+      setIsEmailCodeValid('ok');
     },
     onError: () => {
       setIsEmailCodeValid('no')

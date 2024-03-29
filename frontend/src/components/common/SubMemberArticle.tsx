@@ -1,35 +1,25 @@
 import styles from '../../styles/groupPage/MemberSection.module.css';
-import MiniRedButton from './MiniRedButton';
-import editMukbot from '../../assets/images/editMukbot.png'
-
 interface SubMemberArticleProps {
+  children: React.ReactNode;
   articleName: string;
-  memberName: string;
-  memberMBTI: string;
-  buttonName: string;
+  modalButton: string;
+  clickEvent: () => void;
 }
 
 function SubMemberArticle({
   articleName,
-  memberName,
-  memberMBTI,
-  buttonName,
+  children,
+  modalButton,
+  clickEvent
 }: SubMemberArticleProps) {
+
 
   return (
     <article>
-        <span>{articleName}</span>
-        <div className={styles.memberBox}>
-          <div className={styles.memberCard}>
-            {articleName == '먹봇' ? <img src={editMukbot} alt="editMukbot"/> : <div></div> }
-            <div className={styles.memberName}>
-              {memberName}
-            </div>
-            <div className={styles.memberMBTI}>{memberMBTI}</div>
-          </div>
-          <MiniRedButton clickEvent={() => {}} buttonName={buttonName} />
-        </div>
-      </article>
+      <span className={styles.articleName}>{articleName}</span>
+      <span className={styles.modalButton} onClick={clickEvent}>{modalButton}</span>
+      {children}
+    </article>
   );
 }
 

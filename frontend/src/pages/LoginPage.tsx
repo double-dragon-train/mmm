@@ -61,6 +61,8 @@ function LoginPage() {
       setRefreshToken(data.refreshToken);
       setIsLogin(true);
       navigate('/');
+      console.log('로그인 성공')
+      localStorage.setItem('refreshToken', data.refreshToken);
     },
   });
 
