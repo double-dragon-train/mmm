@@ -18,7 +18,7 @@ public class FoodCategoryEntity {
     private Integer foodCategoryId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "name")
+    @Column(name = "name", columnDefinition = "VARCHAR(255)")
     private FoodCategory name;
 
     @Column(name = "color")
