@@ -1,6 +1,6 @@
 .wrapper {
   padding-bottom: 10px;
-  height: calc(100vh - 142px);
+  height: calc(100vh - 152px);
   overflow-y: scroll;
   width: 100%;
   display: flex;
