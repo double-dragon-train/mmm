@@ -95,13 +95,19 @@ public class UserServiceImpl implements UserService{
             boolean isNicknameExist = userRepository.existsByNickname(nickname);
 
             if (isNicknameExist) {
-                return;
+                throw new UserException(UserErrorCode.EXIST_NICKNAME);
             }
         }
 
         String password = userEntity.getPassword();
 
         if (userModifyRequest.getNewPassword() != null) {
+            if (!passwordEncoder.matches(userModifyRequest.getPassword(), password)) {
+                throw new UserException(UserErrorCode.PASSWORD_CONFLICT);
+            }
+            if (!userModifyRequest.getNewPassword().equals(userModifyRequest.getNewPasswordConfirm())) {
+                throw new UserException(UserErrorCode.PASSWORD_CONFIRM_CONFLICT);
+            }
             password = passwordEncoder.encode(userModifyRequest.getNewPassword());
         }
 

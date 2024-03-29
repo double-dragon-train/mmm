@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -107,6 +108,9 @@ public class WeatherService {
         catch (IOException e) {
             throw new InternalServerCaughtException(e, this);
         }
+        catch (JSONException e) {
+            throw new RecommendException(RecommendErrorCode.LOCATION_NOT_MATCHED);
+        }
     }
 
     public static class Grid {
@@ -166,16 +170,7 @@ public class WeatherService {
         if (weatherDTO.getRN1() >= 0.5) {
             weatherId = 1;
         }
-        log.debug("weatherDTO.getT1H() : {}",weatherDTO.getT1H());
-        log.debug("weatherDTO.getRN1() : {}",weatherDTO.getRN1());
         if (weatherId != 0) {
-            log.debug("weatherId : {}", weatherId);
-            log.debug("수제비나와라 : {}", foodRepository.findByName("수제비"));
-            FoodEntity soojebi = foodRepository.findByName("수제비")
-                    .orElseThrow(() -> new RecommendException(RecommendErrorCode.FOOD_NOT_FOUND));
-            log.debug("수제비의 id : {}", soojebi.getFoodId());
-            log.debug("수제비의 foodWeatherEntity : {}",soojebi.getFoodWeatherEntity());
-            log.debug("수제비의 weatherId : {}",soojebi.getFoodWeatherEntity().getWeatherEntity());
             List<FoodEntity> foodEntities = foodRepository.findByWeatherId(weatherId);
             log.debug("foodEntities : {}", foodEntities);
             Random random = new Random();

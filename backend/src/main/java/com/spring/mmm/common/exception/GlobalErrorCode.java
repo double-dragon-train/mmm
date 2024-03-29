@@ -28,6 +28,7 @@ public enum GlobalErrorCode implements ErrorCode {
 
     UNAUTHORIZED_ACCESS(HttpStatus.UNAUTHORIZED, "로그인 후 접근해주세요");
 
+
     private final HttpStatus httpStatus;
     private final String errorMessage;
 

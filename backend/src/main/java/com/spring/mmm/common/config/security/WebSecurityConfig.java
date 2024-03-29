@@ -2,14 +2,13 @@ package com.spring.mmm.common.config.security;
 
 import com.spring.mmm.common.config.RedisDao;
 import com.spring.mmm.common.config.jwt.JwtAuthFilter;
+import com.spring.mmm.common.config.jwt.JwtExceptionFilter;
 import com.spring.mmm.common.config.jwt.JwtProvider;
-import com.spring.mmm.common.exception.CustomAccessDeniedHandler;
-import com.spring.mmm.common.exception.CustomAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+@Slf4j
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -31,14 +31,10 @@ public class WebSecurityConfig {
     private final JwtProvider jwtProvider;
     private final RedisDao redisDao;
 
-    private final CustomAccessDeniedHandler customAccessDeniedHandler;
-    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -50,6 +46,7 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        log.debug("start!");
         http
                 .csrf(AbstractHttpConfigurer::disable);
         http
@@ -57,21 +54,16 @@ public class WebSecurityConfig {
 
         http
                 .authorizeHttpRequests((auth)->auth
-//                .requestMatchers("/users/**", "/recommend").permitAll()
-//                        .requestMatchers(HttpMethod.DELETE,"/users").authenticated()
-//                        .requestMatchers(HttpMethod.PUT, "/users").authenticated()
-                        .requestMatchers("/**").permitAll()
-                                .anyRequest().permitAll()
+                        .requestMatchers("/users/**", "/recommend").permitAll()
+                        .requestMatchers("/users").authenticated()
+                        .anyRequest().authenticated()
                 );
 
         http
-                .addFilterBefore(new JwtAuthFilter(redisDao, jwtProvider),
-                        UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthFilter(jwtProvider),
+                        UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtExceptionFilter(), JwtAuthFilter.class);
 
-        // 401 Error 처리, Authorization 즉, 인증과정에서 실패할 시 처리
-//        http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
-        // 403 Error 처리, 인증과는 별개로 추가적인 권한이 충족되지 않는 경우
-//        http.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);
         return http.build();
     }
 
