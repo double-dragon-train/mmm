@@ -5,10 +5,8 @@ import MemberSection from '../components/groupPage/MemberSection';
 import styles from '../styles/groupPage/GroupPage.module.css';
 import { useQuery } from '@tanstack/react-query';
 import { getGroupInfo } from '../api/groupApi';
-import userStore from '../stores/userStore';
 
 function GroupPage() {
-  const { accessToken } = userStore();
   const mbti = {
     ei: 1,
     ns: 2,
@@ -24,9 +22,10 @@ function GroupPage() {
     isError,
   } = useQuery({
     queryKey: ['groupInfo'],
-    queryFn: () => getGroupInfo(accessToken),
+    queryFn: getGroupInfo,
   });
 
+  console.log('groupInfo:', groupInfo)
   if (isPending) {
     return <div>isLoding...</div>;
   }

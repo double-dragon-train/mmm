@@ -67,6 +67,16 @@
   color: #2a43ce;
 }
 
+.squaredButton {
+  font-size: 18px;
+  width: 232px;
+  min-height: 55px;
+  background-color: rgba(42, 67, 206, 0.4);
+  border-radius: 5px;
+  color: white;
+  margin: 12px 0px;
+}
+
 .blockedMiniRoundedButton {
   width: 100px;
   height: 55px;

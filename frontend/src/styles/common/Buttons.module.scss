@@ -1,7 +1,7 @@
 $color-main: #2a43ce;
 $color-user: #0e26ae;
 $color-gray: #656565;
-$color-red: #FF0000;
+$color-red: #ff0000;
 $button-padding: 18px;
 $font-size: 20px;
 
@@ -71,6 +71,21 @@ $font-size: 20px;
     border: 1.5px solid rgba($color-main, 0.6);
     color: $color-main;
   }
+}
+
+.squaredButton {
+  font-size: 18px;
+  width: 232px;
+  min-height: 55px;
+  background-color: rgba($color-main, 0.4);
+  border-radius: 5px;
+  color: white;
+  margin: 12px 0px;
+  // border: 1.5px solid rgba($color-main, 0.6);
+  // &:focus {
+  //   border: 1.5px solid rgba($color-main, 0.6);
+  //   color: $color-main;
+  // }
 }
 
 .blockedMiniRoundedButton {
