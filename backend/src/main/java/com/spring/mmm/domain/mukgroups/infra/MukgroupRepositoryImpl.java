@@ -39,6 +39,6 @@ public class MukgroupRepositoryImpl implements MukgroupRepository {
 
     @Override
     public Integer countMukusByFoodCategory(Long mukgroupId, FoodCategory foodCategory) {
-        return null;
+        return mukgroupJpaRepository.countMukusByFoodCategory(mukgroupId, foodCategory);
     }
 }
