@@ -78,4 +78,14 @@ public class MukgroupEntity {
                 .imageSrc(imageSrc)
                 .build();
     }
+
+    @Override
+    public String toString() {
+        return "MukgroupEntity{" +
+                "mukgroupId=" + mukgroupId +
+                ", name='" + name + '\'' +
+                ", imageSrc='" + imageSrc + '\'' +
+                ", isSolo=" + isSolo +
+                '}';
+    }
 }

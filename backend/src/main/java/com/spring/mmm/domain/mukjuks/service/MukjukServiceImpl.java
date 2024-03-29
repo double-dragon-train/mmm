@@ -11,9 +11,11 @@ import com.spring.mmm.domain.mukgroups.service.port.MukboRepository;
 import com.spring.mmm.domain.mukgroups.service.port.MukgroupRepository;
 import com.spring.mmm.domain.mukjuks.controller.response.MukjukResponse;
 import com.spring.mmm.domain.mukjuks.domain.FoodMukjukLevel;
+import com.spring.mmm.domain.mukjuks.domain.MbtiMukjuk;
 import com.spring.mmm.domain.mukjuks.domain.MukgroupMukjukEntity;
 import com.spring.mmm.domain.mukjuks.domain.MukjukEntity;
 import com.spring.mmm.domain.mukjuks.event.FoodRecordedEvent;
+import com.spring.mmm.domain.mukjuks.event.MukBTICalculatedEvent;
 import com.spring.mmm.domain.mukjuks.event.MukjukAchievedEvent;
 import com.spring.mmm.domain.mukjuks.exception.MukjukErrorCode;
 import com.spring.mmm.domain.mukjuks.exception.MukjukException;
@@ -65,6 +67,57 @@ public class MukjukServiceImpl implements MukjukService {
         if (canClear(count, matchingResult)) {
             clearMukjuk(matchingResult, mukgroup);
         }
+    }
+
+    @Override
+    public void handleMukBTICalculatedEvent(MukBTICalculatedEvent event) {
+        // groupId 검증
+        Long groupId = event.getGroupId();
+        MukgroupEntity mukgroup = mukgroupRepository.findByMukgroupId(groupId)
+                .orElseThrow(() -> new MukGroupException(MukGroupErrorCode.NOT_FOUND));
+        // user조회하고, mukbo가 group에 속한지 검증
+        if (mukgroup.getIsSolo()) {
+            throw new MukGroupException(MukGroupErrorCode.SOLO_CANT_ACCESS_MUKJUK);
+        }
+        // EI
+        if (isZeroOrHundred(event.getEi())) {
+            saveMukjuk(event, groupId, mukgroup, MbtiMukjuk.IE);
+        }
+        // SN
+        if (isZeroOrHundred(event.getNs())) {
+            saveMukjuk(event, groupId, mukgroup, MbtiMukjuk.SN);
+        }
+        // JP
+        if (isZeroOrHundred(event.getJp())) {
+            saveMukjuk(event, groupId, mukgroup, MbtiMukjuk.JP);
+        }
+        // FT
+        if (isZeroOrHundred(event.getTf())) {
+            saveMukjuk(event, groupId, mukgroup, MbtiMukjuk.FT);
+        }
+        // MINT
+        if (isZeroOrHundred(event.getMint())) {
+            saveMukjuk(event, groupId, mukgroup, MbtiMukjuk.MINT);
+        }
+        // PINE
+        if (isZeroOrHundred(event.getPine())) {
+            saveMukjuk(event, groupId, mukgroup, MbtiMukjuk.PINE);
+        }
+        // DIE
+        if (isZeroOrHundred(event.getDie())) {
+            saveMukjuk(event, groupId, mukgroup, MbtiMukjuk.DIE);
+        }
+    }
+
+    private void saveMukjuk(MukBTICalculatedEvent event, Long groupId, MukgroupEntity mukgroup, MbtiMukjuk mbtiMukjuk) {
+        Long mukjukId = mukjukRepository.getMukgetIdIfUncleared(groupId, mbtiMukjuk.getTitle(event.getEi()));
+        if (mukjukId > 0) {
+            mukGroupMukjukRepository.save(MukgroupMukjukEntity.create(mukgroup, mukjukId));
+        }
+    }
+
+    private boolean isZeroOrHundred(int value) {
+        return value == 0 || value == 100;
     }
 
     private void clearMukjuk(MukjukMatchingResult matchingResult, MukgroupEntity mukgroup) {

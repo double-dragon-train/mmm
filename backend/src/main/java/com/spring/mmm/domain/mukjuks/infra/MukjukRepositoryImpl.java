@@ -20,6 +20,11 @@ public class MukjukRepositoryImpl implements MukjukRepository {
 
     @Override
     public List<MukjukEntity> findUnclearedMukjuk(Long groupId) {
-        return null;
+        return mukjukJpaRepository.findUnclearedMukjuk(groupId);
+    }
+
+    @Override
+    public Long getMukgetIdIfUncleared(Long groupId, String mukjukTitle) {
+        return mukjukJpaRepository.getMukgetIdIfUncleared(groupId, mukjukTitle);
     }
 }

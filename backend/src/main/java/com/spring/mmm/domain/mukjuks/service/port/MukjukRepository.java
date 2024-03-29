@@ -9,4 +9,6 @@ public interface MukjukRepository {
     List<Badge> findAllBadges(Long groupId);
 
     List<MukjukEntity> findUnclearedMukjuk(Long groupId);
+
+    Long getMukgetIdIfUncleared(Long groupId, String mukjukTitle);
 }

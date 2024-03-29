@@ -31,4 +31,20 @@ public class MukgroupMukjukEntity {
                 .mukgroupEntity(mukgroupEntity)
                 .build();
     }
+    public static MukgroupMukjukEntity create(MukgroupEntity mukgroupEntity, Long mukjukId){
+        return MukgroupMukjukEntity.builder()
+                .mukjukEntity(MukjukEntity.builder()
+                        .mukjukId(mukjukId)
+                        .build())
+                .mukgroupEntity(mukgroupEntity)
+                .build();
+    }
+
+    @Override
+    public String toString() {
+        return "MukgroupMukjukEntity{" +
+                "mukgorupMukjukId=" + mukgorupMukjukId +
+                ", mukgroupEntity=" + mukgroupEntity +
+                '}';
+    }
 }

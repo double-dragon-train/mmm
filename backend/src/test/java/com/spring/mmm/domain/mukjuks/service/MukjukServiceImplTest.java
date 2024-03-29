@@ -77,7 +77,7 @@ class MukjukServiceImplTest {
         MukjukResponse sut = mukjukService.findAllMukjuks(groupId, users);
         // then
         SoftAssertions sa = new SoftAssertions();
-        sa.assertThat(sut.getTitleMukjukId()).isEqualTo(100L);
+        sa.assertThat(sut.getTitleMukjukId()).isEqualTo(1);
         sa.assertThat(sut.getBadges().size()).isSameAs(10);
         sa.assertAll();
     }

@@ -58,7 +58,7 @@ public class TestFixture {
                 .isSolo(Boolean.FALSE)
                 .mukgroupId(1L)
                 .name("ssafygroup")
-                .mukjukEntity(mukjuks.get(0))
+                .mukjukEntity(mukjuks.getFirst())
                 .build();
         // 먹그룹장전
 
@@ -145,9 +145,11 @@ public class TestFixture {
 
     private static void createMukjuks(){
         List<MukjukEntity> tempMukjuks = new ArrayList<>();
+        int id = 1;
         for (FoodCategory category : FoodCategory.values()) {
             for (FoodMukjukLevel level : FoodMukjukLevel.values()) {
                 tempMukjuks.add(MukjukEntity.builder()
+                                .mukjukId((long) id++)
                         .name(category.getKoreanName() + " " +level.getTitle())
                         .context(category.getKoreanName() + " " + level.getCondition()+"번 먹기")
                         .build());
