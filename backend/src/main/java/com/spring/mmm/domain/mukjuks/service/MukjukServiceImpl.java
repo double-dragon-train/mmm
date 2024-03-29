@@ -110,9 +110,11 @@ public class MukjukServiceImpl implements MukjukService {
     }
 
     private void saveMukjuk(MukBTICalculatedEvent event, Long groupId, MukgroupEntity mukgroup, MbtiMukjuk mbtiMukjuk) {
-        Long mukjukId = mukjukRepository.getMukgetIdIfUncleared(groupId, mbtiMukjuk.getTitle(event.getEi()));
+        String mukjukTitle = mbtiMukjuk.getTitle(event.getEi());
+        Long mukjukId = mukjukRepository.getMukgetIdIfUncleared(groupId, mukjukTitle);
         if (mukjukId > 0) {
             mukGroupMukjukRepository.save(MukgroupMukjukEntity.create(mukgroup, mukjukId));
+            Events.raise(new MukjukAchievedEvent(mukjukTitle, mukgroup.getMukgroupId()));
         }
     }
 
