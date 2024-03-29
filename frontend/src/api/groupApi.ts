@@ -1,13 +1,8 @@
 import instance from './axios';
 
-export async function getGroupInfo(accessToken: string) {
+export async function getGroupInfo() {
   try {
-    const res = await instance.get('/groups', {
-      headers: {
-          Authorization: accessToken,
-        },
-    });
-    console.log(res);
+    const res = await instance.get('/groups', {});
     return res.data;
   } catch (e) {
     console.log(e);

@@ -6,6 +6,16 @@ interface answerType {
   answerId: string;
 }
 
+interface mbtiType {
+  ei: number;
+  ns: number;
+  tf: number;
+  jp: number;
+  mint: number;
+  pine: number;
+  die: number;
+}
+
 interface userStoreType {
   answerList: answerType[];
   updateAnswerList: (value: answerType[]) => void;
@@ -17,6 +27,8 @@ interface userStoreType {
   setIsLogin: (value: boolean) => void;
   mbtiKey: string;
   setMbtiKey: (value: string) => void;
+  mbti: mbtiType;
+  setMbti: (value: mbtiType) => void;
 }
 const userStore = create(
   persist<userStoreType>(
@@ -33,6 +45,8 @@ const userStore = create(
         set({ answerList: value }),
       mbtiKey: '',
       setMbtiKey: (value: string) => set({ mbtiKey: value }),
+      mbti: { ei: 0, ns: 0, tf: 0, jp: 0, mint: 0, pine: 0, die: 0 },
+      setMbti: (value: mbtiType) => set({ mbti: value }),
       //   loginModalOpen: false,
       //   setLoginModalOpen: (value) => set({ loginModalOpen: value }),
       //   isMyPage: true,

@@ -18,7 +18,7 @@ function MbtiResultPage() {
 
   const { mutate: mutateCreateUserMbti } = useMutation({
     mutationFn: postMbtiResult,
-    // onSuccess: () => navigate('/'),
+    onSuccess: () => navigate('/'),
   });
 
   const {
@@ -36,7 +36,7 @@ function MbtiResultPage() {
 
   const goNextStep = () => {
     if (isLogin) {
-      console.log(mbtiKey);
+      console.log('mbtiKey:', mbtiKey);
       mutateCreateUserMbti(mbtiKey);
     } else {
       navigate('/signup');
@@ -59,7 +59,9 @@ function MbtiResultPage() {
       </div>
       <button
         onClick={goNextStep}
-        className={buttonStyles.miniRoundedButton + ' ' + styles.nextButton}
+        className={
+          buttonStyles.miniRoundedButton + ' ' + styles.nextButton
+        }
       >
         다음
       </button>

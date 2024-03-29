@@ -27,10 +27,20 @@ export async function getMbtiResult(answers: answerType[]) {
 
 export async function postMbtiResult(key: string) {
   const data = { key };
-  console.log(data);
+  console.log('mbtiResult body:',data);
   try {
     const res = await instance.post('/users/mbti', data);
     console.log(res);
+    return res.data;
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+export async function getGroupMbti() {
+  try {
+    const res = await instance.get('/users/mbti');
+    console.log('groupMbti 요청 결과:', res);
     return res.data;
   } catch (e) {
     console.log(e);

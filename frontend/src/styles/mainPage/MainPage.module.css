@@ -6,27 +6,178 @@
   flex-direction: column;
   align-items: center;
   overflow-y: scroll;
+  gap: 12px;
 }
 .wrapper::-webkit-scrollbar {
   display: none;
 }
 
-.recommendSection {
+.mainRecommendSection {
   width: 95%;
   background-color: rgba(42, 67, 206, 0.03);
-  border-radius: 15px;
+  border-radius: 5px;
+  padding: 12px 24px;
 }
-.recommendSection .header {
+.mainRecommendSection .header {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-.recommendSection .header h2 {
+.mainRecommendSection .header .titleBox {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(42, 67, 206, 0.3);
+  gap: 5px;
+}
+.mainRecommendSection .header .titleBox > h2 {
   font-weight: 500;
+  font-size: 17px;
   color: rgba(42, 67, 206, 0.8);
 }
-.recommendSection .header img {
-  max-width: 16px;
-  width: 16px;
+.mainRecommendSection .header .titleBox > img {
+  width: 12px;
   aspect-ratio: 1/1;
+}
+.mainRecommendSection .header > img {
+  width: 16px;
+  height: 16px;
+  aspect-ratio: 1/1;
+  cursor: pointer;
+}
+.mainRecommendSection main {
+  margin-top: 12px;
+  background-color: white;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 0px;
+}
+.mainRecommendSection main .recommendFoodBox {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.mainRecommendSection main .recommendFoodBox img {
+  width: 160px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  border: 1px solid rgba(42, 67, 206, 0.2);
+}
+.mainRecommendSection main .recommendFoodBox span {
+  color: #656565;
+  font-size: 16px;
+}
+
+.weatherRecommendSection {
+  width: 95%;
+  background-color: rgba(42, 67, 206, 0.03);
+  border-radius: 5px;
+  padding: 12px 24px;
+  position: relative;
+  overflow: hidden;
+}
+.weatherRecommendSection .textBox {
+  text-align: left;
+}
+.weatherRecommendSection .textBox h2 {
+  font-weight: 500;
+  text-align: left;
+  font-size: 14px;
+  color: rgba(101, 101, 101, 0.8);
+  margin-bottom: 5px;
+}
+.weatherRecommendSection .textBox span {
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.8);
+}
+.weatherRecommendSection .textBox span .foodName {
+  font-size: 20px;
+  color: rgba(42, 67, 206, 0.7);
+}
+.weatherRecommendSection > img {
+  position: absolute;
+  top: 50%;
+  right: 0px;
+  transform: translate(0, -50%);
+  width: 60%;
+  aspect-ratio: 1/1;
+}
+
+.newRecommendSection {
+  width: 95%;
+  background-color: rgba(42, 67, 206, 0.03);
+  border-radius: 5px;
+  padding: 12px 24px;
+  position: relative;
+  overflow: hidden;
+}
+.newRecommendSection .textBox {
+  text-align: right;
+}
+.newRecommendSection .textBox h2 {
+  font-weight: 500;
+  text-align: right;
+  font-size: 14px;
+  color: rgba(101, 101, 101, 0.8);
+  margin-bottom: 5px;
+}
+.newRecommendSection .textBox span {
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.8);
+}
+.newRecommendSection .textBox span .foodName {
+  font-size: 20px;
+  color: rgba(42, 67, 206, 0.7);
+}
+.newRecommendSection > img {
+  position: absolute;
+  top: 50%;
+  left: 0px;
+  transform: translate(0, -50%);
+  width: 60%;
+  aspect-ratio: 1/1;
+}
+
+.groupSection {
+  width: 95%;
+  background-color: rgba(42, 67, 206, 0.03);
+  border-radius: 5px;
+  padding: 12px 24px;
+  position: relative;
+  overflow: hidden;
+}
+.groupSection .header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.groupSection .header h2 {
+  font-size: 17px;
+  font-weight: 500;
+  color: rgba(42, 67, 206, 0.8);
+  text-decoration: underline;
+  text-decoration-color: rgba(42, 67, 206, 0.3);
+  text-underline-offset: 5px;
+}
+.groupSection .groupInfoBox {
+  display: flex;
+  gap: 5px;
+}
+.groupSection .groupInfoBox > div {
+  border: 1px dashed rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.3);
+}
+.groupSection main {
+  margin: 12px;
+}
+.groupSection main > span {
+  margin: 12px;
+  font-size: 16px;
+  color: rgba(101, 101, 101, 0.3);
 }
 
 .recordModalWrapper > h2 {
@@ -74,4 +225,8 @@
   display: flex;
   justify-content: center;
   gap: 12px;
+}
+
+.createGroupModalWrapper {
+  background-color: aqua;
 }/*# sourceMappingURL=MainPage.module.css.map */
