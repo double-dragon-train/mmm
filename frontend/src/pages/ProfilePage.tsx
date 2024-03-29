@@ -106,7 +106,8 @@ function ProfilePage() {
   const { mutate: mutateProfile } = useMutation({
     mutationFn: postEditProfile,
     onSuccess: () => {
-      navigate('/login');
+      navigate('/');
+      console.log('개인정보 수정 성공')
     },
   });
   const handleEditProfile = () => {
@@ -127,6 +128,7 @@ function ProfilePage() {
       setAccessToken('');
       setRefreshToken('');
       setIsLogin(false);
+      console.log('로그아웃 성공')
     },
   });
   const handleLogout = () => {
