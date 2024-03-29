@@ -31,3 +31,19 @@ export function checkPasswordValidation(input: string): boolean {
     // 정규 표현식을 사용하여 비밀번호가 조건에 부합하는지 확인하고 결과를 반환
     return regex.test(input);
   }
+
+
+
+export function checkGroupNameValidation(input: string) {
+  if (input.length < 2 || input.length > 20) {
+    return false;
+  }
+
+  // 입력값이 한글, 영어(대문자 또는 소문자), 숫자로만 구성되어 있는지 검사
+  const regex = /^[가-힣a-zA-Z0-9]+$/;
+  if (!regex.test(input)) {
+    return false;
+  }
+
+  return true;
+}

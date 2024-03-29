@@ -4,11 +4,16 @@ import styles from '../../styles/mainPage/MainPage.module.css';
 import buttonStyles from '../../styles/common/Buttons.module.css';
 import userStore from '../../stores/userStore';
 import { useEffect } from 'react';
+import MemberCard from './MemberCard';
 
 interface propsType {
-  toggleIsCreateModalOpen: () => void;
+  hadleOpenCreateModal: () => void;
+  isSolo: boolean;
 }
-function GroupSection({ toggleIsCreateModalOpen }: propsType) {
+function GroupSection({
+  hadleOpenCreateModal,
+  isSolo,
+}: propsType) {
   const { setMbti } = userStore();
   const {
     data: groupMbti,
@@ -38,19 +43,36 @@ function GroupSection({ toggleIsCreateModalOpen }: propsType) {
         <div>그룹명</div>
         <div>먹BTI</div>
       </div>
-      <main>
-        <span>
-          부서 내 팀원들을 초대하여 먹그룹을 만들어
-          <br />
-          대표 먹BTI를 설정해보세요.
-        </span>
-        <button
-          className={buttonStyles.squaredButton}
-          onClick={toggleIsCreateModalOpen}
-        >
-          먹그룹 만들기
-        </button>
-      </main>
+      {isSolo ? (
+        <main className={styles.soloMain}>
+          <span>
+            부서 내 팀원들을 초대하여 먹그룹을 만들어
+            <br />
+            대표 먹BTI를 설정해보세요.
+          </span>
+          <button
+            className={buttonStyles.squaredButton}
+            onClick={hadleOpenCreateModal}
+          >
+            먹그룹 만들기
+          </button>
+        </main>
+      ) : (
+        <main className={styles.groupMain}>
+          <article>
+            <h2 className={styles.todayTitle}>오늘 같이 먹어요</h2>
+            <div>
+              <MemberCard />
+            </div>
+          </article>
+          <article>
+            <h2 className={styles.todayNext}>아쉽지만 다음에...</h2>
+            <div>
+              <MemberCard />
+            </div>
+          </article>
+        </main>
+      )}
     </div>
   );
 }

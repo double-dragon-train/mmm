@@ -2,7 +2,7 @@ $color-main: #2a43ce;
 $color-gray: #656565;
 .wrapper {
   padding: 10px 0;
-  height: calc(100vh - 142px);
+  height: calc(100vh - 152px);
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -88,9 +88,15 @@ $color-gray: #656565;
       color: rgba($color-gray, 0.8);
       margin-bottom: 5px;
     }
-    span {
+    div {
+      position: relative;
+      z-index: 1;
+      text-align: left;
       font-size: 18px;
       color: rgba(black, 0.8);
+      &::first-letter {
+        color: rgba($color-main, 0.7);
+      }
       .foodName {
         font-size: 20px;
         color: rgba($color-main, 0.7);
@@ -99,6 +105,8 @@ $color-gray: #656565;
   }
   > img {
     position: absolute;
+    opacity: 0.3;
+    border-radius: 50%;
     top: 50%;
     right: 0px;
     transform: translate(0, -50%);
@@ -123,7 +131,10 @@ $color-gray: #656565;
       color: rgba($color-gray, 0.8);
       margin-bottom: 5px;
     }
-    span {
+    div {
+      text-align: right;
+      position: relative;
+      z-index: 1;
       font-size: 18px;
       color: rgba(black, 0.8);
       .foodName {
@@ -134,6 +145,8 @@ $color-gray: #656565;
   }
   > img {
     position: absolute;
+    opacity: 0.3;
+    border-radius: 50%;
     top: 50%;
     left: 0px;
     transform: translate(0, -50%);
@@ -173,13 +186,67 @@ $color-gray: #656565;
       color: rgba(black, 0.3);
     }
   }
-
-  main {
+  .soloMain {
     margin: 12px;
     > span {
       margin: 12px;
       font-size: 16px;
       color: rgba($color-gray, 0.3);
+    }
+  }
+  .groupMain {
+    // padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    article {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      > div {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        overflow-y: scroll;
+        min-height: 50px;
+        max-height: 160px;
+        .memberCard {
+          display: flex;
+          align-items: center;
+          background-color: white;
+          height: 50px;
+          min-height: 50px;
+          width: 95%;
+          border-radius: 5px;
+          padding: 0px 16px;
+          color: rgba(black, 0.7);
+          font-size: 16px;
+          .nickname {
+            width: 75%;
+            text-align: left;
+          }
+          .mbti {
+            width: 25%;
+            text-align: left;
+          }
+        }
+      }
+      .todayTitle {
+        padding-left: 5px;
+        text-align: left;
+        text-shadow: 1px 0px white 0px 1px white -1px 0px white 0px -1px
+          white;
+        color: rgba($color-main, 0.7);
+        font-size: 15px;
+        margin: 5px;
+      }
+      .todayNext {
+        padding-left: 5px;
+        text-align: left;
+        color: rgba($color-gray, 0.8);
+        font-size: 15px;
+        margin: 5px;
+      }
     }
   }
 }
@@ -234,5 +301,34 @@ $color-gray: #656565;
 }
 
 .createGroupModalWrapper {
-  background-color: aqua;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  > h2 {
+    padding-left: 12px;
+    width: 100%;
+    text-align: left;
+    font-size: 17px;
+    font-weight: 100;
+    color: rgba($color-main, 0.7);
+    text-decoration: underline;
+    text-decoration-color: rgba($color-main, 0.3);
+    text-underline-offset: 5px;
+  }
+  .imgBox {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    > span {
+      position: absolute;
+      font-size: 16px;
+      color: $color-gray;
+      top: 5px;
+      left: 5px;
+    }
+  }
 }

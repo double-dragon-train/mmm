@@ -73,6 +73,19 @@ $font-size: 20px;
   }
 }
 
+.miniBlueRoundedButton {
+  font-size: 17px;
+  width: 100px;
+  min-height: 55px;
+  background-color: rgba($color-user, 0.4);
+  border-radius: 50px;
+  color: white;
+  // &:focus {
+  //   border: 1.5px solid rgba($color-main, 0.6);
+  //   color: $color-main;
+  // }
+}
+
 .squaredButton {
   font-size: 18px;
   width: 232px;

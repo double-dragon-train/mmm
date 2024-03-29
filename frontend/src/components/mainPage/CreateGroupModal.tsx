@@ -1,9 +1,55 @@
-import styles from '../../styles/mainPage/MainPage.module.css'
+import { useState } from 'react';
+import styles from '../../styles/mainPage/MainPage.module.css';
+import buttonStyles from '../../styles/common/Buttons.module.css';
+import Input from '../common/Input';
+import ProfileImgBox from '../common/ProfileImgBox';
+import { postGroupInfo } from '../../api/groupApi';
+import { useMutation } from '@tanstack/react-query';
 
 function CreateGroupModal() {
+  const [groupName, setGroupName] = useState('');
+  const [isGroupNameValid] = useState(true);
+  const { mutate: mutateCreateGroup } = useMutation({
+    mutationFn: postGroupInfo
+  })
+  const handleChangeGroupName = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setGroupName(e.target.value);
+  };
+
+  const handleCreateGroup = () => {
+    mutateCreateGroup(groupName)
+  }
+
+  const checkGroupName = () => {};
+  
   return (
-    <div className={styles.createGroupModalWrapper}>CreateGroupModal</div>
-  )
+    <div className={styles.createGroupModalWrapper}>
+      <h2>먹그룹 생성</h2>
+      <div className={styles.imgBox}>
+        <span>대표사진</span>
+        <ProfileImgBox />
+      </div>
+      <div>
+        <Input
+          title="그룹명"
+          info="2~20자 (한글, 영어(대/소), 숫자)"
+          inputName="groupName"
+          inputValue={groupName}
+          onChange={handleChangeGroupName}
+          inputType="text"
+          inputWidth="longInput"
+          onBlur={checkGroupName}
+          isInputValid={isGroupNameValid}
+          errorMessage="그룹명 형식이 잘못되었습니다."
+        />
+      </div>
+      <button className={buttonStyles.miniBlueRoundedButton} onClick={handleCreateGroup}>
+        완료
+      </button>
+    </div>
+  );
 }
 
-export default CreateGroupModal
+export default CreateGroupModal;

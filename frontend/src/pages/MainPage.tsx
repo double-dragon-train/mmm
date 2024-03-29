@@ -8,6 +8,7 @@ import { getGroupInfo } from '../api/groupApi';
 import WeatherRecommendSection from '../components/mainPage/WeatherRecommendSection';
 import NewRecommendSection from '../components/mainPage/NewRecommendSection';
 import GroupSection from '../components/mainPage/GroupSection';
+import CreateGroupModal from '../components/mainPage/CreateGroupModal';
 
 function MainPage() {
   const [isRecordModalOpen, setIsRecordModalOpen] = useState(false);
@@ -21,19 +22,22 @@ function MainPage() {
     queryFn: getGroupInfo,
   });
 
-  const toggleIsCreateModalOpen = () => {
-    setIsCreateModalOpen(!isCreateModalOpen);
+  const hadleOpenCreateModal = () => {
+    setIsCreateModalOpen(true);
   };
-  const handleCloseModal = () => {
-    setIsRecordModalOpen(false);
+  const handleCloseCreateModal = () => {
     setIsCreateModalOpen(false);
   };
+  const handleCloseRecordModal = () => {
+    setIsRecordModalOpen(false);
+  };
+ 
 
   const handleCreateRecord = () => {};
 
   useEffect(() => {
     // setIsRecordModalOpen(true);
-    setIsRecordModalOpen(false);
+    // setIsRecordModalOpen(true);
   }, []);
 
   if (isPending) {
@@ -48,23 +52,22 @@ function MainPage() {
       <WeatherRecommendSection />
       <NewRecommendSection />
       <GroupSection
-        toggleIsCreateModalOpen={toggleIsCreateModalOpen}
+        hadleOpenCreateModal={hadleOpenCreateModal}
+        isSolo={groupInfo.isSolo}
       />
 
       {isRecordModalOpen && (
-        <Modal clickEvent={handleCloseModal}>
+        <Modal clickEvent={handleCloseRecordModal}>
           <RecordModal
-            handleCloseModal={handleCloseModal}
+            handleCloseModal={handleCloseRecordModal}
             handleCreateRecord={handleCreateRecord}
           />
         </Modal>
       )}
 
       {isCreateModalOpen && (
-        <Modal clickEvent={handleCloseModal}>
-          <RecordModal
-            handleCloseModal={handleCloseModal}
-            handleCreateRecord={handleCreateRecord}
+        <Modal clickEvent={handleCloseCreateModal}>
+          <CreateGroupModal
           />
         </Modal>
       )}
