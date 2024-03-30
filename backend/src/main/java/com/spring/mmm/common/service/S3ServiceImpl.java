@@ -38,7 +38,7 @@ public class S3ServiceImpl implements S3Service{
     public String uploadFile(MultipartFile multipartFile) {
 
         if (isEmpty(multipartFile)) {
-            throw new S3Exception(S3ErrorCode.EMPTY_FILE);
+            return null;
         }
 
         validateIsClientSendImageFile(multipartFile);
