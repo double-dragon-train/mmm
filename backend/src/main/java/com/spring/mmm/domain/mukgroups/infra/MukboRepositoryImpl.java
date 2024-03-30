@@ -21,6 +21,11 @@ public class MukboRepositoryImpl implements MukboRepository {
     }
 
     @Override
+    public void saveAndFlush(MukboEntity mukboEntity) {
+        mukboJpaRepository.saveAndFlush(mukboEntity);
+    }
+
+    @Override
     public Optional<MukboEntity> findByUserId(Long userId) {
         return mukboJpaRepository.findByUserId(userId);
     }

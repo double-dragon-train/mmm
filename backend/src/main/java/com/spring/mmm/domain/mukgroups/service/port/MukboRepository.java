@@ -8,6 +8,8 @@ import java.util.Optional;
 public interface MukboRepository {
     void save(MukboEntity mukboEntity);
 
+    void saveAndFlush(MukboEntity mukboEntity);
+
     Optional<MukboEntity> findByUserId(Long userId);
 
     List<MukboEntity> findAllMukboByGroupId(Long groupId);

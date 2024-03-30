@@ -54,6 +54,7 @@ public class MukboEntity {
 
     public MukboEntity modifyGroup(Long mukgroupId){
         return MukboEntity.builder()
+            .mukboId(this.mukboId)
                 .name(this.name)
                 .type(this.type)
                 .mukgroupEntity(MukgroupEntity.createWithOnlyId(mukgroupId))
