@@ -63,7 +63,7 @@ public class MukgroupServiceImpl implements MukgroupService{
                     .create(name, Boolean.FALSE)
                     .modifyMukgroupImage(s3Service.uploadFile(image));
             mukgroupRepository.save(mukgroupEntity);
-            mukboRepository.save(mukboEntity.modifyGroup(mukgroupEntity.getMukgroupId()));
+            mukboRepository.saveAndFlush(mukboEntity.modifyGroup(mukgroupEntity.getMukgroupId()));
             mukgroupRepository.delete(originMukgroup);
         } else {
             throw new MukGroupException(MukGroupErrorCode.DUPLICATE_ERROR);
