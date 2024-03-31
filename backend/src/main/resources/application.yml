@@ -6,6 +6,3 @@ spring:
   profiles:
     default: local
 
-logging:
-  level:
-    root: debug
