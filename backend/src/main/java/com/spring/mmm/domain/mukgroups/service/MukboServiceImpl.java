@@ -82,7 +82,7 @@ public class MukboServiceImpl implements MukboService{
         }
 
         mukboEntity.modifyName(mukboInviteRequest.getNickname());
-        mukboEntity.modifyGroup(groupId);
+        mukboEntity.modifyGroup(groupId, user.getId());
         mukboRepository.save(mukboEntity);
 
 
