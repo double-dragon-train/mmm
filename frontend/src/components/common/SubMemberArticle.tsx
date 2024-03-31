@@ -1,4 +1,5 @@
 import styles from '../../styles/groupPage/MemberSection.module.css';
+
 interface SubMemberArticleProps {
   children: React.ReactNode;
   articleName: string;

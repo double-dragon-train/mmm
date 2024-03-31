@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Input from '../components/common/Input';
 import buttonStyles from '../styles/common/Buttons.module.css';
 import styles from '../styles/userPage/UserPage.module.css';
@@ -33,6 +33,7 @@ function LoginPage() {
       [name]: value,
     });
     console.log(name, value);
+    setErrorMessage('');
   };
   const [isPasswordOpened, setIsPasswordOpened] =
     useState<boolean>(false);
@@ -54,6 +55,21 @@ function LoginPage() {
   };
 
   // 로그인 api
+  // 로그인 오류 메시지
+  const [errorMessage, setErrorMessage] = useState('');
+  useEffect(() => {
+    window.addEventListener('errorOccurred', handleErrorMessage);
+    return () => {
+      window.removeEventListener('errorOccurred', handleErrorMessage);
+    };
+  }, []);
+  const handleErrorMessage = (event: Event) => {
+    if (event instanceof CustomEvent) {
+      // Axios 인터셉터에서 전달한 오류 메시지 처리
+      setErrorMessage(event.detail.message);
+    }
+  };
+
   const { mutate: mutateLogin } = useMutation({
     mutationFn: postLogin,
     onSuccess: (data) => {
@@ -61,7 +77,7 @@ function LoginPage() {
       setRefreshToken(data.refreshToken);
       setIsLogin(true);
       navigate('/');
-      console.log('로그인 성공')
+      console.log('로그인 성공');
       localStorage.setItem('refreshToken', data.refreshToken);
     },
   });
@@ -118,6 +134,9 @@ function LoginPage() {
         errorFontSize="bigErrorMessage"
         errorTarget="닉네임"
       /> */}
+      {errorMessage && (
+        <div className={styles.checkMessage}>{errorMessage}</div>
+      )}
       <button
         onClick={handleLogin}
         className={buttonStyles.userButton}

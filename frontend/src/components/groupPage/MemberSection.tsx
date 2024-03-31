@@ -53,14 +53,14 @@ function MemberSection({ groupId }: propsType) {
   const { refetch } = useQuery({
     queryKey: ['mukboInfo'],
     queryFn: () => getEmailFind(email),
-
     enabled: false,
   });
 
   const handleEmailFind = () => {
     refetch().then((res) => {
       if (res) {
-        console.log('먹보 초대 이메일 검색: ', res);
+        console.log(email);
+        // console.log('먹보 초대 이메일 검색: ', res);
       } else {
         console.log('응답 객체 또는 데이터가 존재하지 않습니다.');
       }
@@ -87,9 +87,6 @@ function MemberSection({ groupId }: propsType) {
   const [inputList, setInputList] = useState({
     nickname: '',
     email: '',
-    authNum: '',
-    password: '',
-    passwordConfirm: '',
   });
   const { nickname, email } = inputList;
   // const inputValues = Object.values(inputList);
@@ -102,6 +99,7 @@ function MemberSection({ groupId }: propsType) {
       ...inputList,
       [name]: value,
     });
+    console.log(email);
   };
 
   const [isEmailValid, setIsEmailValid] = useState<boolean>(true);

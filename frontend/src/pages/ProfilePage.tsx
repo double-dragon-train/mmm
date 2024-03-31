@@ -47,6 +47,9 @@ function ProfilePage() {
     if (name === 'nickname') {
       setIsNicknameDuplicated(undefined);
     }
+    if (name === 'password') {
+      setErrorMessage('');
+    }
   };
   const [isPasswordOpened, setIsPasswordOpened] =
     useState<boolean>(false);
@@ -103,11 +106,32 @@ function ProfilePage() {
   };
 
   // 개인정보 수정 api
+  const [errorMessage, setErrorMessage] = useState('');
+  useEffect(() => {
+    window.addEventListener('errorOccurred', handleErrorMessage);
+    return () => {
+      window.removeEventListener('errorOccurred', handleErrorMessage);
+    };
+  }, []);
+
+  const handleErrorMessage = (event: Event) => {
+    if (event instanceof CustomEvent) {
+      // Axios 인터셉터에서 전달한 오류 메시지 처리
+      setErrorMessage(event.detail.message);
+    }
+  };
+
   const { mutate: mutateProfile } = useMutation({
     mutationFn: postEditProfile,
-    onSuccess: () => {
-      navigate('/');
-      console.log('개인정보 수정 성공')
+    onSuccess: (data) => {
+      console.log('개인정보 수정 성공:', data);
+      if (errorMessage === '') {
+        navigate('/');
+      }
+    },
+    onError: (error) => {
+      console.error('onError:', errorMessage);
+      console.error('개인정보 수정 실패:', error);
     },
   });
   const handleEditProfile = () => {
@@ -128,7 +152,7 @@ function ProfilePage() {
       setAccessToken('');
       setRefreshToken('');
       setIsLogin(false);
-      console.log('로그아웃 성공')
+      console.log('로그아웃 성공');
     },
   });
   const handleLogout = () => {
@@ -137,20 +161,18 @@ function ProfilePage() {
 
   // 현재 사용자 정보 조회 api
   const { data: userInfo, isPending } = useQuery({
-    queryKey: ['userInfo'], 
-    queryFn: () =>
-    getProfile()},
-  );
-  
+    queryKey: ['userInfo'],
+    queryFn: () => getProfile(),
+  });
+
   useEffect(() => {
     if (!isPending && userInfo) {
       setInputList({
         ...inputList,
-        nickname: userInfo.nickname
+        nickname: userInfo.nickname,
       });
     }
   }, [isPending, userInfo]);
-
 
   return (
     <div className={styles.wrapper}>
@@ -247,11 +269,15 @@ function ProfilePage() {
             : ''}
         </span>
       </section>
+      {errorMessage && (
+        <div className={styles.checkMessage}>{errorMessage}</div>
+      )}
       <button
         onClick={handleEditProfile}
         className={buttonStyles.userButton}
         // 닉네임 중복 || 비번 같지X || 닉네임, 비번 유효X || inputList 하나라도 비어있음
         disabled={
+          isNicknameDuplicated == null ||
           isNicknameDuplicated ||
           !isPasswordConfirmValid ||
           !isNicknameValid ||

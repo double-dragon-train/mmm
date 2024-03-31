@@ -25,7 +25,7 @@ export const getGroupMukbotList = async (groupId: number) => {
 // 먹보 초대 이메일 검색
 export const getEmailFind = async (email: string) => {
   try {
-    const res = await instance.get(`/users/${email}`, {});
+    const res = await instance.get(`/users?${email}=`, {});
     console.log('먹보 초대 이메일 검색 res:', res);
     return res.data;
   } catch (e) {

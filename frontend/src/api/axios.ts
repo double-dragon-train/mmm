@@ -2,6 +2,11 @@ import axios from 'axios';
 
 const { VITE_API_DEV } = import.meta.env;
 
+// 로그인 오류 메시지
+const errorEvent = new CustomEvent('errorOccurred', {
+  detail: { message: '' },
+});
+
 const instance = axios.create({
   baseURL: VITE_API_DEV,
   withCredentials: true,
@@ -15,9 +20,6 @@ instance.interceptors.request.use(
       const accessToken = userData.state.accessToken;
       console.log('accesstoken: ', accessToken);
       config.headers['Authorization'] = accessToken;
-      // // 테스트
-      // config.headers['Authorization'] =
-      //   'Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3RlckBuYXZlci5jb20iLCJpYXQiOjE3MTE1OTE0MTUsImV4cCI6MTcxMTU5MzIxNX0.h8K_tSXaX3FwIUPi2nsgnhAMKwNr0flctJyjtfquYek';
     } else {
       console.log('userData가 null입니다.');
     }
@@ -34,20 +36,60 @@ instance.interceptors.response.use(
     return response;
   },
   async (error) => {
-    console.log(error)
-    // if (error.response && error.response?.status ===  500) {
+    console.log(error);
+    console.log('errorName: ', error.response.data.errorName);
+    // 로그인 시 오류
+    if (
+      error.response &&
+      error.response.data.errorName === 'INVALID_USER'
+    ) {
+      // 'INVALID_USER' 오류가 발생하면 오류 메시지 이벤트 발생
+      errorEvent.detail.message = '아이디/비밀번호를 확인해주세요.';
+      window.dispatchEvent(errorEvent);
+    }
+
+    // 회원정보 수정 시 오류
+    // 기존 닉네임과 일치
+    if (
+      error.response &&
+      error.response.data.errorName === 'EXIST_NICKNAME'
+    ) {
+      // 'PASSWORD_CONFLICT' 오류가 발생하면 오류 메시지 이벤트 발생
+      errorEvent.detail.message = '이미 사용하고 있는 닉네임입니다.';
+      window.dispatchEvent(errorEvent);
+    }
+
+    // 기존 패스워드와 일치하지 않음
+    if (
+      error.response &&
+      error.response.data.errorName === 'PASSWORD_CONFLICT'
+    ) {
+      // 'PASSWORD_CONFLICT' 오류가 발생하면 오류 메시지 이벤트 발생
+      errorEvent.detail.message =
+        '기존 패스워드와 일치하지 않습니다.';
+      window.dispatchEvent(errorEvent);
+    }
+
+    // // 토큰 만료 시 재발급
+    // if (
+    //   error.response &&
+    //   error.response.data.errorName === 'TOKEN_EXPIRED'
+    // ) {
+    //   delete instance.defaults.headers.common['Authorization'];
     //   const refreshTokenData = await getRefreshToken();
     //   console.log('error.response: ', error.response);
     //   console.log('refreshToken:', refreshTokenData);
-    //   if (refreshTokenData) {
-    //     const newAccessToken = refreshTokenData.accessToken;
-    //     error.config.headers.Authorization = newAccessToken;
-    //     return instance(error.config);
-    //   } else {
-    //     console.log('axios.ts 토큰 재발급 실패');
-    //   }
+    //   // if (refreshTokenData) {
+    //   //   const newAccessToken = refreshTokenData.accessToken;
+    //   //   error.config.headers.Authorization = newAccessToken;
+    //   //   return instance(error.config);
+    //   // } else {
+    //   //   console.log('axios.ts 토큰 재발급 실패');
+    //   // }
     // }
     // console.log('response에러 :', error);
+
+    return Promise.reject(error);
   }
 );
 
@@ -64,18 +106,22 @@ instance.interceptors.response.use(
 //     const refreshToken = userData.state.refreshToken;
 //     console.log('refreshToken:', refreshToken);
 //     try {
-//       const res = await instance.get('/users/reissue', {
-//         headers: {
-//           requestToken: refreshToken,
+//       const res = await instance.get('/users/reissue',
+//         {
+//           "requestToken": refreshToken,
 //         },
 //       });
 //       console.log('토큰 재발급 성공:', res);
+//       instance.defaults.headers.common['Authorization'] =
+//         res.data.accessToken;
 //       return res.data;
 
 //       //
 //     } catch (e) {
 //       console.log('토큰 재발급 실패:', e);
 //       console.log('토큰 재발급 실패:', refreshToken);
+//       // 토큰 재발급 실패 시 오류 상태 반환
+//       return { error: e };
 //     }
 //   } else {
 //     console.error('userData가 null입니다.');
