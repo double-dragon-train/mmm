@@ -55,7 +55,7 @@ function MainPage() {
     <div className={styles.wrapper}>
       <MainRecommendSection groupId={groupInfo.mukgroupId} />
       <WeatherRecommendSection />
-      <NewRecommendSection />
+      <NewRecommendSection groupId={groupInfo.mukgroupId}/>
       <GroupSection
         hadleOpenCreateModal={hadleOpenCreateModal}
         isSolo={groupInfo.isSolo}
