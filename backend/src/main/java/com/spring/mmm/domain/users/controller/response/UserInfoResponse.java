@@ -7,12 +7,13 @@ import lombok.*;
 @NoArgsConstructor(force = true)
 public class UserInfoResponse {
 
+    private final Long id;
     private final String email;
     private final String nickname;
 
-    public static UserInfoResponse of(String email, String nickname) {
+    public static UserInfoResponse of(Long id, String email, String nickname) {
 
-        return new UserInfoResponse(email, nickname);
+        return new UserInfoResponse(id, email, nickname);
     }
 
 }

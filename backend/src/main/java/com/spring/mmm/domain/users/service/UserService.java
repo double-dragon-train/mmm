@@ -23,7 +23,9 @@ public interface UserService {
 
     UserInfoResponse getUserInfo(String jwtToken);
 
-    TokenResponse getToken(UserDetailsImpl userDetails, UserReissueTokenRequest request);
+    UserInfoResponse getUserInfoByEmail(String email);
+
+    TokenResponse getToken(UserReissueTokenRequest request);
 
     void logout(String accessToken, String username);
 

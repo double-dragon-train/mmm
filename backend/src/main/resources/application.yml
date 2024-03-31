@@ -5,3 +5,4 @@ spring:
       - secret.yml
   profiles:
     default: local
+
