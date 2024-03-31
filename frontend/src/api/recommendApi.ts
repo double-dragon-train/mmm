@@ -45,3 +45,14 @@ export async function getMainRecommendFood(
     console.log(e);
   }
 }
+
+export async function getNewRecommendFood(
+  groupId: number
+) {
+  try {
+    const res = await instance.get(`/recommend/groups/${groupId}/new`);
+    return res.data;
+  } catch (e) {
+    console.log(e);
+  }
+}
