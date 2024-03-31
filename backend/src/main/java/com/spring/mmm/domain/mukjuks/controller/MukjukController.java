@@ -19,7 +19,7 @@ public class MukjukController {
 
     private final MukjukService mukjukService;
 
-    @GetMapping("/group/{groupId}/badges")
+    @GetMapping("/groups/{groupId}/badges")
     public ResponseEntity<MukjukResponse> findAllMukjuks(@PathVariable Long groupId, @AuthenticationPrincipal UserDetailsImpl users){
         return ResponseEntity.ok(mukjukService.findAllMukjuks(groupId, users));
     }
