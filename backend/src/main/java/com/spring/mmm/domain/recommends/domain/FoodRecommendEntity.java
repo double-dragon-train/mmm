@@ -1,6 +1,7 @@
 package com.spring.mmm.domain.recommends.domain;
 
 import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
+import com.spring.mmm.domain.mukgroups.service.port.MukgroupRepository;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,4 +36,18 @@ public class FoodRecommendEntity {
     @OneToMany(mappedBy = "foodRecommendEntity", cascade = CascadeType.REMOVE)
     private List<EatenMukboEntity> eatenMukboEntities;
 
+
+    public static FoodRecommendEntity create(MukgroupEntity mukgroup,
+                                             List<RecommendedFoodEntity> recommendedFoodEntities,
+                                             List<EatenMukboEntity> eatenMukboEntities) {
+
+        return FoodRecommendEntity.builder()
+                .hasValue(false)
+                .recommendDate(LocalDate.now())
+                .mukgroupEntity(mukgroup)
+                .recommendedFoodEntities(recommendedFoodEntities)
+                .eatenMukboEntities(eatenMukboEntities)
+                .build();
+
+    }
 }

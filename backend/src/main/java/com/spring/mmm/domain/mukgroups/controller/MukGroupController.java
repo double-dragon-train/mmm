@@ -124,6 +124,15 @@ public class MukGroupController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/{groupId}/mukbos-now")
+    public ResponseEntity<Void> modifyEatingMukbos(
+            @PathVariable Long groupId,
+            @RequestBody EatingMukbosRequest eatingMukbosRequest
+    ){
+
+        return ResponseEntity.ok().build();
+    }
+
     @DeleteMapping("/{groupId}/exit")
     public ResponseEntity<Void> exitMukgroup(
             @PathVariable Long groupId,

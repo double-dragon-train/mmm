@@ -15,4 +15,5 @@ public interface RecommendedFoodRepository {
 
     List<Integer> findAllFoodIdByMukgroupId(Long mukgroupId);
 
+    void save(RecommendedFoodEntity recommendedFoodEntity);
 }

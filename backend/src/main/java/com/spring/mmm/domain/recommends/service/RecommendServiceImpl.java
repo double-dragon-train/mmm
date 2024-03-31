@@ -1,6 +1,9 @@
 package com.spring.mmm.domain.recommends.service;
 
 import com.spring.mmm.domain.mbtis.domain.MukBTIResultEntity;
+import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
+import com.spring.mmm.domain.mukgroups.exception.MukGroupErrorCode;
+import com.spring.mmm.domain.mukgroups.exception.MukGroupException;
 import com.spring.mmm.domain.mukgroups.service.port.MukgroupRepository;
 import com.spring.mmm.domain.recommends.controller.request.LunchRecommendRequest;
 import com.spring.mmm.domain.recommends.controller.response.FoodInformation;
@@ -8,6 +11,7 @@ import com.spring.mmm.domain.recommends.controller.response.LunchRecommendFoodIn
 import com.spring.mmm.domain.recommends.controller.response.NewRecommendedFoodInformation;
 import com.spring.mmm.domain.recommends.domain.FoodEntity;
 import com.spring.mmm.domain.recommends.domain.FoodMBTIEntity;
+import com.spring.mmm.domain.recommends.domain.FoodRecommendEntity;
 import com.spring.mmm.domain.recommends.domain.RecommendedFoodEntity;
 import com.spring.mmm.domain.recommends.service.port.FoodRecommendRepository;
 import com.spring.mmm.domain.recommends.service.port.FoodRepository;
@@ -20,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -48,10 +53,21 @@ public class RecommendServiceImpl implements RecommendService{
     }
 
     @Override
-    public List<LunchRecommendFoodInformation> lunchRecommendFood(LunchRecommendRequest lunchRecommendRequest) {
+    public List<LunchRecommendFoodInformation> lunchRecommendFood(Long groupId, LunchRecommendRequest lunchRecommendRequest) {
+
+        MukgroupEntity mukgroup = mukgroupRepository.findByMukgroupId(groupId)
+                .orElseThrow();
+        FoodRecommendEntity foodRecommendEntity =
+                FoodRecommendEntity.create(mukgroup, )
+
         return foodRepository.findAll().stream()
                 .sorted((o1, o2) -> getScoreByFoodMukBTI(lunchRecommendRequest, o1, o2))
-                .map(LunchRecommendFoodInformation::create)
+                .map(foodEntity -> {
+                    RecommendedFoodEntity recommendedFoodEntity =
+                            RecommendedFoodEntity.create(foodEntity,);
+                    recommendedFoodRepository.save(recommendedFoodEntity);
+                    return LunchRecommendFoodInformation.create(foodEntity);
+                })
                 .limit(7)
                 .collect(Collectors.toList());
     }

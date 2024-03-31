@@ -9,4 +9,6 @@ import java.util.Optional;
 public interface FoodRecommendRepository {
     Optional<FoodRecommendEntity> findByMukgroupId(Long mukgroupId);
 
+    void saveFoodRecommend(FoodRecommendEntity foodRecommendEntity);
+
 }

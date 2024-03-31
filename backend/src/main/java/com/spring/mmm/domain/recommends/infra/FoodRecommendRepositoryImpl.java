@@ -23,4 +23,9 @@ public class FoodRecommendRepositoryImpl implements FoodRecommendRepository {
         return foodRecommendJpaRepository.findRecommendByMukgroupId(mukgroupId);
     }
 
+    @Override
+    public void saveFoodRecommend(FoodRecommendEntity foodRecommendEntity) {
+        foodRecommendJpaRepository.save(foodRecommendEntity);
+    }
+
 }

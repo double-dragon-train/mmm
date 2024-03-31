@@ -6,6 +6,7 @@ import com.spring.mmm.domain.mbtis.domain.MBTI;
 import com.spring.mmm.domain.mbtis.domain.MukBTIResultEntity;
 import com.spring.mmm.domain.mbtis.domain.MukBTIType;
 import com.spring.mmm.domain.mbtis.service.port.MukBTIResultRepository;
+import com.spring.mmm.domain.mukgroups.controller.request.EatingMukbosRequest;
 import com.spring.mmm.domain.mukgroups.controller.request.MukgroupMBTICalcRequest;
 import com.spring.mmm.domain.mukgroups.domain.MukboType;
 import com.spring.mmm.domain.mukgroups.event.*;
@@ -26,6 +27,8 @@ import com.spring.mmm.domain.users.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -158,6 +161,18 @@ public class MukgroupServiceImpl implements MukgroupService{
         }
         saveSoloMukGroup(user.getEmail());
         Events.raise(new MukboExitedEvent(mukbo.getName(), groupId));
+    }
+
+    // 해당 날짜 모든 먹보 기준으로 추천
+    @PostMapping
+    public void createFoodRecommend(Long groupId) {
+
+    }
+
+    // 먹보 변경하고 다시 추천
+    @PutMapping
+    public void modifyEatingMukbos(Long groupId, EatingMukbosRequest eatingMukbosRequest) {
+
     }
 
     @Override
