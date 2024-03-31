@@ -18,6 +18,8 @@ import com.spring.mmm.domain.users.exception.UserException;
 import com.spring.mmm.domain.users.infra.UserDetailsImpl;
 import com.spring.mmm.domain.users.infra.UserEntity;
 import com.spring.mmm.domain.users.service.port.UserRepository;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -143,9 +145,11 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public TokenResponse getToken(UserDetailsImpl userDetails, UserReissueTokenRequest request) {
+    public TokenResponse getToken(UserReissueTokenRequest request) {
+        String oldRefreshToken = request.getRefreshToken();
+        String oldCompactToken = oldRefreshToken.substring(7);
 
-        String email = userDetails.getUsername();
+        String email = jwtProvider.getUserInfoFromToken(oldCompactToken);
         String rtk = request.getRefreshToken();
 
         return jwtProvider.reissueAtk(email, rtk);

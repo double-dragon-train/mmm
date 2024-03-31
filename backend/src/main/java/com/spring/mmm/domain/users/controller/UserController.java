@@ -89,9 +89,9 @@ public class UserController {
     }
 
     @GetMapping("/reissue")
-    public ResponseEntity<TokenResponse> getToken(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody UserReissueTokenRequest request) {
+    public ResponseEntity<TokenResponse> getToken(@RequestBody UserReissueTokenRequest request) {
 
-        return ResponseEntity.ok(userService.getToken(userDetails, request));
+        return ResponseEntity.ok(userService.getToken(request));
     }
 
     @PostMapping ("/email/verification-request")
@@ -120,6 +120,11 @@ public class UserController {
             throw new UserException(UserErrorCode.CODE_NOT_SAME_ERROR);
         }
     }
+
+//    @GetMapping("/{email}")
+//    public ResponseEntity<UserInfoResponse> searchByEmail(@PathVariable String email) {
+//
+//    }
 
     @PostMapping("/mbti")
     public ResponseEntity<MukBTIResponse> saveMukBTI(
