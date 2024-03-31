@@ -122,8 +122,10 @@ export const postEditProfile = async (
       },
     });
     console.log('개인정보 수정 데이터:', res, editProfileData);
+    return res.data;
   } catch (e) {
     console.log('개인정보 수정 실패:', e);
+    throw e;
   }
 };
 
@@ -135,7 +137,7 @@ export const getProfile = async () => {
       //   Authorization: accessToken,
       // },
     });
-    console.log('사용자 정보 조회 성공:', res);
+    // console.log('사용자 정보 조회 성공:', res);
     return res.data;
   } catch (e) {
     console.log('사용자 정보 조회 실패:', e);

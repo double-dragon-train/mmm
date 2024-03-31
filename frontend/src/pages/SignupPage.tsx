@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Input from '../components/common/Input';
 import styles from '../styles/userPage/UserPage.module.css';
 import buttonStyles from '../styles/common/Buttons.module.css';
+import inputStyles from '../styles/common/Input.module.css';
 import Button from '../components/common/Button';
 import subLogo from '../assets/images/subLogo.png';
 import closedEye from '../assets/images/closedEye.png';
@@ -210,15 +211,15 @@ function SignupPage() {
           />
         </div>
         {isEmailButtonClicked && isEmailValid && (
-          <div className="inputContainer">
+          <div className={inputStyles.inputContainer}>
             <label></label>
-            <div className="inputBox">
+            <div className={inputStyles.inputBox}>
               <input
                 type="text"
                 name="authNum"
                 value={authNum}
                 onChange={changeInputList}
-                className="shortInput"
+                className={inputStyles.shortInput}
                 placeholder="인증번호"
                 
               />
