@@ -5,29 +5,55 @@ import buttonStyles from '../../styles/common/Buttons.module.css';
 import userStore from '../../stores/userStore';
 import { useEffect } from 'react';
 import MemberCard from './MemberCard';
+import {
+  getGroupMukbotList,
+  getGroupUserList,
+} from '../../api/memberApi';
 
 interface propsType {
   hadleOpenCreateModal: () => void;
   isSolo: boolean;
+  groupId: number;
+}
+
+interface userType {
+  name: string;
+  mukBTI: string;
+  mukboId: number;
 }
 function GroupSection({
   hadleOpenCreateModal,
   isSolo,
+  groupId,
 }: propsType) {
   const { setMbti } = userStore();
   const {
     data: groupMbti,
-    isPending,
+    isPending: isGroupMbtiPending,
     isError,
   } = useQuery({
     queryKey: ['groupMbti'],
     queryFn: getGroupMbti,
   });
 
+  const { data: groupUserList, isPending: isUserPending } = useQuery({
+    queryKey: ['groupUserList'],
+    queryFn: () => getGroupUserList(groupId),
+  });
+
+  const { data: groupMukbotList, isPending: isMukbotPending } =
+    useQuery({
+      queryKey: ['groupMukbotList'],
+      queryFn: () => getGroupMukbotList(groupId),
+    });
+
+  console.log('먹보:', groupUserList);
+  console.log('먹봇:', groupMukbotList);
   useEffect(() => {
     setMbti(groupMbti);
   }, []);
-  if (isPending) {
+
+  if (isGroupMbtiPending || isUserPending || isMukbotPending) {
     return <div>isLoding...</div>;
   }
   if (isError) {
@@ -62,14 +88,29 @@ function GroupSection({
           <article>
             <h2 className={styles.todayTitle}>오늘 같이 먹어요</h2>
             <div>
-              <MemberCard />
+              {groupUserList.users.map((user: userType) => {
+                return (
+                  <MemberCard
+                    key={user.mukboId}
+                    mbti={user.mukBTI}
+                    name={user.name}
+                  />
+                );
+              })}
+              {groupMukbotList.users.map((user: userType) => {
+                return (
+                  <MemberCard
+                    key={user.mukboId}
+                    mbti={user.mukBTI}
+                    name={user.name}
+                  />
+                );
+              })}
             </div>
           </article>
           <article>
             <h2 className={styles.todayNext}>아쉽지만 다음에...</h2>
-            <div>
-              <MemberCard />
-            </div>
+            <div>{/* <MemberCard /> */}</div>
           </article>
         </main>
       )}

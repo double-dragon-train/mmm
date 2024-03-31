@@ -1,38 +1,46 @@
 import ProfileImgBox from '../common/ProfileImgBox';
 import styles from '../../styles/groupPage/GroupPage.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SmallLabelInput from '../common/SmallLabelInput';
 import Button from '../common/Button';
+import { getGroupInfo, putGroupName } from '../../api/groupApi';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import userStore from '../../stores/userStore';
+import Modal from '../common/Modal';
+import RewardModal from './RewardModal';
 // import { useQuery } from '@tanstack/react-query';
 // import { getGroupInfo } from '../../api/groupApi';
 
 function GroupInfoSection() {
-  // const { data, isPending, isError } = useQuery({
-  //   queryKey: ['groupInfo'],
-  //   queryFn: getGroupInfo
-  // })
-  const [groupName, setGroupName] = useState('');
-  const [isGroupNameValid] = useState(true);
-  const [isGroupNameDuplicated] = useState<boolean>();
-  // 닉네임 중복 확인 api
-  //   const { refetch } = useQuery({
-  //     ['nicknameValidate'],
-  //     () => getNicknameValidate(nickname),
-  //     enabled: false
-  // }
-  //   );
-  //   const handleValidateGroupName = () => {
-  //     refetch().then((res) => {
-  //       if (res && res.data) {
-  //         console.log('닉네임 중복인가: ', res.data.data);
-  //         setIsNicknameDuplicated(res.data.data);
-  //       } else {
-  //         console.log('응답 객체 또는 데이터가 존재하지 않습니다.');
-  //       }
-  //     });
-  //   };
+  const { groupId } = userStore();
+  const { data: groupInfo, isPending, isError } = useQuery({
+    queryKey: ['groupInfo'],
+    queryFn: getGroupInfo,
+  })
 
-  const handleValidateGroupName = () => {};
+  const { mutate: mutatePutGroupName } = useMutation({
+    mutationFn: putGroupName
+  })
+  console.log('groupInfo:',groupInfo)
+  const [groupName, setGroupName] = useState<string>('');
+  const [isGroupNameValid] = useState<boolean>(true);
+  const [isGroupNameDuplicated] = useState<boolean>();
+  const [isRewardModalOpen, setIsRewardModalOpen] = useState(false);
+
+  const handleOpenRewardModal = () => {
+    setIsRewardModalOpen(true)
+  }
+  const closeRewardModal = () => {
+    setIsRewardModalOpen(false)
+  }
+  
+  useEffect(() => {
+    setGroupName(groupInfo.name)
+  }, [groupInfo.groupId])
+
+  const handlePutGroupName = () => {
+    mutatePutGroupName({groupId, groupName})
+  };
 
   const changeGroupName = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -41,6 +49,13 @@ function GroupInfoSection() {
   };
 
   const checkGroupName = () => {};
+
+  if (isPending) {
+    return <div>isLoding...</div>;
+  }
+  if (isError) {
+    return <div>error</div>;
+  }
 
   return (
     <section className={styles.groupInfoSection}>
@@ -62,22 +77,22 @@ function GroupInfoSection() {
           errorMessage="그룹명 형식이 잘못되었습니다."
         />
         <Button
-          clickEvent={handleValidateGroupName}
+          clickEvent={handlePutGroupName}
           buttonName={isGroupNameDuplicated == false ? '✓' : '확인'}
           disabledEvent={isGroupNameDuplicated == false}
         />
       </div>
       <div className={styles.rewardBox}>
         <span>먹적</span>
-        <div>
+        <div onClick={handleOpenRewardModal}>
           <img src="" alt="" />
           <span>오늘의 제육왕</span>
         </div>
       </div>
-
-      {/* <div className={styles.groupNameBox}>
-        <span>그룹명</span>
-      </div> */}
+      {isRewardModalOpen && <Modal clickEvent={closeRewardModal}>
+        <RewardModal />
+        </Modal>}
+     
     </section>
   );
 }

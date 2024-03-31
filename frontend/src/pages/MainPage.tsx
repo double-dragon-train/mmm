@@ -9,8 +9,10 @@ import WeatherRecommendSection from '../components/mainPage/WeatherRecommendSect
 import NewRecommendSection from '../components/mainPage/NewRecommendSection';
 import GroupSection from '../components/mainPage/GroupSection';
 import CreateGroupModal from '../components/mainPage/CreateGroupModal';
+import userStore from '../stores/userStore';
 
 function MainPage() {
+  const { setGroupId } = userStore();
   const [isRecordModalOpen, setIsRecordModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const {
@@ -36,6 +38,9 @@ function MainPage() {
   const handleCreateRecord = () => {};
 
   useEffect(() => {
+    setGroupId(groupInfo?.mukgroupId)
+  }, [groupInfo])
+  useEffect(() => {
     // setIsRecordModalOpen(true);
     // setIsRecordModalOpen(true);
   }, []);
@@ -54,6 +59,7 @@ function MainPage() {
       <GroupSection
         hadleOpenCreateModal={hadleOpenCreateModal}
         isSolo={groupInfo.isSolo}
+        groupId={groupInfo.mukgroupId}
       />
 
       {isRecordModalOpen && (

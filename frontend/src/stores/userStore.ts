@@ -29,6 +29,8 @@ interface userStoreType {
   setMbtiKey: (value: string) => void;
   mbti: mbtiType;
   setMbti: (value: mbtiType) => void;
+  groupId: number;
+  setGroupId: (value: number) => void;
 }
 const userStore = create(
   persist<userStoreType>(
@@ -47,6 +49,8 @@ const userStore = create(
       setMbtiKey: (value: string) => set({ mbtiKey: value }),
       mbti: { ei: 0, ns: 0, tf: 0, jp: 0, mint: 0, pine: 0, die: 0 },
       setMbti: (value: mbtiType) => set({ mbti: value }),
+      groupId: 0,
+      setGroupId: (value: number) => set({ groupId: value }),
       //   loginModalOpen: false,
       //   setLoginModalOpen: (value) => set({ loginModalOpen: value }),
       //   isMyPage: true,

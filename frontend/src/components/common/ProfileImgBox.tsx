@@ -15,7 +15,7 @@ function ProfileImgBox() {
   const handleUploadImg = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    console.log(e);
+    console.log('event:',e);
     
     // console.log(e.target.files[0].name);
     if (!e.target.value) {
