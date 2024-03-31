@@ -12,11 +12,14 @@ export async function getGroupInfo() {
 
 export async function postGroupInfo(name: string) {
   const data = { name };
-  const form = { data: data };
-  console.log(form);
-  // console.log(name);
+  console.log('data:', data)
+  const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+  const formData = new FormData();
+  formData.append('data', blob);
+  
   try {
-    const res = await instance.post('/groups', form, {
+    console.log('formData:', formData)
+    const res = await instance.post('/groups', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -24,6 +27,42 @@ export async function postGroupInfo(name: string) {
 );
     console.log('결과는!', res);
     return res;
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+export async function getLog(groupId: number) {
+  try {
+    console.log('그룹아이디:', groupId)
+    const res = await instance.get(`/groups/${groupId}/log`, {
+      params: {
+        page: 0,
+        size: 15,
+      },
+      headers: {
+        "Content-Type": "application/json",
+      }
+    });
+    console.log(res);
+    return res.data;
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+interface groupInfoType {
+  groupId: number;
+  groupName: string;
+}
+export async function putGroupName({groupId, groupName}: groupInfoType) {
+  const data = { name: groupName }
+  try {
+    console.log('그룹아이디:', groupId)
+    const res = await instance.put(`/groups/${groupId}/name`, data
+    );
+    console.log(res);
+    return res.data;
   } catch (e) {
     console.log(e);
   }

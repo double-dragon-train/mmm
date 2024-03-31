@@ -141,3 +141,4 @@ export const getProfile = async () => {
     console.log('사용자 정보 조회 실패:', e);
   }
 };
+
