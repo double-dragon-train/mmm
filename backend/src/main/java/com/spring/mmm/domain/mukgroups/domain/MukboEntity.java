@@ -52,11 +52,13 @@ public class MukboEntity {
                 .build();
     }
 
-    public MukboEntity modifyGroup(Long mukgroupId){
+    public MukboEntity modifyGroup(Long mukgroupId, Long userId){
         return MukboEntity.builder()
+            .mukboId(this.mukboId)
                 .name(this.name)
                 .type(this.type)
                 .mukgroupEntity(MukgroupEntity.createWithOnlyId(mukgroupId))
+                .userEntity(UserEntity.createWithOnlyUserId(userId))
                 .build();
     }
 

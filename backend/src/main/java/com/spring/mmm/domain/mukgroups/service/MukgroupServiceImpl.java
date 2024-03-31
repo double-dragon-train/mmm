@@ -51,22 +51,23 @@ public class MukgroupServiceImpl implements MukgroupService{
         mukgroupRepository.save(mukgroupEntity);
         mukboRepository.save(mukboRepository.findByUserId(user.getId())
                         .orElseThrow(() -> new MukboException(MukboErrorCode.NOT_FOUND))
-                .modifyGroup(mukgroupEntity.getMukgroupId()));
+                .modifyGroup(mukgroupEntity.getMukgroupId(), user.getId()));
     }
 
     @Override
     @Transactional
     public void saveMukGroup(String name, String email, MultipartFile image) {
-        MukboEntity mukboEntity = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND))
-                .getMukboEntity();
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+
+        MukboEntity mukboEntity = user.getMukboEntity();
         MukgroupEntity originMukgroup = mukboEntity.getMukgroupEntity();
         if(originMukgroup.getIsSolo()){
             MukgroupEntity mukgroupEntity = MukgroupEntity
                     .create(name, Boolean.FALSE)
                     .modifyMukgroupImage(s3Service.uploadFile(image));
             mukgroupRepository.save(mukgroupEntity);
-            mukboRepository.save(mukboEntity.modifyGroup(mukgroupEntity.getMukgroupId()));
+            mukboRepository.saveAndFlush(mukboEntity.modifyGroup(mukgroupEntity.getMukgroupId(), user.getId()));
             mukgroupRepository.delete(originMukgroup);
         } else {
             throw new MukGroupException(MukGroupErrorCode.DUPLICATE_ERROR);

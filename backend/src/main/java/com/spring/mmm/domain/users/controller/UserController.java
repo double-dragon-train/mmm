@@ -88,10 +88,17 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserInfo(jwtToken));
     }
 
-    @GetMapping("/reissue")
-    public ResponseEntity<TokenResponse> getToken(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody UserReissueTokenRequest request) {
+    @GetMapping("/search")
+    public ResponseEntity<UserInfoResponse> getUserInfoByEmail(@RequestParam String email) {
 
-        return ResponseEntity.ok(userService.getToken(userDetails, request));
+        log.debug("email : {}", email);
+        return ResponseEntity.ok(userService.getUserInfoByEmail(email));
+    }
+
+    @GetMapping("/reissue")
+    public ResponseEntity<TokenResponse> getToken(@RequestBody UserReissueTokenRequest request) {
+
+        return ResponseEntity.ok(userService.getToken(request));
     }
 
     @PostMapping ("/email/verification-request")

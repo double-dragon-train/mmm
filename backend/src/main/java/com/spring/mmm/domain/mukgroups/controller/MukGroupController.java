@@ -10,6 +10,8 @@ import com.spring.mmm.domain.muklogs.service.MuklogService;
 import com.spring.mmm.domain.users.infra.UserDetailsImpl;
 import com.spring.mmm.domain.users.infra.UserEntity;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/groups")
@@ -83,8 +86,8 @@ public class MukGroupController {
 
     @GetMapping("/{groupId}/log")
     public ResponseEntity<MuklogsResponse> findAllLogsByPaging(@PathVariable Long groupId, Pageable pageable,
-                                                               @AuthenticationPrincipal UserEntity userEntity){
-        return ResponseEntity.ok(muklogService.findAllMuklogByGroupId(groupId, pageable, userEntity));
+                                                               @AuthenticationPrincipal UserDetailsImpl userEntity){
+        return ResponseEntity.ok(muklogService.findAllMuklogByGroupId(groupId, pageable, userEntity.getUser()));
     }
 
     @PostMapping("/{groupId}/users")

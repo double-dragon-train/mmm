@@ -50,6 +50,12 @@ public class UserEntity {
         this.password = password;
     }
 
+    public static UserEntity createWithOnlyUserId(Long userId){
+        return UserEntity.builder()
+                .id(userId)
+                .build();
+    }
+
     public void deleteUser() {
         Events.raise(UserDeletedEvent.create(this.id));
     }

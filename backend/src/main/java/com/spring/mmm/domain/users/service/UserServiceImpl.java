@@ -20,7 +20,6 @@ import com.spring.mmm.domain.users.infra.UserEntity;
 import com.spring.mmm.domain.users.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -137,15 +136,30 @@ public class UserServiceImpl implements UserService{
         String email = jwtProvider.getUserInfoFromToken(jwtToken);
         UserEntity user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+        Long userId = user.getId();
         String nickname = user.getNickname();
 
-        return UserInfoResponse.of(email, nickname);
+        return UserInfoResponse.of(userId, email, nickname);
     }
 
     @Override
-    public TokenResponse getToken(UserDetailsImpl userDetails, UserReissueTokenRequest request) {
+    @Transactional
+    public UserInfoResponse getUserInfoByEmail(String email) {
 
-        String email = userDetails.getUsername();
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+        Long userId = user.getId();
+        String nickname = user.getNickname();
+
+        return UserInfoResponse.of(userId, email, nickname);
+    }
+
+    @Override
+    public TokenResponse getToken(UserReissueTokenRequest request) {
+        String oldRefreshToken = request.getRefreshToken();
+        String oldCompactToken = oldRefreshToken.substring(7);
+
+        String email = jwtProvider.getUserInfoFromToken(oldCompactToken);
         String rtk = request.getRefreshToken();
 
         return jwtProvider.reissueAtk(email, rtk);

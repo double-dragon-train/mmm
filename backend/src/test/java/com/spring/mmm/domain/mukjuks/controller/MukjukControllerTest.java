@@ -38,7 +38,7 @@ class MukjukControllerTest {
     @InjectMocks
     MukjukController mukjukController;
 
-    static final String MUKJUK_RETRIEVE_URL = "/group/1/badges";
+    static final String MUKJUK_RETRIEVE_URL = "/groups/1/badges";
 
     @WithMockUser
     @Test
