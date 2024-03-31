@@ -88,6 +88,13 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserInfo(jwtToken));
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<UserInfoResponse> getUserInfoByEmail(@RequestParam String email) {
+
+        log.debug("email : {}", email);
+        return ResponseEntity.ok(userService.getUserInfoByEmail(email));
+    }
+
     @GetMapping("/reissue")
     public ResponseEntity<TokenResponse> getToken(@RequestBody UserReissueTokenRequest request) {
 
@@ -120,11 +127,6 @@ public class UserController {
             throw new UserException(UserErrorCode.CODE_NOT_SAME_ERROR);
         }
     }
-
-//    @GetMapping("/{email}")
-//    public ResponseEntity<UserInfoResponse> searchByEmail(@PathVariable String email) {
-//
-//    }
 
     @PostMapping("/mbti")
     public ResponseEntity<MukBTIResponse> saveMukBTI(

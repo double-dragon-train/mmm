@@ -139,9 +139,25 @@ public class UserServiceImpl implements UserService{
         String email = jwtProvider.getUserInfoFromToken(jwtToken);
         UserEntity user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+        Long userId = user.getId();
         String nickname = user.getNickname();
 
-        return UserInfoResponse.of(email, nickname);
+        return UserInfoResponse.of(userId, email, nickname);
+    }
+
+    @Override
+    @Transactional
+    public UserInfoResponse getUserInfoByEmail(String email) {
+
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+        Long userId = user.getId();
+        String nickname = user.getNickname();
+        log.debug("다은 이메일 : {}", email);
+        log.debug("다은 id : {}", userId);
+        log.debug("다은 닉넴 : {}", nickname);
+
+        return UserInfoResponse.of(userId, email, nickname);
     }
 
     @Override
