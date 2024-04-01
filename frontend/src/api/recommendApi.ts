@@ -10,6 +10,8 @@ interface mbtiType {
   die: number;
 }
 
+
+
 export async function getRandomFoodList() {
   try {
     const res = await instance.get('/recommend');
@@ -51,6 +53,21 @@ export async function getNewRecommendFood(
 ) {
   try {
     const res = await instance.get(`/recommend/groups/${groupId}/new`);
+    return res.data;
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+export async function getWeatherRecommendFood(latitude: string, longitude: string) {
+  const data = {
+    latitude,
+    longitude
+  }
+  try {
+    const res = await instance.get('/recommend/weather', {
+      params: data
+    });
     return res.data;
   } catch (e) {
     console.log(e);
