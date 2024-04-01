@@ -31,7 +31,7 @@ public class MuklogEventParserImpl implements MuklogEventParser {
                     .append("] 로 변경되었습니다.");
             case GROUP_IMAGE_CHANGED ->  sb
                     .append(event.getSource())
-                    .append("님이 먹그룹 이미지를 변경했습니다.");
+                    .append("님이 먹그룹 이미지를\n 변경했습니다.");
             default -> throw new InvalidMuklogAccessException();
         }
         return sb.toString();
@@ -44,33 +44,33 @@ public class MuklogEventParserImpl implements MuklogEventParser {
                     .append(event.getSource())
                     .append("님이 ")
                     .append(event.getTarget())
-                    .append("님을 초대했습니다.");
+                    .append("님을\n 초대했습니다.");
             case GROUP_NAME_CHANGED -> sb.
                     append(event.getSource())
                     .append("님이 ")
-                    .append("먹그룹의 이름을 [")
+                    .append("먹그룹의 이름을\n[")
                     .append(event.getTarget())
                     .append("]로 변경했습니다.");
             case MUKBOT_CREATED -> sb
                     .append(event.getSource())
                     .append("님이 먹봇 [")
                     .append(event.getTarget())
-                    .append("] 을 생성했습니다.");
+                    .append("] 을\n 생성했습니다.");
             case MUKBOT_DELETED -> sb
                     .append(event.getSource())
                     .append("님이 먹봇 [")
                     .append(event.getTarget())
-                    .append("] 을 삭제했습니다.");
+                    .append("] 을\n 삭제했습니다.");
             case MUKBOT_MODIFIED -> sb
                     .append(event.getSource())
                     .append("님이 먹봇 [")
                     .append(event.getTarget())
-                    .append("] 의 정보를 수정했습니다.");
+                    .append("] 의 정보를\n 수정했습니다.");
             case MUKBO_KICKED -> sb
                     .append(event.getSource())
                     .append("님이 먹보 [")
                     .append(event.getTarget())
-                    .append("] 님을 추방했습니다.");
+                    .append("] 님을\n 추방했습니다.");
             default -> throw new InvalidMuklogAccessException();
         }
         return sb.toString();
