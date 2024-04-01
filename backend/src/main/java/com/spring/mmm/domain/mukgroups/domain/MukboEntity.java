@@ -30,7 +30,7 @@ public class MukboEntity {
     @Enumerated(EnumType.STRING)
     private MukboType type;
 
-    @OneToMany(mappedBy = "mukboEntity")
+    @OneToMany(mappedBy = "mukboEntity",  cascade = CascadeType.PERSIST)
     private List<MukBTIResultEntity> mukBTIResultEntities;
 
     @OneToMany(mappedBy = "mukboEntity", cascade = CascadeType.REMOVE)
@@ -52,6 +52,19 @@ public class MukboEntity {
                 .build();
     }
 
+    public static MukboEntity createMukbot(String name, Long groupId){
+        return MukboEntity.builder()
+            .name(name)
+            .type(MukboType.MUKBOT)
+            .mukgroupEntity(MukgroupEntity.createWithOnlyId(groupId))
+            .build();
+
+    }
+
+    public void assiciatedWithMukBTIResult(List<MukBTIResultEntity> entities){
+        this.mukBTIResultEntities = entities;
+    }
+
     public MukboEntity modifyGroup(Long mukgroupId, Long userId){
         return MukboEntity.builder()
             .mukboId(this.mukboId)
@@ -61,6 +74,7 @@ public class MukboEntity {
                 .userEntity(UserEntity.createWithOnlyUserId(userId))
                 .build();
     }
+
 
     public void modifyName(String name){
         this.name = name;

@@ -138,13 +138,13 @@ public class MukboServiceImpl implements MukboService{
             throw new MukGroupException(MukGroupErrorCode.SOLOGROUP_CANT_INVITE);
         }
 
-        mukboRepository.save(MukboEntity.builder()
-                .name(mukbotCreateRequest.getName())
-                .type(MukboType.MUKBOT)
-                .mukgroupEntity(user.getMukboEntity().getMukgroupEntity())
-                .mukBTIResultEntities(MukBTIResultEntity.createByMBTI(mukbotCreateRequest.getMbti(), mukBTIRepository.findAllMukBTI(), user.getMukboEntity()))
-                .build()
-        );
+
+        MukboEntity mukbot = MukboEntity.createMukbot(mukbotCreateRequest.getName(),
+            user.getMukboEntity().getMukgroupEntity().getMukgroupId());
+
+        mukbot.assiciatedWithMukBTIResult(MukBTIResultEntity.createByMBTI(mukbotCreateRequest.getMbti(), mukBTIRepository.findAllMukBTI(),mukbot));
+        mukboRepository.save(mukbot);
+
     }
 
     @Override
