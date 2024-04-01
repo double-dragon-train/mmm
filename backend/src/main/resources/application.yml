@@ -5,3 +5,7 @@ spring:
       - secret.yml
   profiles:
     default: local
+
+logging:
+  root:
+    level: debug

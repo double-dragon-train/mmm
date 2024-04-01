@@ -24,4 +24,11 @@ public class EatenMukboEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "food_recommend_id")
     private FoodRecommendEntity foodRecommendEntity;
+
+    public static EatenMukboEntity create(Long mukboId, FoodRecommendEntity foodRecommendEntity) {
+        return EatenMukboEntity.builder()
+                .eatenMukboId(mukboId)
+                .foodRecommendEntity(foodRecommendEntity)
+                .build();
+    }
 }

@@ -34,6 +34,7 @@ public class RecommendController {
 
     @GetMapping("/groups/{groupId}")
     public ResponseEntity<LunchRecommendResponse> recommendLunch(
+            @PathVariable Long groupId,
             @RequestBody LunchRecommendRequest lunchRecommendRequest
     ){
         return ResponseEntity.ok(LunchRecommendResponse.builder()

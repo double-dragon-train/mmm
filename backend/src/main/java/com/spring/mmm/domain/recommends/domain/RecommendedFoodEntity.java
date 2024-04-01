@@ -33,14 +33,12 @@ public class RecommendedFoodEntity {
     @JoinColumn(name = "food_recommend")
     private FoodRecommendEntity foodRecommendEntity;
 
-    public static RecommendedFoodEntity create(FoodRecommendEntity foodRecommendEntity,
-                                               FoodEntity food,
+    public static RecommendedFoodEntity create(FoodEntity food,
                                                RecommendCategory category) {
         return RecommendedFoodEntity.builder()
                 .eaten(false)
                 .category(category)
                 .foodEntity(food)
-                .foodRecommendEntity(foodRecommendEntity)
                 .build();
 
     }
