@@ -55,8 +55,7 @@
   height: 200px;
   width: 90%;
   top: 50px;
-}
-.logBoxWrapper{
+  padding: 0 5%;
   overflow-y: scroll;
 }
 .wrapper .header .logBoxWrapper::-webkit-scrollbar {
@@ -79,6 +78,7 @@
 .wrapper .header .logBoxWrapper .log {
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   text-align: right;
+  padding: 2.5% 0;
 }
 .wrapper .header .logBoxWrapper .log p {
   color: rgba(0, 0, 0, 0.7);
