@@ -52,7 +52,7 @@ public class RecommendServiceImpl implements RecommendService{
         return foodRepository.findAll().stream()
                 .sorted((o1, o2) -> getScoreByFoodMukBTI(lunchRecommendRequest, o1, o2))
                 .map(LunchRecommendFoodInformation::create)
-                .limit(7)
+                .limit(5)
                 .collect(Collectors.toList());
     }
 

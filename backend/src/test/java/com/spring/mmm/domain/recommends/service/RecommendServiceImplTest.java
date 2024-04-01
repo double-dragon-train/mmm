@@ -94,7 +94,7 @@ class RecommendServiceImplTest {
         BDDMockito.given(foodRepository.findAll())
                 .willReturn(foods);
 
-        assertEquals(7, recommendService.lunchRecommendFood(lunchRecommendRequest).size());
+        assertEquals(5, recommendService.lunchRecommendFood(lunchRecommendRequest).size());
     }
 
     @Test
