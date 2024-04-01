@@ -24,7 +24,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -96,7 +95,7 @@ public class UserController {
     }
 
     @GetMapping("/reissue")
-    public ResponseEntity<TokenResponse> getToken(@RequestBody UserReissueTokenRequest request) {
+    public ResponseEntity<TokenResponse> getToken(HttpServletRequest request) {
 
         return ResponseEntity.ok(userService.getToken(request));
     }

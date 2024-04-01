@@ -1,13 +1,11 @@
 package com.spring.mmm.domain.users.controller.request;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class UserReissueTokenRequest {
-    private final String refreshToken;
+    private String refreshToken;
 
     public UserReissueTokenRequest(String refreshToken) {
         this.refreshToken = refreshToken;
