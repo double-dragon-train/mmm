@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -55,6 +56,7 @@ public class WebSecurityConfig {
         http
                 .authorizeHttpRequests((auth)->auth
                         .requestMatchers("/users/**", "/recommend").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/mbti").permitAll()
                         .requestMatchers("/users").authenticated()
                         .anyRequest().authenticated()
                 );
