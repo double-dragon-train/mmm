@@ -9,6 +9,8 @@ import com.spring.mmm.domain.muklogs.controller.response.MuklogsResponse;
 import com.spring.mmm.domain.muklogs.service.MuklogService;
 import com.spring.mmm.domain.users.infra.UserDetailsImpl;
 import com.spring.mmm.domain.users.infra.UserEntity;
+import com.spring.mmm.domain.users.service.UserServiceImpl;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -143,5 +145,13 @@ public class MukGroupController {
         return ResponseEntity.ok(MukgroupMBTIResponse.builder()
                 .mbti(mukgroupService.calcGroupMukBTI(groupId, mbtiCalcRequest))
                 .build());
+    }
+
+    @PutMapping("/{groupId}/badges")
+    public ResponseEntity<Void> changeRepMukjuk(@PathVariable Long groupId,
+        @RequestBody RepMukjukModifyRequest request,
+        @AuthenticationPrincipal UserDetailsImpl users){
+        mukgroupService.modifyGroupMukjuk(groupId, request.getBadgeId(), users.getEmail());
+        return ResponseEntity.ok().build();
     }
 }

@@ -24,4 +24,6 @@ public interface MukgroupService {
     void exitMukgroup(String email, Long groupId);
 
     MBTI calcGroupMukBTI(Long groupId, MukgroupMBTICalcRequest mbtiCalcRequest);
+
+	void modifyGroupMukjuk(Long groupId, Long badgeId, String email);
 }
