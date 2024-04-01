@@ -10,7 +10,6 @@ import com.spring.mmm.domain.mukgroups.service.port.MukgroupRepository;
 import com.spring.mmm.domain.users.controller.request.UserJoinRequest;
 import com.spring.mmm.domain.users.controller.request.UserLoginRequest;
 import com.spring.mmm.domain.users.controller.request.UserModifyRequest;
-import com.spring.mmm.domain.users.controller.request.UserReissueTokenRequest;
 import com.spring.mmm.domain.users.controller.response.TokenResponse;
 import com.spring.mmm.domain.users.controller.response.UserInfoResponse;
 import com.spring.mmm.domain.users.exception.UserErrorCode;
@@ -18,6 +17,7 @@ import com.spring.mmm.domain.users.exception.UserException;
 import com.spring.mmm.domain.users.infra.UserDetailsImpl;
 import com.spring.mmm.domain.users.infra.UserEntity;
 import com.spring.mmm.domain.users.service.port.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -155,14 +155,14 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public TokenResponse getToken(UserReissueTokenRequest request) {
-        String oldRefreshToken = request.getRefreshToken();
+    public TokenResponse getToken(HttpServletRequest request) {
+        String oldRefreshToken = request.getHeader("Authorization");
         String oldCompactToken = oldRefreshToken.substring(7);
 
         String email = jwtProvider.getUserInfoFromToken(oldCompactToken);
-        String rtk = request.getRefreshToken();
+        log.debug("serviceImpl email: {}", email);
 
-        return jwtProvider.reissueAtk(email, rtk);
+        return jwtProvider.reissueAtk(email, oldRefreshToken);
     }
 
 

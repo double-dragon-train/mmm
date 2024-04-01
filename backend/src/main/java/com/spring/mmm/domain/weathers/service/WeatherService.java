@@ -26,6 +26,7 @@ import java.net.URLEncoder;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Random;
@@ -44,8 +45,10 @@ public class WeatherService {
     public WeatherDTO getWeather(double latitude, double longitude)  {
         try {
             Grid tmp = convertGridGPS(latitude, longitude);
-            LocalDate today = LocalDate.now();
+            LocalDateTime today = LocalDateTime.now();
             String formattedDate = today.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+            String formattedHour = today.format(DateTimeFormatter.ofPattern("HH"));
+            log.debug(formattedHour);
 
             StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst"); /*URL*/
             urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + serviceKey); /*Service Key*/
@@ -53,7 +56,7 @@ public class WeatherService {
             urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("1000", "UTF-8")); /*한 페이지 결과 수*/
             urlBuilder.append("&" + URLEncoder.encode("dataType", "UTF-8") + "=" + URLEncoder.encode("JSON", "UTF-8"));
             urlBuilder.append("&" + URLEncoder.encode("base_date", "UTF-8") + "=" + URLEncoder.encode(formattedDate, "UTF-8"));
-            urlBuilder.append("&" + URLEncoder.encode("base_time", "UTF-8") + "=" + URLEncoder.encode("0900", "UTF-8"));
+            urlBuilder.append("&" + URLEncoder.encode("base_time", "UTF-8") + "=" + URLEncoder.encode(formattedHour+"00", "UTF-8"));
             urlBuilder.append("&" + URLEncoder.encode("nx", "UTF-8") + "=" + URLEncoder.encode(String.valueOf((int) tmp.x), "UTF-8")); /*예보지점의 X 좌표값*/
             urlBuilder.append("&" + URLEncoder.encode("ny", "UTF-8") + "=" + URLEncoder.encode(String.valueOf((int) tmp.y), "UTF-8")); /*예보지점의 Y 좌표값*/
             URL url = new URL(urlBuilder.toString());

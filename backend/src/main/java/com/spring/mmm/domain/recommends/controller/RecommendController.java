@@ -50,10 +50,9 @@ public class RecommendController {
     }
 
     @GetMapping("/weather")
-    public ResponseEntity<FoodInformation> recommendWeatherFood(@RequestBody XYRequest request) {
+    public ResponseEntity<FoodInformation> recommendWeatherFood(@RequestParam Double latitude,
+                                                                @RequestParam Double longitude) {
 
-        double latitude = request.getLatitude();
-        double longitude = request.getLongitude();
         WeatherDTO weatherDTO = weatherService.getWeather(latitude, longitude);
         log.debug("weatherDTO : {}",weatherDTO);
         FoodInformation foodInformation = weatherService.getWeatherFood(weatherDTO);
