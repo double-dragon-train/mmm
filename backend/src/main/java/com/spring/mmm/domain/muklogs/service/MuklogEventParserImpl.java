@@ -49,7 +49,7 @@ public class MuklogEventParserImpl implements MuklogEventParser {
                     append(event.getSource())
                     .append("님이 ")
                     .append("먹그룹의 이름을 [")
-                    .append(event.getSource())
+                    .append(event.getTarget())
                     .append("]로 변경했습니다.");
             case MUKBOT_CREATED -> sb
                     .append(event.getSource())

@@ -34,10 +34,15 @@ public class RecommendController {
 
     @GetMapping("/groups/{groupId}")
     public ResponseEntity<LunchRecommendResponse> recommendLunch(
-            @RequestBody LunchRecommendRequest lunchRecommendRequest
+            Integer ei, Integer ns, Integer tf, Integer jp
     ){
         return ResponseEntity.ok(LunchRecommendResponse.builder()
-                .foods(recommendService.lunchRecommendFood(lunchRecommendRequest))
+                .foods(recommendService.lunchRecommendFood(LunchRecommendRequest.builder()
+                        .EI(ei)
+                        .NS(ns)
+                        .TF(tf)
+                        .JP(jp)
+                        .build()))
                 .build()
         );
     }
@@ -50,9 +55,9 @@ public class RecommendController {
     }
 
     @GetMapping("/weather")
-    public ResponseEntity<FoodInformation> recommendWeatherFood(@RequestParam Double latitude,
-                                                                @RequestParam Double longitude) {
-
+    public ResponseEntity<FoodInformation> recommendWeatherFood(
+            Double latitude, Double longitude
+    ) {
         WeatherDTO weatherDTO = weatherService.getWeather(latitude, longitude);
         log.debug("weatherDTO : {}",weatherDTO);
         FoodInformation foodInformation = weatherService.getWeatherFood(weatherDTO);
