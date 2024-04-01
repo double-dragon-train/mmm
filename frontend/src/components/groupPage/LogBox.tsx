@@ -2,10 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import userStore from '../../stores/userStore';
 import styles from '../../styles/groupPage/GroupPage.module.css';
 import { getLog } from '../../api/groupApi';
+import { formatDate } from '../../utils/TimestampParser.ts';
 
 interface contentType {
   content: string;
-  createdAt: string;
+  createdAt: number;
 }
 function LogBox() {
   const { groupId } = userStore();
@@ -35,7 +36,7 @@ function LogBox() {
           return (
             <article className={styles.log}>
               <p>{content.content}</p>
-              <span>{content.createdAt}</span>
+              <span>{formatDate(content.createdAt)}</span>
             </article>
           );
         })
