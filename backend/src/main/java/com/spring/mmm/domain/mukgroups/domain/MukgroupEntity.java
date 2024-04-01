@@ -1,6 +1,10 @@
 package com.spring.mmm.domain.mukgroups.domain;
 
+import com.spring.mmm.common.event.Events;
 import com.spring.mmm.domain.mukgroups.controller.response.MukgroupResponse;
+import com.spring.mmm.domain.mukgroups.event.MukgroupMukjukSelectedEvent;
+import com.spring.mmm.domain.mukgroups.exception.MukGroupErrorCode;
+import com.spring.mmm.domain.mukgroups.exception.MukGroupException;
 import com.spring.mmm.domain.mukjuks.domain.MukgroupMukjukEntity;
 import com.spring.mmm.domain.mukjuks.domain.MukjukEntity;
 import com.spring.mmm.domain.muklogs.domain.MuklogEntity;
@@ -79,6 +83,18 @@ public class MukgroupEntity {
                 .build();
     }
 
+    public void modifyRepMukjuk(Long badgeId) {
+        for (MukgroupMukjukEntity mukgroupMukJuk : mukgroupMukJukEntities) {
+            MukjukEntity groupMukjuk = mukgroupMukJuk.getMukjukEntity();
+            if (groupMukjuk.getMukjukId().equals(badgeId)) {
+                mukjukEntity = groupMukjuk;
+                Events.raise(new MukgroupMukjukSelectedEvent(mukjukEntity.getName(), this.mukgroupId));
+                return;
+            }
+        }
+        throw new MukGroupException(MukGroupErrorCode.SELECTED_NOT_ACHIEVE_MUKJUK);
+    }
+
     @Override
     public String toString() {
         return "MukgroupEntity{" +
@@ -88,4 +104,5 @@ public class MukgroupEntity {
                 ", isSolo=" + isSolo +
                 '}';
     }
+
 }

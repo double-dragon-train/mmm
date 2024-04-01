@@ -172,6 +172,23 @@ public class MukgroupServiceImpl implements MukgroupService{
         return mbti;
     }
 
+    @Transactional
+    @Override
+    public void modifyGroupMukjuk(Long groupId, Long badgeId, String email) {
+        MukboEntity mukboEntity = userRepository.findByEmail(email)
+            .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND))
+            .getMukboEntity();
+        MukgroupEntity mukgroup = getMukgroupEntity(groupId);
+        if(mukgroup.getIsSolo()){
+            throw new MukGroupException(MukGroupErrorCode.SOLO_CANT_EXIT);
+        }
+        if(!mukboEntity.getMukgroupEntity().getMukgroupId().equals(groupId)){
+            throw new MukGroupException(MukGroupErrorCode.FORBIDDEN);
+        }
+        // 권한 체크
+        mukgroup.modifyRepMukjuk(badgeId);
+    }
+
     private Integer calcMBTI(List<MukBTIResultEntity> mukBTIResults){
         int sum = 0;
         for(MukBTIResultEntity mukBTIResult : mukBTIResults){
