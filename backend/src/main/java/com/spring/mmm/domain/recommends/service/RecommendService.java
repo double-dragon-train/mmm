@@ -12,7 +12,7 @@ public interface RecommendService {
 
     List<LunchRecommendFoodInformation> lunchRecommendFood(LunchRecommendRequest lunchRecommendRequest);
 
-    void saveRecommend(Long mukgroupId);
+    void saveRecommend(Long mukgroupId, List<LunchRecommendFoodInformation> lunchList);
 
     NewRecommendedFoodInformation newRecommendFood(Long mukgroupId);
 

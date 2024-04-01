@@ -25,10 +25,9 @@ public class EatenMukboEntity {
     @JoinColumn(name = "food_recommend_id")
     private FoodRecommendEntity foodRecommendEntity;
 
-    public static EatenMukboEntity create(Long mukboId, FoodRecommendEntity foodRecommendEntity) {
+    public static EatenMukboEntity create(Long mukboId) {
         return EatenMukboEntity.builder()
                 .eatenMukboId(mukboId)
-                .foodRecommendEntity(foodRecommendEntity)
                 .build();
     }
 }

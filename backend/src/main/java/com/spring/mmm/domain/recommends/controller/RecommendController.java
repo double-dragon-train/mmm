@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
+
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -37,8 +41,11 @@ public class RecommendController {
             @PathVariable Long groupId,
             @RequestBody LunchRecommendRequest lunchRecommendRequest
     ){
+        List<LunchRecommendFoodInformation> lunch = recommendService.lunchRecommendFood(lunchRecommendRequest);
+        recommendService.saveRecommend(groupId, lunch);
+
         return ResponseEntity.ok(LunchRecommendResponse.builder()
-                .foods(recommendService.lunchRecommendFood(lunchRecommendRequest))
+                .foods(lunch)
                 .build()
         );
     }

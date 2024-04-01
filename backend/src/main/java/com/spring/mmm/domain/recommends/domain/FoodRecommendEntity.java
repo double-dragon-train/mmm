@@ -38,13 +38,15 @@ public class FoodRecommendEntity {
 
 
     public static FoodRecommendEntity create(MukgroupEntity mukgroup,
-                                             List<RecommendedFoodEntity> recommendedFoodEntities) {
+                                             List<RecommendedFoodEntity> recommendedFoodEntities,
+                                             List<EatenMukboEntity> eatenMukboEntities) {
 
         return FoodRecommendEntity.builder()
                 .hasValue(false)
                 .recommendDate(LocalDate.now())
                 .mukgroupEntity(mukgroup)
                 .recommendedFoodEntities(recommendedFoodEntities)
+                .eatenMukboEntities(eatenMukboEntities)
                 .build();
 
     }

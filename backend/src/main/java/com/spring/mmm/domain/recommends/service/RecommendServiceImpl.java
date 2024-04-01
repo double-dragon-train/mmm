@@ -52,67 +52,43 @@ public class RecommendServiceImpl implements RecommendService{
 
     @Override
     public List<LunchRecommendFoodInformation> lunchRecommendFood(LunchRecommendRequest lunchRecommendRequest) {
-
-
-
-        foodRepository.findAll().stream()
+        return foodRepository.findAll().stream()
                 .sorted((o1, o2) -> getScoreByFoodMukBTI(lunchRecommendRequest, o1, o2))
+                .map(LunchRecommendFoodInformation::create)
                 .limit(7)
-                .forEach(foodEntity -> {
-                    RecommendedFoodEntity recommendedFoodEntity =
-                            RecommendedFoodEntity.create(foodEntity, RecommendCategory.NORMAL);
-                    recommendedFoodRepository.save(recommendedFoodEntity);
-                    recommendedFoodEntities.add(recommendedFoodEntity);
-
-                    lunchRecommendFoodInformations.add(LunchRecommendFoodInformation.create(foodEntity));
-                });
-        FoodRecommendEntity foodRecommendEntity =
-                FoodRecommendEntity.create(mukgroup, recommendedFoodEntities);
-
-        foodRecommendRepository.saveFoodRecommend(foodRecommendEntity);
-
-        List<EatenMukboEntity> eatenMukboEntities = mukboEntities.stream().map(mukbo -> {
-            EatenMukboEntity eatenMukboEntity = EatenMukboEntity.create(mukbo.getMukboId(), foodRecommendEntity);
-            eatenMukboRepository.save(eatenMukboEntity);
-            return eatenMukboEntity;
-        }).toList();
-
-        return lunchRecommendFoodInformations;
+                .collect(Collectors.toList());
     }
 
     @Override
-    public void saveRecommend(Long mukgroupId) {
+    public void saveRecommend(Long mukgroupId, List<LunchRecommendFoodInformation> lunchList) {
+
         MukgroupEntity mukgroup = mukgroupRepository.findByMukgroupId(mukgroupId)
                 .orElseThrow();
 
         List<MukboEntity> mukboEntities = mukboRepository.findAllMukboByGroupId(mukgroupId);
 
-        List<LunchRecommendFoodInformation> lunchRecommendFoodInformations = new ArrayList<>();
-        List<RecommendedFoodEntity> recommendedFoodEntities = new ArrayList<>();
-
-        foodRepository.findAll().stream()
-                .sorted((o1, o2) -> getScoreByFoodMukBTI(lunchRecommendRequest, o1, o2))
-                .limit(7)
-                .forEach(foodEntity -> {
-                    RecommendedFoodEntity recommendedFoodEntity =
-                            RecommendedFoodEntity.create(foodEntity, RecommendCategory.NORMAL);
-                    recommendedFoodRepository.save(recommendedFoodEntity);
-                    recommendedFoodEntities.add(recommendedFoodEntity);
-
-                    lunchRecommendFoodInformations.add(LunchRecommendFoodInformation.create(foodEntity));
-                });
-        FoodRecommendEntity foodRecommendEntity =
-                FoodRecommendEntity.create(mukgroup, recommendedFoodEntities);
-
-        foodRecommendRepository.saveFoodRecommend(foodRecommendEntity);
-
         List<EatenMukboEntity> eatenMukboEntities = mukboEntities.stream().map(mukbo -> {
-            EatenMukboEntity eatenMukboEntity = EatenMukboEntity.create(mukbo.getMukboId(), foodRecommendEntity);
+            EatenMukboEntity eatenMukboEntity = EatenMukboEntity.create(mukbo.getMukboId());
             eatenMukboRepository.save(eatenMukboEntity);
             return eatenMukboEntity;
         }).toList();
 
-        return lunchRecommendFoodInformations;
+        List<RecommendedFoodEntity> recommendedFoodEntities = new ArrayList<>();
+
+        lunchList
+                .forEach(lunch -> {
+                    FoodEntity food = foodRepository.findByName(lunch.getName()).orElseThrow();
+                    RecommendedFoodEntity recommendedFoodEntity =
+                            RecommendedFoodEntity.create(food, RecommendCategory.NORMAL);
+                    recommendedFoodRepository.save(recommendedFoodEntity);
+                    recommendedFoodEntities.add(recommendedFoodEntity);
+                });
+
+        FoodRecommendEntity foodRecommendEntity =
+                FoodRecommendEntity.create(mukgroup, recommendedFoodEntities, eatenMukboEntities);
+
+        foodRecommendRepository.saveFoodRecommend(foodRecommendEntity);
+
     }
 
     @Override
