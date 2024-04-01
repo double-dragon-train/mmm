@@ -8,6 +8,7 @@ import com.spring.mmm.domain.users.controller.response.TokenResponse;
 import com.spring.mmm.domain.users.controller.response.UserInfoResponse;
 import com.spring.mmm.domain.users.infra.UserDetailsImpl;
 import com.spring.mmm.domain.users.infra.UserEntity;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Optional;
@@ -25,7 +26,7 @@ public interface UserService {
 
     UserInfoResponse getUserInfoByEmail(String email);
 
-    TokenResponse getToken(UserReissueTokenRequest request);
+    TokenResponse getToken(HttpServletRequest request);
 
     void logout(String accessToken, String username);
 

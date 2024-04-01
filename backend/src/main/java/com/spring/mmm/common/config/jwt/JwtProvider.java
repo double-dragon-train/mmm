@@ -86,14 +86,11 @@ public class JwtProvider {
     public TokenResponse reissueAtk(String email, String reToken) {
         // 레디스 저장된 리프레쉬토큰값을 가져와서 입력된 reToken 같은지 유무 확인
         if (!redisDao.getRefreshToken(email).equals(reToken)) {
-            log.debug("email : {}", email);
-            log.debug("reToken : {}", reToken);
             throw new UserException(UserErrorCode.INVALID_USER);
         }
         String accessToken = createToken(email, ACCESS_TOKEN_TIME);
         String refreshToken = createToken(email, REFRESH_TOKEN_TIME);
         redisDao.setRefreshToken(email, refreshToken, REFRESH_TOKEN_TIME);
-        log.debug("Token - access : {}, refresh : {}", accessToken, refreshToken);
         return TokenResponse.create(accessToken, refreshToken);
     }
 
