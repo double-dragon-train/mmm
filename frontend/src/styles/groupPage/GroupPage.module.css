@@ -56,6 +56,9 @@
   width: 90%;
   top: 50px;
 }
+.logBoxWrapper{
+  overflow-y: scroll;
+}
 .wrapper .header .logBoxWrapper::-webkit-scrollbar {
   width: 8px;
 }
