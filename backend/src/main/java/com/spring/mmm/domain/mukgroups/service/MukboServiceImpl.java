@@ -141,7 +141,6 @@ public class MukboServiceImpl implements MukboService{
         mukboRepository.save(MukboEntity.builder()
                 .name(mukbotCreateRequest.getName())
                 .type(MukboType.MUKBOT)
-                .userEntity(user)
                 .mukgroupEntity(user.getMukboEntity().getMukgroupEntity())
                 .mukBTIResultEntities(MukBTIResultEntity.createByMBTI(mukbotCreateRequest.getMbti(), mukBTIRepository.findAllMukBTI(), user.getMukboEntity()))
                 .build()
