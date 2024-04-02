@@ -137,10 +137,6 @@ public class MukboServiceImpl implements MukboService{
         UserEntity user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
 
-        log.debug("이메일 : {}", user.getEmail());
-        log.debug("이름 : {}", user.getMukboEntity().getName());
-        log.debug("먹그룹id : {}", user.getMukboEntity().getMukgroupEntity().getMukgroupId());
-
         if(user.getMukboEntity().getMukgroupEntity().getIsSolo()){
             throw new MukGroupException(MukGroupErrorCode.SOLOGROUP_CANT_INVITE);
         }
@@ -149,6 +145,8 @@ public class MukboServiceImpl implements MukboService{
         MukboEntity mukbot = MukboEntity.createMukbot(mukbotCreateRequest.getName(),
             user.getMukboEntity().getMukgroupEntity().getMukgroupId());
 
+        log.debug("먹보 이름 : {}", mukbotCreateRequest.getName());
+        log.debug("먹보의 mbti : {}", mukbotCreateRequest.getMbti().getEi());
         mukbot.assiciatedWithMukBTIResult(MukBTIResultEntity.createByMBTI(mukbotCreateRequest.getMbti(), mukBTIRepository.findAllMukBTI(),mukbot));
         mukboRepository.save(mukbot);
 

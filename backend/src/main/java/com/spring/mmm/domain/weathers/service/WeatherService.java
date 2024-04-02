@@ -11,7 +11,12 @@ import com.spring.mmm.domain.recommends.exception.RecommendErrorCode;
 import com.spring.mmm.domain.recommends.exception.RecommendException;
 import com.spring.mmm.domain.recommends.service.port.FoodRecommendRepository;
 import com.spring.mmm.domain.recommends.service.port.FoodRepository;
+import com.spring.mmm.domain.recommends.service.port.RecommendedFoodRepository;
+import com.spring.mmm.domain.users.exception.UserErrorCode;
+import com.spring.mmm.domain.users.exception.UserException;
 import com.spring.mmm.domain.users.infra.UserDetailsImpl;
+import com.spring.mmm.domain.users.infra.UserEntity;
+import com.spring.mmm.domain.users.service.port.UserRepository;
 import com.spring.mmm.domain.weathers.service.port.WeatherRepository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -49,6 +54,8 @@ public class WeatherService {
     private final FoodRepository foodRepository;
     private final WeatherRepository weatherRepository;
     private final FoodRecommendRepository foodRecommendRepository;
+    private final RecommendedFoodRepository recommendedFoodRepository;
+    private final UserRepository userRepository;
 
     public WeatherDTO getWeather(double latitude, double longitude)  {
         try {
@@ -56,7 +63,6 @@ public class WeatherService {
             LocalDateTime today = LocalDateTime.now();
             String formattedDate = today.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
             String formattedHour = today.format(DateTimeFormatter.ofPattern("HH"));
-            log.debug(formattedHour);
 
             StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst"); /*URL*/
             urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + serviceKey); /*Service Key*/
@@ -88,7 +94,7 @@ public class WeatherService {
 
             rd.close();
             conn.disconnect();
-
+            log.debug("날씨 json : {}", sb.toString());
             String jsonString = sb.toString();
             JSONObject objData = new JSONObject(jsonString);
             JSONObject objResponse = objData.getJSONObject("response");
@@ -182,18 +188,22 @@ public class WeatherService {
             weatherId = 1;
         }
         if (weatherId != 0) {
+            log.debug("weatherId : {}", weatherId);
             List<FoodEntity> foodEntities = foodRepository.findByWeatherId(weatherId);
 
             Random random = new Random();
             int randomIndex = random.nextInt(foodEntities.size());
             FoodEntity randomFoodEntity = foodEntities.get(randomIndex);
 
-            Long mukgroupId = userDetails.getUser().getMukboEntity().getMukgroupEntity().getMukgroupId();
+            UserEntity user = userRepository.findByEmail(userDetails.getEmail())
+                    .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
 
-            RecommendedFoodEntity.create(randomFoodEntity,
+            RecommendedFoodEntity recommendedFoodEntity = RecommendedFoodEntity.create(randomFoodEntity,
                     RecommendCategory.WEATHER,
-                    foodRecommendRepository.findByRecommendDateAndMukgroupEntity_MukgroupId(LocalDate.now(), mukgroupId)
+                    foodRecommendRepository.findByRecommendDateAndMukgroupEntity_MukgroupId(LocalDate.now(), user.getMukboEntity().getMukgroupEntity().getMukgroupId())
                             .orElseThrow());
+
+            recommendedFoodRepository.save(recommendedFoodEntity);
 
             return WeatherFoodInfo.create(weatherRepository.findByWeatherId(weatherId),
                     FoodInformation.builder()

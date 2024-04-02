@@ -4,10 +4,12 @@ import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.users.infra.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Builder
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

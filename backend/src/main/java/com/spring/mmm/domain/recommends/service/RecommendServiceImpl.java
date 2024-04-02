@@ -27,6 +27,8 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.spring.mmm.domain.recommends.domain.RecommendCategory.NORMAL;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -87,17 +89,19 @@ public class RecommendServiceImpl implements RecommendService{
         }
 
         if (recommendedFoodRepository.existsByDateAndGroupId(date, mukgroupId)) {
-            recommendedFoodRepository.deleteAllByDateAndGroupId(date, mukgroupId);
+            recommendedFoodRepository.deleteAllNormalByDateAndGroupId(date, mukgroupId, NORMAL);
         }
         lunchList
                 .forEach(lunch -> {
                     FoodEntity food = foodRepository.findByName(lunch.getName()).orElseThrow();
                     RecommendedFoodEntity recommendedFoodEntity =
-                            RecommendedFoodEntity.create(food, RecommendCategory.NORMAL, foodRecommendEntity);
+                            RecommendedFoodEntity.create(food, NORMAL, foodRecommendEntity);
                     recommendedFoodRepository.save(recommendedFoodEntity);
                 });
     }
 
+    @Transactional
+    @Override
     public void modifyNowMukbos(Long mukgroupId, NowRequest nowRequest) {
         LocalDate date = LocalDate.now();
         eatenMukboRepository.deleteAllByDateAndGroupId(date, mukgroupId);
@@ -140,11 +144,12 @@ public class RecommendServiceImpl implements RecommendService{
 
         Collections.shuffle(foods);
 
-        RecommendedFoodEntity.create(foods.getFirst(),
+        RecommendedFoodEntity recommendedFoodEntity = RecommendedFoodEntity.create(foods.getFirst(),
                 RecommendCategory.NEW,
                 foodRecommendRepository.findByRecommendDateAndMukgroupEntity_MukgroupId(LocalDate.now(), mukgroupId)
                         .orElseThrow());
 
+        recommendedFoodRepository.save(recommendedFoodEntity);
 
         return NewRecommendedFoodInformation.create(foods.getFirst());
     }

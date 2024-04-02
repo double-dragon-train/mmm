@@ -25,6 +25,7 @@ import com.spring.mmm.domain.users.infra.UserDetailsImpl;
 import com.spring.mmm.domain.users.infra.UserEntity;
 import com.spring.mmm.domain.users.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -168,6 +170,8 @@ public class MukgroupServiceImpl implements MukgroupService{
     @Override
     public MBTI calcGroupMukBTI(Long groupId, MukgroupMBTICalcRequest mbtiCalcRequest) {
         MBTI mbti = MBTI.builder().build();
+        log.debug("먹그룹id : {}", groupId);
+        log.debug("먹그룹 내 먹보들 id : {}", mbtiCalcRequest.getMukbos());
         for(MukBTIType mukBTIType : MukBTIType.values()){
             int calcResult = calcMBTI(mukBTIResultRepository.findAllMukBTIResultByMukboIdAndMukBTIType(mbtiCalcRequest.getMukbos(), mukBTIType));
             mbti.modifyScore(calcResult, mukBTIType);

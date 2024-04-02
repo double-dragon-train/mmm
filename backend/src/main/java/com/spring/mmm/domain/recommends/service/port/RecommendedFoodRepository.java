@@ -1,5 +1,6 @@
 package com.spring.mmm.domain.recommends.service.port;
 
+import com.spring.mmm.domain.recommends.domain.RecommendCategory;
 import com.spring.mmm.domain.recommends.domain.RecommendedFoodEntity;
 
 import java.time.LocalDate;
@@ -18,7 +19,7 @@ public interface RecommendedFoodRepository {
 
     Boolean existsByDateAndGroupId(LocalDate date, Long groupId);
 
-    void deleteAllByDateAndGroupId(LocalDate date, Long groupId);
+    void deleteAllNormalByDateAndGroupId(LocalDate date, Long groupId, RecommendCategory category);
 
     void save(RecommendedFoodEntity recommendedFoodEntity);
 }

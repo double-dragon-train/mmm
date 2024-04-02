@@ -1,5 +1,6 @@
 package com.spring.mmm.domain.recommends.infra;
 
+import com.spring.mmm.domain.recommends.domain.RecommendCategory;
 import com.spring.mmm.domain.recommends.domain.RecommendedFoodEntity;
 import com.spring.mmm.domain.recommends.exception.RecommendErrorCode;
 import com.spring.mmm.domain.recommends.exception.RecommendException;
@@ -44,8 +45,8 @@ public class RecommendedFoodRepositoryImpl implements RecommendedFoodRepository 
     }
 
     @Override
-    public void deleteAllByDateAndGroupId(LocalDate date, Long groupId) {
-        recommendedFoodJpaRepository.deleteAllByFoodRecommendEntity_RecommendDateAndFoodRecommendEntity_MukgroupEntity_MukgroupId(date, groupId);
+    public void deleteAllNormalByDateAndGroupId(LocalDate date, Long groupId, RecommendCategory category) {
+        recommendedFoodJpaRepository.deleteAllByFoodRecommendEntity_RecommendDateAndFoodRecommendEntity_MukgroupEntity_MukgroupIdAndCategory(date, groupId, category);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.spring.mmm.domain.recommends.infra;
 
+import com.spring.mmm.domain.recommends.domain.RecommendCategory;
 import com.spring.mmm.domain.recommends.domain.RecommendedFoodEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -34,5 +35,5 @@ public interface RecommendedFoodJpaRepository extends JpaRepository<RecommendedF
 
     Boolean existsByFoodRecommendEntity_RecommendDateAndFoodRecommendEntity_MukgroupEntity_MukgroupId(LocalDate date, Long groupId);
 
-    void deleteAllByFoodRecommendEntity_RecommendDateAndFoodRecommendEntity_MukgroupEntity_MukgroupId(LocalDate date, Long groupId);
+    void deleteAllByFoodRecommendEntity_RecommendDateAndFoodRecommendEntity_MukgroupEntity_MukgroupIdAndCategory(LocalDate date, Long groupId, RecommendCategory category);
 }
