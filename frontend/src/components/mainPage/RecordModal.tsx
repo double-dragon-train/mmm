@@ -1,18 +1,28 @@
 // import { useQuery } from '@tanstack/react-query';
 import styles from '../../styles/mainPage/MainPage.module.css';
 import buttonStyles from '../../styles/common/Buttons.module.css';
+import { getRecentRecommendFood } from '../../api/recommendApi';
+import { useQuery } from '@tanstack/react-query';
 // import { getRecentRecommendFood } from '../../api/recommendApi';
 
 interface propsType {
     handleCloseModal: () => void;
     handleCreateRecord: () => void;
+    groupId: number;
 }
-function RecordModal({ handleCloseModal, handleCreateRecord }: propsType) {
-  // const { data, isPending, isError } = useQuery({
-  //     queryKey: ['recentRecommendFood'],
-  //     queryFn: getRecentRecommendFood
-  // })
+function RecordModal({ handleCloseModal, handleCreateRecord, groupId }: propsType) {
+  const { data: recentFoodList, isPending, isError } = useQuery({
+      queryKey: ['recentRecommendFood'],
+      queryFn: () => getRecentRecommendFood(groupId)
+  })
 
+  if (isPending) {
+    return <div>Loading...</div>
+  }
+  if (isError) {
+    return <div>error</div>
+  }
+  console.log(recentFoodList)
   return (
     <div className={styles.recordModalWrapper}>
       <h2>먹기록</h2>

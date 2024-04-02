@@ -1,10 +1,12 @@
 import styles from '../../styles/groupPage/GroupPage.module.css';
 import rewardCntIcon from '../../assets/images/rewardCntIcon.png';
 import buttonStyles from '../../styles/common/Buttons.module.css';
-import { useQuery } from '@tanstack/react-query';
-import { getReward } from '../../api/rewardApi';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { getReward, postTitleReward } from '../../api/rewardApi';
 import userStore from '../../stores/userStore';
 import RewardCard from './RewardCard';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface rewardType {
   id: number;
@@ -13,8 +15,34 @@ interface rewardType {
   isCleared: boolean;
   imageSrc: string | undefined;
 }
-function RewardModal() {
+
+interface propsType {
+  closeRewardModal: () => void;
+}
+function RewardModal({closeRewardModal}: propsType) {
   const { groupId } = userStore();
+  const navigate = useNavigate();
+  const { mutate: mutatePostTitleReward } = useMutation({
+    mutationFn: postTitleReward,
+    onSuccess: () => {
+      navigate('/group');
+      closeRewardModal()
+    },
+    onError: (error) => {
+      console.error('에러났습니다.', error)
+    }
+  });
+
+  const handlePostTitleReward = () => {
+    mutatePostTitleReward({ groupId, selectedId });
+  };
+
+  const handleSetSelectedId = (id: number) => {
+    setSelectedId(id);
+    console.log(selectedId);
+  };
+  
+
   const {
     data: reward,
     isPending,
@@ -23,6 +51,8 @@ function RewardModal() {
     queryKey: ['reward'],
     queryFn: () => getReward(groupId),
   });
+  const [selectedId, setSelectedId] = useState<number | null>(reward?.titleMukjukId);
+
   console.log('reward:', reward);
 
   if (isPending) {
@@ -55,7 +85,7 @@ function RewardModal() {
           </span>
         </div>
         <section className={styles.rewardSection}>
-          {myRewardCnt ? 
+          {myRewardCnt ? (
             myRewardList.map((reward: rewardType) => {
               return (
                 <RewardCard
@@ -64,18 +94,24 @@ function RewardModal() {
                   name={reward.name}
                   isCleared={reward.isCleared}
                   imageSrc={reward.imageSrc}
+                  handleSetSelectedId={handleSetSelectedId}
+                  selectedId={selectedId}
                 />
               );
             })
-            : <div className={styles.noRewardText}>보유한 먹적이 없습니다.<br />먹적을 달성해보세요!</div>
-          }
-          
+          ) : (
+            <div className={styles.noRewardText}>
+              보유한 먹적이 없습니다.
+              <br />
+              먹적을 달성해보세요!
+            </div>
+          )}
         </section>
       </div>
       <div>
         <h3 className={styles.notMyRewardTitle}>미보유 먹적</h3>
         <section className={styles.rewardSection}>
-        {notMyRewardList.map((reward: rewardType) => {
+          {notMyRewardList.map((reward: rewardType) => {
             return (
               <RewardCard
                 key={reward.id}
@@ -84,12 +120,19 @@ function RewardModal() {
                 name={reward.name}
                 isCleared={reward.isCleared}
                 imageSrc={reward.imageSrc}
+                handleSetSelectedId={handleSetSelectedId}
+                selectedId={selectedId}
               />
             );
           })}
         </section>
       </div>
-      <button className={buttonStyles.miniRoundedButton}>확인</button>
+      <button
+        className={buttonStyles.miniRoundedButton}
+        onClick={handlePostTitleReward}
+      >
+        확인
+      </button>
     </div>
   );
 }

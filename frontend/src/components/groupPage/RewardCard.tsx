@@ -1,6 +1,6 @@
 import styles from '../../styles/groupPage/GroupPage.module.css';
-import lock from '../../assets/images/lock.png'
-import secret from '../../assets/images/secret.png'
+import lock from '../../assets/images/lock.png';
+import secret from '../../assets/images/secret.png';
 
 interface propsType {
   id: number;
@@ -8,6 +8,8 @@ interface propsType {
   name: string;
   isCleared: boolean;
   imageSrc: string | undefined;
+  selectedId: number | null;
+  handleSetSelectedId: (id: number) => void;
 }
 
 function RewardCard({
@@ -16,13 +18,30 @@ function RewardCard({
   name,
   isCleared,
   imageSrc,
+  selectedId,
+  handleSetSelectedId,
 }: propsType) {
-  console.log(id)
   return (
-    <article className={styles.rewardItem}>
-      <div className={isCleared ? styles.myRewardImgBox : styles.notMyRewardImgBox}>
+    <article
+      className={styles.rewardItem}
+      onClick={() => handleSetSelectedId(id)}
+    >
+      <div
+        className={
+          isCleared
+            ? selectedId === id
+              ? styles.selectedRewardImgBox
+              : styles.myRewardImgBox
+            : styles.notMyRewardImgBox
+        }
+      >
         <img src={imageSrc} alt="" />
-        {!isCleared && <img className={styles.notMyRewardIcon} src={condition === '비밀~' ? secret : lock}/>}
+        {!isCleared && (
+          <img
+            className={styles.notMyRewardIcon}
+            src={condition === '비밀~' ? secret : lock}
+          />
+        )}
       </div>
       <span className={styles.rewardName}>{name}</span>
       <p>{condition}</p>

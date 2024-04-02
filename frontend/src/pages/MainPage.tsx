@@ -10,6 +10,7 @@ import NewRecommendSection from '../components/mainPage/NewRecommendSection';
 import GroupSection from '../components/mainPage/GroupSection';
 import CreateGroupModal from '../components/mainPage/CreateGroupModal';
 import userStore from '../stores/userStore';
+import { getRecentRecommendFood } from '../api/recommendApi';
 
 function MainPage() {
   const { setGroupId } = userStore();
@@ -24,26 +25,30 @@ function MainPage() {
     queryFn: getGroupInfo,
   });
 
+  console.log('gdgdgdddddddddd:', groupInfo);
+  const { data: recentFoodList } = useQuery({
+    queryKey: ['recentRecommendFood'],
+    queryFn: () => getRecentRecommendFood(groupInfo.groupId),
+    enabled: groupInfo !== undefined,
+  });
+  console.log(recentFoodList)
   const hadleOpenCreateModal = () => {
     setIsCreateModalOpen(true);
   };
+
   const handleCloseCreateModal = () => {
     setIsCreateModalOpen(false);
   };
+
   const handleCloseRecordModal = () => {
     setIsRecordModalOpen(false);
   };
- 
 
   const handleCreateRecord = () => {};
 
   useEffect(() => {
-    setGroupId(groupInfo?.mukgroupId)
-  }, [groupInfo])
-  useEffect(() => {
-    // setIsRecordModalOpen(true);
-    // setIsRecordModalOpen(true);
-  }, []);
+    setGroupId(groupInfo?.mukgroupId);
+  }, [groupInfo]);
 
   if (isPending) {
     return <div>isLoding...</div>;
@@ -51,15 +56,17 @@ function MainPage() {
   if (isError) {
     return <div>error</div>;
   }
+
   return (
     <div className={styles.wrapper}>
       <MainRecommendSection groupId={groupInfo.mukgroupId} />
       <WeatherRecommendSection />
-      <NewRecommendSection groupId={groupInfo.mukgroupId}/>
+      <NewRecommendSection groupId={groupInfo.mukgroupId} />
       <GroupSection
         hadleOpenCreateModal={hadleOpenCreateModal}
         isSolo={groupInfo.isSolo}
         groupId={groupInfo.mukgroupId}
+        groupName={groupInfo.name}
       />
 
       {isRecordModalOpen && (
@@ -67,14 +74,14 @@ function MainPage() {
           <RecordModal
             handleCloseModal={handleCloseRecordModal}
             handleCreateRecord={handleCreateRecord}
+            groupId={groupInfo.mukgroupId}
           />
         </Modal>
       )}
 
       {isCreateModalOpen && (
         <Modal clickEvent={handleCloseCreateModal}>
-          <CreateGroupModal
-          />
+          <CreateGroupModal />
         </Modal>
       )}
     </div>

@@ -9,8 +9,13 @@ $color-main: #2a43ce;
   justify-content: center;
   align-items: center;
   position: relative;
-  > img {
-    width: 80px;
+  .defaultImg {
+    width: 85px;
+    aspect-ratio: 1/1;
+  }
+  .profileImg {
+    width: 115px;
+    border-radius: 50%;
     aspect-ratio: 1/1;
   }
   > button {

@@ -8,8 +8,13 @@
   align-items: center;
   position: relative;
 }
-.profileImgBox > img {
-  width: 80px;
+.profileImgBox .defaultImg {
+  width: 85px;
+  aspect-ratio: 1/1;
+}
+.profileImgBox .profileImg {
+  width: 115px;
+  border-radius: 50%;
   aspect-ratio: 1/1;
 }
 .profileImgBox > button {
