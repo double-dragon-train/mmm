@@ -25,11 +25,19 @@
   padding: 0px 24px;
 }
 .wrapper .header .titleBox {
-  border-bottom: 1px solid rgba(42, 67, 206, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 .wrapper .header .titleBox > span {
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  text-decoration-color: rgba(42, 67, 206, 0.3);
   font-size: 17px;
   color: rgba(42, 67, 206, 0.8);
+}
+.wrapper .header .titleBox > img {
+  width: 17px;
 }
 .wrapper .header .logBox {
   display: flex;

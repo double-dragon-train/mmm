@@ -77,7 +77,7 @@ interface groupImgType {
 }
 export async function modifyGroupImage({
   groupId,
-  groupImg
+  groupImg,
 }: groupImgType) {
   const formData = new FormData();
   formData.append('image', groupImg);

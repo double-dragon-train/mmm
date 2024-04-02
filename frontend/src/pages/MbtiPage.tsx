@@ -10,8 +10,9 @@ import AnswerBox from '../components/mbtiPage/AnswerBox';
 
 interface answerType {
   answerId: string;
-  answerContext: string;
-  answerImage: string;
+
+  answerContent: string;
+  answerImageSrc: string;
 }
 
 function MbtiPage() {
@@ -19,7 +20,7 @@ function MbtiPage() {
   const [selectedAnswer, setSelectedAnswer] = useState('');
   const { updateAnswerList, answerList } = userStore();
   const { mbtiId } = useParams();
-  
+
   const {
     data: questionList,
     isPending,
@@ -28,7 +29,7 @@ function MbtiPage() {
     queryKey: ['mbtiQuestionList'],
     queryFn: getMbtiQuestionList,
   });
-  console.log('gggggggggggg:',questionList)
+
   useEffect(() => {
     setSelectedAnswer('');
   }, [mbtiId]);
@@ -71,7 +72,7 @@ function MbtiPage() {
     }
 
     if (mbtiId === '14') {
-      navigate('/result')
+      navigate('/result');
     } else {
       navigate(`/mbti/${Number(mbtiId) + 1}`);
     }
@@ -88,11 +89,11 @@ function MbtiPage() {
   if (Number(mbtiId) === 8)
     return (
       <div className={styles.wrapperBaekBan}>
-        <h1>{questionList[Number(mbtiId)].context}</h1>
+        <h1>{questionList[Number(mbtiId)].content}</h1>
         <div className={styles.questionNumBox}>
           {Number(mbtiId) + 1} / {questionList.length}
         </div>
-        <img src={questionList[Number(mbtiId)].img} alt="" />
+        <img src={questionList[Number(mbtiId)].imageSrc} alt="" />
         <section>
           {questionList[Number(mbtiId)].answers.map(
             (answer: answerType) => {
@@ -104,7 +105,7 @@ function MbtiPage() {
                   <CheckCircle
                     isSelected={selectedAnswer == answer.answerId}
                   />
-                  <span>{answer.answerContext}</span>
+                  <span>{answer.answerContent}</span>
                 </div>
               );
             }
@@ -125,7 +126,7 @@ function MbtiPage() {
   if (questionList[Number(mbtiId)].answers.length === 5)
     return (
       <div className={styles.wrapperFive}>
-        <h1>{questionList[Number(mbtiId)].context}</h1>
+        <h1>{questionList[Number(mbtiId)].content}</h1>
         <div className={styles.questionNumBox}>
           {Number(mbtiId) + 1} / {questionList.length}
         </div>
@@ -140,9 +141,9 @@ function MbtiPage() {
                   <CheckCircle
                     isSelected={selectedAnswer == answer.answerId}
                   />
-                  <span>{answer.answerContext}</span>
+                  <span>{answer.answerContent}</span>
                   <div className={styles.imageBox}>
-                    <img src={answer.answerImage} alt="" />
+                    <img src={answer.answerImageSrc} alt="" />
                   </div>
                 </div>
               );
@@ -164,7 +165,7 @@ function MbtiPage() {
   if (questionList[Number(mbtiId)].answers.length === 2)
     return (
       <div className={styles.wrapperTwo}>
-        <h1>{questionList[Number(mbtiId)].context}</h1>
+        <h1>{questionList[Number(mbtiId)].content}</h1>
         <div className={styles.questionNumBox}>
           {Number(mbtiId) + 1} / {questionList.length}
         </div>
@@ -180,10 +181,10 @@ function MbtiPage() {
               questionList[Number(mbtiId)].answers[0].answerId
             }
             text={
-              questionList[Number(mbtiId)].answers[0].answerContext
+              questionList[Number(mbtiId)].answers[0].answerContent
             }
             imgSrc={
-              questionList[Number(mbtiId)].answers[0].answerImage
+              questionList[Number(mbtiId)].answers[0].answerImageSrc
             }
           />
           <div className={styles.vsText}>VS</div>
@@ -198,10 +199,10 @@ function MbtiPage() {
               questionList[Number(mbtiId)].answers[1].answerId
             }
             text={
-              questionList[Number(mbtiId)].answers[1].answerContext
+              questionList[Number(mbtiId)].answers[1].answerContent
             }
             imgSrc={
-              questionList[Number(mbtiId)].answers[1].answerImage
+              questionList[Number(mbtiId)].answers[1].answerImageSrc
             }
           />
         </section>
