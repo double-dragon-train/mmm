@@ -44,7 +44,7 @@ public class UserEntity {
             .nickname(userJoinRequest.getNickname())
             .password(encodedPW)
             .build();
-        user.mukboEntity = MukboEntity.create(userJoinRequest.getNickname(), MukboType.HUMAN, groupId);
+        user.mukboEntity = MukboEntity.createMukbo(userJoinRequest.getNickname(), MukboType.HUMAN, groupId, user);
         return user;
     }
 
