@@ -90,8 +90,7 @@ public class MukboServiceImpl implements MukboService{
         MukboEntity invitedMukbo = friend.getMukboEntity();
 
         invitedMukbo.modifyName(mukboInviteRequest.getNickname());
-        invitedMukbo.modifyGroup(groupId, friend.getId());
-        mukboRepository.save(invitedMukbo);
+        mukboRepository.save(invitedMukbo.modifyGroup(groupId, friend.getId()));
 
         MukboEntity userMukbo = mukboRepository.findByUserId(user.getId())
                 .orElseThrow(() -> new MukboException(MukboErrorCode.NOT_FOUND));

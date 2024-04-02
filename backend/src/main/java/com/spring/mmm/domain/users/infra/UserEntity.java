@@ -63,4 +63,12 @@ public class UserEntity {
         Events.raise(UserDeletedEvent.create(this.id));
     }
 
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+            "id=" + id +
+            ", email='" + email + '\'' +
+            ", nickname='" + nickname + '\'' +
+            '}';
+    }
 }
