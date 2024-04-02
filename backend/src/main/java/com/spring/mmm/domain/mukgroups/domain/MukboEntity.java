@@ -30,7 +30,7 @@ public class MukboEntity {
     @Enumerated(EnumType.STRING)
     private MukboType type;
 
-    @OneToMany(mappedBy = "mukboEntity",  cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "mukboEntity",  cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<MukBTIResultEntity> mukBTIResultEntities;
 
     @OneToMany(mappedBy = "mukboEntity", cascade = CascadeType.REMOVE)
