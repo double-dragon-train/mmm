@@ -42,6 +42,7 @@ function GroupSection({
   } = useQuery({
     queryKey: ['groupMbti'],
     queryFn: getGroupMbti,
+    enabled: !isSolo,
   });
 
   const openTodayMemberModal = () => {
@@ -54,12 +55,14 @@ function GroupSection({
   const { data: groupUserList, isPending: isUserPending } = useQuery({
     queryKey: ['groupUserList'],
     queryFn: () => getGroupUserList(groupId),
+    enabled: !isSolo,
   });
 
   const { data: groupMukbotList, isPending: isMukbotPending } =
     useQuery({
       queryKey: ['groupMukbotList'],
       queryFn: () => getGroupMukbotList(groupId),
+      enabled: !isSolo,
     });
 
   console.log('먹보:', groupUserList);
@@ -69,7 +72,7 @@ function GroupSection({
   }, []);
 
   if (isGroupMbtiPending || isUserPending || isMukbotPending) {
-    return <div>isLoding...</div>;
+    return null;
   }
   if (isError) {
     return <div>error</div>;
@@ -78,17 +81,16 @@ function GroupSection({
   return (
     <div className={styles.groupSection}>
       {isTodayMemberModalOpen && (
-          <Modal clickEvent={closeTodayMemberModal}>
-            <TodayMemberModal />
-          </Modal>
-        )}
+        <Modal clickEvent={closeTodayMemberModal}>
+          <TodayMemberModal />
+        </Modal>
+      )}
       <div className={styles.header}>
         <h2>먹그룹</h2>
         <div onClick={openTodayMemberModal}>
           <span>오늘의 멤버 변경</span>
           <img src={memberChange} alt="" />
         </div>
-        
       </div>
       <div className={styles.groupInfoBox}>
         {groupName ? (

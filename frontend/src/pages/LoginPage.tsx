@@ -54,6 +54,7 @@ function LoginPage() {
     setIsEmailValid(checkEmailValidation(email));
   };
 
+  const {mbtiKey} = userStore();
   // 로그인 api
   // 로그인 오류 메시지
   const [errorMessage, setErrorMessage] = useState('');
@@ -76,9 +77,9 @@ function LoginPage() {
       setAccessToken(data.accessToken);
       setRefreshToken(data.refreshToken);
       setIsLogin(true);
-      navigate('/');
       console.log('로그인 성공');
       localStorage.setItem('refreshToken', data.refreshToken);
+      {mbtiKey ? (navigate('/')) : (navigate('/mbti/0'))}
     },
   });
 

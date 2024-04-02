@@ -143,11 +143,12 @@ function SignupPage() {
     mutateEmailCode(emailCodeData);
   };
 
+  
   // 회원가입 api
   const { mutate: mutateSignup } = useMutation({
     mutationFn: postSignup,
     onSuccess: () => {
-      navigate('/login');
+      navigate('/login')
     },
   });
   const handleSignup = () => {

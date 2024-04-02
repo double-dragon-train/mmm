@@ -10,7 +10,7 @@ import {
 import styles from '../../styles/groupPage/MemberSection.module.css';
 import buttonStyles from '../../styles/common/Buttons.module.css';
 import SubMemberArticle from '../common/SubMemberArticle';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import SubMemberCard from '../common/SubMemberCard';
 import Modal from '../common/Modal';
 import Input from '../common/Input';
@@ -19,12 +19,15 @@ import {
   checkNicknameValidation,
 } from '../../utils/validation';
 import finder from '../../assets/images/finder.png';
+import ConfirmModal from '../common/ConfirmModal';
 
 interface propsType {
   groupId: number;
 }
 
 function MemberSection({ groupId }: propsType) {
+
+  const queryClient = useQueryClient();
   interface firstSecondType {
     eng: string;
     kor: string;
@@ -104,6 +107,10 @@ function MemberSection({ groupId }: propsType) {
     useState(false);
   const [isMukbotMakeModalOpen, setIsMukbotMakeModalOpen] =
     useState(false);
+  const [
+    isDeleteMukbotConfirmModalOpen,
+    setIsDeleteMukbotConfirmModalOpen,
+  ] = useState(false);
 
   const handleMukboInviteOpenModal = () => {
     setIsMukboInviteModalOpen(true);
@@ -112,7 +119,15 @@ function MemberSection({ groupId }: propsType) {
     setIsMukbotMakeModalOpen(true);
   };
 
+  const [deleteMukboId, setDeleteMukboId] = useState<number>(0);
+
+  const handleDeleteMukbotConfirmModal = (mukboId: number) => {
+    setIsDeleteMukbotConfirmModalOpen(true);
+    setDeleteMukboId(mukboId);
+  };
+
   const handleCloseModal = () => {
+    setIsDeleteMukbotConfirmModalOpen(false);
     setIsMukboInviteModalOpen(false);
     setIsMukbotMakeModalOpen(false);
     setInputList({
@@ -191,7 +206,7 @@ function MemberSection({ groupId }: propsType) {
     useQuery({
       queryKey: ['groupMukbotList'],
       queryFn: () => getGroupMukbotList(groupId),
-      enabled: !isMukbotMakeModalOpen, 
+      enabled: !isMukbotMakeModalOpen
     });
 
   useEffect(() => {
@@ -235,8 +250,8 @@ function MemberSection({ groupId }: propsType) {
   const [linkMukbotId, setLinkMukbotid] = useState<number>(0);
   const handleLinkMukbot = (mukboId: number) => {
     setLinkMukbotid(mukboId);
-    console.log('linkMukbotId: ',mukboId)
-  }
+    console.log('linkMukbotId: ', mukboId);
+  };
 
   const handleMukboInvite = () => {
     const mukboInviteData = {
@@ -246,13 +261,11 @@ function MemberSection({ groupId }: propsType) {
     };
     try {
       postMukboInvite(groupId, mukboInviteData);
-      
-    }catch (error) {
+    } catch (error) {
       console.error('먹봇 초대 오류:', error);
       // 오류 처리
     }
   };
-  
 
   // 먹봇 생성 api
   const handleMukbotMake = async (
@@ -324,14 +337,13 @@ function MemberSection({ groupId }: propsType) {
     mutationFn: (mukboId: number) => deleteMukbos(groupId, mukboId),
     onSuccess: () => {
       console.log('추방 성공');
+      queryClient.invalidateQueries({ queryKey: ["groupMukbotList"]});
     },
   });
   const handleDeleteMukbos = (mukboId: number) => {
     mutateDeleteMukbos(mukboId);
+    setIsDeleteMukbotConfirmModalOpen(false);
   };
-
-
-
 
   return (
     <section className={styles.memberSection}>
@@ -351,7 +363,7 @@ function MemberSection({ groupId }: propsType) {
                   memberName={user.name}
                   memberMBTI={user.mukBTI}
                   buttonName="추방"
-                  clickEvent={()=>{}}
+                  clickEvent={() => {}}
                 />
               )
             )}
@@ -410,13 +422,19 @@ function MemberSection({ groupId }: propsType) {
                   {groupMukbotList &&
                     groupMukbotList.users.length > 0 &&
                     groupMukbotList.users.map(
-                      (user: { name: string; mukBTI: string; mukboId:number }) => (
+                      (user: {
+                        name: string;
+                        mukBTI: string;
+                        mukboId: number;
+                      }) => (
                         <SubMemberCard
                           articleName="먹봇 연결"
                           memberName={user.name}
                           memberMBTI={user.mukBTI}
                           buttonName="링크"
-                          clickEvent={() => handleLinkMukbot(user.mukboId)}
+                          clickEvent={() =>
+                            handleLinkMukbot(user.mukboId)
+                          }
                         />
                       )
                     )}
@@ -447,13 +465,20 @@ function MemberSection({ groupId }: propsType) {
           {groupMukbotList &&
             groupMukbotList.users.length > 0 &&
             groupMukbotList.users.map(
-              (user: { name: string; mukBTI: string; mukboId: number; }) => (
+              (user: {
+                name: string;
+                mukBTI: string;
+                mukboId: number;
+              }) => (
                 <SubMemberCard
                   articleName="먹봇"
                   memberName={user.name}
                   memberMBTI={user.mukBTI}
                   buttonName="삭제"
-                  clickEvent={() => handleDeleteMukbos(user.mukboId)}
+                  // clickEvent={() => handleDeleteMukbos(user.mukboId)}
+                  clickEvent={() =>
+                    handleDeleteMukbotConfirmModal(user.mukboId)
+                  }
                 />
               )
             )}
@@ -468,6 +493,18 @@ function MemberSection({ groupId }: propsType) {
             )}
         </div>
       </SubMemberArticle>
+      {/* 먹봇 삭제 확인 모달 */}
+      {isDeleteMukbotConfirmModalOpen && (
+        <Modal clickEvent={handleCloseModal}>
+          <ConfirmModal
+            content="정말로 먹봇을 삭제하시겠습니까?"
+            yesEvent={() => handleDeleteMukbos(deleteMukboId)}
+            noEvent={() => {
+              setIsDeleteMukbotConfirmModalOpen(false);
+            }}
+          />
+        </Modal>
+      )}
       {/* 먹봇 생성 모달 */}
       {isMukbotMakeModalOpen && (
         <Modal clickEvent={handleCloseModal}>
@@ -536,7 +573,6 @@ function MemberSection({ groupId }: propsType) {
                         className={styles.bar}
                         onClick={(event) => {
                           handleBarClick(event, index);
-                          handleMukbotMake(ei, ns, tf, jp);
                         }}
                       >
                         <div
