@@ -7,6 +7,7 @@ interface SubMemberCardProps {
   memberName: string;
   memberMBTI: string;
   buttonName: string;
+  clickEvent: () => void;
 }
 
 function SubMemberCard({
@@ -14,6 +15,7 @@ function SubMemberCard({
   memberName,
   memberMBTI,
   buttonName,
+  clickEvent,
 }: SubMemberCardProps) {
   return (
     <div className={styles.memberBox}>
@@ -26,7 +28,7 @@ function SubMemberCard({
         <div className={styles.memberName}>{memberName}</div>
         <div className={styles.memberMBTI}>{memberMBTI}</div>
       </div>
-        <MiniRedButton clickEvent={() => {}} buttonName={buttonName} />
+        <MiniRedButton clickEvent={clickEvent} buttonName={buttonName} />
     </div>
   );
 }
