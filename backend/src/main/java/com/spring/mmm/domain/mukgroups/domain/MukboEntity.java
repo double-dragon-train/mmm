@@ -51,6 +51,14 @@ public class MukboEntity {
                 .mukgroupEntity(MukgroupEntity.createWithOnlyId(mukgroupId))
                 .build();
     }
+    public static MukboEntity createMukbo(String name, MukboType mukboType, Long mukgroupId, UserEntity user){
+        return MukboEntity.builder()
+            .name(name)
+            .type(mukboType)
+            .mukgroupEntity(MukgroupEntity.createWithOnlyId(mukgroupId))
+            .userEntity(user)
+            .build();
+    }
 
     public static MukboEntity createMukbot(String name, Long groupId){
         return MukboEntity.builder()
