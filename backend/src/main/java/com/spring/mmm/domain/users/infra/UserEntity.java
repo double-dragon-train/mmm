@@ -2,6 +2,7 @@ package com.spring.mmm.domain.users.infra;
 
 import com.spring.mmm.common.event.Events;
 import com.spring.mmm.domain.mbtis.domain.MukBTIResultEntity;
+import com.spring.mmm.domain.mukgroups.domain.MukboType;
 import com.spring.mmm.domain.users.controller.request.UserJoinRequest;
 import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.users.event.UserDeletedEvent;
@@ -30,19 +31,21 @@ public class UserEntity {
     private String nickname;
     private String password;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "userEntity", cascade = CascadeType.PERSIST)
     private MukboEntity mukboEntity;
 
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE)
     private List<MukBTIResultEntity> mukBTIResultEntities;
 
-    public static UserEntity create(UserJoinRequest userJoinRequest, String encodedPW, MukboEntity mukbo) {
-        return UserEntity.builder()
-                .email(userJoinRequest.getEmail())
-                .nickname(userJoinRequest.getNickname())
-                .password(encodedPW)
-                .mukboEntity(mukbo)
-                .build();
+    public static UserEntity create(UserJoinRequest userJoinRequest, String encodedPW, Long groupId) {
+
+        UserEntity user = UserEntity.builder()
+            .email(userJoinRequest.getEmail())
+            .nickname(userJoinRequest.getNickname())
+            .password(encodedPW)
+            .build();
+        user.mukboEntity = MukboEntity.create(userJoinRequest.getNickname(), MukboType.HUMAN, groupId);
+        return user;
     }
 
     public void modify(String nickname, String password) {
