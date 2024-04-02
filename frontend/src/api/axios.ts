@@ -39,23 +39,23 @@ instance.interceptors.response.use(
     console.log(error);
     console.log('errorName: ', error.response.data.errorName);
 
-    // 토큰 만료 시 재발급
-    if (
-      error.response &&
-      error.response.data.errorName === 'TOKEN_EXPIRED'
-    ) {
-      const refreshTokenData = await getRefreshToken();
-      console.log('리프레시 데이터', refreshTokenData)
-      console.log('error.response: ', error.response);
-      if (refreshTokenData) {
-        const newAccessToken = refreshTokenData.accessToken;
-        error.config.headers.Authorization = newAccessToken;
-        return instance(error.config);
-      } else {
-        console.log('axios.ts 토큰 재발급 실패');
-      }
-    }
-    console.log('response에러 :', error);
+    // // 토큰 만료 시 재발급
+    // if (
+    //   error.response &&
+    //   error.response.data.errorName === 'TOKEN_EXPIRED'
+    // ) {
+    //   const refreshTokenData = await getRefreshToken();
+    //   console.log('리프레시 데이터', refreshTokenData)
+    //   console.log('error.response: ', error.response);
+    //   if (refreshTokenData) {
+    //     const newAccessToken = refreshTokenData.accessToken;
+    //     error.config.headers.Authorization = newAccessToken;
+    //     return instance(error.config);
+    //   } else {
+    //     console.log('axios.ts 토큰 재발급 실패');
+    //   }
+    // }
+    // console.log('response에러 :', error);
 
 
     // 로그인 시 오류
@@ -106,37 +106,37 @@ instance.interceptors.response.use(
   }
 );
 
-// 토큰 재발급
-const getRefreshToken = async () => {
-  //
-  const userDataString = localStorage.getItem('userData');
+// // 토큰 재발급
+// const getRefreshToken = async () => {
+//   //
+//   const userDataString = localStorage.getItem('userData');
 
-  if (userDataString !== null) {
-    // JSON 형식으로 파싱하기
-    const userData = JSON.parse(userDataString);
+//   if (userDataString !== null) {
+//     // JSON 형식으로 파싱하기
+//     const userData = JSON.parse(userDataString);
 
-    // refreshToken에 접근
-    const refreshToken = userData.state.refreshToken;
-    console.log('refreshToken:', refreshToken);
-    try {
-      const res = await instance.get('/users/reissue', {
-        headers: {
-          Authorization: refreshToken,
-        },
-      });
-      console.log('토큰 재발급 성공:', res);
-      return res.data;
+//     // refreshToken에 접근
+//     const refreshToken = userData.state.refreshToken;
+//     console.log('refreshToken:', refreshToken);
+//     try {
+//       const res = await instance.get('/users/reissue', {
+//         headers: {
+//           Authorization: refreshToken,
+//         },
+//       });
+//       console.log('토큰 재발급 성공:', res);
+//       return res.data;
 
-      //
-    } catch (e) {
-      console.log('토큰 재발급 실패:', e);
-      console.log('토큰 재발급 실패:', refreshToken);
-      // 토큰 재발급 실패 시 오류 상태 반환
-      return { error: e };
-    }
-  } else {
-    console.error('userData가 null입니다.');
-  }
-};
+//       //
+//     } catch (e) {
+//       console.log('토큰 재발급 실패:', e);
+//       console.log('토큰 재발급 실패:', refreshToken);
+//       // 토큰 재발급 실패 시 오류 상태 반환
+//       return { error: e };
+//     }
+//   } else {
+//     console.error('userData가 null입니다.');
+//   }
+// };
 
 export default instance;

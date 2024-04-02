@@ -191,7 +191,7 @@ function MemberSection({ groupId }: propsType) {
     useQuery({
       queryKey: ['groupMukbotList'],
       queryFn: () => getGroupMukbotList(groupId),
-      enabled: !isMukbotMakeModalOpen,
+      enabled: !isMukbotMakeModalOpen, 
     });
 
   useEffect(() => {
@@ -232,16 +232,27 @@ function MemberSection({ groupId }: propsType) {
   };
 
   // 먹보(인간) 초대 api
-  const [mukbotId, setMukbotId] = useState(0);
+  const [linkMukbotId, setLinkMukbotid] = useState<number>(0);
+  const handleLinkMukbot = (mukboId: number) => {
+    setLinkMukbotid(mukboId);
+    console.log('linkMukbotId: ',mukboId)
+  }
+
   const handleMukboInvite = () => {
     const mukboInviteData = {
       email,
       nickname,
-      mukbotId: mukbotId,
+      mukbotId: linkMukbotId,
     };
-    postMukboInvite(groupId, mukboInviteData);
+    try {
+      postMukboInvite(groupId, mukboInviteData);
+      
+    }catch (error) {
+      console.error('먹봇 초대 오류:', error);
+      // 오류 처리
+    }
   };
-  console.log(setMukbotId)
+  
 
   // 먹봇 생성 api
   const handleMukbotMake = async (
@@ -318,6 +329,9 @@ function MemberSection({ groupId }: propsType) {
   const handleDeleteMukbos = (mukboId: number) => {
     mutateDeleteMukbos(mukboId);
   };
+
+
+
 
   return (
     <section className={styles.memberSection}>
@@ -402,7 +416,7 @@ function MemberSection({ groupId }: propsType) {
                           memberName={user.name}
                           memberMBTI={user.mukBTI}
                           buttonName="링크"
-                          clickEvent={()=>{}}
+                          clickEvent={() => handleLinkMukbot(user.mukboId)}
                         />
                       )
                     )}
