@@ -60,9 +60,7 @@ public class UserServiceImpl implements UserService{
 
         MukgroupEntity mukgroupEntity = MukgroupEntity.create(nickname, Boolean.TRUE);
         mukgroupRepository.save(mukgroupEntity);
-        MukboEntity mukboEntity = MukboEntity.create(nickname, MukboType.HUMAN, mukgroupEntity.getMukgroupId());
-        mukboRepository.save(mukboEntity);
-        UserEntity user = UserEntity.create(userJoinRequest, encodedPW, mukboEntity);
+        UserEntity user = UserEntity.create(userJoinRequest, encodedPW, mukgroupEntity.getMukgroupId());
         userRepository.create(user);
     }
 

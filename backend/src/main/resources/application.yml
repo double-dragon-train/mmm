@@ -7,5 +7,5 @@ spring:
     default: local
 
 logging:
-  root:
-    level: debug
+  level:
+    com.spring.mmm: debug
