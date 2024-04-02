@@ -132,7 +132,7 @@ public class MukgroupServiceImpl implements MukgroupService{
         }
 
         if(mukboEntity.getType() == MukboType.HUMAN) {
-            saveSoloMukGroup(user.getEmail());
+            saveSoloMukGroup(mukboEntity.getUserEntity().getEmail());
             Events.raise(new MukboKickedEvent(sourceUser.getName(), mukboEntity.getName(), sourceUser.getMukgroupEntity().getMukgroupId()));
         }
         else {
