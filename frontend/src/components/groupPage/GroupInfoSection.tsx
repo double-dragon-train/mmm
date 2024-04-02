@@ -32,9 +32,10 @@ function GroupInfoSection() {
   const [groupName, setGroupName] = useState<string>('');
   const [groupImg, setGroupImg] = useState<string>('');
   const [isGroupNameValid] = useState<boolean>(true);
-  const [isGroupNameDuplicated] = useState<boolean>();
+  const [isGroupNameDuplicated] = useState<boolean>(false);
 
   console.log(groupImg)
+  
   const handleOpenRewardModal = () => {
     setIsRewardModalOpen(true);
   };

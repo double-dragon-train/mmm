@@ -23,6 +23,7 @@ export async function getRandomFoodList() {
 }
 
 export async function getRecentRecommendFood(groupId: number) {
+  console.log('testtest')
   try {
     const res = await instance.get(`/mukus/groups/${groupId}/recent`);
     return res.data;

@@ -18,6 +18,8 @@ import MainPage from './pages/MainPage';
 import CalendarPage from './pages/CalendarPage';
 import IntroducePage from './pages/IntroducePage';
 import MbtiResultPage from './pages/MbtiResultPage';
+import AuthenticatedRoute from './components/common/AuthenticatedRoute';
+import SoloRoute from './components/common/SoloRoute';
 
 const queryClient = new QueryClient();
 
@@ -30,10 +32,7 @@ const router = createBrowserRouter([
         path: '/',
         element: <MainPage />,
       },
-      {
-        path: '/group',
-        element: <GroupPage />,
-      },
+      
       {
         path: '/calendar',
         element: <CalendarPage />,
@@ -49,17 +48,34 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: '/landing',
-    element: <LandingPage />,
+    path: '/',
+    element: <SoloRoute />,
+        children: [
+      {
+        path: '/group',
+        element: <GroupPage />,
+      },
+    ]
   },
   {
-    path: '/signup',
-    element: <SignupPage />,
+    path: '/',
+    element: <AuthenticatedRoute />,
+    children: [
+      {
+        path: '/landing',
+        element: <LandingPage />,
+      },
+      {
+        path: '/signup',
+        element: <SignupPage />,
+      },
+      {
+        path: '/login',
+        element: <LoginPage />,
+      },
+    ],
   },
-  {
-    path: '/login',
-    element: <LoginPage />,
-  },
+
   {
     path: '/mbti/:mbtiId',
     element: <MbtiPage />,

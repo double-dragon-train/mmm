@@ -6,25 +6,29 @@ import LogBox from './LogBox';
 import Modal from '../common/Modal';
 import ConfirmModal from '../common/ConfirmModal';
 import userStore from '../../stores/userStore';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteGroup } from '../../api/groupApi';
 import { useNavigate } from 'react-router-dom';
 
 function Header() {
-  const { groupId } = userStore();
+  const { groupId, setIsSolo } = userStore();
   const [isLogOpen, setIsLogOpen] = useState(false);
   const [isConfrimModalOpen, setIsConfrimModalOpen] = useState(false);
+  const queryClient = useQueryClient();
+
   const navigate = useNavigate();
   const { mutate: mutateDeleteGroup } = useMutation({
     mutationFn: deleteGroup,
     onSuccess: () => {
-      closeConfirmModal()
-      navigate('/')
+      closeConfirmModal();
+      queryClient.invalidateQueries({ queryKey: ['groupInfo'] });
+      setIsSolo(true)
+      navigate('/');
     },
     onError: (error) => {
-      console.error('에러발생:', error)
-    }
-  })
+      console.error('에러발생:', error);
+    },
+  });
   const toggleIsLogOpen = () => {
     setIsLogOpen(!isLogOpen);
   };
@@ -38,14 +42,14 @@ function Header() {
   };
 
   const exitGroup = () => {
-    mutateDeleteGroup(groupId)
-  }
+    mutateDeleteGroup(groupId);
+  };
   return (
     <div className={styles.header}>
       {isConfrimModalOpen && (
         <Modal clickEvent={closeConfirmModal}>
           <ConfirmModal
-            content="정말로 먹보를 추방하시겠습니까?"
+            content="정말로 먹그룹을 나가시겠습니까?"
             yesEvent={exitGroup}
             noEvent={closeConfirmModal}
           />

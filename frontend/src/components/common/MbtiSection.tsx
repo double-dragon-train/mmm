@@ -73,7 +73,7 @@ function MbtiSection({ mbti }: propsType) {
   // }
 
   let mbtiString = '';
-  mbtiString += (mbti.ei / 3) * 10 <= 50 ? 'I' : 'E';
+  mbtiString += (mbti.ei / 3) * 10 <= 50 ? 'E' : 'I';
   mbtiString += (mbti.ns / 3) * 10 <= 50 ? 'S' : 'N';
   mbtiString += (mbti.tf / 3) * 10 <= 50 ? 'F' : 'T';
   mbtiString += (mbti.jp / 3) * 10 <= 50 ? 'J' : 'P';

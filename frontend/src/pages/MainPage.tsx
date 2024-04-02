@@ -13,9 +13,10 @@ import userStore from '../stores/userStore';
 import { getRecentRecommendFood } from '../api/recommendApi';
 
 function MainPage() {
-  const { setGroupId } = userStore();
+  const { setGroupId, setIsCreateModalOpen, isCreateModalOpen } = userStore();
   const [isRecordModalOpen, setIsRecordModalOpen] = useState(false);
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  // const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
   const {
     data: groupInfo,
     isPending,
@@ -25,13 +26,15 @@ function MainPage() {
     queryFn: getGroupInfo,
   });
 
-  console.log('gdgdgdddddddddd:', groupInfo);
+  console.log('그룹인포:', groupInfo);
   const { data: recentFoodList } = useQuery({
     queryKey: ['recentRecommendFood'],
     queryFn: () => getRecentRecommendFood(groupInfo.groupId),
-    enabled: groupInfo !== undefined,
+    // enabled: groupInfo !== undefined,
   });
+
   console.log(recentFoodList)
+  
   const hadleOpenCreateModal = () => {
     setIsCreateModalOpen(true);
   };

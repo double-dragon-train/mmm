@@ -31,6 +31,10 @@ interface userStoreType {
   setMbti: (value: mbtiType) => void;
   groupId: number;
   setGroupId: (value: number) => void;
+  isSolo: boolean;
+  setIsSolo: (value: boolean) => void;
+  isCreateModalOpen: boolean;
+  setIsCreateModalOpen: (value: boolean) => void;
 }
 const userStore = create(
   persist<userStoreType>(
@@ -51,6 +55,10 @@ const userStore = create(
       setMbti: (value: mbtiType) => set({ mbti: value }),
       groupId: 0,
       setGroupId: (value: number) => set({ groupId: value }),
+      isSolo: true,
+      setIsSolo: (value: boolean) => set({ isSolo: value }),
+      isCreateModalOpen: false,
+      setIsCreateModalOpen: (value: boolean) => set({ isCreateModalOpen: value }),
       //   loginModalOpen: false,
       //   setLoginModalOpen: (value) => set({ loginModalOpen: value }),
       //   isMyPage: true,
