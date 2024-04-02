@@ -18,6 +18,7 @@ public enum MukGroupErrorCode implements ErrorCode {
     SOLOGROUP_CANT_INVITE(HttpStatus.BAD_REQUEST, "솔로 먹그룹에 먹보를 추가할 수 없습니다."),
     NOT_FOUND(HttpStatus.NOT_FOUND, "해당 먹그룹을 찾을 수 없습니다."),
     SELECTED_NOT_ACHIEVE_MUKJUK(HttpStatus.BAD_REQUEST, "획득하지 못한 먹적을 선택했습니다."),
+    ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 현재 먹그룹에 속하는 먹보입니다."),
     ;
 
     private final HttpStatus httpStatus;
