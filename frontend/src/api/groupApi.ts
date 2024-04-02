@@ -75,22 +75,18 @@ interface groupImgType {
   groupId: number;
   groupImg: File;
 }
-export async function putGroupImg({
+export async function modifyGroupImage({
   groupId,
   groupImg,
 }: groupImgType) {
   const formData = new FormData();
   formData.append('image', groupImg);
   try {
-    const res = await instance.put(
-      `/groups/${groupId}/image`,
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      }
-    );
+    const res = await instance.post(`/groups/${groupId}/image`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     console.log(res);
     return res.data;
   } catch (e) {

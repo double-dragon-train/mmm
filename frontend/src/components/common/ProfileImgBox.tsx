@@ -1,10 +1,19 @@
-import { useState } from 'react';
+import React, { Dispatch, SetStateAction, useRef } from 'react';
 import member from '../../assets/images/member.png';
 import styles from '../../styles/common/ProfileImgBox.module.css';
+import { modifyGroupImage } from '../../api/groupApi.ts';
+import userStore from '../../stores/userStore.ts';
 
-function ProfileImgBox() {
-  const [previewImg, setPreviewImg] = useState('');
+interface ProfileImgBoxProps{
+  mode : string
+  imageSrc : string
+  setImageSrc:  Dispatch<SetStateAction<string>>
+}
+function ProfileImgBox({ mode, imageSrc, setImageSrc}:ProfileImgBoxProps) {
 
+  const { groupId } = userStore();
+
+  const ref =  useRef<HTMLInputElement>(null);
   const handleUploadImg = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -17,17 +26,28 @@ function ProfileImgBox() {
     reader.readAsDataURL(uploadFile);
     reader.onloadend = () => {
       uploadedImages.push(reader.result);
-      setPreviewImg(uploadedImages);
+      if(setImageSrc)
+        setImageSrc(uploadedImages);
     };
-    
+
+
+    if (mode === 'MODIFY') {
+      modifyGroupImage({groupId, groupImg : uploadFile});
+    }
+
   };
 
+  const handleImageAddButtonClicked = () => {
+    if(ref.current)
+      ref.current.click();
+  }
+
   return (
-    <label htmlFor="profileImg" className="">
       <div className={styles.profileImgBox}>
-        <img src={previewImg || member} className={previewImg ? styles.profileImg : styles.defaultImg} alt="" />
-        <button>+</button>
+        <img src={imageSrc || member} className={imageSrc ? styles.profileImg : styles.defaultImg} alt="" />
+        <button onClick={handleImageAddButtonClicked}>+</button>
         <input
+          ref={ref}
           id="profileImg"
           type="file"
           accept="image/*"
@@ -35,7 +55,6 @@ function ProfileImgBox() {
           onChange={handleUploadImg}
         />
       </div>
-    </label>
   );
 }
 

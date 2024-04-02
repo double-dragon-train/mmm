@@ -30,7 +30,7 @@ function GroupInfoSection() {
   });
   console.log('groupInfo:', groupInfo);
   const [groupName, setGroupName] = useState<string>('');
-  const [groupImg, setGroupImg] = useState<string | null>('');
+  const [groupImg, setGroupImg] = useState<string>('');
   const [isGroupNameValid] = useState<boolean>(true);
   const [isGroupNameDuplicated] = useState<boolean>();
 
@@ -45,7 +45,7 @@ function GroupInfoSection() {
   useEffect(() => {
     setGroupName(groupInfo.name);
     if (groupInfo.imageSrc !== null) {
-      setGroupImg(groupInfo.name);
+      setGroupImg(groupInfo.imageSrc)
     }
   }, [groupInfo.groupId]);
 
@@ -72,7 +72,7 @@ function GroupInfoSection() {
     <section className={styles.groupInfoSection}>
       <div className={styles.profileBox}>
         <span>대표사진</span>
-        <ProfileImgBox />
+        <ProfileImgBox imageSrc={groupImg} setImageSrc={setGroupImg} mode={"MODIFY"}/>
       </div>
       <div className={styles.groupNameBox}>
         <SmallLabelInput
