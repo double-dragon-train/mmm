@@ -10,7 +10,11 @@ import {
 import styles from '../../styles/groupPage/MemberSection.module.css';
 import buttonStyles from '../../styles/common/Buttons.module.css';
 import SubMemberArticle from '../common/SubMemberArticle';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import SubMemberCard from '../common/SubMemberCard';
 import Modal from '../common/Modal';
 import Input from '../common/Input';
@@ -26,7 +30,6 @@ interface propsType {
 }
 
 function MemberSection({ groupId }: propsType) {
-
   const queryClient = useQueryClient();
   interface firstSecondType {
     eng: string;
@@ -133,6 +136,8 @@ function MemberSection({ groupId }: propsType) {
     setInputList({
       ...inputList,
       mukbotName: '',
+      email: '',
+      nickname: '',
     });
     setEi(0);
     setNs(0);
@@ -144,6 +149,9 @@ function MemberSection({ groupId }: propsType) {
       { percentage: 0 },
       { percentage: 0 },
     ]);
+    setIsEmailValid(true);
+    setIsNicknameValid(true);
+    setIsMukbotnameValid(true);
   };
 
   const [inputList, setInputList] = useState({
@@ -206,7 +214,7 @@ function MemberSection({ groupId }: propsType) {
     useQuery({
       queryKey: ['groupMukbotList'],
       queryFn: () => getGroupMukbotList(groupId),
-      enabled: !isMukbotMakeModalOpen
+      enabled: !isMukbotMakeModalOpen,
     });
 
   useEffect(() => {
@@ -261,6 +269,13 @@ function MemberSection({ groupId }: propsType) {
     };
     try {
       postMukboInvite(groupId, mukboInviteData);
+      setIsMukboInviteModalOpen(false);
+      getGroupMukbotList(groupId);
+      setInputList({
+        ...inputList,
+        email: '',
+        nickname: '',
+      });
     } catch (error) {
       console.error('먹봇 초대 오류:', error);
       // 오류 처리
@@ -285,6 +300,7 @@ function MemberSection({ groupId }: propsType) {
     setNs(newNs);
     setTf(newTf);
     setJp(newJp);
+    console.log('체크');
 
     // mukbotMakeData 객체를 만들 때 이미 설정한 값을 사용합니다.
     const mukbotMakeData = {
@@ -294,16 +310,16 @@ function MemberSection({ groupId }: propsType) {
         ns: Math.round((ns / 100) * 30),
         tf: Math.round((tf / 100) * 30),
         jp: Math.round((jp / 100) * 30),
-        mint: '50',
-        pine: '50',
-        die: '50',
+        mint: '15',
+        pine: '15',
+        die: '15',
       },
     };
     {
-      ei !== 0 &&
-        ns !== 0 &&
-        tf !== 0 &&
-        jp !== 0 &&
+      newEi !== 0 &&
+        newNs !== 0 &&
+        newTf !== 0 &&
+        newJp !== 0 &&
         (() => {
           try {
             console.log('처리중');
@@ -337,7 +353,9 @@ function MemberSection({ groupId }: propsType) {
     mutationFn: (mukboId: number) => deleteMukbos(groupId, mukboId),
     onSuccess: () => {
       console.log('추방 성공');
-      queryClient.invalidateQueries({ queryKey: ["groupMukbotList"]});
+      queryClient.invalidateQueries({
+        queryKey: ['groupMukbotList'],
+      });
     },
   });
   const handleDeleteMukbos = (mukboId: number) => {
@@ -357,13 +375,14 @@ function MemberSection({ groupId }: propsType) {
           {groupUserList &&
             groupUserList.users.length > 0 &&
             groupUserList.users.map(
-              (user: { name: string; mukBTI: string }) => (
+              (user: { name: string; mukBTI: string, mukboId: number }) => (
                 <SubMemberCard
                   articleName="먹보"
                   memberName={user.name}
                   memberMBTI={user.mukBTI}
                   buttonName="추방"
-                  clickEvent={() => {}}
+                  clickEvent={() =>
+                    handleDeleteMukbotConfirmModal(user.mukboId)}
                 />
               )
             )}
@@ -450,6 +469,13 @@ function MemberSection({ groupId }: propsType) {
             <button
               onClick={handleMukboInvite}
               className={buttonStyles.miniRoundedButton}
+              // 닉네임, 이메일 유효X
+              disabled={
+                !isNicknameValid ||
+                !isEmailValid ||
+                !nickname ||
+                !email
+              }
             >
               확인
             </button>
@@ -606,6 +632,11 @@ function MemberSection({ groupId }: propsType) {
             <button
               onClick={() => handleMukbotMake(ei, ns, tf, jp)}
               className={buttonStyles.miniRoundedButton}
+              disabled={
+                !isMukbotnameValid ||
+                !mukbotName ||
+                (bars.length > 0 && bars.some(bar => !bar.percentage))
+              }
             >
               추가
             </button>

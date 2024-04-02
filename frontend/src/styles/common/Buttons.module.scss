@@ -72,6 +72,11 @@ $font-size: 20px;
     color: $color-main;
   }
 }
+.miniRoundedButton:disabled {
+  background-color: rgba($color-gray, 0.3);
+  color: white;
+  border: none;
+}
 
 .miniBlueRoundedButton {
   font-size: 17px;

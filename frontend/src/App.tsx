@@ -51,12 +51,13 @@ const router = createBrowserRouter([
     path: '/',
     element: <SoloRoute />,
         children: [
+        ]
+      },
+      // children 안에 넣기
       {
         path: '/group',
         element: <GroupPage />,
       },
-    ]
-  },
   {
     path: '/',
     element: <AuthenticatedRoute />,
