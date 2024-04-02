@@ -1,23 +1,19 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { Dispatch, SetStateAction, useRef } from 'react';
 import member from '../../assets/images/member.png';
 import styles from '../../styles/common/ProfileImgBox.module.css';
 import { modifyGroupImage } from '../../api/groupApi.ts';
+import userStore from '../../stores/userStore.ts';
 
 interface ProfileImgBoxProps{
-  groupId : number,
-  imageSrc : string | null
+  mode : string
+  imageSrc : string
+  setImageSrc:  Dispatch<SetStateAction<string>>
 }
-function ProfileImgBox({groupId, imageSrc}:ProfileImgBoxProps) {
-  const [previewImg, setPreviewImg] = useState('');
+function ProfileImgBox({ mode, imageSrc, setImageSrc}:ProfileImgBoxProps) {
+
+  const { groupId } = userStore();
+
   const ref =  useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if(imageSrc === null)
-      setPreviewImg('')
-    else
-      setPreviewImg(imageSrc)
-  }, [imageSrc]);
-
   const handleUploadImg = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -30,12 +26,15 @@ function ProfileImgBox({groupId, imageSrc}:ProfileImgBoxProps) {
     reader.readAsDataURL(uploadFile);
     reader.onloadend = () => {
       uploadedImages.push(reader.result);
-      setPreviewImg(uploadedImages);
+      if(setImageSrc)
+        setImageSrc(uploadedImages);
     };
 
 
-    modifyGroupImage({groupId,
-                groupImg : uploadFile});
+    if (mode === 'MODIFY') {
+      modifyGroupImage({groupId, groupImg : uploadFile});
+    }
+
   };
 
   const handleImageAddButtonClicked = () => {
@@ -45,7 +44,7 @@ function ProfileImgBox({groupId, imageSrc}:ProfileImgBoxProps) {
 
   return (
       <div className={styles.profileImgBox}>
-        <img src={previewImg || member} className={previewImg ? styles.profileImg : styles.defaultImg} alt="" />
+        <img src={imageSrc || member} className={imageSrc ? styles.profileImg : styles.defaultImg} alt="" />
         <button onClick={handleImageAddButtonClicked}>+</button>
         <input
           ref={ref}

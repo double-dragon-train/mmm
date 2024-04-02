@@ -8,6 +8,7 @@ import { useMutation } from '@tanstack/react-query';
 
 function CreateGroupModal() {
   const [groupName, setGroupName] = useState('');
+  const [groupImg, setGroupImg] = useState<string>('');
   const [isGroupNameValid] = useState(true);
   const { mutate: mutateCreateGroup } = useMutation({
     mutationFn: postGroupInfo
@@ -29,7 +30,7 @@ function CreateGroupModal() {
       <h2>먹그룹 생성</h2>
       <div className={styles.imgBox}>
         <span>대표사진</span>
-        <ProfileImgBox />
+        <ProfileImgBox imageSrc={groupImg} setImageSrc={setGroupImg} mode={"CREATE"}/>
       </div>
       <div>
         <Input

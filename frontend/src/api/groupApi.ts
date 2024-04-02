@@ -93,3 +93,13 @@ export async function modifyGroupImage({
     console.log(e);
   }
 }
+
+export async function deleteGroup(groupId: number) {
+  try {
+    const res = await instance.delete(`/groups/${groupId}/exit`);
+    console.log(res);
+    return res.data;
+  } catch (e) {
+    console.log(e);
+  }
+}
