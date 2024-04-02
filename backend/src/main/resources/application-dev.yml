@@ -24,3 +24,8 @@ server:
 logging:
   level:
     com.spring.mmm: debug
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
