@@ -41,7 +41,7 @@ function GroupInfoSection() {
     setGroupName(groupInfo.name)
     if (groupInfo.imageSrc !== null) {
 
-      setGroupImg(groupInfo.name)
+      setGroupImg(groupInfo.imageSrc)
     }
   }, [groupInfo.groupId])
 
@@ -68,7 +68,7 @@ function GroupInfoSection() {
     <section className={styles.groupInfoSection}>
       <div className={styles.profileBox}>
         <span>대표사진</span>
-        <ProfileImgBox />
+        <ProfileImgBox groupId={groupId} imageSrc={groupImg}/>
       </div>
       <div className={styles.groupNameBox}>
         <SmallLabelInput
