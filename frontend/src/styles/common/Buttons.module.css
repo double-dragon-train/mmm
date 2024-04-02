@@ -67,6 +67,12 @@
   color: #2a43ce;
 }
 
+.miniRoundedButton:disabled {
+  background-color: rgba(101, 101, 101, 0.3);
+  color: white;
+  border: none;
+}
+
 .miniBlueRoundedButton {
   font-size: 17px;
   width: 100px;
