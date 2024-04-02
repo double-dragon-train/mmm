@@ -27,10 +27,18 @@ $color-gray: #656565;
     justify-content: space-between;
     padding: 0px 24px;
     .titleBox {
-      border-bottom: 1px solid rgba($color-main, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 5px;
       > span {
+        text-decoration: underline;
+        text-underline-offset: 5px;
+        text-decoration-color: rgba($color-main, 0.3);
         font-size: 17px;
         color: rgba($color-main, 0.8);
+      }
+      > img {
+        width: 17px;
       }
     }
     .logBox {

@@ -77,16 +77,30 @@ interface groupImgType {
 }
 export async function putGroupImg({
   groupId,
-  groupImg
+  groupImg,
 }: groupImgType) {
   const formData = new FormData();
   formData.append('image', groupImg);
   try {
-    const res = await instance.put(`/groups/${groupId}/image`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    const res = await instance.put(
+      `/groups/${groupId}/image`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+    console.log(res);
+    return res.data;
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+export async function deleteGroup(groupId: number) {
+  try {
+    const res = await instance.delete(`/groups/${groupId}/exit`);
     console.log(res);
     return res.data;
   } catch (e) {

@@ -15,38 +15,42 @@ function GroupInfoSection() {
   const { groupId } = userStore();
   const [isRewardModalOpen, setIsRewardModalOpen] = useState(false);
 
-  const { data: groupInfo, isPending, isError } = useQuery({
+  const {
+    data: groupInfo,
+    isPending,
+    isError,
+  } = useQuery({
     queryKey: ['groupInfo'],
     queryFn: getGroupInfo,
-    enabled: !isRewardModalOpen
-  })
+    enabled: !isRewardModalOpen,
+  });
 
   const { mutate: mutatePutGroupName } = useMutation({
-    mutationFn: putGroupName
-  })
-  console.log('groupInfo:',groupInfo)
+    mutationFn: putGroupName,
+  });
+  console.log('groupInfo:', groupInfo);
   const [groupName, setGroupName] = useState<string>('');
   const [groupImg, setGroupImg] = useState<string | null>('');
   const [isGroupNameValid] = useState<boolean>(true);
   const [isGroupNameDuplicated] = useState<boolean>();
+
   console.log(groupImg)
   const handleOpenRewardModal = () => {
-    setIsRewardModalOpen(true)
-  }
+    setIsRewardModalOpen(true);
+  };
   const closeRewardModal = () => {
-    setIsRewardModalOpen(false)
-  }
-  
-  useEffect(() => {
-    setGroupName(groupInfo.name)
-    if (groupInfo.imageSrc !== null) {
+    setIsRewardModalOpen(false);
+  };
 
-      setGroupImg(groupInfo.name)
+  useEffect(() => {
+    setGroupName(groupInfo.name);
+    if (groupInfo.imageSrc !== null) {
+      setGroupImg(groupInfo.name);
     }
-  }, [groupInfo.groupId])
+  }, [groupInfo.groupId]);
 
   const handlePutGroupName = () => {
-    mutatePutGroupName({groupId, groupName})
+    mutatePutGroupName({ groupId, groupName });
   };
 
   const changeGroupName = (
@@ -92,14 +96,19 @@ function GroupInfoSection() {
       <div className={styles.rewardBox}>
         <span>먹적</span>
         <div onClick={handleOpenRewardModal}>
-          <img src={groupInfo.titleMukjukImage} alt="" />
-          <span>{groupInfo.titleMukjukName || '대표먹적이 없습니다.'}</span>
+          {groupInfo.titleMukjukImage && (
+            <img src={groupInfo.titleMukjukImage} alt="" />
+          )}
+          <span>
+            {groupInfo.titleMukjukName || '대표먹적이 없습니다.'}
+          </span>
         </div>
       </div>
-      {isRewardModalOpen && <Modal clickEvent={closeRewardModal}>
-        <RewardModal closeRewardModal={closeRewardModal}/>
-        </Modal>}
-     
+      {isRewardModalOpen && (
+        <Modal clickEvent={closeRewardModal}>
+          <RewardModal closeRewardModal={closeRewardModal} />
+        </Modal>
+      )}
     </section>
   );
 }
