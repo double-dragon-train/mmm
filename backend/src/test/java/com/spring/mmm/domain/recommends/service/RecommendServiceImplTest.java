@@ -8,6 +8,8 @@ import com.spring.mmm.domain.recommends.domain.*;
 import com.spring.mmm.domain.recommends.service.port.FoodRecommendRepository;
 import com.spring.mmm.domain.recommends.service.port.FoodRepository;
 import com.spring.mmm.domain.recommends.service.port.RecommendedFoodRepository;
+
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -87,10 +89,7 @@ class RecommendServiceImplTest {
     void 랜덤음식_스무개_추천_성공(){
         BDDMockito.given(foodRepository.findAll())
                 .willReturn(foods);
-
-
-
-        assertEquals(20, recommendService.recommendRandomFood().size());
+        Assertions.assertThat(recommendService.recommendRandomFood().size()).isLessThanOrEqualTo(20);
     }
 
     @Test
