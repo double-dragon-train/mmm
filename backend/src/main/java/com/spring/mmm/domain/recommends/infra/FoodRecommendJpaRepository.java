@@ -4,6 +4,7 @@ import com.spring.mmm.domain.recommends.domain.FoodRecommendEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,4 +19,5 @@ public interface FoodRecommendJpaRepository extends JpaRepository<FoodRecommendE
     )
     Optional<FoodRecommendEntity> findRecommendByMukgroupId(Long mukgroupId);
 
+    Optional<FoodRecommendEntity> findByRecommendDateAndMukgroupEntity_MukgroupId(LocalDate date,Long mukgroupId);
 }

@@ -33,6 +33,18 @@ public class RecommendedFoodEntity {
     @JoinColumn(name = "food_recommend")
     private FoodRecommendEntity foodRecommendEntity;
 
+    public static RecommendedFoodEntity create(FoodEntity food,
+                                               RecommendCategory category,
+                                               FoodRecommendEntity foodRecommendEntity) {
+        return RecommendedFoodEntity.builder()
+                .eaten(false)
+                .category(category)
+                .foodEntity(food)
+                .foodRecommendEntity(foodRecommendEntity)
+                .build();
+
+    }
+
     public void eat() {
         this.eaten = true;
         Events.raise(new RecommendedFoodEatenEvent(this.recommendedFoodId));

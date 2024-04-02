@@ -8,6 +8,7 @@ import com.spring.mmm.domain.recommends.service.port.FoodRecommendRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,5 +23,18 @@ public class FoodRecommendRepositoryImpl implements FoodRecommendRepository {
     public Optional<FoodRecommendEntity> findByMukgroupId(Long mukgroupId) {
         return foodRecommendJpaRepository.findRecommendByMukgroupId(mukgroupId);
     }
+
+    @Override
+    public void saveFoodRecommend(FoodRecommendEntity foodRecommendEntity) {
+        foodRecommendJpaRepository.save(foodRecommendEntity);
+    }
+
+    @Override
+    public Optional<FoodRecommendEntity> findByRecommendDateAndMukgroupEntity_MukgroupId(LocalDate date, Long mukgroupId) {
+        return foodRecommendJpaRepository.findByRecommendDateAndMukgroupEntity_MukgroupId(date, mukgroupId);
+    }
+
+
+
 
 }
