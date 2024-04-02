@@ -34,11 +34,13 @@ public class RecommendedFoodEntity {
     private FoodRecommendEntity foodRecommendEntity;
 
     public static RecommendedFoodEntity create(FoodEntity food,
-                                               RecommendCategory category) {
+                                               RecommendCategory category,
+                                               FoodRecommendEntity foodRecommendEntity) {
         return RecommendedFoodEntity.builder()
                 .eaten(false)
                 .category(category)
                 .foodEntity(food)
+                .foodRecommendEntity(foodRecommendEntity)
                 .build();
 
     }

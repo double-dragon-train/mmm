@@ -1,13 +1,14 @@
 package com.spring.mmm.domain.recommends.service;
 
-import com.spring.mmm.domain.mbtis.domain.MukBTIResultEntity;
+import com.spring.mmm.domain.mbtis.domain.MBTI;
+import com.spring.mmm.domain.mukgroups.controller.request.MukgroupMBTICalcRequest;
 import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
-import com.spring.mmm.domain.mukgroups.exception.MukGroupErrorCode;
-import com.spring.mmm.domain.mukgroups.exception.MukGroupException;
+import com.spring.mmm.domain.mukgroups.service.MukgroupService;
 import com.spring.mmm.domain.mukgroups.service.port.MukboRepository;
 import com.spring.mmm.domain.mukgroups.service.port.MukgroupRepository;
 import com.spring.mmm.domain.recommends.controller.request.LunchRecommendRequest;
+import com.spring.mmm.domain.recommends.controller.request.NowRequest;
 import com.spring.mmm.domain.recommends.controller.response.FoodInformation;
 import com.spring.mmm.domain.recommends.controller.response.LunchRecommendFoodInformation;
 import com.spring.mmm.domain.recommends.controller.response.NewRecommendedFoodInformation;
@@ -22,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -38,6 +40,7 @@ public class RecommendServiceImpl implements RecommendService{
     private final MukboRepository mukboRepository;
     private final EatenMukboRepository eatenMukboRepository;
     private final WeatherService weatherService;
+    private final MukgroupService mukgroupService;
 
     @Override
     public List<FoodInformation> recommendRandomFood() {
@@ -46,7 +49,7 @@ public class RecommendServiceImpl implements RecommendService{
         return foodRepository.findAll().stream()
                 .map(FoodInformation::createByFoodEntity)
                 .filter(item -> item.getFoodId() % randFirst == randSecond)
-                .limit(7)
+                .limit(5)
                 .collect(Collectors.toList());
     }
 
@@ -55,40 +58,75 @@ public class RecommendServiceImpl implements RecommendService{
         return foodRepository.findAll().stream()
                 .sorted((o1, o2) -> getScoreByFoodMukBTI(lunchRecommendRequest, o1, o2))
                 .map(LunchRecommendFoodInformation::create)
-                .limit(7)
+                .limit(5)
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public void saveRecommend(Long mukgroupId, List<LunchRecommendFoodInformation> lunchList) {
+
+        LocalDate date = LocalDate.now();
 
         MukgroupEntity mukgroup = mukgroupRepository.findByMukgroupId(mukgroupId)
                 .orElseThrow();
 
+        FoodRecommendEntity foodRecommendEntity = foodRecommendRepository.findByRecommendDateAndMukgroupEntity_MukgroupId(date, mukgroupId)
+                .orElseGet(() -> FoodRecommendEntity.create(mukgroup));
+
+        foodRecommendRepository.saveFoodRecommend(foodRecommendEntity);
+
         List<MukboEntity> mukboEntities = mukboRepository.findAllMukboByGroupId(mukgroupId);
 
-        List<EatenMukboEntity> eatenMukboEntities = mukboEntities.stream().map(mukbo -> {
-            EatenMukboEntity eatenMukboEntity = EatenMukboEntity.create(mukbo.getMukboId());
-            eatenMukboRepository.save(eatenMukboEntity);
-            return eatenMukboEntity;
-        }).toList();
+        // 하나도 없으면 => 새로 다 만들기
+        if (!eatenMukboRepository.existsByDateAndGroupId(date, mukgroupId)){
+            mukboEntities.forEach(mukbo -> {
+                EatenMukboEntity eatenMukboEntity = EatenMukboEntity.create(mukbo, foodRecommendEntity);
+                eatenMukboRepository.save(eatenMukboEntity);
+            });
+        }
 
-        List<RecommendedFoodEntity> recommendedFoodEntities = new ArrayList<>();
-
+        if (recommendedFoodRepository.existsByDateAndGroupId(date, mukgroupId)) {
+            recommendedFoodRepository.deleteAllByDateAndGroupId(date, mukgroupId);
+        }
         lunchList
                 .forEach(lunch -> {
                     FoodEntity food = foodRepository.findByName(lunch.getName()).orElseThrow();
                     RecommendedFoodEntity recommendedFoodEntity =
-                            RecommendedFoodEntity.create(food, RecommendCategory.NORMAL);
+                            RecommendedFoodEntity.create(food, RecommendCategory.NORMAL, foodRecommendEntity);
                     recommendedFoodRepository.save(recommendedFoodEntity);
-                    recommendedFoodEntities.add(recommendedFoodEntity);
                 });
+    }
+
+    public void modifyNowMukbos(Long mukgroupId, NowRequest nowRequest) {
+        LocalDate date = LocalDate.now();
+        eatenMukboRepository.deleteAllByDateAndGroupId(date, mukgroupId);
 
         FoodRecommendEntity foodRecommendEntity =
-                FoodRecommendEntity.create(mukgroup, recommendedFoodEntities, eatenMukboEntities);
+                foodRecommendRepository.findByRecommendDateAndMukgroupEntity_MukgroupId(
+                        date, mukgroupId
+                        ).orElseThrow();
 
-        foodRecommendRepository.saveFoodRecommend(foodRecommendEntity);
+        for (Long mukboId : nowRequest.getNowMukbos()) {
+            MukboEntity mukboEntity = mukboRepository.findByMukboId(mukboId)
+                            .orElseThrow();
+            eatenMukboRepository.save(
+                    EatenMukboEntity.create(mukboEntity, foodRecommendEntity));
+        }
 
+        MBTI newMBTI =
+                mukgroupService.calcGroupMukBTI(mukgroupId, MukgroupMBTICalcRequest.create(nowRequest.getNowMukbos()));
+
+        LunchRecommendRequest newLunchRecommend = LunchRecommendRequest.builder()
+                .EI(newMBTI.getEi())
+                .NS(newMBTI.getNs())
+                .TF(newMBTI.getTf())
+                .JP(newMBTI.getJp())
+                .build();
+
+        List<LunchRecommendFoodInformation> newLunchList = lunchRecommendFood(newLunchRecommend);
+
+        saveRecommend(mukgroupId, newLunchList);
     }
 
     @Override
@@ -102,7 +140,13 @@ public class RecommendServiceImpl implements RecommendService{
 
         Collections.shuffle(foods);
 
-        return NewRecommendedFoodInformation.create(foods.get(0));
+        RecommendedFoodEntity.create(foods.getFirst(),
+                RecommendCategory.NEW,
+                foodRecommendRepository.findByRecommendDateAndMukgroupEntity_MukgroupId(LocalDate.now(), mukgroupId)
+                        .orElseThrow());
+
+
+        return NewRecommendedFoodInformation.create(foods.getFirst());
     }
 
     private int getScoreByFoodMukBTI(LunchRecommendRequest lunchRecommendRequest, FoodEntity foodOne, FoodEntity foodTwo){

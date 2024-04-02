@@ -3,10 +3,16 @@ package com.spring.mmm.domain.weathers.service;
 import com.spring.mmm.common.exception.InternalServerCaughtException;
 import com.spring.mmm.domain.recommends.controller.response.FoodInformation;
 import com.spring.mmm.domain.recommends.controller.response.WeatherDTO;
+import com.spring.mmm.domain.recommends.controller.response.WeatherFoodInfo;
 import com.spring.mmm.domain.recommends.domain.FoodEntity;
+import com.spring.mmm.domain.recommends.domain.RecommendCategory;
+import com.spring.mmm.domain.recommends.domain.RecommendedFoodEntity;
 import com.spring.mmm.domain.recommends.exception.RecommendErrorCode;
 import com.spring.mmm.domain.recommends.exception.RecommendException;
+import com.spring.mmm.domain.recommends.service.port.FoodRecommendRepository;
 import com.spring.mmm.domain.recommends.service.port.FoodRepository;
+import com.spring.mmm.domain.users.infra.UserDetailsImpl;
+import com.spring.mmm.domain.weathers.service.port.WeatherRepository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +47,8 @@ public class WeatherService {
     @Value("${api.service-key}")
     private String serviceKey;
     private final FoodRepository foodRepository;
+    private final WeatherRepository weatherRepository;
+    private final FoodRecommendRepository foodRecommendRepository;
 
     public WeatherDTO getWeather(double latitude, double longitude)  {
         try {
@@ -164,10 +172,10 @@ public class WeatherService {
         return xy;
     }
 
-    public FoodInformation getWeatherFood(WeatherDTO weatherDTO) {
+    public WeatherFoodInfo getWeatherFood(UserDetailsImpl userDetails, WeatherDTO weatherDTO) {
         int weatherId = 0;
 
-        if (weatherDTO.getT1H() > 30) {
+        if (weatherDTO.getT1H() > 10) {
             weatherId = 2;
         }
         if (weatherDTO.getRN1() >= 0.5) {
@@ -175,16 +183,25 @@ public class WeatherService {
         }
         if (weatherId != 0) {
             List<FoodEntity> foodEntities = foodRepository.findByWeatherId(weatherId);
-            log.debug("foodEntities : {}", foodEntities);
+
             Random random = new Random();
             int randomIndex = random.nextInt(foodEntities.size());
             FoodEntity randomFoodEntity = foodEntities.get(randomIndex);
 
-            return FoodInformation.builder()
+            Long mukgroupId = userDetails.getUser().getMukboEntity().getMukgroupEntity().getMukgroupId();
+
+            RecommendedFoodEntity.create(randomFoodEntity,
+                    RecommendCategory.WEATHER,
+                    foodRecommendRepository.findByRecommendDateAndMukgroupEntity_MukgroupId(LocalDate.now(), mukgroupId)
+                            .orElseThrow());
+
+            return WeatherFoodInfo.create(weatherRepository.findByWeatherId(weatherId),
+                    FoodInformation.builder()
                     .foodId(randomFoodEntity.getFoodId())
                     .name(randomFoodEntity.getName())
                     .imageSrc(randomFoodEntity.getImage())
-                    .build();
+                    .build()
+                    );
         } else {
             throw new RecommendException(RecommendErrorCode.FOOD_RECOMMEND_NOT_FOUND);
         }

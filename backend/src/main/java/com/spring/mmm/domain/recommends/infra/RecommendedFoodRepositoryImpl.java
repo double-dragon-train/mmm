@@ -7,6 +7,7 @@ import com.spring.mmm.domain.recommends.service.port.RecommendedFoodRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +36,16 @@ public class RecommendedFoodRepositoryImpl implements RecommendedFoodRepository 
     @Override
     public List<Integer> findAllFoodIdByMukgroupId(Long mukgroupId) {
         return recommendedFoodJpaRepository.findAllFoodIdByMukgroupId(mukgroupId);
+    }
+
+    @Override
+    public Boolean existsByDateAndGroupId(LocalDate date, Long groupId) {
+        return recommendedFoodJpaRepository.existsByFoodRecommendEntity_RecommendDateAndFoodRecommendEntity_MukgroupEntity_MukgroupId(date, groupId);
+    }
+
+    @Override
+    public void deleteAllByDateAndGroupId(LocalDate date, Long groupId) {
+        recommendedFoodJpaRepository.deleteAllByFoodRecommendEntity_RecommendDateAndFoodRecommendEntity_MukgroupEntity_MukgroupId(date, groupId);
     }
 
     @Override

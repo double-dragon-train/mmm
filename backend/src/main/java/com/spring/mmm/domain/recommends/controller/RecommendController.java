@@ -1,15 +1,19 @@
 package com.spring.mmm.domain.recommends.controller;
 
 import com.spring.mmm.domain.recommends.controller.request.LunchRecommendRequest;
+import com.spring.mmm.domain.recommends.controller.request.NowRequest;
 import com.spring.mmm.domain.recommends.controller.request.XYRequest;
 import com.spring.mmm.domain.recommends.controller.response.*;
 import com.spring.mmm.domain.recommends.exception.RecommendErrorCode;
 import com.spring.mmm.domain.recommends.exception.RecommendException;
 import com.spring.mmm.domain.recommends.service.RecommendService;
+import com.spring.mmm.domain.users.infra.UserDetailsImpl;
 import com.spring.mmm.domain.weathers.service.WeatherService;
+import com.spring.mmm.domain.weathers.service.port.WeatherRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +32,7 @@ public class RecommendController {
 
     private final RecommendService recommendService;
     private final WeatherService weatherService;
+    private final WeatherRepository weatherRepository;
 
     @GetMapping
     public ResponseEntity<RecommandRandomFood> recommendRandomFood(){
@@ -38,17 +43,21 @@ public class RecommendController {
 
     @GetMapping("/groups/{groupId}")
     public ResponseEntity<LunchRecommendResponse> recommendLunch(
-            Integer ei, Integer ns, Integer tf, Integer jp
+            Integer ei, Integer ns, Integer tf, Integer jp,
+            @PathVariable Long groupId
     ){
-        return ResponseEntity.ok(LunchRecommendResponse.builder()
+        LunchRecommendResponse lunch = LunchRecommendResponse.builder()
                 .foods(recommendService.lunchRecommendFood(LunchRecommendRequest.builder()
                         .EI(ei)
                         .NS(ns)
                         .TF(tf)
                         .JP(jp)
                         .build()))
-                .build()
-        );
+                .build();
+
+        recommendService.saveRecommend(groupId, lunch.getFoods());
+
+        return ResponseEntity.ok(lunch);
     }
 
     @GetMapping("/groups/{groupId}/new")
@@ -59,16 +68,21 @@ public class RecommendController {
     }
 
     @GetMapping("/weather")
-    public ResponseEntity<FoodInformation> recommendWeatherFood(
+    public ResponseEntity<WeatherFoodInfo> recommendWeatherFood(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
             Double latitude, Double longitude
     ) {
         WeatherDTO weatherDTO = weatherService.getWeather(latitude, longitude);
-        log.debug("weatherDTO : {}",weatherDTO);
-        FoodInformation foodInformation = weatherService.getWeatherFood(weatherDTO);
-        log.info("foodInformation : {}", foodInformation);
-        if (foodInformation==null) throw new RecommendException(RecommendErrorCode.FOOD_RECOMMEND_NOT_FOUND);
-        log.debug("foodInfo : {}",foodInformation);
 
-        return ResponseEntity.ok(foodInformation);
+        WeatherFoodInfo weatherFoodInfo = weatherService.getWeatherFood(userDetails ,weatherDTO);
+
+        return ResponseEntity.ok(weatherFoodInfo);
+    }
+
+    @PostMapping("/groups/{groupId}/mukbos-now")
+    public ResponseEntity<Void> absentMukbo(@PathVariable Long groupId, @RequestBody NowRequest NowRequest) {
+        log.debug("겷석 : {}", NowRequest);
+
+        return ResponseEntity.ok().build();
     }
 }

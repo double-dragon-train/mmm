@@ -27,6 +27,7 @@ import com.spring.mmm.domain.users.infra.UserDetailsImpl;
 import com.spring.mmm.domain.users.infra.UserEntity;
 import com.spring.mmm.domain.users.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +35,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -133,6 +135,10 @@ public class MukboServiceImpl implements MukboService{
     public void saveMukbot(String email, MukbotCreateRequest mukbotCreateRequest) {
         UserEntity user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+
+        log.debug("이메일 : {}", user.getEmail());
+        log.debug("이름 : {}", user.getMukboEntity().getName());
+        log.debug("먹그룹id : {}", user.getMukboEntity().getMukgroupEntity().getMukgroupId());
 
         if(user.getMukboEntity().getMukgroupEntity().getIsSolo()){
             throw new MukGroupException(MukGroupErrorCode.SOLOGROUP_CANT_INVITE);

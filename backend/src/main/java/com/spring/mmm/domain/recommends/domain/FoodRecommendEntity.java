@@ -30,23 +30,19 @@ public class FoodRecommendEntity {
     @JoinColumn(name = "mukgroup_id")
     private MukgroupEntity mukgroupEntity;
 
-    @OneToMany(mappedBy = "foodRecommendEntity", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "foodRecommendEntity", cascade = CascadeType.ALL )
     private List<RecommendedFoodEntity> recommendedFoodEntities;
 
-    @OneToMany(mappedBy = "foodRecommendEntity", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "foodRecommendEntity", cascade = CascadeType.ALL)
     private List<EatenMukboEntity> eatenMukboEntities;
 
 
-    public static FoodRecommendEntity create(MukgroupEntity mukgroup,
-                                             List<RecommendedFoodEntity> recommendedFoodEntities,
-                                             List<EatenMukboEntity> eatenMukboEntities) {
+    public static FoodRecommendEntity create(MukgroupEntity mukgroup) {
 
         return FoodRecommendEntity.builder()
                 .hasValue(false)
                 .recommendDate(LocalDate.now())
                 .mukgroupEntity(mukgroup)
-                .recommendedFoodEntities(recommendedFoodEntities)
-                .eatenMukboEntities(eatenMukboEntities)
                 .build();
 
     }

@@ -164,17 +164,6 @@ public class MukgroupServiceImpl implements MukgroupService{
         Events.raise(new MukboExitedEvent(mukbo.getName(), groupId));
     }
 
-    // 해당 날짜 모든 먹보 기준으로 추천
-    @PostMapping
-    public void createFoodRecommend(Long groupId) {
-
-    }
-
-    // 먹보 변경하고 다시 추천
-    @PutMapping
-    public void modifyEatingMukbos(Long groupId, EatingMukbosRequest eatingMukbosRequest) {
-
-    }
 
     @Override
     public MBTI calcGroupMukBTI(Long groupId, MukgroupMBTICalcRequest mbtiCalcRequest) {
