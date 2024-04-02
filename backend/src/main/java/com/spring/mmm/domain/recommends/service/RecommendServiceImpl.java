@@ -51,7 +51,7 @@ public class RecommendServiceImpl implements RecommendService{
         return foodRepository.findAll().stream()
                 .map(FoodInformation::createByFoodEntity)
                 .filter(item -> item.getFoodId() % randFirst == randSecond)
-                .limit(5)
+                .limit(20)
                 .collect(Collectors.toList());
     }
 

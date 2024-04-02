@@ -170,8 +170,6 @@ public class MukgroupServiceImpl implements MukgroupService{
     @Override
     public MBTI calcGroupMukBTI(Long groupId, MukgroupMBTICalcRequest mbtiCalcRequest) {
         MBTI mbti = MBTI.builder().build();
-        log.debug("먹그룹id : {}", groupId);
-        log.debug("먹그룹 내 먹보들 id : {}", mbtiCalcRequest.getMukbos());
         for(MukBTIType mukBTIType : MukBTIType.values()){
             int calcResult = calcMBTI(mukBTIResultRepository.findAllMukBTIResultByMukboIdAndMukBTIType(mbtiCalcRequest.getMukbos(), mukBTIType));
             mbti.modifyScore(calcResult, mukBTIType);

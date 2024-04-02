@@ -145,8 +145,6 @@ public class MukboServiceImpl implements MukboService{
         MukboEntity mukbot = MukboEntity.createMukbot(mukbotCreateRequest.getName(),
             user.getMukboEntity().getMukgroupEntity().getMukgroupId());
 
-        log.debug("먹보 이름 : {}", mukbotCreateRequest.getName());
-        log.debug("먹보의 mbti : {}", mukbotCreateRequest.getMbti().getEi());
         mukbot.assiciatedWithMukBTIResult(MukBTIResultEntity.createByMBTI(mukbotCreateRequest.getMbti(), mukBTIRepository.findAllMukBTI(),mukbot));
         mukboRepository.save(mukbot);
 

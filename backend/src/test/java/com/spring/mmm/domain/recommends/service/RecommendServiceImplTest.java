@@ -4,10 +4,8 @@ import com.spring.mmm.domain.mbtis.domain.MukBTIEntity;
 import com.spring.mmm.domain.mbtis.domain.MukBTIType;
 import com.spring.mmm.domain.recommends.controller.request.LunchRecommendRequest;
 import com.spring.mmm.domain.recommends.controller.response.LunchRecommendFoodInformation;
-import com.spring.mmm.domain.recommends.domain.FoodCategoryEntity;
-import com.spring.mmm.domain.recommends.domain.FoodEntity;
-import com.spring.mmm.domain.recommends.domain.FoodMBTIEntity;
-import com.spring.mmm.domain.recommends.domain.RecommendedFoodEntity;
+import com.spring.mmm.domain.recommends.domain.*;
+import com.spring.mmm.domain.recommends.service.port.FoodRecommendRepository;
 import com.spring.mmm.domain.recommends.service.port.FoodRepository;
 import com.spring.mmm.domain.recommends.service.port.RecommendedFoodRepository;
 import org.junit.jupiter.api.BeforeAll;
@@ -20,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -32,6 +31,9 @@ class RecommendServiceImplTest {
 
     @Mock
     private RecommendedFoodRepository recommendedFoodRepository;
+
+    @Mock
+    private FoodRecommendRepository foodRecommendRepository;
 
     @InjectMocks
     private RecommendServiceImpl recommendService;
@@ -82,11 +84,13 @@ class RecommendServiceImplTest {
     }
 
     @Test
-    void 랜덤음식_일곱개_추천_성공(){
+    void 랜덤음식_스무개_추천_성공(){
         BDDMockito.given(foodRepository.findAll())
                 .willReturn(foods);
 
-        assertEquals(7, recommendService.recommendRandomFood().size());
+
+
+        assertEquals(20, recommendService.recommendRandomFood().size());
     }
 
     @Test
@@ -106,6 +110,12 @@ class RecommendServiceImplTest {
 
         BDDMockito.given(foodRepository.findAll())
                 .willReturn(foods);
+
+        FoodRecommendEntity foodRecommendEntity = FoodRecommendEntity.builder()
+                        .build();
+
+        BDDMockito.given(foodRecommendRepository.findByRecommendDateAndMukgroupEntity_MukgroupId(any(), any()))
+                        .willReturn(Optional.of(foodRecommendEntity));
 
         assertDoesNotThrow(() -> recommendService.newRecommendFood(1L));
     }
