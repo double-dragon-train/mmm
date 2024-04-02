@@ -49,6 +49,7 @@ public class MukboServiceImpl implements MukboService{
     public List<MukboResponse> findAllMukboResponsesByGroupId(Long groupId) {
         return mukboRepository.findAllMukboByGroupId(groupId)
                 .stream()
+            .filter(item -> item.getType().equals(MukboType.HUMAN))
                 .map(MukboResponse::create)
                 .collect(Collectors.toList());
     }
@@ -57,7 +58,7 @@ public class MukboServiceImpl implements MukboService{
     public List<MukboResponse> findAllMukbotResponsesByGroupId(Long groupId) {
         return mukboRepository.findAllMukboByGroupId(groupId)
                 .stream()
-                .filter(item -> item.getType() == MukboType.MUKBOT)
+                .filter(item -> item.getType().equals(MukboType.MUKBOT))
                 .map(MukboResponse::create)
                 .collect(Collectors.toList());
     }
@@ -144,14 +145,13 @@ public class MukboServiceImpl implements MukboService{
             throw new MukGroupException(MukGroupErrorCode.SOLOGROUP_CANT_INVITE);
         }
 
-        mukboRepository.save(MukboEntity.builder()
-                .name(mukbotCreateRequest.getName())
-                .type(MukboType.MUKBOT)
-                .userEntity(user)
-                .mukgroupEntity(user.getMukboEntity().getMukgroupEntity())
-                .mukBTIResultEntities(MukBTIResultEntity.createByMBTI(mukbotCreateRequest.getMbti(), mukBTIRepository.findAllMukBTI(), user.getMukboEntity()))
-                .build()
-        );
+
+        MukboEntity mukbot = MukboEntity.createMukbot(mukbotCreateRequest.getName(),
+            user.getMukboEntity().getMukgroupEntity().getMukgroupId());
+
+        mukbot.assiciatedWithMukBTIResult(MukBTIResultEntity.createByMBTI(mukbotCreateRequest.getMbti(), mukBTIRepository.findAllMukBTI(),mukbot));
+        mukboRepository.save(mukbot);
+
     }
 
     @Override
