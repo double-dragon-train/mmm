@@ -4,14 +4,24 @@ import buttonStyles from '../../styles/common/Buttons.module.css';
 import Input from '../common/Input';
 import ProfileImgBox from '../common/ProfileImgBox';
 import { postGroupInfo } from '../../api/groupApi';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 
 function CreateGroupModal() {
+  const queryClient = useQueryClient(); 
+  const navigate = useNavigate();
   const [groupName, setGroupName] = useState('');
   const [groupImg, setGroupImg] = useState<string>('');
   const [isGroupNameValid] = useState(true);
   const { mutate: mutateCreateGroup } = useMutation({
-    mutationFn: postGroupInfo
+    mutationFn: postGroupInfo,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["groupInfo"]});
+      navigate('/group')
+    },
+    onError: (error) => {
+      console.error('에러발생:', error)
+    }
   })
   const handleChangeGroupName = (
     e: React.ChangeEvent<HTMLInputElement>

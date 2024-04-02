@@ -21,18 +21,35 @@ interface propsType {
   groupName: string;
 }
 
+interface mbtiType {
+  die: number;
+  ei: number;
+  jp: number;
+  mint: number;
+  ns: number;
+  pine: number;
+  tf: number;
+}
+
 interface userType {
   name: string;
   mukBTI: string;
   mukboId: number;
+  type: string;
+  mbti: mbtiType;
 }
+
 function GroupSection({
   hadleOpenCreateModal,
   isSolo,
   groupId,
   groupName,
 }: propsType) {
+  console.log('isSolo:', isSolo);
   const { setMbti } = userStore();
+  const [todayMemberList] = useState<userType[]>(
+    []
+  );
   const [isTodayMemberModalOpen, setIsTodayMemberModalOpen] =
     useState(false);
   const {
@@ -52,7 +69,12 @@ function GroupSection({
   const closeTodayMemberModal = () => {
     setIsTodayMemberModalOpen(false);
   };
-  const { data: groupUserList, isPending: isUserPending } = useQuery({
+
+  const {
+    data: groupUserList,
+    isPending: isUserPending,
+    isError: isUserListError,
+  } = useQuery({
     queryKey: ['groupUserList'],
     queryFn: () => getGroupUserList(groupId),
     enabled: !isSolo,
@@ -65,6 +87,16 @@ function GroupSection({
       enabled: !isSolo,
     });
 
+  // useEffect(() => {
+  //   if (groupMukbotList || groupUserList) {
+  //     setTodayMemberList([
+  //       ...groupUserList?.users,
+  //       ...groupMukbotList?.users,
+  //     ]);
+  //     console.log('gdgdgdgdgddddddddddddddddddd:', todayMemberList);
+  //   }
+  // }, [groupUserList, groupMukbotList]);
+
   console.log('먹보:', groupUserList);
   console.log('먹봇:', groupMukbotList);
   useEffect(() => {
@@ -74,7 +106,7 @@ function GroupSection({
   if (isGroupMbtiPending || isUserPending || isMukbotPending) {
     return null;
   }
-  if (isError) {
+  if (isUserListError || isError) {
     return <div>error</div>;
   }
 
@@ -93,7 +125,7 @@ function GroupSection({
         </div>
       </div>
       <div className={styles.groupInfoBox}>
-        {groupName ? (
+        {!isSolo ? (
           <div className={styles.groupName}>{groupName}</div>
         ) : (
           <div className={styles.soloGroupName}>그룹명</div>
@@ -119,7 +151,16 @@ function GroupSection({
           <article>
             <h2 className={styles.todayTitle}>오늘 같이 먹어요</h2>
             <div>
-              {groupUserList.users.map((user: userType) => {
+              {todayMemberList.map((user: userType) => {
+                return (
+                  <MemberCard
+                    key={user.mukboId}
+                    mbti={user.mukBTI}
+                    name={user.name}
+                  />
+                );
+              })}
+              {/* {groupUserList.users.map((user: userType) => {
                 return (
                   <MemberCard
                     key={user.mukboId}
@@ -136,7 +177,7 @@ function GroupSection({
                     name={user.name}
                   />
                 );
-              })}
+              })} */}
             </div>
           </article>
           <article>

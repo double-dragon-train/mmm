@@ -29,7 +29,7 @@ function MbtiPage() {
     queryKey: ['mbtiQuestionList'],
     queryFn: getMbtiQuestionList,
   });
-
+  
   useEffect(() => {
     setSelectedAnswer('');
   }, [mbtiId]);

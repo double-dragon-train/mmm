@@ -5,35 +5,40 @@ import { getWeatherRecommendFood } from '../../api/recommendApi';
 import { useEffect, useState } from 'react';
 
 function WeatherRecommendSection() {
-  const [latitude, setLatitude] = useState<number|null>(null);
-  const [longitude, setLongitude] = useState<number|null>(null);
+  const [latitude, setLatitude] = useState<number | null>(null);
+  const [longitude, setLongitude] = useState<number | null>(null);
 
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function (position) {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
-        
-        setLatitude(latitude)
-        setLongitude(longitude)
+
+        setLatitude(latitude);
+        setLongitude(longitude);
       });
     }
-  }, [])
-  
-  const { data: weatherRecommendFood, isPending, isError } = useQuery({
-    queryKey: ['weatherRecommendFood'],
-    queryFn: () => getWeatherRecommendFood(String(latitude), String(longitude)),
-    enabled: latitude !== null && longitude !== null
-  })
+  }, []);
 
-  console.log('날씨:',weatherRecommendFood)
+  const {
+    data: weatherRecommendFood,
+    isPending,
+    isError,
+  } = useQuery({
+    queryKey: ['weatherRecommendFood'],
+    queryFn: () =>
+      getWeatherRecommendFood(String(latitude), String(longitude)),
+    enabled: latitude !== null && longitude !== null,
+  });
+
+  console.log('날씨:', weatherRecommendFood);
   if (isPending) {
-    return <div>Loading...</div>
+    return <div>Loading...</div>;
   }
   if (isError) {
-    return <div>error</div>
+    return null;
   }
-  
+
   return (
     <section className={styles.weatherRecommendSection}>
       <div className={styles.textBox}>
