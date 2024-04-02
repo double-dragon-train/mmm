@@ -84,7 +84,7 @@ public class MukboServiceImpl implements MukboService{
                     .orElseThrow(() -> new MukboException(MukboErrorCode.NOT_FOUND)));
         }
 
-        UserEntity friend = userRepository.findByEmail(email)
+        UserEntity friend = userRepository.findByEmail(mukboInviteRequest.getEmail())
             .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
 
         MukboEntity invitedMukbo = friend.getMukboEntity();
