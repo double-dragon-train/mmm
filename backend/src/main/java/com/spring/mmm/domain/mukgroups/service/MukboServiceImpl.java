@@ -89,21 +89,34 @@ public class MukboServiceImpl implements MukboService{
 
         MukboEntity invitedMukbo = friend.getMukboEntity();
 
+        if(invitedMukbo.getMukgroupEntity().getMukgroupId().equals(groupId)){
+            throw new MukGroupException(MukGroupErrorCode.ALREADY_EXISTS);
+        }
+
+        if(!invitedMukbo.getMukgroupEntity().getIsSolo()){
+            throw new MukGroupException(MukGroupErrorCode.DUPLICATE_ERROR);
+        }
+
         invitedMukbo.modifyName(mukboInviteRequest.getNickname());
         mukboRepository.save(invitedMukbo.modifyGroup(groupId, friend.getId()));
 
-        MukboEntity userMukbo = mukboRepository.findByUserId(user.getId())
-                .orElseThrow(() -> new MukboException(MukboErrorCode.NOT_FOUND));
-
-        Events.raise(new MukboInvitedEvent(userMukbo.getName(),mukboInviteRequest.getNickname(), groupId));
+        Events.raise(new MukboInvitedEvent(user.getMukboEntity().getName(),mukboInviteRequest.getNickname(), groupId));
     }
 
 
     @Override
     @Transactional
     public void modifyMukbot(String email, Long mukboId, MBTI mbti, String name) {
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+
         MukboEntity mukbotEntity = mukboRepository.findByMukboId(mukboId)
                 .orElseThrow(() -> new MukboException(MukboErrorCode.NOT_FOUND));
+
+        if(!user.getMukboEntity().getMukgroupEntity().getMukgroupId().equals(mukbotEntity.getMukgroupEntity().getMukgroupId())){
+            throw new MukboException(MukboErrorCode.ANOTHER_GROUP);
+        }
+
         mukbotEntity.modifyName(name);
 
         List<MukBTIResultEntity> mukBTIResults = mukBTIResultRepository.findAllMukBTIResultByMukboId(mukboId);
@@ -117,9 +130,6 @@ public class MukboServiceImpl implements MukboService{
 
         mukbotEntity.modifyMukBTIResult(mukBTIResults);
         mukboRepository.save(mukbotEntity);
-
-        UserEntity user = userRepository.findByEmail(email)
-                        .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
 
         Events.raise(new MukbotModifiedEvent(user.getMukboEntity().getName(), name, user.getMukboEntity().getMukgroupEntity().getMukgroupId()));
     }
