@@ -6,6 +6,7 @@ interface answerType {
 }
 
 export async function getMbtiQuestionList() {
+  console.log('teste')
   try {
     const res = await instance.get('/mbti');
     return res.data.mukBTIQuestions;

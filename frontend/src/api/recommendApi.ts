@@ -22,10 +22,9 @@ export async function getRandomFoodList() {
   }
 }
 
-export async function getRecentRecommendFood() {
+export async function getRecentRecommendFood(groupId: number) {
   try {
-    const res = await instance.get('/mukus/groups/0/recent');
-    // const res = await axios.get(`${VITE_API_DEV}/recommend`)
+    const res = await instance.get(`/mukus/groups/${groupId}/recent`);
     return res.data;
   } catch (e) {
     console.log(e);
@@ -41,8 +40,7 @@ export async function getMainRecommendFood(
     const res = await instance.get(`/recommend/groups/${groupId}`, {
       params: mbti,
     });
-    // const res = await axios.get(`${VITE_API_DEV}/recommend`)
-    return res.data;
+    return res.data.foods;
   } catch (e) {
     console.log(e);
   }

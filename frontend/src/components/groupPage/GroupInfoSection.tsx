@@ -13,9 +13,12 @@ import RewardModal from './RewardModal';
 
 function GroupInfoSection() {
   const { groupId } = userStore();
+  const [isRewardModalOpen, setIsRewardModalOpen] = useState(false);
+
   const { data: groupInfo, isPending, isError } = useQuery({
     queryKey: ['groupInfo'],
     queryFn: getGroupInfo,
+    enabled: !isRewardModalOpen
   })
 
   const { mutate: mutatePutGroupName } = useMutation({
@@ -23,10 +26,10 @@ function GroupInfoSection() {
   })
   console.log('groupInfo:',groupInfo)
   const [groupName, setGroupName] = useState<string>('');
+  const [groupImg, setGroupImg] = useState<string | null>('');
   const [isGroupNameValid] = useState<boolean>(true);
   const [isGroupNameDuplicated] = useState<boolean>();
-  const [isRewardModalOpen, setIsRewardModalOpen] = useState(false);
-
+  console.log(groupImg)
   const handleOpenRewardModal = () => {
     setIsRewardModalOpen(true)
   }
@@ -36,6 +39,10 @@ function GroupInfoSection() {
   
   useEffect(() => {
     setGroupName(groupInfo.name)
+    if (groupInfo.imageSrc !== null) {
+
+      setGroupImg(groupInfo.name)
+    }
   }, [groupInfo.groupId])
 
   const handlePutGroupName = () => {
@@ -85,12 +92,12 @@ function GroupInfoSection() {
       <div className={styles.rewardBox}>
         <span>먹적</span>
         <div onClick={handleOpenRewardModal}>
-          <img src="" alt="" />
-          <span>오늘의 제육왕</span>
+          <img src={groupInfo.titleMukjukImage} alt="" />
+          <span>{groupInfo.titleMukjukName || '대표먹적이 없습니다.'}</span>
         </div>
       </div>
       {isRewardModalOpen && <Modal clickEvent={closeRewardModal}>
-        <RewardModal />
+        <RewardModal closeRewardModal={closeRewardModal}/>
         </Modal>}
      
     </section>

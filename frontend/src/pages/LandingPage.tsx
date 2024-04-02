@@ -1,16 +1,16 @@
 import { Link } from 'react-router-dom';
 import styles from '../styles/landingPage/LandingPage.module.css';
-import buttonStyles from '../styles/common/Buttons.module.css'
+import buttonStyles from '../styles/common/Buttons.module.css';
 import mainLogo from '../assets/images/mainLogo.png';
 import { getRandomFoodList } from '../api/recommendApi';
-import { useQuery } from 'react-query';
 import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
 function LandingPage() {
-  const { data, isLoading, isError } = useQuery(
-    ['randomFoodList'],
-    getRandomFoodList
-  );
+  const { data, isPending, isError } = useQuery({
+    queryKey: ['randomFoodList'],
+    queryFn: getRandomFoodList,
+  });
   const [currentImageIndex, setCurrentImageIndex] =
     useState<number>(0);
   const [isHovered, setIsHovered] = useState<boolean>(false);
@@ -35,7 +35,7 @@ function LandingPage() {
     setIsHovered(false);
   };
 
-  if (isLoading) {
+  if (isPending) {
     return <div>isLoding...</div>;
   }
   if (isError) {

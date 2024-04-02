@@ -28,7 +28,7 @@ function MbtiPage() {
     queryKey: ['mbtiQuestionList'],
     queryFn: getMbtiQuestionList,
   });
-
+  console.log('gggggggggggg:',questionList)
   useEffect(() => {
     setSelectedAnswer('');
   }, [mbtiId]);
