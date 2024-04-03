@@ -14,7 +14,6 @@ public interface FoodRecommendJpaRepository extends JpaRepository<FoodRecommendE
             "SELECT fr " +
                     "FROM FoodRecommendEntity fr" +
                     " WHERE fr.mukgroupEntity.mukgroupId = :mukgroupId" +
-                    " AND fr.hasValue = false" +
                     " AND fr.recommendDate = (" +
                     " SELECT MAX(fr2.recommendDate)" +
                     " FROM FoodRecommendEntity fr2" +
