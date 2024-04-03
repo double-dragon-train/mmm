@@ -1,7 +1,9 @@
 package com.spring.mmm.domain.recommends.domain;
 
+import com.spring.mmm.common.event.Events;
 import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
 import com.spring.mmm.domain.mukgroups.service.port.MukgroupRepository;
+import com.spring.mmm.domain.mukus.event.RecommendedFoodEatenEvent;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -45,5 +47,9 @@ public class FoodRecommendEntity {
                 .mukgroupEntity(mukgroup)
                 .build();
 
+    }
+
+    public void check() {
+        this.hasValue = true;
     }
 }

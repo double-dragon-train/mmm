@@ -14,15 +14,15 @@ public class RecommendFood {
     private String name;
     private String img;
     private RecommendCategory recCategory;
-    private FoodCategory foodCategory;
+    private FoodCategoryResponse foodCategoryResponse;
 
-    public static RecommendFood create(FoodCategory foodCategory, RecommendedFoodEntity food) {
+    public static RecommendFood create(FoodCategoryResponse foodCategoryResponse, RecommendedFoodEntity food) {
         return RecommendFood.builder()
                 .recommendedFoodId(food.getRecommendedFoodId())
                 .name(food.getFoodEntity().getName())
                 .img(food.getFoodEntity().getImage())
                 .recCategory(food.getCategory())
-                .foodCategory(foodCategory)
+                .foodCategoryResponse(foodCategoryResponse)
                 .build();
 
     }

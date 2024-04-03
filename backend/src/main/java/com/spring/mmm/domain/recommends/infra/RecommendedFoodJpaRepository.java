@@ -1,5 +1,6 @@
 package com.spring.mmm.domain.recommends.infra;
 
+import com.spring.mmm.domain.recommends.domain.RecommendCategory;
 import com.spring.mmm.domain.recommends.domain.RecommendedFoodEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -40,9 +41,17 @@ public interface RecommendedFoodJpaRepository extends JpaRepository<RecommendedF
             " AND fr.mukgroupEntity.mukgroupId = :groupId")
     Boolean existsByDateAndGroupId(LocalDate date, Long groupId);
 
+    @Query("SELECT rf FROM RecommendedFoodEntity rf" +
+            " JOIN rf.foodRecommendEntity fr" +
+            " WHERE fr.recommendDate = :date" +
+            " AND fr.mukgroupEntity.mukgroupId = :groupId" +
+            " AND rf.category = :category")
+    Optional<RecommendedFoodEntity> findByDateAndGroupIdAndCategory(LocalDate date, Long groupId, RecommendCategory category);
+
     @Modifying
     @Query("DELETE FROM RecommendedFoodEntity rf" +
             " WHERE rf.foodRecommendEntity.recommendDate = :date" +
-            " AND rf.foodRecommendEntity.mukgroupEntity.mukgroupId = :groupId")
-    void deleteAllByDateAndGroupId(LocalDate date, Long groupId);
+            " AND rf.foodRecommendEntity.mukgroupEntity.mukgroupId = :groupId" +
+            " AND rf.category = :category")
+    void deleteAllNormalByDateAndGroupId(LocalDate date, Long groupId, RecommendCategory category);
 }

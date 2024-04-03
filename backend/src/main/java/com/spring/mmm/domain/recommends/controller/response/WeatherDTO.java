@@ -1,6 +1,5 @@
 package com.spring.mmm.domain.recommends.controller.response;
 
-import com.spring.mmm.domain.mukus.controller.response.FoodCategory;
 import lombok.*;
 
 @Builder
