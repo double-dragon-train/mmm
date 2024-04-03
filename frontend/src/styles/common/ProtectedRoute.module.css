@@ -9,4 +9,13 @@
 .subLogo {
   width: 80px;
   margin: 15px 0px 10px 0px;
+}
+
+.authWrapper {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }/*# sourceMappingURL=ProtectedRoute.module.css.map */

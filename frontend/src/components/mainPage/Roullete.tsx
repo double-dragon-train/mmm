@@ -21,11 +21,11 @@ const CanvasRoulette = ({
     product.push(food.name);
   });
   const colors: string[] = [
-    'rgba(250,0,0, 0.2)',
-    'rgba(255,184,0, 0.3)',
-    'rgba(17,207,0, 0.2)',
-    'rgba(0,41,255, 0.2)',
-    '#be107f',
+    '#FFCCCC',
+    '#FFD7A8',
+    '#FFECB2',
+    '#99DFB9',
+    '#B4C7E7',
   ];
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const CanvasRoulette = ({
 
     for (let i = 0; i < product.length; i++) {
       ctx.beginPath();
-      ctx.fillStyle = colors[i % (colors.length - 1)];
+      ctx.fillStyle = colors[i];
       ctx.moveTo(cw, ch);
       ctx.arc(cw, ch, cw, arc * (i - 1), arc * i);
       ctx.fill();
@@ -90,7 +90,7 @@ const CanvasRoulette = ({
         return item.name === product[ran];
       });
       console.log('gdgdgd:', food);
-      setSelectedFoodId(ran)
+      setSelectedFoodId(ran+1);
       setTimeout(
         () => openSelectedFoodModal(),
         // () => alert(`오늘의 야식은?! ${product[ran]} 어떠신가요?`),

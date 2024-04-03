@@ -84,6 +84,7 @@ $color-user: #0e26ae;
   padding: 12px 24px;
   position: relative;
   overflow: hidden;
+  min-height: 95px;
   .textBox {
     text-align: left;
     h2 {
@@ -127,6 +128,7 @@ $color-user: #0e26ae;
   padding: 12px 24px;
   position: relative;
   overflow: hidden;
+  min-height: 95px;
   .textBox {
     text-align: right;
     h2 {
@@ -162,6 +164,7 @@ $color-user: #0e26ae;
 
 .groupSection {
   width: 95%;
+  min-height: 400px;
   background-color: rgba($color-main, 0.03);
   border-radius: 5px;
   padding: 12px 24px;
@@ -226,6 +229,7 @@ $color-user: #0e26ae;
       display: flex;
       flex-direction: column;
       position: relative;
+      max-height: 200px;
       .togetherBox {
         display: flex;
         flex-direction: column;
@@ -233,6 +237,7 @@ $color-user: #0e26ae;
         justify-content: center;
         gap: 32px;
         margin: 24px;
+        width: 93%;
         > img {
           width: 50px;
           aspect-ratio: 1/1;
@@ -249,6 +254,25 @@ $color-user: #0e26ae;
         overflow-y: scroll;
         min-height: 50px;
         max-height: 160px;
+        &::-webkit-scrollbar {
+          width: 8px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background-color: rgba($color-main, 0.2);
+          border-radius: 10px;
+          background-clip: padding-box;
+          border: 2px solid transparent;
+          &:hover {
+            background-color: rgba($color-main, 0.4);
+          }
+        }
+
+        &::-webkit-scrollbar-track {
+          background-color: rgba(220, 220, 220, 0.7);
+          border-radius: 10px;
+          /* box-shadow: inset 0px 0px 5px white; */
+        }
         .memberCard {
           display: flex;
           align-items: center;
@@ -469,6 +493,11 @@ button:active {
 
 .todayMemberModalWrapper {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
   .todayMemberHeader {
     display: flex;
     align-items: center;
@@ -492,6 +521,72 @@ button:active {
         color: rgba(black, 0.5);
         font-size: 14px;
       }
+    }
+  }
+  .todayMemberSection {
+    background-color: rgba($color-main, 0.03);
+    border-radius: 5px;
+    max-height: 260px;
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 12px;
+    > h5 {
+      position: absolute;
+      left: 12px;
+      top: -5px;
+      font-size: 14px;
+      color: rgba($color-main, 0.7);
+      text-shadow: 1px 0px white 0px 1px white -1px 0px white 0px -1px
+        white;
+    }
+    .memberBox {
+      height: 50px;
+      display: flex;
+
+      .memberWhiteBox {
+        height: 50px;
+        background-color: white;
+        display: flex;
+        align-items: center;
+        width: 80%;
+        border-radius: 5px;
+        padding: 0px 24px;
+        gap: 5px;
+        .memberName {
+          font-size: 16px;
+          color: rgba(black, 0.7);
+          width: 80%;
+          text-align: left;
+        }
+        .memberMBTI {
+          font-size: 16px;
+          color: rgba(black, 0.8);
+        }
+      }
+    }
+  }
+  .nextMemberSection {
+    background-color: rgba($color-main, 0.03);
+    border-radius: 5px;
+    max-height: 130px;
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 12px;
+    > h5 {
+      position: absolute;
+      left: 12px;
+      top: -5px;
+      position: absolute;
+      font-size: 14px;
+      color: rgba($color-gray, 0.8);
+      text-shadow: 1px 0px white 0px 1px white -1px 0px white 0px -1px
+        white;
     }
   }
 }

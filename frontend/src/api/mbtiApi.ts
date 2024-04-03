@@ -38,11 +38,11 @@ export async function postMbtiResult(key: string) {
   }
 }
 
-export async function getGroupMbti() {
+export async function getUserMbti() {
   try {
     const res = await instance.get('/users/mbti');
     console.log('groupMbti 요청 결과:', res);
-    return res.data;
+    return res.data.mbti;
   } catch (e) {
     console.log(e);
   }

@@ -11,7 +11,7 @@ import { deleteGroup } from '../../api/groupApi';
 import { useNavigate } from 'react-router-dom';
 
 function Header() {
-  const { groupId, setIsSolo } = userStore();
+  const { groupId, setIsSolo, setNextMemberList, setTodayMemberList } = userStore();
   const [isLogOpen, setIsLogOpen] = useState(false);
   const [isConfrimModalOpen, setIsConfrimModalOpen] = useState(false);
   const queryClient = useQueryClient();
@@ -23,6 +23,8 @@ function Header() {
       closeConfirmModal();
       queryClient.invalidateQueries({ queryKey: ['groupInfo'] });
       setIsSolo(true)
+      setTodayMemberList([])
+      setNextMemberList([])
       navigate('/');
     },
     onError: (error) => {

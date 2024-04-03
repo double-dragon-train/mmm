@@ -32,7 +32,7 @@ const router = createBrowserRouter([
         path: '/',
         element: <MainPage />,
       },
-      
+
       {
         path: '/calendar',
         element: <CalendarPage />,
@@ -50,22 +50,17 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <SoloRoute />,
-        children: [
-        ]
-      },
-      // children 안에 넣기
+    children: [
       {
         path: '/group',
         element: <GroupPage />,
       },
+    ]
+  },
   {
     path: '/',
     element: <AuthenticatedRoute />,
     children: [
-      {
-        path: '/landing',
-        element: <LandingPage />,
-      },
       {
         path: '/signup',
         element: <SignupPage />,
@@ -73,6 +68,10 @@ const router = createBrowserRouter([
       {
         path: '/login',
         element: <LoginPage />,
+      },
+      {
+        path: '/landing',
+        element: <LandingPage />,
       },
     ],
   },
