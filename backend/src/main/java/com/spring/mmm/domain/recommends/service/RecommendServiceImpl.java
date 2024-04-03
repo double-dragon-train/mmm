@@ -11,6 +11,7 @@ import com.spring.mmm.domain.recommends.controller.request.LunchRecommendRequest
 import com.spring.mmm.domain.recommends.controller.request.NowRequest;
 import com.spring.mmm.domain.recommends.controller.response.FoodInformation;
 import com.spring.mmm.domain.recommends.controller.response.LunchRecommendFoodInformation;
+import com.spring.mmm.domain.recommends.controller.response.ModifiedRecommendInfo;
 import com.spring.mmm.domain.recommends.controller.response.NewRecommendedFoodInformation;
 import com.spring.mmm.domain.recommends.domain.*;
 import com.spring.mmm.domain.recommends.service.port.EatenMukboRepository;
@@ -102,20 +103,17 @@ public class RecommendServiceImpl implements RecommendService{
 
     @Transactional
     @Override
-    public void modifyNowMukbos(Long mukgroupId, NowRequest nowRequest) {
+    public ModifiedRecommendInfo modifyNowMukbos(Long mukgroupId, NowRequest nowRequest) {
         LocalDate date = LocalDate.now();
         eatenMukboRepository.deleteAllByDateAndGroupId(date, mukgroupId);
 
         FoodRecommendEntity foodRecommendEntity =
-                foodRecommendRepository.findByDateAndGroupId(
-                        date, mukgroupId
-                        ).orElseThrow();
+                foodRecommendRepository.findByDateAndGroupId(date, mukgroupId).orElseThrow();
 
         for (Long mukboId : nowRequest.getNowMukbos()) {
             MukboEntity mukboEntity = mukboRepository.findByMukboId(mukboId)
                             .orElseThrow();
-            eatenMukboRepository.save(
-                    EatenMukboEntity.create(mukboEntity, foodRecommendEntity));
+            eatenMukboRepository.save(EatenMukboEntity.create(mukboEntity, foodRecommendEntity));
         }
 
         MBTI newMBTI =
@@ -131,6 +129,8 @@ public class RecommendServiceImpl implements RecommendService{
         List<LunchRecommendFoodInformation> newLunchList = lunchRecommendFood(newLunchRecommend);
 
         saveRecommend(mukgroupId, newLunchList);
+
+        return ModifiedRecommendInfo.create(newMBTI, newLunchList);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.spring.mmm.domain.recommends.infra;
 
 import com.spring.mmm.domain.recommends.domain.RecommendedFoodEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
@@ -39,6 +40,7 @@ public interface RecommendedFoodJpaRepository extends JpaRepository<RecommendedF
             " AND fr.mukgroupEntity.mukgroupId = :groupId")
     Boolean existsByDateAndGroupId(LocalDate date, Long groupId);
 
+    @Modifying
     @Query("DELETE FROM RecommendedFoodEntity rf" +
             " WHERE rf.foodRecommendEntity.recommendDate = :date" +
             " AND rf.foodRecommendEntity.mukgroupEntity.mukgroupId = :groupId")

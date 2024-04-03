@@ -80,9 +80,9 @@ public class RecommendController {
     }
 
     @PostMapping("/groups/{groupId}/mukbos-now")
-    public ResponseEntity<Void> modifyEatingMukbos(@PathVariable Long groupId, @RequestBody NowRequest nowRequest) {
+    public ResponseEntity<ModifiedRecommendInfo> modifyEatingMukbos(@PathVariable Long groupId, @RequestBody NowRequest nowRequest) {
         recommendService.modifyNowMukbos(groupId, nowRequest);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(recommendService.modifyNowMukbos(groupId, nowRequest));
     }
 }
