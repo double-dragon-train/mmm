@@ -343,18 +343,38 @@ $color-user: #0e26ae;
     flex-wrap: wrap;
     margin: 10px;
     .recommendItem {
+      width: 30%;
+      height: 40%;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       gap: 5px;
-      > img {
+      .selectedImgBox {
         width: 60px;
-        aspect-ratio: 1/1;
         border-radius: 50%;
+        > img {
+          border: 3px solid rgba($color-main, 0.5);
+          width: 60px;
+          aspect-ratio: 1/1;
+          border-radius: 50%;
+        }
       }
-      > span {
+      .imgBox {
+        > img {
+          border: 1px solid rgba($color-main, 0.5);
+          width: 60px;
+          aspect-ratio: 1/1;
+          border-radius: 50%;
+        }
+      }
+      .text {
+        font-size: 14px;
         color: rgba(black, 0.6);
+      }
+      .selectedText {
+        font-size: 14px;
+        color: rgba($color-main, 0.8);
       }
     }
   }

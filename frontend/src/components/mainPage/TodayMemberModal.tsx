@@ -50,7 +50,6 @@ function TodayMemberModal({ closeTodayMemberModal }: propsType) {
     onSuccess: (data) => {
       closeTodayMemberModal();
       setGroupMbti(data.mbti);
-      console.log('data임다~~~~~~~~:', data);
       setRecommendFoodList(data.lunchList);
     },
     onError: (error) => {

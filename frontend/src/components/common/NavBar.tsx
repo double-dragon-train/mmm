@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
-import calendar_white from '../../assets/images/calendar_white.png';
-import calendar_blue from '../../assets/images/calendar_blue.png';
+// import calendar_white from '../../assets/images/calendar_white.png';
+// import calendar_blue from '../../assets/images/calendar_blue.png';
 import group_white from '../../assets/images/group_white.png';
 import group_blue from '../../assets/images/group_blue.png';
 import home_white from '../../assets/images/home_white.png';
@@ -16,7 +16,7 @@ function NavBar() {
 
   return (
     <nav>
-      <Link
+      {/* <Link
         to="/calendar"
         className={
           location.pathname === '/calendar'
@@ -33,7 +33,7 @@ function NavBar() {
 
           <span>먹어쓰</span>
         </div>
-      </Link>
+      </Link> */}
       <Link
         to="/group"
         className={
