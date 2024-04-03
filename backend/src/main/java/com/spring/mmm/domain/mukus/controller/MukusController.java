@@ -1,5 +1,6 @@
 package com.spring.mmm.domain.mukus.controller;
 
+import com.spring.mmm.domain.mukus.controller.request.RecommendFoodChoiceRequest;
 import com.spring.mmm.domain.mukus.controller.response.*;
 import com.spring.mmm.domain.mukus.service.MukusService;
 import com.spring.mmm.domain.recommends.domain.FoodCategoryEntity;
@@ -40,9 +41,9 @@ public class MukusController {
     }
 
     @PostMapping("/groups/{groupId}/recent")
-    public ResponseEntity<Void> selectRecentMukus(@PathVariable Long groupId, @RequestBody Long recommendFoodId) {
+    public ResponseEntity<Void> selectRecentMukus(@PathVariable Long groupId, @RequestBody RecommendFoodChoiceRequest recommendFoodChoiceRequest) {
 
-        mukusService.selectRecentMukus(recommendFoodId);
+        mukusService.selectRecentMukus(recommendFoodChoiceRequest.getRecommendFoodId());
         return ResponseEntity.ok().build();
 
     }

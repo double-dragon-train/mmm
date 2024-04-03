@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface FoodRecommendRepository {
-    Optional<FoodRecommendEntity> findByMukgroupId(Long mukgroupId);
+    Optional<FoodRecommendEntity> findRecentRecommendByMukgroupId(LocalDate date, Long mukgroupId);
 
     void saveFoodRecommend(FoodRecommendEntity foodRecommendEntity);
 

@@ -1,6 +1,7 @@
 package com.spring.mmm.domain.mukus.service;
 
 import com.spring.mmm.domain.mukus.controller.response.*;
+import com.spring.mmm.domain.recommends.domain.FoodCategory;
 import com.spring.mmm.domain.recommends.domain.FoodCategoryEntity;
 import com.spring.mmm.domain.recommends.domain.FoodRecommendEntity;
 import com.spring.mmm.domain.recommends.domain.RecommendedFoodEntity;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,6 +40,8 @@ public class MukusServiceImpl implements MukusService {
 
         recommendedFoodEntity.eat();
 
+        FoodRecommendEntity foodRecommendEntity = recommendedFoodEntity.getFoodRecommendEntity();
+        foodRecommendEntity.check();
     }
 
     @Override
@@ -56,17 +60,24 @@ public class MukusServiceImpl implements MukusService {
     @Transactional(readOnly = true)
     public MukusRecentResponse getRecentMukus(Long groupId) {
 
-        FoodRecommendEntity foodRecommendEntity = foodRecommendRepository.findByMukgroupId(groupId)
+        FoodRecommendEntity foodRecommendEntity = foodRecommendRepository.findRecentRecommendByMukgroupId(LocalDate.now(), groupId)
                 .orElseThrow(() -> new RecommendException(RecommendErrorCode.FOOD_RECOMMEND_NOT_FOUND));
 
         List<RecommendedFoodEntity> recommendedFoodEntities = foodRecommendEntity.getRecommendedFoodEntities();
 
         List<RecommendFood> recommendFoods = recommendedFoodEntities.stream().map(food -> {
-            FoodCategory foodCategory = FoodCategory.create(
+            String foodCategoryName = "";
+            switch (food.getFoodEntity().getFoodCategoryEntity().getName()) {
+                case FoodCategory.KOREA -> foodCategoryName = "한식";
+                case FoodCategory.CHINA -> foodCategoryName = "중식";
+                case FoodCategory.JAPAN -> foodCategoryName = "일식";
+                case FoodCategory.WESTERN -> foodCategoryName = "양식";
+            }
+            FoodCategoryResponse foodCategoryResponse = FoodCategoryResponse.create(
                     food.getFoodEntity().getFoodCategoryEntity().getName().getKoreanName(),
                     food.getFoodEntity().getFoodCategoryEntity().getColor()
             );
-            return RecommendFood.create(foodCategory, food);
+            return RecommendFood.create(foodCategoryResponse, food);
         }).collect(Collectors.toList());
 
         return MukusRecentResponse.create(RecommendData.create(recommendFoods));

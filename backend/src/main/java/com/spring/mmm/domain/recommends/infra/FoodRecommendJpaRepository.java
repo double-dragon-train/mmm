@@ -12,12 +12,16 @@ public interface FoodRecommendJpaRepository extends JpaRepository<FoodRecommendE
 
     @Query(
             "SELECT fr " +
-                    "FROM FoodRecommendEntity fr " +
-                    "WHERE fr.mukgroupEntity.mukgroupId = :mukgroupId " +
-                    "AND fr.hasValue = false " +
-                    "AND fr.recommendDate = (SELECT MAX(fr2.recommendDate) FROM FoodRecommendEntity fr2)"
+                    "FROM FoodRecommendEntity fr" +
+                    " WHERE fr.mukgroupEntity.mukgroupId = :mukgroupId" +
+                    " AND fr.hasValue = false" +
+                    " AND fr.recommendDate = (" +
+                    " SELECT MAX(fr2.recommendDate)" +
+                    " FROM FoodRecommendEntity fr2" +
+                    " WHERE fr2.recommendDate < :date" +
+                    ")"
     )
-    Optional<FoodRecommendEntity> findRecommendByMukgroupId(Long mukgroupId);
+    Optional<FoodRecommendEntity> findRecentRecommendByMukgroupId(LocalDate date, Long mukgroupId);
 
     Optional<FoodRecommendEntity> findByRecommendDateAndMukgroupEntity_MukgroupId(LocalDate date,Long mukgroupId);
 }

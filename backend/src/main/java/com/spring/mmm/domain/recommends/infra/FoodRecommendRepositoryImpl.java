@@ -20,8 +20,8 @@ public class FoodRecommendRepositoryImpl implements FoodRecommendRepository {
     private final FoodRecommendJpaRepository foodRecommendJpaRepository;
 
     @Override
-    public Optional<FoodRecommendEntity> findByMukgroupId(Long mukgroupId) {
-        return foodRecommendJpaRepository.findRecommendByMukgroupId(mukgroupId);
+    public Optional<FoodRecommendEntity> findRecentRecommendByMukgroupId(LocalDate date, Long mukgroupId) {
+        return foodRecommendJpaRepository.findRecentRecommendByMukgroupId(date, mukgroupId);
     }
 
     @Override
