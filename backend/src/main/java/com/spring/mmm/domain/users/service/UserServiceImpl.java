@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService{
         List<MukBTIResultEntity> mukBTIResultEntities = new ArrayList<>();
         for(MukBTIEntity mukBTI : mukBTIEntities){
             mukBTIResultEntities.add(
-                    MukBTIResultEntity.createByType(15, mukBTI, user.getMukboEntity())
+                    MukBTIResultEntity.createByType(15, mukBTI, user.getMukboEntity(), user)
             );
         }
         mukBTIResultRepository.saveAll(mukBTIResultEntities);
