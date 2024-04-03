@@ -16,9 +16,9 @@ public class MukusRecentResponse {
     private Boolean hasValue;
     private RecommendData data;
 
-    public static MukusRecentResponse create(RecommendData data) {
+    public static MukusRecentResponse create(RecommendData data, Boolean hasValue) {
         return MukusRecentResponse.builder()
-                .hasValue(true)
+                .hasValue(hasValue)
                 .data(data)
                 .build();
     }
