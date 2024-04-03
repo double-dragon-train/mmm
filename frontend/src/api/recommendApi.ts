@@ -75,3 +75,33 @@ export async function getWeatherRecommendFood(
     console.log(e);
   }
 }
+
+interface userType {
+  name: string;
+  mukBTI: string;
+  mukboId: number;
+  type: string;
+  mbti: mbtiType;
+}
+
+interface todayMemberMbtiType {
+  groupId: number;
+  todayMemberList: userType[];
+}
+
+export async function postTodayMember({
+  groupId,
+  todayMemberList,
+}: todayMemberMbtiType) {
+  const mukboIdsArray = todayMemberList.map((obj) => obj.mukboId);
+  const data = { nowMukbos: mukboIdsArray };
+  try {
+    const res = await instance.post(
+      `/recommend/groups/${groupId}/mukbos-now`,
+      data
+    );
+    return res.data;
+  } catch (e) {
+    console.log(e);
+  }
+}

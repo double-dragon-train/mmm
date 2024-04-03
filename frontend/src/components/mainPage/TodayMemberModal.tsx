@@ -1,12 +1,66 @@
 import styles from '../../styles/mainPage/MainPage.module.css';
 import memberCnt from '../../assets/images/memberCnt.png';
 import userStore from '../../stores/userStore';
+import buttonStyles from '../../styles/common/Buttons.module.css';
+import { useMutation } from '@tanstack/react-query';
+import { postTodayMember } from '../../api/recommendApi';
 
-function TodayMemberModal() {
+interface propsType {
+  closeTodayMemberModal: () => void;
+}
+function TodayMemberModal({ closeTodayMemberModal }: propsType) {
   const {
+    groupId,
     todayMemberList,
     nextMemberList,
+    setTodayMemberList,
+    setNextMemberList,
+    setGroupMbti,
+    setRecommendFoodList,
   } = userStore();
+
+  const handleGoNextMember = (memberId: number) => {
+    const updatedtodayMemberList = todayMemberList.filter(
+      (member) => member.mukboId !== memberId
+    );
+    setTodayMemberList(updatedtodayMemberList);
+    const memberToMove = todayMemberList.find(
+      (member) => member.mukboId === memberId
+    );
+    if (nextMemberList) {
+      setNextMemberList([...nextMemberList, memberToMove]);
+    } else {
+      setNextMemberList([memberToMove]);
+    }
+  };
+
+  const handleGoTodayMember = (memberId: number) => {
+    const updatedtodayMemberList = nextMemberList.filter(
+      (member) => member.mukboId !== memberId
+    );
+    setNextMemberList(updatedtodayMemberList);
+    const memberToMove = nextMemberList.find(
+      (member) => member.mukboId === memberId
+    );
+    setTodayMemberList([...todayMemberList, memberToMove]);
+  };
+
+  const { mutate: mutateTodayMember } = useMutation({
+    mutationFn: postTodayMember,
+    onSuccess: (data) => {
+      closeTodayMemberModal();
+      setGroupMbti(data.mbti);
+      console.log('data임다~~~~~~~~:', data);
+      setRecommendFoodList(data.lunchList);
+    },
+    onError: (error) => {
+      console.error('에러발생:', error);
+    },
+  });
+  const handleChangeTodayMemeber = () => {
+    mutateTodayMember({ groupId, todayMemberList });
+  };
+
   return (
     <div className={styles.todayMemberModalWrapper}>
       <div className={styles.todayMemberHeader}>
@@ -21,76 +75,66 @@ function TodayMemberModal() {
       </div>
       <section className={styles.todayMemberSection}>
         <h5>오늘 같이 먹어요</h5>
-        {todayMemberList.map((member) => {
-          console.log('dddddddddddd', member);
-          return (
-            <article
-              key={member.mukboId}
-              className={styles.memberBox}
-            >
-              <div className={styles.memberWhiteBox}>
-                <span className={styles.memberName}>
-                  {member.name}
-                </span>
-                <span className={styles.memberMBTI}>
-                  {member.mukBTI}
-                </span>
-              </div>
-              {/* <button className={}>-</button> */}
-            </article>
-          );
-        })}
+        <div className={styles.todayMemberBox}>
+          {todayMemberList.map((member) => {
+            return (
+              <article
+                key={member.mukboId}
+                className={styles.memberBox}
+              >
+                <div className={styles.memberWhiteBox}>
+                  <span className={styles.memberName}>
+                    {member.name}
+                  </span>
+                  <span className={styles.memberMBTI}>
+                    {member.mukBTI}
+                  </span>
+                </div>
+                <button
+                  onClick={() => handleGoNextMember(member.mukboId)}
+                  className={styles.changeButton}
+                >
+                  -
+                </button>
+              </article>
+            );
+          })}
+        </div>
       </section>
       <section className={styles.nextMemberSection}>
         <h5>아쉽지만 다음에...</h5>
-        {nextMemberList?.map((member) => {
-          console.log('dddddddddddd', member);
-          return (
-            <article
-              key={member.mukboId}
-              className={styles.memberBox}
-            >
-              <div className={styles.memberWhiteBox}>
-                <span className={styles.memberName}>
-                  {member.name}
-                </span>
-                <span className={styles.memberMBTI}>
-                  {member.mukBTI}
-                </span>
-              </div>
-              {/* <button className={}>-</button> */}
-            </article>
-          );
-        })}
-      </section>
-      {/* <SubMemberArticle
-        articleName="먹보"
-        modalButton="+ 초대"
-        clickEvent={handleMukboInviteOpenModal}
-      >
-        <div className={styles.memberCardBox}>
-          {groupUserList &&
-            groupUserList.users.length > 0 &&
-            groupUserList.users.map(
-              (user: { name: string; mukBTI: string }) => (
-                <SubMemberCard
-                  articleName="먹보"
-                  memberName={user.name}
-                  memberMBTI={user.mukBTI}
-                  buttonName="추방"
-                />
-              )
-            )}
-          {groupUserList &&
-            groupUserList.users &&
-            groupUserList.users.length === 0 && (
-              <span>
-                가입 사용자는 <br />
-                먹보로 초대해보세요.
-              </span>
-            )}
+        <div className={styles.todayMemberBox}>
+          {nextMemberList?.map((member) => {
+            return (
+              <article
+                key={member.mukboId}
+                className={styles.memberBox}
+              >
+                <div className={styles.memberWhiteBox}>
+                  <span className={styles.memberName}>
+                    {member.name}
+                  </span>
+                  <span className={styles.memberMBTI}>
+                    {member.mukBTI}
+                  </span>
+                </div>
+                <button
+                  className={styles.changeButton}
+                  onClick={() => handleGoTodayMember(member.mukboId)}
+                >
+                  +
+                </button>
+              </article>
+            );
+          })}
         </div>
-      </SubMemberArticle> */}
+      </section>
+      <button
+        className={buttonStyles.miniBlueRoundedButton}
+        onClick={handleChangeTodayMemeber}
+      >
+        완료
+      </button>
     </div>
   );
 }

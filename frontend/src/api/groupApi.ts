@@ -101,9 +101,10 @@ export async function modifyGroupImage({
 export async function deleteGroup(groupId: number) {
   try {
     const res = await instance.delete(`/groups/${groupId}/exit`);
+    console.log('삭제결과:', res)
     return res.data;
   } catch (e) {
-    console.log(e);
+    console.log('삭제에러:',e);
   }
 }
 

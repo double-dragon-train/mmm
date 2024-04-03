@@ -52,6 +52,7 @@ function GroupSection({
     nextMemberList,
     setTodayMemberList,
     setGroupMbti,
+    groupMbti,
   } = userStore();
   const [isTodayMemberModalOpen, setIsTodayMemberModalOpen] =
     useState(false);
@@ -90,20 +91,18 @@ function GroupSection({
     // enabled: !isSolo,
   });
 
-  const { data: groupMukbotList } =
-    useQuery({
-      queryKey: ['groupMukbotList'],
-      queryFn: () => getGroupMukbotList(groupId),
-      enabled: !isSolo,
-    });
+  const { data: groupMukbotList } = useQuery({
+    queryKey: ['groupMukbotList'],
+    queryFn: () => getGroupMukbotList(groupId),
+    enabled: !isSolo,
+  });
 
-  const { data: todayGroupMbti, mutate: mutateTodayMemberMbti } =
-    useMutation({
-      mutationFn: postTodayMemberMbti,
-      onSuccess: () => {
-        setGroupMbti(todayGroupMbti.mbti);
-      }
-    });
+  const { mutate: mutateTodayMemberMbti } = useMutation({
+    mutationFn: postTodayMemberMbti,
+    onSuccess: (data) => {
+      setGroupMbti(data.mbti);
+    },
+  });
 
   // useEffect(() => {
   //   if (todayGroupMbti) {
@@ -112,8 +111,14 @@ function GroupSection({
   // }, [todayGroupMbti]);
 
   useEffect(() => {
+    console.log('testtest:', todayMemberList);
+    // if (todayMemberList.length !== 0) {
+    //   console.log('testtest2:', todayMemberList);
+
+    //   return;
+    // }
     if (groupUserList && !groupMukbotList) {
-      setTodayMemberList([...groupUserList?.users]);
+      setTodayMemberList([...groupUserList.users]);
     } else if (groupUserList && groupMukbotList) {
       setTodayMemberList([
         ...groupUserList?.users,
@@ -136,11 +141,17 @@ function GroupSection({
     return <div>error</div>;
   }
 
+  let mbtiString = '';
+  mbtiString += groupMbti.ei > 15 ? 'I' : 'E';
+  mbtiString += groupMbti.ns > 15 ? 'S' : 'N';
+  mbtiString += groupMbti.tf > 15 ? 'F' : 'T';
+  mbtiString += groupMbti.jp > 15 ? 'P' : 'J';
+
   return (
     <div className={styles.groupSection}>
       {isTodayMemberModalOpen && (
         <Modal clickEvent={closeTodayMemberModal}>
-          <TodayMemberModal />
+          <TodayMemberModal closeTodayMemberModal={closeTodayMemberModal}/>
         </Modal>
       )}
       <div className={styles.header}>
@@ -158,7 +169,7 @@ function GroupSection({
         ) : (
           <div className={styles.soloGroupName}>그룹명</div>
         )}
-        <div className={styles.soloGroupName}>먹BTI</div>
+        <div className={styles.soloGroupName}>{mbtiString || '먹BTI'}</div>
         {/* <div className={styles.soloGroupName}>{isSolo ? '먹BTI' : groupMbti}</div> */}
       </div>
       {isSolo ? (

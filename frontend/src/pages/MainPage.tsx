@@ -10,10 +10,14 @@ import NewRecommendSection from '../components/mainPage/NewRecommendSection';
 import GroupSection from '../components/mainPage/GroupSection';
 import CreateGroupModal from '../components/mainPage/CreateGroupModal';
 import userStore from '../stores/userStore';
-import { getRecentRecommendFood } from '../api/recommendApi';
 
 function MainPage() {
-  const { setGroupId, setIsCreateModalOpen, isCreateModalOpen, setIsSolo } = userStore();
+  const {
+    setGroupId,
+    setIsCreateModalOpen,
+    isCreateModalOpen,
+    setIsSolo,
+  } = userStore();
   const [isRecordModalOpen, setIsRecordModalOpen] = useState(false);
   // const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
@@ -25,13 +29,13 @@ function MainPage() {
     queryKey: ['groupInfo'],
     queryFn: getGroupInfo,
   });
-
-  const { data: recentFoodList } = useQuery({
-    queryKey: ['recentRecommendFood'],
-    queryFn: () => getRecentRecommendFood(groupInfo.groupId),
-    // enabled: groupInfo !== undefined,
-  });
-  console.log(recentFoodList)
+  console.log('groupInfo:', groupInfo);
+  // const { data: recentFoodList } = useQuery({
+  //   queryKey: ['recentRecommendFood'],
+  //   queryFn: () => getRecentRecommendFood(groupInfo.groupId),
+  //   // enabled: groupInfo !== undefined,
+  // });
+  // console.log(recentFoodList)
 
   const hadleOpenCreateModal = () => {
     setIsCreateModalOpen(true);
@@ -49,7 +53,7 @@ function MainPage() {
 
   useEffect(() => {
     setGroupId(groupInfo?.mukgroupId);
-    setIsSolo(groupInfo?.isSolo)
+    setIsSolo(groupInfo?.isSolo);
   }, [groupInfo]);
 
   if (isPending) {
@@ -61,7 +65,6 @@ function MainPage() {
 
   return (
     <div className={styles.wrapper}>
-      
       <MainRecommendSection groupId={groupInfo.mukgroupId} />
       <WeatherRecommendSection />
       <NewRecommendSection groupId={groupInfo.mukgroupId} />
@@ -70,7 +73,6 @@ function MainPage() {
         isSolo={groupInfo.isSolo}
         groupId={groupInfo.mukgroupId}
         groupName={groupInfo.name}
-        
       />
 
       {isRecordModalOpen && (

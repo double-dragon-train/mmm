@@ -37,6 +37,7 @@
   color: rgba(42, 67, 206, 0.8);
 }
 .wrapper .header .titleBox > img {
+  cursor: pointer;
   width: 17px;
 }
 .wrapper .header .logBox {

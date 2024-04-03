@@ -21,8 +21,16 @@ interface memberType {
   type: string;
   name: string;
   mukBTI: string;
-  mbti: mbtiType
+  mbti: mbtiType;
 }
+
+interface foodType {
+  id: number;
+  name: string;
+  image: string;
+  categoryId: number;
+}
+
 interface userStoreType {
   answerList: answerType[];
   updateAnswerList: (value: answerType[]) => void;
@@ -48,6 +56,8 @@ interface userStoreType {
   setTodayMemberList: (value: memberType[]) => void;
   nextMemberList: memberType[];
   setNextMemberList: (value: memberType[]) => void;
+  recommendFoodList: foodType[];
+  setRecommendFoodList: (value: foodType[]) => void;
 }
 const userStore = create(
   persist<userStoreType>(
@@ -64,20 +74,42 @@ const userStore = create(
         set({ answerList: value }),
       mbtiKey: '',
       setMbtiKey: (value: string) => set({ mbtiKey: value }),
-      userMbti: { ei: 0, ns: 0, tf: 0, jp: 0, mint: 0, pine: 0, die: 0 },
+      userMbti: {
+        ei: 0,
+        ns: 0,
+        tf: 0,
+        jp: 0,
+        mint: 0,
+        pine: 0,
+        die: 0,
+      },
       setUserMbti: (value: mbtiType) => set({ userMbti: value }),
-      groupMbti: { ei: 0, ns: 0, tf: 0, jp: 0, mint: 0, pine: 0, die: 0 },
+      groupMbti: {
+        ei: 0,
+        ns: 0,
+        tf: 0,
+        jp: 0,
+        mint: 0,
+        pine: 0,
+        die: 0,
+      },
       setGroupMbti: (value: mbtiType) => set({ groupMbti: value }),
       groupId: 0,
       setGroupId: (value: number) => set({ groupId: value }),
       isSolo: true,
       setIsSolo: (value: boolean) => set({ isSolo: value }),
       isCreateModalOpen: false,
-      setIsCreateModalOpen: (value: boolean) => set({ isCreateModalOpen: value }),
+      setIsCreateModalOpen: (value: boolean) =>
+        set({ isCreateModalOpen: value }),
       todayMemberList: [],
-      setTodayMemberList: (value: memberType[]) => set({ todayMemberList: value }),
+      setTodayMemberList: (value: memberType[]) =>
+        set({ todayMemberList: value }),
       nextMemberList: [],
-      setNextMemberList: (value: memberType[]) => set({ nextMemberList: value }),
+      setNextMemberList: (value: memberType[]) =>
+        set({ nextMemberList: value }),
+      recommendFoodList: [],
+      setRecommendFoodList: (value: foodType[]) =>
+        set({ recommendFoodList: value }),
       //   loginModalOpen: false,
       //   setLoginModalOpen: (value) => set({ loginModalOpen: value }),
       //   isMyPage: true,
