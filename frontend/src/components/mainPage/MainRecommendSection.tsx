@@ -65,6 +65,8 @@ function MainRecommendSection({ groupId }: propsType) {
     if (selectedFoodId !== null) {
       setSelectedFoodName(mainRecommendFoodList[selectedFoodId].name);
       setSelectedFoodImg(mainRecommendFoodList[selectedFoodId].image);
+      // setSelectedFoodName(mainRecommendFoodList[selectedFoodId].name);
+      // setSelectedFoodImg(mainRecommendFoodList[selectedFoodId].image);
     }
   }, [selectedFoodId]);
 

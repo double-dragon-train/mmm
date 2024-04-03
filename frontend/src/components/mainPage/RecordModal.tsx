@@ -1,44 +1,105 @@
 // import { useQuery } from '@tanstack/react-query';
 import styles from '../../styles/mainPage/MainPage.module.css';
 import buttonStyles from '../../styles/common/Buttons.module.css';
-import { getRecentRecommendFood } from '../../api/recommendApi';
-import { useQuery } from '@tanstack/react-query';
+import { getRecentRecommendFood, postRecord } from '../../api/recommendApi';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 // import { getRecentRecommendFood } from '../../api/recommendApi';
 
-interface propsType {
-    handleCloseModal: () => void;
-    handleCreateRecord: () => void;
-    groupId: number;
+interface foodType {
+  recommendedFoodId: number;
+  name: string;
+  img: string;
 }
-function RecordModal({ handleCloseModal, handleCreateRecord, groupId }: propsType) {
-  const { data: recentFoodList, isPending, isError } = useQuery({
-      queryKey: ['recentRecommendFood'],
-      queryFn: () => getRecentRecommendFood(groupId)
+interface propsType {
+  handleCloseModal: () => void;
+  groupId: number;
+  // date: string;
+  // recentFoodList: foodType[];
+  // recentFoodListPending: boolean;
+}
+function RecordModal({
+  handleCloseModal,
+  groupId,
+  // date,
+  // recentFoodList,
+  // recentFoodListPending,
+}: propsType) {
+  const [isSelectedId, setIsSelectedId] = useState<number | null>(
+    null
+  );
+  const {
+    data: recentFoodList,
+    isPending,
+    isError,
+  } = useQuery({
+    queryKey: ['recentRecommendFood'],
+    queryFn: () => getRecentRecommendFood(groupId),
+    enabled: groupId !== undefined,
+  });
+
+  const { mutate: mutatePostRecord } = useMutation({
+    mutationFn: postRecord,
+    onSuccess: () => {
+      handleCloseModal();
+    }
   })
 
+  const handleSelectFood = (recommendedFoodId: number) => {
+    setIsSelectedId(recommendedFoodId);
+  };
+
+  const handleCreateRecord = (isSelectedId: number) => {
+    mutatePostRecord({isSelectedId, groupId})
+  }
+
   if (isPending) {
-    return <div>Loading...</div>
+    return <div>Loading...</div>;
   }
   if (isError) {
-    return <div>error</div>
+    return <div>error</div>;
   }
-  console.log(recentFoodList)
+
+  console.log(recentFoodList);
   return (
     <div className={styles.recordModalWrapper}>
       <h2>먹기록</h2>
       <p>
-        2024/03/12(월)에 추천받은 메뉴 중<br />
+        {recentFoodList?.data.date}에 추천받은 메뉴 중<br />
         <span className={styles.boldWord}>어떤 메뉴</span>를 드셨나요?
       </p>
       <section className={styles.recommendBox}>
-        <div className={styles.recommendItem}>
-          <img src="" alt="" />
-          <span>김치찌개</span>
-        </div>
+        {recentFoodList?.data.foods.map((food: foodType) => {
+          return (
+            <div
+              className={styles.recommendItem}
+              onClick={() => handleSelectFood(food.recommendedFoodId)}
+            >
+              <div
+                className={
+                  isSelectedId === food.recommendedFoodId
+                    ? styles.selectedImgBox
+                    : styles.imgBox
+                }
+              >
+                <img src={food.img} alt="" />
+              </div>
+              <span
+                className={
+                  isSelectedId === food.recommendedFoodId
+                    ? styles.selectedText
+                    : styles.text
+                }
+              >
+                {food.name}
+              </span>
+            </div>
+          );
+        })}
       </section>
       <div className={styles.buttonBox}>
         <button
-          onClick={handleCreateRecord}
+          onClick={() => handleCreateRecord(isSelectedId)}
           className={buttonStyles.miniRoundedButton}
         >
           확인

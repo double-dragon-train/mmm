@@ -111,19 +111,25 @@ function GroupSection({
   // }, [todayGroupMbti]);
 
   useEffect(() => {
-    console.log('testtest:', todayMemberList);
-    // if (todayMemberList.length !== 0) {
-    //   console.log('testtest2:', todayMemberList);
-
-    //   return;
-    // }
     if (groupUserList && !groupMukbotList) {
       setTodayMemberList([...groupUserList.users]);
     } else if (groupUserList && groupMukbotList) {
-      setTodayMemberList([
-        ...groupUserList?.users,
-        ...groupMukbotList?.users,
-      ]);
+      console.log(todayMemberList, groupUserList, groupMukbotList);
+      const combinedMembers = [
+        ...groupUserList.users,
+        ...groupMukbotList.users,
+      ];
+      const newTodayMembers = combinedMembers.filter(
+        (member) =>
+          !nextMemberList.some(
+            (todayMember) => todayMember.mukboId === member.mukboId
+          )
+      );
+      setTodayMemberList(newTodayMembers);
+      // setTodayMemberList([
+      //   ...groupUserList?.users,
+      //   ...groupMukbotList?.users,
+      // ]);
     }
   }, [groupUserList, groupMukbotList]);
 
@@ -151,7 +157,9 @@ function GroupSection({
     <div className={styles.groupSection}>
       {isTodayMemberModalOpen && (
         <Modal clickEvent={closeTodayMemberModal}>
-          <TodayMemberModal closeTodayMemberModal={closeTodayMemberModal}/>
+          <TodayMemberModal
+            closeTodayMemberModal={closeTodayMemberModal}
+          />
         </Modal>
       )}
       <div className={styles.header}>
@@ -169,7 +177,9 @@ function GroupSection({
         ) : (
           <div className={styles.soloGroupName}>그룹명</div>
         )}
-        <div className={styles.soloGroupName}>{mbtiString || '먹BTI'}</div>
+        <div className={styles.soloGroupName}>
+          {mbtiString || '먹BTI'}
+        </div>
         {/* <div className={styles.soloGroupName}>{isSolo ? '먹BTI' : groupMbti}</div> */}
       </div>
       {isSolo ? (

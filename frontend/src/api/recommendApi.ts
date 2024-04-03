@@ -20,6 +20,7 @@ export async function getRandomFoodList() {
 }
 
 export async function getRecentRecommendFood(groupId: number) {
+  console.log('여기에 그룹아이디:', groupId);
   try {
     const res = await instance.get(`/mukus/groups/${groupId}/recent`);
     return res.data;
@@ -100,6 +101,29 @@ export async function postTodayMember({
       `/recommend/groups/${groupId}/mukbos-now`,
       data
     );
+    return res.data;
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+interface recordType {
+  isSelectedId: number;
+  groupId: number;
+}
+export async function postRecord({
+  isSelectedId,
+  groupId,
+}: recordType) {
+  const data = {
+    recommendFoodId: isSelectedId,
+  };
+  try {
+    const res = await instance.post(
+      `/mukus/groups/${groupId}/recent`,
+      data
+    );
+    console.log('기록결과:', res);
     return res.data;
   } catch (e) {
     console.log(e);

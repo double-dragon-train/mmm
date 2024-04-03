@@ -10,12 +10,18 @@ import NewRecommendSection from '../components/mainPage/NewRecommendSection';
 import GroupSection from '../components/mainPage/GroupSection';
 import CreateGroupModal from '../components/mainPage/CreateGroupModal';
 import userStore from '../stores/userStore';
-// import { getRecentRecommendFood } from '../api/recommendApi';
+import { getRecentRecommendFood } from '../api/recommendApi';
 
 function MainPage() {
-  const { setGroupId, setIsCreateModalOpen, isCreateModalOpen, setIsSolo, setMyMukboId } = userStore();
+  const {
+    groupId,
+    setGroupId,
+    setIsCreateModalOpen,
+    isCreateModalOpen,
+    setIsSolo,
+    setMyMukboId
+  } = userStore();
   const [isRecordModalOpen, setIsRecordModalOpen] = useState(false);
-  // const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const {
     data: groupInfo,
@@ -25,14 +31,20 @@ function MainPage() {
     queryKey: ['groupInfo'],
     queryFn: getGroupInfo,
   });
-  
-  // const { data: recentFoodList } = useQuery({
-  //   queryKey: ['recentRecommendFood'],
-  //   queryFn: () => getRecentRecommendFood(groupInfo.groupId),
-  //   // enabled: groupInfo !== undefined,
-  // });
-  // console.log(recentFoodList)
-  
+  console.log('groupInfo:', groupInfo);
+  const { data: recentFoodList } = useQuery({
+    queryKey: ['recentRecommendFood'],
+    queryFn: () => getRecentRecommendFood(groupId),
+    enabled: groupId !== undefined,
+  });
+
+  useEffect(() => {
+    if (recentFoodList?.hasValue === false) {
+      // if (recentFoodList) {
+      setIsRecordModalOpen(true);
+    }
+  }, [recentFoodList]);
+
   const hadleOpenCreateModal = () => {
     setIsCreateModalOpen(true);
   };
@@ -44,9 +56,6 @@ function MainPage() {
   const handleCloseRecordModal = () => {
     setIsRecordModalOpen(false);
   };
-  
-  const handleCreateRecord = () => {};
-  
   useEffect(() => {
     setGroupId(groupInfo?.mukgroupId);
     setIsSolo(groupInfo?.isSolo)
@@ -76,7 +85,6 @@ function MainPage() {
         <Modal clickEvent={handleCloseRecordModal}>
           <RecordModal
             handleCloseModal={handleCloseRecordModal}
-            handleCreateRecord={handleCreateRecord}
             groupId={groupInfo.mukgroupId}
           />
         </Modal>

@@ -332,19 +332,37 @@
   margin: 10px;
 }
 .recordModalWrapper .recommendBox .recommendItem {
+  width: 30%;
+  height: 40%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 5px;
 }
-.recordModalWrapper .recommendBox .recommendItem > img {
+.recordModalWrapper .recommendBox .recommendItem .selectedImgBox {
+  width: 60px;
+  border-radius: 50%;
+}
+.recordModalWrapper .recommendBox .recommendItem .selectedImgBox > img {
+  border: 3px solid rgba(42, 67, 206, 0.5);
   width: 60px;
   aspect-ratio: 1/1;
   border-radius: 50%;
 }
-.recordModalWrapper .recommendBox .recommendItem > span {
+.recordModalWrapper .recommendBox .recommendItem .imgBox > img {
+  border: 1px solid rgba(42, 67, 206, 0.5);
+  width: 60px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+}
+.recordModalWrapper .recommendBox .recommendItem .text {
+  font-size: 14px;
   color: rgba(0, 0, 0, 0.6);
+}
+.recordModalWrapper .recommendBox .recommendItem .selectedText {
+  font-size: 14px;
+  color: rgba(42, 67, 206, 0.8);
 }
 .recordModalWrapper .buttonBox {
   display: flex;
