@@ -39,9 +39,6 @@ public class MukusServiceImpl implements MukusService {
                         .orElseThrow(() -> new RecommendException(RecommendErrorCode.RECOMMEND_NOT_FOUND));
 
         recommendedFoodEntity.eat();
-
-        FoodRecommendEntity foodRecommendEntity = recommendedFoodEntity.getFoodRecommendEntity();
-        foodRecommendEntity.check();
     }
 
     @Override
@@ -79,6 +76,8 @@ public class MukusServiceImpl implements MukusService {
             );
             return RecommendFood.create(foodCategoryResponse, food);
         }).collect(Collectors.toList());
+
+        foodRecommendEntity.check();
 
         return MukusRecentResponse.create(RecommendData.create(recommendFoods));
     }
