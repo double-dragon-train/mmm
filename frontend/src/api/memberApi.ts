@@ -39,20 +39,19 @@ type MukboInviteData = {
   nickname: string;
   mukbotId: number;
 };
-export const postMukboInvite = async (groupId: number, mukboInviteData: MukboInviteData) => {
-  try {
-    const res = await instance.post(
+export const postMukboInvite = (groupId: number, mukboInviteData: MukboInviteData) => {
+  return instance.post(
       `/groups/${groupId}/users`,
       mukboInviteData,
       {headers: {
         'Content-Type': 'application/json',
       },}
     );
-    console.log('먹보(인간)초대 res:', res, mukboInviteData);
-  } catch (e) {
-    console.log('먹보(인간)초대 e:', e);
-    throw e;
-  }
+  //   console.log('먹보(인간)초대 res:', res, mukboInviteData);
+  // } catch (e) {
+  //   console.log('먹보(인간)초대 e:', e);
+  //   throw e;
+  // }
 };
 
 // 먹봇 생성

@@ -5,12 +5,20 @@ interface ButtonProps {
   buttonName: string;
 }
 
-function MiniRedButton ({ clickEvent, buttonName }: ButtonProps) {
+function MiniRedButton({ clickEvent, buttonName }: ButtonProps) {
   return (
-    <button onClick={clickEvent} className={styles.miniRedButton}>
-      {buttonName}
-    </button>
-  );
+      <div>
+        {buttonName == '나' ? (
+          <button onClick={clickEvent} className={styles.miniRedButton} disabled>
+            {buttonName}
+          </button>
+        ) : (
+          <button onClick={clickEvent} className={styles.miniRedButton}>
+            {buttonName}
+          </button>
+        )}
+      </div>
+  )
 }
 
 export default MiniRedButton;

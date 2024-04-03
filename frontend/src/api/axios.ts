@@ -100,6 +100,16 @@ instance.interceptors.response.use(
       window.dispatchEvent(errorEvent);
     }
 
+    // 이미 그룹에 속해 있는 유저
+    if (
+      error.response &&
+      error.response.data.errorName === 'DUPLICATE_ERROR'
+    ) {
+      // 'USER_NOT_FOUND' 오류가 발생하면 오류 메시지 이벤트 발생
+      errorEvent.detail.message = '이미 먹그룹에 속해 있는 사용자입니다.';
+      window.dispatchEvent(errorEvent);
+    }
+
     
 
     return Promise.reject(error);

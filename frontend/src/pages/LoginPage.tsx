@@ -15,7 +15,7 @@ import { useMutation } from '@tanstack/react-query';
 import userStore from '../stores/userStore';
 
 function LoginPage() {
-  const { setAccessToken, setRefreshToken, setIsLogin } = userStore();
+  const { setAccessToken, setRefreshToken, setIsLogin, setIsRecorded } = userStore();
   const navigate = useNavigate();
   const [inputList, setInputList] = useState({
     email: '',
@@ -54,7 +54,6 @@ function LoginPage() {
     setIsEmailValid(checkEmailValidation(email));
   };
 
-  const { mbtiKey } = userStore();
   // 로그인 api
   // 로그인 오류 메시지
   const [errorMessage, setErrorMessage] = useState('');
@@ -77,9 +76,10 @@ function LoginPage() {
       setAccessToken(data.accessToken);
       setRefreshToken(data.refreshToken);
       setIsLogin(true);
+      setIsRecorded(data.isRecorded);
       console.log('로그인 성공');
       localStorage.setItem('refreshToken', data.refreshToken);
-      if (mbtiKey === '') {
+      if (!data.isRecorded) {
         navigate('/mbti/0');
       } else {
         navigate('/');
