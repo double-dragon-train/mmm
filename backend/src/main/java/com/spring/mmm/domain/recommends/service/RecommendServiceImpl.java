@@ -90,7 +90,7 @@ public class RecommendServiceImpl implements RecommendService{
         }
 
         if (recommendedFoodRepository.existsByDateAndGroupId(date, mukgroupId)) {
-            recommendedFoodRepository.deleteAllNormalByDateAndGroupId(date, mukgroupId);
+            recommendedFoodRepository.deleteAllNormalByDateAndGroupId(date, mukgroupId, NORMAL);
         }
         lunchList
                 .forEach(lunch -> {

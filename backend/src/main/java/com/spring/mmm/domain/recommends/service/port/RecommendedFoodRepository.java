@@ -21,7 +21,7 @@ public interface RecommendedFoodRepository {
 
     Optional<RecommendedFoodEntity> findByDateAndGroupIdAndCategory(LocalDate date, Long groupId, RecommendCategory category);
 
-    void deleteAllNormalByDateAndGroupId(LocalDate date, Long groupId);
+    void deleteAllNormalByDateAndGroupId(LocalDate date, Long groupId, RecommendCategory category);
 
     void save(RecommendedFoodEntity recommendedFoodEntity);
 }

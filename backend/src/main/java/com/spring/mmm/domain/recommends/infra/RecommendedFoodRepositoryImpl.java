@@ -51,8 +51,8 @@ public class RecommendedFoodRepositoryImpl implements RecommendedFoodRepository 
 
 
     @Override
-    public void deleteAllNormalByDateAndGroupId(LocalDate date, Long groupId) {
-        recommendedFoodJpaRepository.deleteAllNormalByDateAndGroupId(date, groupId);
+    public void deleteAllNormalByDateAndGroupId(LocalDate date, Long groupId, RecommendCategory category) {
+        recommendedFoodJpaRepository.deleteAllNormalByDateAndGroupId(date, groupId, category);
     }
 
     @Override

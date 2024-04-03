@@ -52,6 +52,6 @@ public interface RecommendedFoodJpaRepository extends JpaRepository<RecommendedF
     @Query("DELETE FROM RecommendedFoodEntity rf" +
             " WHERE rf.foodRecommendEntity.recommendDate = :date" +
             " AND rf.foodRecommendEntity.mukgroupEntity.mukgroupId = :groupId" +
-            " AND rf.category = NORMAL")
-    void deleteAllNormalByDateAndGroupId(LocalDate date, Long groupId);
+            " AND rf.category = :category")
+    void deleteAllNormalByDateAndGroupId(LocalDate date, Long groupId, RecommendCategory category);
 }
