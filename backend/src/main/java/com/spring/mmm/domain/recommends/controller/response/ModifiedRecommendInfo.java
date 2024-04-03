@@ -17,16 +17,16 @@ public class ModifiedRecommendInfo {
 
     public static String mbtiToString(MBTI mbti) {
         StringBuilder sb = new StringBuilder();
-        if (mbti.getEi() > 50) {
+        if (mbti.getEi() > 15) {
             sb.append("I");
         } else sb.append("E");
-        if (mbti.getNs() > 50) {
+        if (mbti.getNs() > 15) {
             sb.append("S");
         } else sb.append("N");
-        if (mbti.getTf() > 50) {
+        if (mbti.getTf() > 15) {
             sb.append("F");
         } else sb.append("T");
-        if (mbti.getJp() > 50) {
+        if (mbti.getJp() > 15) {
             sb.append("P");
         } else sb.append("J");
 
