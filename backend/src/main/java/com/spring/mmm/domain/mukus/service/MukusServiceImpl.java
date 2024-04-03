@@ -54,7 +54,7 @@ public class MukusServiceImpl implements MukusService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public MukusRecentResponse getRecentMukus(Long groupId) {
 
         FoodRecommendEntity foodRecommendEntity = foodRecommendRepository.findRecentRecommendByMukgroupId(LocalDate.now(), groupId)
@@ -63,13 +63,6 @@ public class MukusServiceImpl implements MukusService {
         List<RecommendedFoodEntity> recommendedFoodEntities = foodRecommendEntity.getRecommendedFoodEntities();
 
         List<RecommendFood> recommendFoods = recommendedFoodEntities.stream().map(food -> {
-            String foodCategoryName = "";
-            switch (food.getFoodEntity().getFoodCategoryEntity().getName()) {
-                case FoodCategory.KOREA -> foodCategoryName = "한식";
-                case FoodCategory.CHINA -> foodCategoryName = "중식";
-                case FoodCategory.JAPAN -> foodCategoryName = "일식";
-                case FoodCategory.WESTERN -> foodCategoryName = "양식";
-            }
             FoodCategoryResponse foodCategoryResponse = FoodCategoryResponse.create(
                     food.getFoodEntity().getFoodCategoryEntity().getName().getKoreanName(),
                     food.getFoodEntity().getFoodCategoryEntity().getColor()
