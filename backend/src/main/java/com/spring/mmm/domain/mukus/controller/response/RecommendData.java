@@ -14,9 +14,9 @@ public class RecommendData {
     private LocalDate date;
     private List<RecommendFood> foods;
 
-    public static RecommendData create(List<RecommendFood> foods) {
+    public static RecommendData create(LocalDate date, List<RecommendFood> foods) {
         return RecommendData.builder()
-                .date(LocalDate.now())
+                .date(date)
                 .foods(foods)
                 .build();
     }
