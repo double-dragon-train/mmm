@@ -16,22 +16,22 @@ interface mbtiOptionsType {
 const MBTI_OPTIONS: mbtiOptionsType[] = [
   {
     id: 1,
-    first: { eng: 'Ignite', kor: '맵당당' },
-    second: { eng: 'Emergency', kor: '맵찌질' },
+    first: { eng: 'Emergency', kor: '맵찌질' },
+    second: { eng: 'Ignite', kor: '맵당당' },
     barColor: '#FF0000',
     name: 'ei',
   },
   {
     id: 2,
-    first: { eng: 'Ssal', kor: '밥파' },
-    second: { eng: 'Noodle', kor: '면파' },
+    second: { eng: 'Ssal', kor: '밥파' },
+    first: { eng: 'Noodle', kor: '면파' },
     barColor: '#FFB800',
     name: 'ns',
   },
   {
     id: 3,
-    first: { eng: 'Fitness', kor: '건강식' },
-    second: { eng: 'Total', kor: '일반식' },
+    second: { eng: 'Fitness', kor: '건강식' },
+    first: { eng: 'Total', kor: '일반식' },
     barColor: '#11CF00',
     name: 'tf',
   },
@@ -71,12 +71,11 @@ function MbtiSection({ mbti }: propsType) {
   // if (isError) {
   //   return <div>error</div>;
   // }
-
   let mbtiString = '';
-  mbtiString += (mbti.ei / 3) * 10 <= 50 ? 'E' : 'I';
-  mbtiString += (mbti.ns / 3) * 10 <= 50 ? 'S' : 'N';
-  mbtiString += (mbti.tf / 3) * 10 <= 50 ? 'F' : 'T';
-  mbtiString += (mbti.jp / 3) * 10 <= 50 ? 'J' : 'P';
+  mbtiString += mbti.ei > 15 ? 'I' : 'E';
+  mbtiString += mbti.ns > 15 ? 'S' : 'N';
+  mbtiString += mbti.tf > 15 ? 'F' : 'T';
+  mbtiString += mbti.jp > 15 ? 'P' : 'J';
 
   return (
     <section className={styles.mbtiSection}>
@@ -104,7 +103,11 @@ function MbtiSection({ mbti }: propsType) {
             <div className={styles.mbtiBarBackGround}>
               <span>{absMbtiScore}</span>
               <div
-                className={mbtiScore > 50 ? styles.rightMbtiBar : styles.leftMbtiBar}
+                className={
+                  mbti[mbtiOption.name] > 15
+                    ? styles.rightMbtiBar
+                    : styles.leftMbtiBar
+                }
                 style={{
                   backgroundColor: mbtiOption.barColor,
                   width: `${absMbtiScore}%`,

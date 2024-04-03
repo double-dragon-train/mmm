@@ -82,11 +82,15 @@ export async function modifyGroupImage({
   const formData = new FormData();
   formData.append('image', groupImg);
   try {
-    const res = await instance.post(`/groups/${groupId}/image`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    const res = await instance.post(
+      `/groups/${groupId}/image`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
     console.log(res);
     return res.data;
   } catch (e) {
@@ -97,7 +101,43 @@ export async function modifyGroupImage({
 export async function deleteGroup(groupId: number) {
   try {
     const res = await instance.delete(`/groups/${groupId}/exit`);
-    console.log('삭제결과:', res);
+    return res.data;
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+interface mbtiType {
+  die: number;
+  ei: number;
+  jp: number;
+  mint: number;
+  ns: number;
+  pine: number;
+  tf: number;
+}
+
+interface userType {
+  name: string;
+  mukBTI: string;
+  mukboId: number;
+  type: string;
+  mbti: mbtiType;
+}
+
+interface todayMemberMbtiType {
+  groupId: number;
+  todayMemberList: userType[];
+}
+
+export async function postTodayMemberMbti({
+  groupId,
+  todayMemberList,
+}: todayMemberMbtiType) {
+  const mukboIdsArray = todayMemberList.map((obj) => obj.mukboId);
+  const data = { mukbos: mukboIdsArray };
+  try {
+    const res = await instance.post(`/groups/${groupId}/mbti`, data);
     return res.data;
   } catch (e) {
     console.log(e);

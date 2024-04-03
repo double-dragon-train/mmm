@@ -6,9 +6,11 @@ import ProfileImgBox from '../common/ProfileImgBox';
 import { postGroupInfo } from '../../api/groupApi';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
+import userStore from '../../stores/userStore';
 
 function CreateGroupModal() {
-  const queryClient = useQueryClient(); 
+  const { setIsCreateModalOpen, setIsSolo } = userStore();
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [groupName, setGroupName] = useState('');
   const [groupImg, setGroupImg] = useState<string>('');
@@ -16,13 +18,15 @@ function CreateGroupModal() {
   const { mutate: mutateCreateGroup } = useMutation({
     mutationFn: postGroupInfo,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["groupInfo"]});
-      navigate('/group')
+      queryClient.invalidateQueries({ queryKey: ['groupInfo'] });
+      setIsCreateModalOpen(false);
+      setIsSolo(false);
+      navigate('/');
     },
     onError: (error) => {
-      console.error('에러발생:', error)
-    }
-  })
+      console.error('에러발생:', error);
+    },
+  });
   const handleChangeGroupName = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -30,17 +34,21 @@ function CreateGroupModal() {
   };
 
   const handleCreateGroup = () => {
-    mutateCreateGroup(groupName)
-  }
+    mutateCreateGroup(groupName);
+  };
 
   const checkGroupName = () => {};
-  
+
   return (
     <div className={styles.createGroupModalWrapper}>
       <h2>먹그룹 생성</h2>
       <div className={styles.imgBox}>
         <span>대표사진</span>
-        <ProfileImgBox imageSrc={groupImg} setImageSrc={setGroupImg} mode={"CREATE"}/>
+        <ProfileImgBox
+          imageSrc={groupImg}
+          setImageSrc={setGroupImg}
+          mode={'CREATE'}
+        />
       </div>
       <div>
         <Input
@@ -56,7 +64,10 @@ function CreateGroupModal() {
           errorMessage="그룹명 형식이 잘못되었습니다."
         />
       </div>
-      <button className={buttonStyles.miniBlueRoundedButton} onClick={handleCreateGroup}>
+      <button
+        className={buttonStyles.miniBlueRoundedButton}
+        onClick={handleCreateGroup}
+      >
         완료
       </button>
     </div>

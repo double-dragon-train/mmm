@@ -78,6 +78,7 @@ input:-webkit-autofill {
 }
 
 input:focus {
+  background-color: transparent;
   border-bottom: 1px solid rgba(101, 101, 101, 0.8);
 }
 

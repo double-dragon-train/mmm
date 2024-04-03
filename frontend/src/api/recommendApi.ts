@@ -10,12 +10,9 @@ interface mbtiType {
   die: number;
 }
 
-
-
 export async function getRandomFoodList() {
   try {
     const res = await instance.get('/recommend');
-    // const res = await axios.get(`${VITE_API_DEV}/recommend`)
     return res.data;
   } catch (e) {
     console.log(e);
@@ -23,7 +20,6 @@ export async function getRandomFoodList() {
 }
 
 export async function getRecentRecommendFood(groupId: number) {
-  console.log('testtest')
   try {
     const res = await instance.get(`/mukus/groups/${groupId}/recent`);
     return res.data;
@@ -37,9 +33,13 @@ export async function getMainRecommendFood(
   mbti: mbtiType
 ) {
   try {
-    console.log('랜덤푸드 가져오기:', mbti);
     const res = await instance.get(`/recommend/groups/${groupId}`, {
-      params: mbti,
+      params: {
+        ei: mbti.ei,
+        ns: mbti.ns,
+        tf: mbti.tf,
+        jp: mbti.jp,
+      },
     });
     return res.data.foods;
   } catch (e) {
@@ -47,25 +47,28 @@ export async function getMainRecommendFood(
   }
 }
 
-export async function getNewRecommendFood(
-  groupId: number
-) {
+export async function getNewRecommendFood(groupId: number) {
   try {
-    const res = await instance.get(`/recommend/groups/${groupId}/new`);
+    const res = await instance.get(
+      `/recommend/groups/${groupId}/new`
+    );
     return res.data;
   } catch (e) {
     console.log(e);
   }
 }
 
-export async function getWeatherRecommendFood(latitude: string, longitude: string) {
+export async function getWeatherRecommendFood(
+  latitude: string,
+  longitude: string
+) {
   const data = {
     latitude,
-    longitude
-  }
+    longitude,
+  };
   try {
     const res = await instance.get('/recommend/weather', {
-      params: data
+      params: data,
     });
     return res.data;
   } catch (e) {

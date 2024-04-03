@@ -32,7 +32,7 @@ function GroupInfoSection() {
   const [groupName, setGroupName] = useState<string>('');
   const [groupImg, setGroupImg] = useState<string>('');
   const [isGroupNameValid] = useState<boolean>(true);
-  const [isGroupNameDuplicated] = useState<boolean>(false);
+  const [isGroupNameDuplicated] = useState<boolean>();
 
   console.log(groupImg)
   

@@ -80,6 +80,7 @@
   padding: 12px 24px;
   position: relative;
   overflow: hidden;
+  min-height: 95px;
 }
 .weatherRecommendSection .textBox {
   text-align: left;
@@ -123,6 +124,7 @@
   padding: 12px 24px;
   position: relative;
   overflow: hidden;
+  min-height: 95px;
 }
 .newRecommendSection .textBox {
   text-align: right;
@@ -158,6 +160,7 @@
 
 .groupSection {
   width: 95%;
+  min-height: 400px;
   background-color: rgba(42, 67, 206, 0.03);
   border-radius: 5px;
   padding: 12px 24px;
@@ -223,6 +226,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
+  max-height: 200px;
 }
 .groupSection .groupMain article .togetherBox {
   display: flex;
@@ -231,6 +235,7 @@
   justify-content: center;
   gap: 32px;
   margin: 24px;
+  width: 93%;
 }
 .groupSection .groupMain article .togetherBox > img {
   width: 50px;
@@ -247,6 +252,23 @@
   overflow-y: scroll;
   min-height: 50px;
   max-height: 160px;
+}
+.groupSection .groupMain article > div::-webkit-scrollbar {
+  width: 8px;
+}
+.groupSection .groupMain article > div::-webkit-scrollbar-thumb {
+  background-color: rgba(42, 67, 206, 0.2);
+  border-radius: 10px;
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+.groupSection .groupMain article > div::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(42, 67, 206, 0.4);
+}
+.groupSection .groupMain article > div::-webkit-scrollbar-track {
+  background-color: rgba(220, 220, 220, 0.7);
+  border-radius: 10px;
+  /* box-shadow: inset 0px 0px 5px white; */
 }
 .groupSection .groupMain article > div .memberCard {
   display: flex;
@@ -461,6 +483,11 @@ button:active {
 
 .todayMemberModalWrapper {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
 }
 .todayMemberModalWrapper .todayMemberHeader {
   display: flex;
@@ -486,4 +513,67 @@ button:active {
 .todayMemberModalWrapper .todayMemberHeader > div > span {
   color: rgba(0, 0, 0, 0.5);
   font-size: 14px;
+}
+.todayMemberModalWrapper .todayMemberSection {
+  background-color: rgba(42, 67, 206, 0.03);
+  border-radius: 5px;
+  max-height: 260px;
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 12px;
+}
+.todayMemberModalWrapper .todayMemberSection > h5 {
+  position: absolute;
+  left: 12px;
+  top: -5px;
+  font-size: 14px;
+  color: rgba(42, 67, 206, 0.7);
+  text-shadow: 1px 0px white 0px 1px white -1px 0px white 0px -1px white;
+}
+.todayMemberModalWrapper .todayMemberSection .memberBox {
+  height: 50px;
+  display: flex;
+}
+.todayMemberModalWrapper .todayMemberSection .memberBox .memberWhiteBox {
+  height: 50px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  width: 80%;
+  border-radius: 5px;
+  padding: 0px 24px;
+  gap: 5px;
+}
+.todayMemberModalWrapper .todayMemberSection .memberBox .memberWhiteBox .memberName {
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.7);
+  width: 80%;
+  text-align: left;
+}
+.todayMemberModalWrapper .todayMemberSection .memberBox .memberWhiteBox .memberMBTI {
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.8);
+}
+.todayMemberModalWrapper .nextMemberSection {
+  background-color: rgba(42, 67, 206, 0.03);
+  border-radius: 5px;
+  max-height: 130px;
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 12px;
+}
+.todayMemberModalWrapper .nextMemberSection > h5 {
+  position: absolute;
+  left: 12px;
+  top: -5px;
+  position: absolute;
+  font-size: 14px;
+  color: rgba(101, 101, 101, 0.8);
+  text-shadow: 1px 0px white 0px 1px white -1px 0px white 0px -1px white;
 }/*# sourceMappingURL=MainPage.module.css.map */

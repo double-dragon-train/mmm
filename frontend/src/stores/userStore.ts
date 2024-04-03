@@ -16,6 +16,13 @@ interface mbtiType {
   die: number;
 }
 
+interface memberType {
+  mukboId: number;
+  type: string;
+  name: string;
+  mukBTI: string;
+  mbti: mbtiType
+}
 interface userStoreType {
   answerList: answerType[];
   updateAnswerList: (value: answerType[]) => void;
@@ -27,14 +34,20 @@ interface userStoreType {
   setIsLogin: (value: boolean) => void;
   mbtiKey: string;
   setMbtiKey: (value: string) => void;
-  mbti: mbtiType;
-  setMbti: (value: mbtiType) => void;
+  userMbti: mbtiType;
+  setUserMbti: (value: mbtiType) => void;
+  groupMbti: mbtiType;
+  setGroupMbti: (value: mbtiType) => void;
   groupId: number;
   setGroupId: (value: number) => void;
   isSolo: boolean;
   setIsSolo: (value: boolean) => void;
   isCreateModalOpen: boolean;
   setIsCreateModalOpen: (value: boolean) => void;
+  todayMemberList: memberType[];
+  setTodayMemberList: (value: memberType[]) => void;
+  nextMemberList: memberType[];
+  setNextMemberList: (value: memberType[]) => void;
 }
 const userStore = create(
   persist<userStoreType>(
@@ -51,14 +64,20 @@ const userStore = create(
         set({ answerList: value }),
       mbtiKey: '',
       setMbtiKey: (value: string) => set({ mbtiKey: value }),
-      mbti: { ei: 0, ns: 0, tf: 0, jp: 0, mint: 0, pine: 0, die: 0 },
-      setMbti: (value: mbtiType) => set({ mbti: value }),
+      userMbti: { ei: 0, ns: 0, tf: 0, jp: 0, mint: 0, pine: 0, die: 0 },
+      setUserMbti: (value: mbtiType) => set({ userMbti: value }),
+      groupMbti: { ei: 0, ns: 0, tf: 0, jp: 0, mint: 0, pine: 0, die: 0 },
+      setGroupMbti: (value: mbtiType) => set({ groupMbti: value }),
       groupId: 0,
       setGroupId: (value: number) => set({ groupId: value }),
       isSolo: true,
       setIsSolo: (value: boolean) => set({ isSolo: value }),
       isCreateModalOpen: false,
       setIsCreateModalOpen: (value: boolean) => set({ isCreateModalOpen: value }),
+      todayMemberList: [],
+      setTodayMemberList: (value: memberType[]) => set({ todayMemberList: value }),
+      nextMemberList: [],
+      setNextMemberList: (value: memberType[]) => set({ nextMemberList: value }),
       //   loginModalOpen: false,
       //   setLoginModalOpen: (value) => set({ loginModalOpen: value }),
       //   isMyPage: true,

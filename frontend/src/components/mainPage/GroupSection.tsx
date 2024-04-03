@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import { getGroupMbti } from '../../api/mbtiApi';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { getUserMbti } from '../../api/mbtiApi';
 import styles from '../../styles/mainPage/MainPage.module.css';
 import buttonStyles from '../../styles/common/Buttons.module.css';
 import userStore from '../../stores/userStore';
@@ -13,6 +13,7 @@ import together from '../../assets/images/together.png';
 import memberChange from '../../assets/images/memberChange.png';
 import Modal from '../common/Modal';
 import TodayMemberModal from './TodayMemberModal';
+import { postTodayMemberMbti } from '../../api/groupApi';
 
 interface propsType {
   hadleOpenCreateModal: () => void;
@@ -45,22 +46,31 @@ function GroupSection({
   groupId,
   groupName,
 }: propsType) {
-  console.log('isSolo:', isSolo);
-  const { setMbti } = userStore();
-  const [todayMemberList] = useState<userType[]>(
-    []
-  );
+  const {
+    setUserMbti,
+    todayMemberList,
+    nextMemberList,
+    setTodayMemberList,
+    setGroupMbti,
+  } = userStore();
   const [isTodayMemberModalOpen, setIsTodayMemberModalOpen] =
     useState(false);
   const {
-    data: groupMbti,
-    isPending: isGroupMbtiPending,
+    data: userMbti,
+    // isPending: isUserMbtiPending,
     isError,
   } = useQuery({
-    queryKey: ['groupMbti'],
-    queryFn: getGroupMbti,
-    enabled: !isSolo,
+    queryKey: ['userMbti'],
+    queryFn: getUserMbti,
+    enabled: isSolo,
   });
+
+  useEffect(() => {
+    if (userMbti) {
+      setUserMbti(userMbti);
+      // console.log('userMbti:', userMbti)
+    }
+  }, [userMbti]);
 
   const openTodayMemberModal = () => {
     setIsTodayMemberModalOpen(true);
@@ -77,35 +87,51 @@ function GroupSection({
   } = useQuery({
     queryKey: ['groupUserList'],
     queryFn: () => getGroupUserList(groupId),
-    enabled: !isSolo,
+    // enabled: !isSolo,
   });
 
-  const { data: groupMukbotList, isPending: isMukbotPending } =
+  const { data: groupMukbotList } =
     useQuery({
       queryKey: ['groupMukbotList'],
       queryFn: () => getGroupMukbotList(groupId),
       enabled: !isSolo,
     });
 
+  const { data: todayGroupMbti, mutate: mutateTodayMemberMbti } =
+    useMutation({
+      mutationFn: postTodayMemberMbti,
+      onSuccess: () => {
+        setGroupMbti(todayGroupMbti.mbti);
+      }
+    });
+
   // useEffect(() => {
-  //   if (groupMukbotList || groupUserList) {
-  //     setTodayMemberList([
-  //       ...groupUserList?.users,
-  //       ...groupMukbotList?.users,
-  //     ]);
-  //     console.log('gdgdgdgdgddddddddddddddddddd:', todayMemberList);
+  //   if (todayGroupMbti) {
+  //     setGroupMbti(todayGroupMbti.mbti);
   //   }
-  // }, [groupUserList, groupMukbotList]);
+  // }, [todayGroupMbti]);
 
-  console.log('먹보:', groupUserList);
-  console.log('먹봇:', groupMukbotList);
   useEffect(() => {
-    setMbti(groupMbti);
-  }, []);
+    if (groupUserList && !groupMukbotList) {
+      setTodayMemberList([...groupUserList?.users]);
+    } else if (groupUserList && groupMukbotList) {
+      setTodayMemberList([
+        ...groupUserList?.users,
+        ...groupMukbotList?.users,
+      ]);
+    }
+  }, [groupUserList, groupMukbotList]);
 
-  if (isGroupMbtiPending || isUserPending || isMukbotPending) {
-    return null;
+  useEffect(() => {
+    if (todayMemberList) {
+      mutateTodayMemberMbti({ groupId, todayMemberList });
+    }
+  }, [todayMemberList]);
+
+  if (isUserPending) {
+    return <div>Loading...</div>;
   }
+
   if (isUserListError || isError) {
     return <div>error</div>;
   }
@@ -119,10 +145,12 @@ function GroupSection({
       )}
       <div className={styles.header}>
         <h2>먹그룹</h2>
-        <div onClick={openTodayMemberModal}>
-          <span>오늘의 멤버 변경</span>
-          <img src={memberChange} alt="" />
-        </div>
+        {!isSolo && (
+          <div onClick={openTodayMemberModal}>
+            <span>오늘의 멤버 변경</span>
+            <img src={memberChange} alt="" />
+          </div>
+        )}
       </div>
       <div className={styles.groupInfoBox}>
         {!isSolo ? (
@@ -131,6 +159,7 @@ function GroupSection({
           <div className={styles.soloGroupName}>그룹명</div>
         )}
         <div className={styles.soloGroupName}>먹BTI</div>
+        {/* <div className={styles.soloGroupName}>{isSolo ? '먹BTI' : groupMbti}</div> */}
       </div>
       {isSolo ? (
         <main className={styles.soloMain}>
@@ -160,32 +189,28 @@ function GroupSection({
                   />
                 );
               })}
-              {/* {groupUserList.users.map((user: userType) => {
-                return (
-                  <MemberCard
-                    key={user.mukboId}
-                    mbti={user.mukBTI}
-                    name={user.name}
-                  />
-                );
-              })}
-              {groupMukbotList.users.map((user: userType) => {
-                return (
-                  <MemberCard
-                    key={user.mukboId}
-                    mbti={user.mukBTI}
-                    name={user.name}
-                  />
-                );
-              })} */}
             </div>
           </article>
           <article>
             <h2 className={styles.todayNext}>아쉽지만 다음에...</h2>
-            <div className={styles.togetherBox}>
-              <img src={together} alt="" />
-              <span>오늘은 다같이 먹네요!</span>
-            </div>
+            {nextMemberList.length ? (
+              <div>
+                {nextMemberList.map((user: userType) => {
+                  return (
+                    <MemberCard
+                      key={user.mukboId}
+                      mbti={user.mukBTI}
+                      name={user.name}
+                    />
+                  );
+                })}
+              </div>
+            ) : (
+              <div className={styles.togetherBox}>
+                <img src={together} alt="" />
+                <span>오늘은 다같이 먹네요!</span>
+              </div>
+            )}
           </article>
         </main>
       )}

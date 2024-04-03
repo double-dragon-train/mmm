@@ -13,7 +13,7 @@ interface propsType {
   groupId: number;
 }
 function MainRecommendSection({ groupId }: propsType) {
-  const { mbti } = userStore();
+  const { groupMbti } = userStore();
   const [selectedFoodId, setSelectedFoodId] = useState<number | null>(
     null
   );
@@ -24,13 +24,23 @@ function MainRecommendSection({ groupId }: propsType) {
     useState<boolean>(false);
   const [isSelectedFoodModalOpen, setIsSelectedFoodModalOpen] =
     useState<boolean>(false);
+
   const {
     data: mainRecommendFoodList,
     isPending,
     isError,
   } = useQuery({
     queryKey: ['main'],
-    queryFn: () => getMainRecommendFood(groupId, mbti),
+    queryFn: () => getMainRecommendFood(groupId, groupMbti),
+    enabled: !(
+      groupMbti.ei === 0 &&
+      groupMbti.ns === 0 &&
+      groupMbti.tf === 0 &&
+      groupMbti.jp === 0 &&
+      groupMbti.mint === 0 &&
+      groupMbti.pine === 0 &&
+      groupMbti.die === 0
+    ),
   });
 
   const closeSelectedFoodModal = () => {
@@ -51,7 +61,6 @@ function MainRecommendSection({ groupId }: propsType) {
       setSelectedFoodImg(mainRecommendFoodList[selectedFoodId].image);
     }
   }, [selectedFoodId]);
-  console.log(mainRecommendFoodList);
 
   if (isPending) {
     return <div>isLoding...</div>;

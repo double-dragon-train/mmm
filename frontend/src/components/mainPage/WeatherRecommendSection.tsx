@@ -1,5 +1,4 @@
 import styles from '../../styles/mainPage/MainPage.module.css';
-import jammin from '../../assets/images/jammin.png';
 import { useQuery } from '@tanstack/react-query';
 import { getWeatherRecommendFood } from '../../api/recommendApi';
 import { useEffect, useState } from 'react';
@@ -31,7 +30,6 @@ function WeatherRecommendSection() {
     enabled: latitude !== null && longitude !== null,
   });
 
-  console.log('날씨:', weatherRecommendFood);
   if (isPending) {
     return <div>Loading...</div>;
   }
@@ -39,20 +37,28 @@ function WeatherRecommendSection() {
     return null;
   }
 
+  const content =
+    weatherRecommendFood.weatherName === '무더위'
+      ? '해가 쨍쨍한데'
+      : '비도 오는데';
   return (
     <section className={styles.weatherRecommendSection}>
       <div className={styles.textBox}>
         <h2>날씨별 추천</h2>
         <div>
-          비도 오는데
+          {content}
           <br />
-          혹시 <span className={styles.foodName}>
-            [ 마라탕 ]
+          혹시{' '}
+          <span className={styles.foodName}>
+            [ {weatherRecommendFood.foodInformation.name} ]
           </span>{' '}
           어때요?
         </div>
       </div>
-      <img src={jammin} alt="" />
+      <img
+        src={weatherRecommendFood.foodInformation.imageSrc}
+        alt=""
+      />
     </section>
   );
 }

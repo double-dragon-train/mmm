@@ -13,7 +13,7 @@ import userStore from '../stores/userStore';
 import { getRecentRecommendFood } from '../api/recommendApi';
 
 function MainPage() {
-  const { setGroupId, setIsCreateModalOpen, isCreateModalOpen } = userStore();
+  const { setGroupId, setIsCreateModalOpen, isCreateModalOpen, setIsSolo } = userStore();
   const [isRecordModalOpen, setIsRecordModalOpen] = useState(false);
   // const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
@@ -26,15 +26,13 @@ function MainPage() {
     queryFn: getGroupInfo,
   });
 
-  console.log('그룹인포:', groupInfo);
   const { data: recentFoodList } = useQuery({
     queryKey: ['recentRecommendFood'],
     queryFn: () => getRecentRecommendFood(groupInfo.groupId),
     // enabled: groupInfo !== undefined,
   });
-
   console.log(recentFoodList)
-  
+
   const hadleOpenCreateModal = () => {
     setIsCreateModalOpen(true);
   };
@@ -51,6 +49,7 @@ function MainPage() {
 
   useEffect(() => {
     setGroupId(groupInfo?.mukgroupId);
+    setIsSolo(groupInfo?.isSolo)
   }, [groupInfo]);
 
   if (isPending) {
@@ -62,6 +61,7 @@ function MainPage() {
 
   return (
     <div className={styles.wrapper}>
+      
       <MainRecommendSection groupId={groupInfo.mukgroupId} />
       <WeatherRecommendSection />
       <NewRecommendSection groupId={groupInfo.mukgroupId} />
@@ -70,6 +70,7 @@ function MainPage() {
         isSolo={groupInfo.isSolo}
         groupId={groupInfo.mukgroupId}
         groupName={groupInfo.name}
+        
       />
 
       {isRecordModalOpen && (
