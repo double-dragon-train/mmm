@@ -24,12 +24,14 @@ import {
 } from '../../utils/validation';
 import finder from '../../assets/images/finder.png';
 import ConfirmModal from '../common/ConfirmModal';
+import userStore from '../../stores/userStore';
 
 interface propsType {
   groupId: number;
 }
 
 function MemberSection({ groupId }: propsType) {
+  const { myMukboId } = userStore();
   const queryClient = useQueryClient();
   interface firstSecondType {
     eng: string;
@@ -45,22 +47,22 @@ function MemberSection({ groupId }: propsType) {
   const MBTI_OPTIONS: mbtiOptionsType[] = [
     {
       id: 1,
-      first: { eng: 'Ignite', kor: '맵당당' },
-      second: { eng: 'Emergency', kor: '맵찌질' },
+      first: { eng: 'Emergency', kor: '맵찌질' },
+      second: { eng: 'Ignite', kor: '맵당당' },
       barColor: '#FF0000',
       name: 'ei',
     },
     {
       id: 2,
-      first: { eng: 'Ssal', kor: '밥파' },
-      second: { eng: 'Noodle', kor: '면파' },
+      first: { eng: 'Noodle', kor: '면파' },
+      second: { eng: 'Ssal', kor: '밥파' },
       barColor: '#FFB800',
       name: 'ns',
     },
     {
       id: 3,
-      first: { eng: 'Fitness', kor: '건강식' },
-      second: { eng: 'Total', kor: '일반식' },
+      first: { eng: 'Total', kor: '일반식' },
+      second: { eng: 'Fitness', kor: '건강식' },
       barColor: '#11CF00',
       name: 'tf',
     },
@@ -114,6 +116,8 @@ function MemberSection({ groupId }: propsType) {
     isDeleteMukbotConfirmModalOpen,
     setIsDeleteMukbotConfirmModalOpen,
   ] = useState(false);
+  const [isOutMukboConfirmModalOpen, setIsOutMukboConfirmModalOpen] =
+    useState(false);
 
   const handleMukboInviteOpenModal = () => {
     setIsMukboInviteModalOpen(true);
@@ -129,8 +133,14 @@ function MemberSection({ groupId }: propsType) {
     setDeleteMukboId(mukboId);
   };
 
+  const handleOutMukboConfirmModal = (mukboId: number) => {
+    setIsOutMukboConfirmModalOpen(true);
+    setDeleteMukboId(mukboId);
+  };
+
   const handleCloseModal = () => {
     setIsDeleteMukbotConfirmModalOpen(false);
+    setIsOutMukboConfirmModalOpen(false);
     setIsMukboInviteModalOpen(false);
     setIsMukbotMakeModalOpen(false);
     setInputList({
@@ -152,6 +162,7 @@ function MemberSection({ groupId }: propsType) {
     setIsEmailValid(true);
     setIsNicknameValid(true);
     setIsMukbotnameValid(true);
+    setErrorMessage('');
   };
 
   const [inputList, setInputList] = useState({
@@ -205,7 +216,7 @@ function MemberSection({ groupId }: propsType) {
         'groupUserInfo.users.length: ',
         groupUserList.users.length
       );
-      console.log(groupUserList.users[0].name);
+      console.log(groupUserList);
     }
   }, [isUserPending, groupUserList]);
 
@@ -261,24 +272,32 @@ function MemberSection({ groupId }: propsType) {
     console.log('linkMukbotId: ', mukboId);
   };
 
-  const handleMukboInvite = () => {
+  const handleMukboInvite = async () => {
     const mukboInviteData = {
       email,
       nickname,
       mukbotId: linkMukbotId,
     };
     try {
-      postMukboInvite(groupId, mukboInviteData);
+      await postMukboInvite(groupId, mukboInviteData);
+      console.log('먹보 초대 데이터', mukboInviteData);
       setIsMukboInviteModalOpen(false);
+      queryClient.invalidateQueries({
+        queryKey: ['groupUserList'],
+      });
+      getGroupUserList(groupId);
+      queryClient.invalidateQueries({
+        queryKey: ['groupMukbotList'],
+      });
       getGroupMukbotList(groupId);
       setInputList({
         ...inputList,
         email: '',
         nickname: '',
       });
-    } catch (error) {
-      console.error('먹봇 초대 오류:', error);
-      // 오류 처리
+    } catch (e) {
+      console.error('먹봇 초대 오류:', e);
+      // 오류
     }
   };
 
@@ -300,16 +319,16 @@ function MemberSection({ groupId }: propsType) {
     setNs(newNs);
     setTf(newTf);
     setJp(newJp);
-    console.log('체크');
+    console.log('체크:', ei, ns, tf, jp);
 
     // mukbotMakeData 객체를 만들 때 이미 설정한 값을 사용합니다.
     const mukbotMakeData = {
       name: mukbotName,
       mbti: {
-        ei: Math.round((ei / 100) * 30),
-        ns: Math.round((ns / 100) * 30),
-        tf: Math.round((tf / 100) * 30),
-        jp: Math.round((jp / 100) * 30),
+        ei: Math.round((newEi / 100) * 30),
+        ns: Math.round((newNs / 100) * 30),
+        tf: Math.round((newTf / 100) * 30),
+        jp: Math.round((newJp / 100) * 30),
         mint: '15',
         pine: '15',
         die: '15',
@@ -324,6 +343,10 @@ function MemberSection({ groupId }: propsType) {
           try {
             console.log('처리중');
             postMukbotMake(groupId, mukbotMakeData);
+            queryClient.invalidateQueries({
+              queryKey: ['groupMukbotList'],
+            });
+            getGroupMukbotList(groupId);
             setIsMukbotMakeModalOpen(false);
             setInputList({
               ...inputList,
@@ -339,7 +362,6 @@ function MemberSection({ groupId }: propsType) {
               { percentage: 0 },
               { percentage: 0 },
             ]);
-            getGroupMukbotList(groupId);
           } catch (error) {
             console.error('먹봇 생성 오류:', error);
             // 오류 처리
@@ -356,11 +378,17 @@ function MemberSection({ groupId }: propsType) {
       queryClient.invalidateQueries({
         queryKey: ['groupMukbotList'],
       });
+      getGroupMukbotList(groupId);
+      queryClient.invalidateQueries({
+        queryKey: ['groupUserList'],
+      });
+      getGroupUserList(groupId);
     },
   });
   const handleDeleteMukbos = (mukboId: number) => {
     mutateDeleteMukbos(mukboId);
     setIsDeleteMukbotConfirmModalOpen(false);
+    setIsOutMukboConfirmModalOpen(false);
   };
 
   return (
@@ -372,22 +400,52 @@ function MemberSection({ groupId }: propsType) {
         clickEvent={handleMukboInviteOpenModal}
       >
         <div className={styles.memberCardBox}>
+          {/* {if groupUserList} */}
           {groupUserList &&
             groupUserList.users.length > 0 &&
             groupUserList.users.map(
-              (user: { name: string; mukBTI: string, mukboId: number }) => (
-                <SubMemberCard
-                  articleName="먹보"
-                  memberName={user.name}
-                  memberMBTI={user.mukBTI}
-                  buttonName="추방"
-                  clickEvent={() =>
-                    handleDeleteMukbotConfirmModal(user.mukboId)}
-                />
-              )
+              (user: {
+                name: string;
+                mukBTI: string;
+                mukboId: number;
+              }) =>
+                user.mukboId == myMukboId ? (
+                  <SubMemberCard
+                    articleName="먹보"
+                    memberName={user.name}
+                    memberMBTI={user.mukBTI}
+                    buttonName="나"
+                    clickEvent={() =>
+                      handleDeleteMukbotConfirmModal(user.mukboId)
+                    }
+                  />
+                ) : (
+                  <SubMemberCard
+                    articleName="먹보"
+                    memberName={user.name}
+                    memberMBTI={user.mukBTI}
+                    buttonName="추방"
+                    clickEvent={() =>
+                      handleDeleteMukbotConfirmModal(user.mukboId)
+                    }
+                  />
+                )
             )}
         </div>
       </SubMemberArticle>
+
+      {/* 먹봇 추방 확인 모달 */}
+      {isOutMukboConfirmModalOpen && (
+        <Modal clickEvent={handleCloseModal}>
+          <ConfirmModal
+            content="정말로 먹보를 추방하시겠습니까?"
+            yesEvent={() => handleDeleteMukbos(deleteMukboId)}
+            noEvent={() => {
+              setIsOutMukboConfirmModalOpen(false);
+            }}
+          />
+        </Modal>
+      )}
 
       {/* 먹보 초대 모달 */}
       {isMukboInviteModalOpen && (
@@ -466,6 +524,7 @@ function MemberSection({ groupId }: propsType) {
                 </div>
               </SubMemberArticle>
             </article>
+
             <button
               onClick={handleMukboInvite}
               className={buttonStyles.miniRoundedButton}
@@ -503,7 +562,7 @@ function MemberSection({ groupId }: propsType) {
                   buttonName="삭제"
                   // clickEvent={() => handleDeleteMukbos(user.mukboId)}
                   clickEvent={() =>
-                    handleDeleteMukbotConfirmModal(user.mukboId)
+                    handleOutMukboConfirmModal(user.mukboId)
                   }
                 />
               )
@@ -519,6 +578,7 @@ function MemberSection({ groupId }: propsType) {
             )}
         </div>
       </SubMemberArticle>
+
       {/* 먹봇 삭제 확인 모달 */}
       {isDeleteMukbotConfirmModalOpen && (
         <Modal clickEvent={handleCloseModal}>
@@ -563,14 +623,14 @@ function MemberSection({ groupId }: propsType) {
                   Math.round(bars[3].percentage) !== 0 ? (
                     <>
                       {Math.round(bars[0].percentage) <= 50
-                        ? 'I'
-                        : 'E'}
+                        ? 'E'
+                        : 'I'}
                       {Math.round(bars[1].percentage) <= 50
-                        ? 'S'
-                        : 'N'}
+                        ? 'N'
+                        : 'S'}
                       {Math.round(bars[2].percentage) <= 50
-                        ? 'F'
-                        : 'T'}
+                        ? 'T'
+                        : 'F'}
                       {Math.round(bars[3].percentage) <= 50
                         ? 'J'
                         : 'P'}
@@ -635,7 +695,8 @@ function MemberSection({ groupId }: propsType) {
               disabled={
                 !isMukbotnameValid ||
                 !mukbotName ||
-                (bars.length > 0 && bars.some(bar => !bar.percentage))
+                (bars.length > 0 &&
+                  bars.some((bar) => !bar.percentage))
               }
             >
               추가

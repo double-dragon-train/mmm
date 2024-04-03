@@ -40,6 +40,8 @@ interface userStoreType {
   setRefreshToken: (value: string) => void;
   isLogin: boolean;
   setIsLogin: (value: boolean) => void;
+  isRecorded: boolean;
+  setIsRecorded: (value: boolean) => void;
   mbtiKey: string;
   setMbtiKey: (value: string) => void;
   userMbti: mbtiType;
@@ -56,6 +58,8 @@ interface userStoreType {
   setTodayMemberList: (value: memberType[]) => void;
   nextMemberList: memberType[];
   setNextMemberList: (value: memberType[]) => void;
+  myMukboId: number;
+  setMyMukboId: (value: number) => void;
   recommendFoodList: foodType[];
   setRecommendFoodList: (value: foodType[]) => void;
 }
@@ -69,6 +73,8 @@ const userStore = create(
         set({ refreshToken: value }),
       isLogin: false,
       setIsLogin: (value: boolean) => set({ isLogin: value }),
+      isRecorded: false,
+      setIsRecorded: (value: boolean) => set({ isRecorded: value }),
       answerList: [],
       updateAnswerList: (value: answerType[]) =>
         set({ answerList: value }),
@@ -105,8 +111,9 @@ const userStore = create(
       setTodayMemberList: (value: memberType[]) =>
         set({ todayMemberList: value }),
       nextMemberList: [],
-      setNextMemberList: (value: memberType[]) =>
-        set({ nextMemberList: value }),
+      setNextMemberList: (value: memberType[]) => set({ nextMemberList: value }),
+      myMukboId: 0,
+      setMyMukboId: (value: number) => set({ myMukboId: value }),
       recommendFoodList: [],
       setRecommendFoodList: (value: foodType[]) =>
         set({ recommendFoodList: value }),

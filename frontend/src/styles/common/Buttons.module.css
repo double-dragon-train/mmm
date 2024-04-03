@@ -54,6 +54,15 @@
   color: rgba(255, 0, 0, 0.5);
 }
 
+.miniRedButton:disabled {
+  background-color: rgba(42, 67, 206, 0.3);
+  border: none;
+  color: white;
+  width: 36px;
+  border-radius: 50%;
+  margin: 0 7px;
+}
+
 .miniRoundedButton {
   font-size: 17px;
   width: 100px;
