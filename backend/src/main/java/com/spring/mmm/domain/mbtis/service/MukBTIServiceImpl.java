@@ -90,6 +90,7 @@ public class MukBTIServiceImpl implements MukBTIService {
 
         UserEntity user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+        user.recordMukBTIResult();
         MukboEntity mukboEntity = user.getMukboEntity();
 
         List<MukBTIResultEntity> originResult = user.getMukBTIResultEntities();

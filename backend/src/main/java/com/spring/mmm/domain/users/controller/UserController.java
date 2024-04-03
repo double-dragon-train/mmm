@@ -6,6 +6,7 @@ import com.spring.mmm.domain.mbtis.controller.request.MukBTIRequest;
 import com.spring.mmm.domain.mbtis.controller.response.MukBTIResponse;
 import com.spring.mmm.domain.mbtis.service.MukBTIService;
 import com.spring.mmm.domain.users.controller.request.*;
+import com.spring.mmm.domain.users.controller.response.LoginResponse;
 import com.spring.mmm.domain.users.controller.response.TokenResponse;
 import com.spring.mmm.domain.users.controller.response.UserInfoResponse;
 import com.spring.mmm.domain.users.exception.UserErrorCode;
@@ -40,8 +41,7 @@ public class UserController {
 
     @PostMapping("/join")
     public ResponseEntity<Void> join(@RequestBody UserJoinRequest userJoinRequest) {
-        log.error("쪼인!");
-        log.error("userRequest : {}", userJoinRequest.getEmail());
+
         userService.join(userJoinRequest);
 
         return ResponseEntity.ok().build();
@@ -62,13 +62,13 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenResponse> login(@RequestBody UserLoginRequest userLoginRequest, HttpServletResponse response) {
-
-        userService.login(userLoginRequest);
+    public ResponseEntity<LoginResponse> login(@RequestBody UserLoginRequest userLoginRequest, HttpServletResponse response) {
+        UserEntity user = userService.login(userLoginRequest)
+            .orElseThrow();
         TokenResponse token = jwtProvider.createTokenByLogin(userLoginRequest.getEmail());
-        response.addHeader(jwtProvider.AUTHORIZATION_HEADER, token.getAccessToken());
+        response.addHeader(JwtProvider.AUTHORIZATION_HEADER, token.getAccessToken());
 
-        return ResponseEntity.ok(token);
+        return ResponseEntity.ok(new LoginResponse(token.getAccessToken(), token.getRefreshToken(), user.getIsRecorded()));
     }
 
     @DeleteMapping("/logout")

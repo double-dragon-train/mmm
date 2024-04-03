@@ -200,7 +200,7 @@ public class WeatherService {
 
             RecommendedFoodEntity recommendedFoodEntity = RecommendedFoodEntity.create(randomFoodEntity,
                     RecommendCategory.WEATHER,
-                    foodRecommendRepository.findByRecommendDateAndMukgroupEntity_MukgroupId(LocalDate.now(), user.getMukboEntity().getMukgroupEntity().getMukgroupId())
+                    foodRecommendRepository.findByDateAndGroupId(LocalDate.now(), user.getMukboEntity().getMukgroupEntity().getMukgroupId())
                             .orElseThrow());
 
             recommendedFoodRepository.save(recommendedFoodEntity);

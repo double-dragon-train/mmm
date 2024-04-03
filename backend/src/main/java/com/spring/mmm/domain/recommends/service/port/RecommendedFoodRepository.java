@@ -19,7 +19,7 @@ public interface RecommendedFoodRepository {
 
     Boolean existsByDateAndGroupId(LocalDate date, Long groupId);
 
-    void deleteAllNormalByDateAndGroupId(LocalDate date, Long groupId, RecommendCategory category);
+    void deleteAllByDateAndGroupId(LocalDate date, Long groupId);
 
     void save(RecommendedFoodEntity recommendedFoodEntity);
 }

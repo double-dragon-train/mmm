@@ -113,7 +113,7 @@ class RecommendServiceImplTest {
         FoodRecommendEntity foodRecommendEntity = FoodRecommendEntity.builder()
                         .build();
 
-        BDDMockito.given(foodRecommendRepository.findByRecommendDateAndMukgroupEntity_MukgroupId(any(), any()))
+        BDDMockito.given(foodRecommendRepository.findByDateAndGroupId(any(), any()))
                         .willReturn(Optional.of(foodRecommendEntity));
 
         assertDoesNotThrow(() -> recommendService.newRecommendFood(1L));

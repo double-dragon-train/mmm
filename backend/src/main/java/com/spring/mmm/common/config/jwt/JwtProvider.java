@@ -8,7 +8,6 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,8 +21,6 @@ import org.springframework.util.StringUtils;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 @Component
@@ -36,7 +33,7 @@ public class JwtProvider {
     private static final String BEARER_PREFIX = "Bearer ";
 
     private static final long ACCESS_TOKEN_TIME =
-        1000 * 60 * 60 * 24 * 30L; // 30 분 1000ms(=1s) * 60(=1min) * 30 (=30min)
+        1000 * 60 * 30L; // 30 분 1000ms(=1s) * 60(=1min) * 30 (=30min)
     private static final long REFRESH_TOKEN_TIME = 1000 * 60 * 60 * 24 * 7L; // 7일
     public static final String CLAIM_KEY = "email";
 
