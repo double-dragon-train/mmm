@@ -1,5 +1,6 @@
 package com.spring.mmm.domain;
 
+import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.users.infra.UserDetailsImpl;
 import com.spring.mmm.domain.users.infra.UserEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,7 +16,10 @@ public class WithCustomMockUserSecurityContextFactory implements WithSecurityCon
     public SecurityContext createSecurityContext(CustomMockUser annotation) {
         String role = annotation.role();
 
-        UserEntity userEntity = UserEntity.builder().build();
+        MukboEntity mukbo = TestFixture.mukboEntityGroup;
+        UserEntity userEntity = UserEntity.builder()
+                .mukboEntity(mukbo)
+                .build();
 
         UserDetailsImpl user = UserDetailsImpl.builder()
                 .email(annotation.email())
