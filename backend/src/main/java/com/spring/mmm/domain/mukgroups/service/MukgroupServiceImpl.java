@@ -149,22 +149,13 @@ public class MukgroupServiceImpl implements MukgroupService{
 
         MukboEntity mukbo = user.getMukboEntity();
 
-        MukgroupEntity mukgroup = getMukgroupEntity(groupId);
+        MukgroupEntity mukgroup = mukbo.getMukgroupEntity();
         if(mukgroup.getIsSolo()){
             throw new MukGroupException(MukGroupErrorCode.SOLO_CANT_EXIT);
         }
-        Integer mukboCount = mukgroupRepository.countAllMukboByMukgroupId(user.getMukboEntity().getMukgroupEntity().getMukgroupId());
 
-        if(mukboCount == 1){
-            String originMukboName = user.getMukboEntity().getName();
-            mukgroupRepository.delete(user.getMukboEntity().getMukgroupEntity());
+        saveSoloMukGroup(user.getEmail());
 
-            MukgroupEntity mukgroupEntity = MukgroupEntity.create(user.getNickname(), Boolean.TRUE);
-            mukgroupRepository.save(mukgroupEntity);
-            mukboRepository.save(MukboEntity.createMukbo(originMukboName, MukboType.HUMAN, mukgroupEntity.getMukgroupId(), user));
-        } else {
-            saveSoloMukGroup(user.getEmail());
-        }
         Events.raise(new MukboExitedEvent(mukbo.getName(), groupId));
     }
 
