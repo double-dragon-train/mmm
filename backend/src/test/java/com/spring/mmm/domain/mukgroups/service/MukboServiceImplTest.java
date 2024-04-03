@@ -52,6 +52,7 @@ class MukboServiceImplTest {
     private MukboServiceImpl mukboService;
 
     private static MukboEntity mukboEntity;
+    private static MukboEntity anotherGroupMukbo;
     private static MukboEntity mukbotEntity;
     private static MukboEntity soloMukboEntity;
     private static MBTI mbti;
@@ -60,6 +61,7 @@ class MukboServiceImplTest {
     private static List<MukBTIResultEntity> mukBTIResultEntities;
     private static List<MukBTIEntity> mukBTIEntities;
     private static UserEntity user;
+    private static UserEntity anotherGroupUser;
     private static UserEntity sologroupUser;
     private static MukbotCreateRequest mukbotCreateRequest;
     private static MukgroupEntity mukgroupEntity;
@@ -101,6 +103,7 @@ class MukboServiceImplTest {
                 .name("123")
                 .isSolo(Boolean.FALSE)
                 .build();
+
         soloMukgroupEntity = MukgroupEntity.builder()
                 .mukgroupId(2L)
                 .name("456")
@@ -108,8 +111,8 @@ class MukboServiceImplTest {
                 .build();
 
         mukboInviteRequest = MukboInviteRequest.builder()
-                .email("ssafy@ssafy.com")
-                .nickname("ssafy")
+                .email("ssafy2@ssafy.com")
+                .nickname("ssafy2")
                 .mukbotId(1L)
                 .build();
         // 먹보초대
@@ -128,6 +131,22 @@ class MukboServiceImplTest {
                 .mukBTIResultEntities(mukBTIResultEntities)
                 .build();
         // 먹보
+
+        mukboEntity = MukboEntity.builder()
+                .mukboId(1L)
+                .type(MukboType.HUMAN)
+                .name("mukbo")
+                .mukgroupEntity(mukgroupEntity)
+                .mukBTIResultEntities(mukBTIResultEntities)
+                .build();
+
+        anotherGroupMukbo = MukboEntity.builder()
+                .mukboId(2L)
+                .type(MukboType.HUMAN)
+                .name("mukbo")
+                .mukgroupEntity(soloMukgroupEntity)
+                .mukBTIResultEntities(mukBTIResultEntities)
+                .build();
         
         soloMukboEntity = MukboEntity.builder()
                 .mukboId(3L)
@@ -146,14 +165,23 @@ class MukboServiceImplTest {
                 .build();
         // 먹봇
 
-        user = UserEntity.builder()
+        anotherGroupUser = UserEntity.builder()
                 .id(1L)
-                .email("ssafy@ssafy.com")
-                .nickname("ssafy")
-                .mukboEntity(mukboEntity)
+                .email("ssafy2@ssafy.com")
+                .nickname("ssafy2")
+                .mukboEntity(anotherGroupMukbo)
                 .mukBTIResultEntities(mukBTIResultEntities)
                 .build();
         // 유저
+
+        user = UserEntity.builder()
+                .id(2L)
+                .email("ssafy1@ssafy.com")
+                .nickname("ssafy1")
+                .mukboEntity(mukboEntity)
+                .mukBTIResultEntities(mukBTIResultEntities)
+                .build();
+        // 타그룹유저
 
         sologroupUser = UserEntity.builder()
                 .id(1L)
@@ -190,15 +218,13 @@ class MukboServiceImplTest {
 
     @Test
     void 먹보초대_성공(){
-
-        BDDMockito.given(mukboRepository.findByUserId(any()))
-                .willReturn(Optional.of(mukboEntity));
         
         BDDMockito.given(mukboRepository.findByMukboId(any()))
-                .willReturn(Optional.of(mukboEntity));
+                .willReturn(Optional.of(soloMukboEntity));
 
         BDDMockito.given(userRepository.findByEmail(any()))
-                        .willReturn(Optional.of(user));
+                .willReturn(Optional.of(user))
+                .willReturn(Optional.of(anotherGroupUser));
         
         assertDoesNotThrow(() -> mukboService.inviteMukbo(user.getEmail(), 1L, mukboInviteRequest));
     }

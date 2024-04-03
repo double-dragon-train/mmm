@@ -250,9 +250,6 @@ class MukgroupServiceImplTest {
         BDDMockito.given(mukgroupRepository.countAllMukboByMukgroupId(any()))
                 .willReturn(1);
 
-        BDDMockito.given(mukboRepository.findByUserId(any()))
-                .willReturn(Optional.of(mukboEntitySologroup));
-
         BDDMockito.given(mukgroupRepository.findByMukgroupId(any()))
                         .willReturn(Optional.of(mukgroupEntity));
 
