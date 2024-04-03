@@ -13,7 +13,7 @@ interface propsType {
   groupId: number;
 }
 function MainRecommendSection({ groupId }: propsType) {
-  const { groupMbti } = userStore();
+  const { groupMbti, recommendFoodList, setRecommendFoodList } = userStore();
   const [selectedFoodId, setSelectedFoodId] = useState<number | null>(
     null
   );
@@ -43,6 +43,12 @@ function MainRecommendSection({ groupId }: propsType) {
     ),
   });
 
+  useEffect(() => {
+    if (mainRecommendFoodList) {
+      setRecommendFoodList(mainRecommendFoodList)
+    }
+  }, [mainRecommendFoodList])
+
   const closeSelectedFoodModal = () => {
     setIsSelectedFoodModalOpen(false);
   };
@@ -62,7 +68,7 @@ function MainRecommendSection({ groupId }: propsType) {
     }
   }, [selectedFoodId]);
 
-  if (isPending) {
+  if (isPending || recommendFoodList.length === 0) {
     return <div>isLoding...</div>;
   }
   if (isError) {
@@ -81,14 +87,17 @@ function MainRecommendSection({ groupId }: propsType) {
       <main>
         {isRouletteOpen ? (
           <Roullete
-            mainRecommendFoodList={mainRecommendFoodList}
+            // mainRecommendFoodList={mainRecommendFoodList}
+            mainRecommendFoodList={recommendFoodList}
             openSelectedFoodModal={openSelectedFoodModal}
             setSelectedFoodId={setSelectedFoodId}
           />
         ) : (
           <div className={styles.recommendFoodBox}>
-            <img src={mainRecommendFoodList[0].image} alt="" />
-            <span>{mainRecommendFoodList[0].name}</span>
+            {/* <img src={mainRecommendFoodList[0].image} alt="" /> */}
+            <img src={recommendFoodList[0].image} alt="" />
+            {/* <span>{mainRecommendFoodList[0].name}</span> */}
+            <span>{recommendFoodList[0].name}</span>
           </div>
         )}
       </main>

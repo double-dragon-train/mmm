@@ -10,6 +10,8 @@ $color-user: #0e26ae;
   align-items: center;
   overflow-y: scroll;
   gap: 12px;
+  // background-color: aqua;
+  // justify-content: center;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -164,12 +166,12 @@ $color-user: #0e26ae;
 
 .groupSection {
   width: 95%;
-  min-height: 400px;
   background-color: rgba($color-main, 0.03);
   border-radius: 5px;
   padding: 12px 24px;
   position: relative;
-  overflow: hidden;
+  flex: 1;
+  // min-height: 300px;
   .header {
     display: flex;
     justify-content: space-between;
@@ -251,7 +253,7 @@ $color-user: #0e26ae;
         display: flex;
         flex-direction: column;
         gap: 5px;
-        overflow-y: scroll;
+        overflow-y: auto;
         min-height: 50px;
         max-height: 160px;
         &::-webkit-scrollbar {
@@ -502,7 +504,10 @@ button:active {
     display: flex;
     align-items: center;
     gap: 12px;
+    width: 100%;
+    margin-bottom: 15px;
     > h2 {
+      text-align: left;
       font-weight: 100;
       font-size: 17px;
       color: rgba($color-main, 0.8);
@@ -526,44 +531,89 @@ button:active {
   .todayMemberSection {
     background-color: rgba($color-main, 0.03);
     border-radius: 5px;
-    max-height: 260px;
+    padding: 12px 0px 12px 12px;
     position: relative;
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 5px;
-    padding: 12px;
+    align-items: flex-start;
+    max-height: 260px;
+    margin-bottom: 12px;
     > h5 {
       position: absolute;
       left: 12px;
-      top: -5px;
+      top: -10px;
       font-size: 14px;
       color: rgba($color-main, 0.7);
       text-shadow: 1px 0px white 0px 1px white -1px 0px white 0px -1px
         white;
     }
-    .memberBox {
-      height: 50px;
+    .todayMemberBox {
+      max-height: 260px;
+      width: 100%;
       display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+      padding-right: 5px;
+      min-height: 50px;
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
 
-      .memberWhiteBox {
-        height: 50px;
-        background-color: white;
-        display: flex;
-        align-items: center;
-        width: 80%;
-        border-radius: 5px;
-        padding: 0px 24px;
-        gap: 5px;
-        .memberName {
-          font-size: 16px;
-          color: rgba(black, 0.7);
-          width: 80%;
-          text-align: left;
+      &::-webkit-scrollbar-thumb {
+        background-color: rgba($color-main, 0.2);
+        border-radius: 10px;
+        background-clip: padding-box;
+        border: 2px solid transparent;
+        &:hover {
+          background-color: rgba($color-main, 0.4);
         }
-        .memberMBTI {
-          font-size: 16px;
-          color: rgba(black, 0.8);
+      }
+
+      &::-webkit-scrollbar-track {
+        background-color: rgba(220, 220, 220, 0.7);
+        border-radius: 10px;
+        /* box-shadow: inset 0px 0px 5px white; */
+      }
+
+      .memberBox {
+        height: 50px;
+        display: flex;
+        width: 100%;
+        align-items: center;
+        gap: 12px;
+        .memberWhiteBox {
+          height: 50px;
+          background-color: white;
+          display: flex;
+          align-items: center;
+          width: 90%;
+          border-radius: 5px;
+          padding: 0px 24px;
+          gap: 5px;
+          .memberName {
+            font-size: 16px;
+            color: rgba(black, 0.7);
+            width: 80%;
+            text-align: left;
+          }
+          .memberMBTI {
+            font-size: 16px;
+            color: rgba(black, 0.8);
+          }
+        }
+        .changeButton {
+          width: 30px;
+          height: 30px;
+          aspect-ratio: 1/1;
+          background-color: rgba($color-main, 0.2);
+          color: #7789ed;
+          border-radius: 50%;
+          font-size: 17px;
+          font-weight: bold;
+          margin-right: 8px;
         }
       }
     }
@@ -571,22 +621,93 @@ button:active {
   .nextMemberSection {
     background-color: rgba($color-main, 0.03);
     border-radius: 5px;
-    max-height: 130px;
+    padding: 12px 0px 12px 12px;
     position: relative;
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 5px;
-    padding: 12px;
+    align-items: flex-start;
+    max-height: 150px;
+
     > h5 {
       position: absolute;
       left: 12px;
-      top: -5px;
-      position: absolute;
+      top: -10px;
       font-size: 14px;
       color: rgba($color-gray, 0.8);
       text-shadow: 1px 0px white 0px 1px white -1px 0px white 0px -1px
         white;
+    }
+
+    .todayMemberBox {
+      max-height: 115px;
+      min-height: 50px;
+      // background-color: aqua;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+      padding-right: 5px;
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: rgba($color-main, 0.2);
+        border-radius: 10px;
+        background-clip: padding-box;
+        border: 2px solid transparent;
+        &:hover {
+          background-color: rgba($color-main, 0.4);
+        }
+      }
+
+      &::-webkit-scrollbar-track {
+        background-color: rgba(220, 220, 220, 0.7);
+        border-radius: 10px;
+        /* box-shadow: inset 0px 0px 5px white; */
+      }
+      .memberBox {
+        height: 50px;
+        display: flex;
+        width: 100%;
+        align-items: center;
+        gap: 12px;
+        .memberWhiteBox {
+          height: 50px;
+          background-color: white;
+          display: flex;
+          align-items: center;
+          width: 90%;
+          border-radius: 5px;
+          padding: 0px 24px;
+          gap: 5px;
+
+          .memberName {
+            font-size: 16px;
+            color: rgba(black, 0.7);
+            width: 80%;
+            text-align: left;
+          }
+          .memberMBTI {
+            font-size: 16px;
+            color: rgba(black, 0.8);
+          }
+        }
+        .changeButton {
+          width: 30px;
+          height: 30px;
+          aspect-ratio: 1/1;
+          background-color: rgba($color-main, 0.2);
+          color: #7789ed;
+          border-radius: 50%;
+          font-size: 17px;
+          font-weight: bold;
+          margin-right: 8px;
+        }
+      }
     }
   }
 }
