@@ -2,6 +2,10 @@ package com.spring.mmm.domain.users.service;
 
 import com.spring.mmm.common.config.RedisDao;
 import com.spring.mmm.common.config.jwt.JwtProvider;
+import com.spring.mmm.domain.mbtis.domain.MukBTIEntity;
+import com.spring.mmm.domain.mbtis.domain.MukBTIResultEntity;
+import com.spring.mmm.domain.mbtis.service.port.MukBTIRepository;
+import com.spring.mmm.domain.mbtis.service.port.MukBTIResultRepository;
 import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.mukgroups.domain.MukboType;
 import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
@@ -26,6 +30,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -39,6 +45,8 @@ public class UserServiceImpl implements UserService{
     private final MukgroupRepository mukgroupRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
+    private final MukBTIRepository mukBTIRepository;
+    private final MukBTIResultRepository mukBTIResultRepository;
     private final RedisDao redisDao;
 
 
@@ -62,6 +70,15 @@ public class UserServiceImpl implements UserService{
         mukgroupRepository.save(mukgroupEntity);
         UserEntity user = UserEntity.create(userJoinRequest, encodedPW, mukgroupEntity.getMukgroupId());
         userRepository.create(user);
+
+        List<MukBTIEntity> mukBTIEntities = mukBTIRepository.findAllMukBTI();
+        List<MukBTIResultEntity> mukBTIResultEntities = new ArrayList<>();
+        for(MukBTIEntity mukBTI : mukBTIEntities){
+            mukBTIResultEntities.add(
+                    MukBTIResultEntity.createByType(15, mukBTI, user.getMukboEntity(), user)
+            );
+        }
+        mukBTIResultRepository.saveAll(mukBTIResultEntities);
     }
 
     @Override
