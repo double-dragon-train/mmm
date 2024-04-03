@@ -7,10 +7,14 @@ import com.spring.mmm.domain.mbtis.domain.MBTI;
 import com.spring.mmm.domain.mukgroups.controller.request.*;
 import com.spring.mmm.domain.mukgroups.controller.response.MukboResponse;
 import com.spring.mmm.domain.mukgroups.controller.response.MukbosResponse;
+import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
 import com.spring.mmm.domain.mukgroups.domain.MukboType;
+import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
 import com.spring.mmm.domain.mukgroups.service.MukboService;
 import com.spring.mmm.domain.mukgroups.service.MukgroupService;
 import com.spring.mmm.domain.muklogs.service.MuklogService;
+import com.spring.mmm.domain.users.infra.UserEntity;
+import com.spring.mmm.domain.users.service.port.UserRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
@@ -28,6 +32,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -51,11 +56,17 @@ class MukGroupControllerTest {
     @MockBean
     private MukgroupService mukgroupService;
 
+    @MockBean
+    private UserRepository userRepository;
+
     @InjectMocks
     private MukGroupController mukGroupController;
 
     private static ObjectMapper objectMapper;
     private static MBTI mbti;
+    private static UserEntity user;
+    private static MukboEntity mukboEntity;
+    private static MukgroupEntity mukgroupEntity;
 
     @BeforeAll
     static void 자료장전(){
@@ -72,6 +83,22 @@ class MukGroupControllerTest {
                 .die(100)
                 .build();
         // 먹비티아이 장전
+
+        mukgroupEntity = MukgroupEntity.create("123", Boolean.FALSE);
+        mukboEntity = MukboEntity.builder()
+                .mukboId(1L)
+                .name("123123")
+                .type(MukboType.HUMAN)
+                .mukgroupEntity(mukgroupEntity)
+                .build();
+        user = UserEntity.builder()
+                .id(1L)
+                .email("ssafy@ssafy.com")
+                .nickname("ssafy")
+                .isRecorded(Boolean.FALSE)
+                .mukboEntity(mukboEntity)
+                .build();
+
     }
 
     @CustomMockUser

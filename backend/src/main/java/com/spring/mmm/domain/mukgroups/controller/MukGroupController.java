@@ -33,7 +33,7 @@ public class MukGroupController {
 
     @GetMapping
     public ResponseEntity<MukgroupResponse> findMukgroup(@AuthenticationPrincipal UserDetailsImpl user){
-        return ResponseEntity.ok(MukgroupResponse.createByMukgroupEntity(mukgroupService.findMyMukgroup(user.getEmail())));
+        return ResponseEntity.ok(MukgroupResponse.createByMukgroupEntity(mukgroupService.findMyMukgroup(user.getEmail()), user.getUser().getMukboEntity()));
     }
 
     @PostMapping
