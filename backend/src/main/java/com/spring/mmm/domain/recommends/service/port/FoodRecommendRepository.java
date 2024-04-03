@@ -12,5 +12,5 @@ public interface FoodRecommendRepository {
 
     void saveFoodRecommend(FoodRecommendEntity foodRecommendEntity);
 
-    Optional<FoodRecommendEntity> findByRecommendDateAndMukgroupEntity_MukgroupId(LocalDate date, Long mukgroupId);
+    Optional<FoodRecommendEntity> findByDateAndGroupId(LocalDate date, Long mukgroupId);
 }

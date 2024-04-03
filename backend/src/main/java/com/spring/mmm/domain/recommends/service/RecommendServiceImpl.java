@@ -11,6 +11,7 @@ import com.spring.mmm.domain.recommends.controller.request.LunchRecommendRequest
 import com.spring.mmm.domain.recommends.controller.request.NowRequest;
 import com.spring.mmm.domain.recommends.controller.response.FoodInformation;
 import com.spring.mmm.domain.recommends.controller.response.LunchRecommendFoodInformation;
+import com.spring.mmm.domain.recommends.controller.response.ModifiedRecommendInfo;
 import com.spring.mmm.domain.recommends.controller.response.NewRecommendedFoodInformation;
 import com.spring.mmm.domain.recommends.domain.*;
 import com.spring.mmm.domain.recommends.service.port.EatenMukboRepository;
@@ -73,7 +74,7 @@ public class RecommendServiceImpl implements RecommendService{
         MukgroupEntity mukgroup = mukgroupRepository.findByMukgroupId(mukgroupId)
                 .orElseThrow();
 
-        FoodRecommendEntity foodRecommendEntity = foodRecommendRepository.findByRecommendDateAndMukgroupEntity_MukgroupId(date, mukgroupId)
+        FoodRecommendEntity foodRecommendEntity = foodRecommendRepository.findByDateAndGroupId(date, mukgroupId)
                 .orElseGet(() -> FoodRecommendEntity.create(mukgroup));
 
         foodRecommendRepository.saveFoodRecommend(foodRecommendEntity);
@@ -89,7 +90,7 @@ public class RecommendServiceImpl implements RecommendService{
         }
 
         if (recommendedFoodRepository.existsByDateAndGroupId(date, mukgroupId)) {
-            recommendedFoodRepository.deleteAllNormalByDateAndGroupId(date, mukgroupId, NORMAL);
+            recommendedFoodRepository.deleteAllByDateAndGroupId(date, mukgroupId);
         }
         lunchList
                 .forEach(lunch -> {
@@ -102,20 +103,17 @@ public class RecommendServiceImpl implements RecommendService{
 
     @Transactional
     @Override
-    public void modifyNowMukbos(Long mukgroupId, NowRequest nowRequest) {
+    public ModifiedRecommendInfo modifyNowMukbos(Long mukgroupId, NowRequest nowRequest) {
         LocalDate date = LocalDate.now();
         eatenMukboRepository.deleteAllByDateAndGroupId(date, mukgroupId);
 
         FoodRecommendEntity foodRecommendEntity =
-                foodRecommendRepository.findByRecommendDateAndMukgroupEntity_MukgroupId(
-                        date, mukgroupId
-                        ).orElseThrow();
+                foodRecommendRepository.findByDateAndGroupId(date, mukgroupId).orElseThrow();
 
         for (Long mukboId : nowRequest.getNowMukbos()) {
             MukboEntity mukboEntity = mukboRepository.findByMukboId(mukboId)
                             .orElseThrow();
-            eatenMukboRepository.save(
-                    EatenMukboEntity.create(mukboEntity, foodRecommendEntity));
+            eatenMukboRepository.save(EatenMukboEntity.create(mukboEntity, foodRecommendEntity));
         }
 
         MBTI newMBTI =
@@ -131,10 +129,13 @@ public class RecommendServiceImpl implements RecommendService{
         List<LunchRecommendFoodInformation> newLunchList = lunchRecommendFood(newLunchRecommend);
 
         saveRecommend(mukgroupId, newLunchList);
+
+        return ModifiedRecommendInfo.create(newMBTI, newLunchList);
     }
 
     @Override
     public NewRecommendedFoodInformation newRecommendFood(Long mukgroupId) {
+
         List<Integer> eatenFoodIds = recommendedFoodRepository.findAllFoodIdByMukgroupId(mukgroupId);
         List<FoodEntity> foods =
                 foodRepository.findAll()
@@ -146,12 +147,12 @@ public class RecommendServiceImpl implements RecommendService{
 
         RecommendedFoodEntity recommendedFoodEntity = RecommendedFoodEntity.create(foods.getFirst(),
                 RecommendCategory.NEW,
-                foodRecommendRepository.findByRecommendDateAndMukgroupEntity_MukgroupId(LocalDate.now(), mukgroupId)
+                foodRecommendRepository.findByDateAndGroupId(LocalDate.now(), mukgroupId)
                         .orElseThrow());
 
         recommendedFoodRepository.save(recommendedFoodEntity);
-
         return NewRecommendedFoodInformation.create(foods.getFirst());
+
     }
 
     private int getScoreByFoodMukBTI(LunchRecommendRequest lunchRecommendRequest, FoodEntity foodOne, FoodEntity foodTwo){

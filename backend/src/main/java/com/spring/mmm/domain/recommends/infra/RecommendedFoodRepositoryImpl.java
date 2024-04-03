@@ -41,12 +41,12 @@ public class RecommendedFoodRepositoryImpl implements RecommendedFoodRepository 
 
     @Override
     public Boolean existsByDateAndGroupId(LocalDate date, Long groupId) {
-        return recommendedFoodJpaRepository.existsByFoodRecommendEntity_RecommendDateAndFoodRecommendEntity_MukgroupEntity_MukgroupId(date, groupId);
+        return recommendedFoodJpaRepository.existsByDateAndGroupId(date, groupId);
     }
 
     @Override
-    public void deleteAllNormalByDateAndGroupId(LocalDate date, Long groupId, RecommendCategory category) {
-        recommendedFoodJpaRepository.deleteAllByFoodRecommendEntity_RecommendDateAndFoodRecommendEntity_MukgroupEntity_MukgroupIdAndCategory(date, groupId, category);
+    public void deleteAllByDateAndGroupId(LocalDate date, Long groupId) {
+        recommendedFoodJpaRepository.deleteAllByDateAndGroupId(date, groupId);
     }
 
     @Override

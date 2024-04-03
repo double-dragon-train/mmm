@@ -21,15 +21,12 @@ public class EatenMukboRepositoryImpl implements EatenMukboRepository {
 
     @Override
     public void deleteAllByDateAndGroupId(LocalDate date, Long groupId) {
-        eatenMukboJpaRepository.deleteAllByFoodRecommendEntity_RecommendDateAndMukboEntity_MukgroupEntity_MukgroupId(
-                date, groupId
-        );
+        eatenMukboJpaRepository.deleteAllByDateAndGroupId(date, groupId);
     }
 
     @Override
     public Boolean existsByDateAndGroupId(LocalDate date, Long groupId) {
-        return eatenMukboJpaRepository.existsByFoodRecommendEntity_RecommendDateAndMukboEntity_MukgroupEntity_MukgroupId(
-                date, groupId);
+        return eatenMukboJpaRepository.existsByDateAndGroupId(date, groupId);
     }
 
 
