@@ -40,8 +40,7 @@ public class UserController {
 
     @PostMapping("/join")
     public ResponseEntity<Void> join(@RequestBody UserJoinRequest userJoinRequest) {
-        log.error("쪼인!");
-        log.error("userRequest : {}", userJoinRequest.getEmail());
+
         userService.join(userJoinRequest);
 
         return ResponseEntity.ok().build();

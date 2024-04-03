@@ -30,11 +30,9 @@ public class FoodRecommendRepositoryImpl implements FoodRecommendRepository {
     }
 
     @Override
-    public Optional<FoodRecommendEntity> findByRecommendDateAndMukgroupEntity_MukgroupId(LocalDate date, Long mukgroupId) {
+    public Optional<FoodRecommendEntity> findByDateAndGroupId(LocalDate date, Long mukgroupId) {
         return foodRecommendJpaRepository.findByRecommendDateAndMukgroupEntity_MukgroupId(date, mukgroupId);
     }
-
-
 
 
 }

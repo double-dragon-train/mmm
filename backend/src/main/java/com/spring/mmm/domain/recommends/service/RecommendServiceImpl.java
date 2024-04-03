@@ -73,7 +73,7 @@ public class RecommendServiceImpl implements RecommendService{
         MukgroupEntity mukgroup = mukgroupRepository.findByMukgroupId(mukgroupId)
                 .orElseThrow();
 
-        FoodRecommendEntity foodRecommendEntity = foodRecommendRepository.findByRecommendDateAndMukgroupEntity_MukgroupId(date, mukgroupId)
+        FoodRecommendEntity foodRecommendEntity = foodRecommendRepository.findByDateAndGroupId(date, mukgroupId)
                 .orElseGet(() -> FoodRecommendEntity.create(mukgroup));
 
         foodRecommendRepository.saveFoodRecommend(foodRecommendEntity);
@@ -89,7 +89,7 @@ public class RecommendServiceImpl implements RecommendService{
         }
 
         if (recommendedFoodRepository.existsByDateAndGroupId(date, mukgroupId)) {
-            recommendedFoodRepository.deleteAllNormalByDateAndGroupId(date, mukgroupId, NORMAL);
+            recommendedFoodRepository.deleteAllByDateAndGroupId(date, mukgroupId);
         }
         lunchList
                 .forEach(lunch -> {
@@ -107,7 +107,7 @@ public class RecommendServiceImpl implements RecommendService{
         eatenMukboRepository.deleteAllByDateAndGroupId(date, mukgroupId);
 
         FoodRecommendEntity foodRecommendEntity =
-                foodRecommendRepository.findByRecommendDateAndMukgroupEntity_MukgroupId(
+                foodRecommendRepository.findByDateAndGroupId(
                         date, mukgroupId
                         ).orElseThrow();
 
@@ -135,6 +135,7 @@ public class RecommendServiceImpl implements RecommendService{
 
     @Override
     public NewRecommendedFoodInformation newRecommendFood(Long mukgroupId) {
+
         List<Integer> eatenFoodIds = recommendedFoodRepository.findAllFoodIdByMukgroupId(mukgroupId);
         List<FoodEntity> foods =
                 foodRepository.findAll()
@@ -146,12 +147,12 @@ public class RecommendServiceImpl implements RecommendService{
 
         RecommendedFoodEntity recommendedFoodEntity = RecommendedFoodEntity.create(foods.getFirst(),
                 RecommendCategory.NEW,
-                foodRecommendRepository.findByRecommendDateAndMukgroupEntity_MukgroupId(LocalDate.now(), mukgroupId)
+                foodRecommendRepository.findByDateAndGroupId(LocalDate.now(), mukgroupId)
                         .orElseThrow());
 
         recommendedFoodRepository.save(recommendedFoodEntity);
-
         return NewRecommendedFoodInformation.create(foods.getFirst());
+
     }
 
     private int getScoreByFoodMukBTI(LunchRecommendRequest lunchRecommendRequest, FoodEntity foodOne, FoodEntity foodTwo){

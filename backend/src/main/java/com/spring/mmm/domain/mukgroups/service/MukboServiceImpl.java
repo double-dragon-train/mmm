@@ -161,10 +161,6 @@ public class MukboServiceImpl implements MukboService{
         // 원래 mbti가 없는경우
         List<MukBTIEntity> mukBTIs = mukBTIRepository.findAllMukBTI();
         for(MukBTIEntity mukBTI : mukBTIs){
-//            Field field = mbti.getClass().getDeclaredField(mukBTI.getType().getTemp());
-//            field.setAccessible(true);
-//            Integer value = field.get(mbti);
-//            results.add(MukBTIResultEntity.createByType(value, mukBTI, mukbo, user));
             switch (mukBTI.getType()){
                 case MukBTIType.EI -> results.add(MukBTIResultEntity.createByType(mbti.getEi(), mukBTI, mukbo));
                 case MukBTIType.NS -> results.add(MukBTIResultEntity.createByType(mbti.getNs(), mukBTI, mukbo));
