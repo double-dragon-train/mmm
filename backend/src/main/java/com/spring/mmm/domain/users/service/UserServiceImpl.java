@@ -2,8 +2,6 @@ package com.spring.mmm.domain.users.service;
 
 import com.spring.mmm.common.config.RedisDao;
 import com.spring.mmm.common.config.jwt.JwtProvider;
-import com.spring.mmm.domain.mukgroups.domain.MukboEntity;
-import com.spring.mmm.domain.mukgroups.domain.MukboType;
 import com.spring.mmm.domain.mukgroups.domain.MukgroupEntity;
 import com.spring.mmm.domain.mukgroups.service.port.MukboRepository;
 import com.spring.mmm.domain.mukgroups.service.port.MukgroupRepository;

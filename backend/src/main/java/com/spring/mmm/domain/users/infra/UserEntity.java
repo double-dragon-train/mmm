@@ -31,6 +31,9 @@ public class UserEntity {
     private String nickname;
     private String password;
 
+    @Column(name = "is_recorded")
+    private Boolean isRecorded;
+
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "userEntity", cascade = CascadeType.PERSIST)
     private MukboEntity mukboEntity;
 
@@ -43,9 +46,14 @@ public class UserEntity {
             .email(userJoinRequest.getEmail())
             .nickname(userJoinRequest.getNickname())
             .password(encodedPW)
+            .isRecorded(false)
             .build();
         user.mukboEntity = MukboEntity.createMukbo(userJoinRequest.getNickname(), MukboType.HUMAN, groupId, user);
         return user;
+    }
+
+    public void recordMukBTIResult(){
+        this.isRecorded = true;
     }
 
     public void modify(String nickname, String password) {
