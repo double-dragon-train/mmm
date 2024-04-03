@@ -50,6 +50,15 @@ public class MukBTIResultEntity {
                 .build();
     }
 
+    public static MukBTIResultEntity createByType(Integer score, MukBTIEntity mukBTIEntity, MukboEntity mukboEntity, UserEntity user){
+        return MukBTIResultEntity.builder()
+                .score(score)
+                .mukBTIEntity(mukBTIEntity)
+                .mukboEntity(mukboEntity)
+                .userEntity(user)
+                .build();
+    }
+
     public static MukBTIResultEntity createWithoutScore(MukBTIEntity mukBTIEntity, MukboEntity mukboEntity, UserEntity userEntity){
         return MukBTIResultEntity.builder()
                 .mukBTIEntity(mukBTIEntity)
