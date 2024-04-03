@@ -146,7 +146,7 @@ public class RecommendServiceImpl implements RecommendService{
 
     }
 
-    public RecommendedFoodEntity newRecommendCreate(Long mukgroupId) {
+    private RecommendedFoodEntity newRecommendCreate(Long mukgroupId) {
         List<Integer> eatenFoodIds = recommendedFoodRepository.findAllFoodIdByMukgroupId(mukgroupId);
         List<FoodEntity> foods =
                 foodRepository.findAll()

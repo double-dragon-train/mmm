@@ -210,7 +210,7 @@ public class WeatherService {
         return null;
     }
 
-    public RecommendedFoodEntity weatherRecommendCreate(UserDetailsImpl userDetails, Integer weatherId) {
+    private RecommendedFoodEntity weatherRecommendCreate(UserDetailsImpl userDetails, Integer weatherId) {
 
             List<FoodEntity> foodEntities = foodRepository.findByWeatherId(weatherId);
 
