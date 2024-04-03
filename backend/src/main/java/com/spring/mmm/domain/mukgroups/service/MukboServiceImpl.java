@@ -79,7 +79,8 @@ public class MukboServiceImpl implements MukboService{
             throw new MukGroupException(MukGroupErrorCode.SOLOGROUP_CANT_INVITE);
         }
 
-        if(mukboInviteRequest.getMukbotId() != null) {
+        if(mukboInviteRequest.getMukbotId() != null
+        && mukboInviteRequest.getMukbotId() != 0L) {
             mukboRepository.delete(mukboRepository.findByMukboId(mukboInviteRequest.getMukbotId())
                     .orElseThrow(() -> new MukboException(MukboErrorCode.NOT_FOUND)));
         }
