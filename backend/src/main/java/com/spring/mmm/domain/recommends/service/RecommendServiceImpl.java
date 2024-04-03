@@ -81,7 +81,7 @@ public class RecommendServiceImpl implements RecommendService{
 
         List<MukboEntity> mukboEntities = mukboRepository.findAllMukboByGroupId(mukgroupId);
 
-        // 하나도 없으면 => 새로 다 만들기
+        // 하나도 없으면 => 먹먹보 새로 다 만들기
         if (!eatenMukboRepository.existsByDateAndGroupId(date, mukgroupId)){
             mukboEntities.forEach(mukbo -> {
                 EatenMukboEntity eatenMukboEntity = EatenMukboEntity.create(mukbo, foodRecommendEntity);
@@ -90,7 +90,7 @@ public class RecommendServiceImpl implements RecommendService{
         }
 
         if (recommendedFoodRepository.existsByDateAndGroupId(date, mukgroupId)) {
-            recommendedFoodRepository.deleteAllByDateAndGroupId(date, mukgroupId);
+            recommendedFoodRepository.deleteAllNormalByDateAndGroupId(date, mukgroupId);
         }
         lunchList
                 .forEach(lunch -> {
@@ -104,6 +104,7 @@ public class RecommendServiceImpl implements RecommendService{
     @Transactional
     @Override
     public ModifiedRecommendInfo modifyNowMukbos(Long mukgroupId, NowRequest nowRequest) {
+
         LocalDate date = LocalDate.now();
         eatenMukboRepository.deleteAllByDateAndGroupId(date, mukgroupId);
 
@@ -136,12 +137,22 @@ public class RecommendServiceImpl implements RecommendService{
     @Override
     public NewRecommendedFoodInformation newRecommendFood(Long mukgroupId) {
 
+        RecommendedFoodEntity recommendedFoodEntity = recommendedFoodRepository.findByDateAndGroupIdAndCategory(LocalDate.now(), mukgroupId, RecommendCategory.NEW)
+                .orElseGet(()-> newRecommendCreate(mukgroupId));
+
+        FoodEntity newFood = recommendedFoodEntity.getFoodEntity();
+
+        return NewRecommendedFoodInformation.create(newFood);
+
+    }
+
+    public RecommendedFoodEntity newRecommendCreate(Long mukgroupId) {
         List<Integer> eatenFoodIds = recommendedFoodRepository.findAllFoodIdByMukgroupId(mukgroupId);
         List<FoodEntity> foods =
                 foodRepository.findAll()
-                .stream()
-                .filter(item -> !eatenFoodIds.contains(item.getFoodId()))
-                .collect(Collectors.toList());
+                        .stream()
+                        .filter(item -> !eatenFoodIds.contains(item.getFoodId()))
+                        .collect(Collectors.toList());
 
         Collections.shuffle(foods);
 
@@ -151,8 +162,8 @@ public class RecommendServiceImpl implements RecommendService{
                         .orElseThrow());
 
         recommendedFoodRepository.save(recommendedFoodEntity);
-        return NewRecommendedFoodInformation.create(foods.getFirst());
 
+        return recommendedFoodEntity;
     }
 
     private int getScoreByFoodMukBTI(LunchRecommendRequest lunchRecommendRequest, FoodEntity foodOne, FoodEntity foodTwo){

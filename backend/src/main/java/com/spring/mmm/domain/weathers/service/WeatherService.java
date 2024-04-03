@@ -179,16 +179,39 @@ public class WeatherService {
     }
 
     public WeatherFoodInfo getWeatherFood(UserDetailsImpl userDetails, WeatherDTO weatherDTO) {
+
         int weatherId = 0;
 
         if (weatherDTO.getT1H() > 10) {
             weatherId = 2;
         }
-        if (weatherDTO.getRN1() >= 0.5) {
+        if (weatherDTO.getRN1() >= 0.1) {
             weatherId = 1;
         }
         if (weatherId != 0) {
-            log.debug("weatherId : {}", weatherId);
+            Long mukgroupId = userDetails.getUser().getMukboEntity().getMukgroupEntity().getMukgroupId();
+
+            int finalWeatherId = weatherId;
+
+            RecommendedFoodEntity recommendedFoodEntity = recommendedFoodRepository.
+                    findByDateAndGroupIdAndCategory(LocalDate.now(), mukgroupId, RecommendCategory.WEATHER)
+                    .orElseGet(()->weatherRecommendCreate(userDetails, finalWeatherId));
+
+
+            return WeatherFoodInfo.create(weatherRepository.findByWeatherId(weatherId),
+                    FoodInformation.builder()
+                            .foodId(recommendedFoodEntity.getFoodEntity().getFoodId())
+                            .name(recommendedFoodEntity.getFoodEntity().getName())
+                            .imageSrc(recommendedFoodEntity.getFoodEntity().getImage())
+                            .build()
+            );
+        }
+
+        return null;
+    }
+
+    public RecommendedFoodEntity weatherRecommendCreate(UserDetailsImpl userDetails, Integer weatherId) {
+
             List<FoodEntity> foodEntities = foodRepository.findByWeatherId(weatherId);
 
             Random random = new Random();
@@ -205,17 +228,7 @@ public class WeatherService {
 
             recommendedFoodRepository.save(recommendedFoodEntity);
 
-            return WeatherFoodInfo.create(weatherRepository.findByWeatherId(weatherId),
-                    FoodInformation.builder()
-                    .foodId(randomFoodEntity.getFoodId())
-                    .name(randomFoodEntity.getName())
-                    .imageSrc(randomFoodEntity.getImage())
-                    .build()
-                    );
-        } else {
-            throw new RecommendException(RecommendErrorCode.FOOD_RECOMMEND_NOT_FOUND);
-        }
-
+            return recommendedFoodEntity;
     }
 
 }
