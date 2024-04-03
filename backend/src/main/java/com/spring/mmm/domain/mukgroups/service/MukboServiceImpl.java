@@ -84,10 +84,13 @@ public class MukboServiceImpl implements MukboService{
                     .orElseThrow(() -> new MukboException(MukboErrorCode.NOT_FOUND)));
         }
 
-        mukboEntity.modifyName(mukboInviteRequest.getNickname());
-        mukboEntity.modifyGroup(groupId, user.getId());
-        mukboRepository.save(mukboEntity);
+        UserEntity friend = userRepository.findByEmail(mukboInviteRequest.getEmail())
+            .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
 
+        MukboEntity invitedMukbo = friend.getMukboEntity();
+
+        invitedMukbo.modifyName(mukboInviteRequest.getNickname());
+        mukboRepository.save(invitedMukbo.modifyGroup(groupId, friend.getId()));
 
         MukboEntity userMukbo = mukboRepository.findByUserId(user.getId())
                 .orElseThrow(() -> new MukboException(MukboErrorCode.NOT_FOUND));

@@ -17,6 +17,15 @@ spring:
     username: ssafy
     password: 1q2w3e4r!
     url: jdbc:mariadb://j10a110a.p.ssafy.io:3306/mmm?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+server:
+  tomcat:
+    mbeanregistry:
+      enabled: true
 logging:
   level:
     com.spring.mmm: debug
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

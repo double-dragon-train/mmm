@@ -30,6 +30,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 
+    implementation 'org.springframework.boot:spring-boot-starter-actuator' //actuator 추가
+    implementation 'io.micrometer:micrometer-registry-prometheus' //프로메테우스 데이터 형태로 변환
+
     implementation group: 'org.json', name: 'json', version: '20240303'
 
     compileOnly 'org.projectlombok:lombok'
