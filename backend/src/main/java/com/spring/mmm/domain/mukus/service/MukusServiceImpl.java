@@ -70,7 +70,9 @@ public class MukusServiceImpl implements MukusService {
             return RecommendFood.create(foodCategoryResponse, food);
         }).collect(Collectors.toList());
 
-        MukusRecentResponse mukusRecentResponse = MukusRecentResponse.create(RecommendData.create(recommendFoods), foodRecommendEntity.getHasValue());
+        LocalDate date = foodRecommendEntity.getRecommendDate();
+
+        MukusRecentResponse mukusRecentResponse = MukusRecentResponse.create(RecommendData.create(date, recommendFoods), foodRecommendEntity.getHasValue());
 
         foodRecommendEntity.check();
 
