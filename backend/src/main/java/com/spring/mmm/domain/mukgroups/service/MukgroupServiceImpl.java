@@ -62,7 +62,7 @@ public class MukgroupServiceImpl implements MukgroupService{
         if(originMukgroup.getIsSolo()){
             MukgroupEntity mukgroupEntity = MukgroupEntity
                     .create(name, Boolean.FALSE)
-                    .modifyMukgroupImage(s3Service.uploadFile(image));
+                    .modifyMukgroupImage(s3Service.uploadFile(image, true));
             mukgroupRepository.save(mukgroupEntity);
             mukboRepository.saveAndFlush(mukboEntity.modifyGroup(mukgroupEntity.getMukgroupId(), user.getId()));
             mukgroupRepository.delete(originMukgroup);
@@ -105,7 +105,7 @@ public class MukgroupServiceImpl implements MukgroupService{
         MukboEntity mukboEntity = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND))
                 .getMukboEntity();
-        String imageSrc = s3Service.uploadFile(multipartFile);
+        String imageSrc = s3Service.uploadFile(multipartFile, true);
         mukgroupRepository.save(getMukgroupEntity(groupId).modifyMukgroupImage(imageSrc));
         Events.raise(new MukgroupImageChangedEvent(mukboEntity.getName(), groupId));
     }
